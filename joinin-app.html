@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join In</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,sans-serif;background:#f0f4f0;max-width:500px;margin:0 auto;padding:20px}.card{background:white;border-radius:16px;padding:20px;margin-bottom:12px;border:1px solid #e8eee8}.btn{background:#5B8C5A;color:white;border:none;padding:16px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%}input{width:100%;padding:14px;border:2px solid #dce4dc;border-radius:14px;font-size:16px;margin-bottom:12px}.header{text-align:center;padding:16px 0}.logo{font-size:28px;font-weight:800;color:#1a1a2e}.green{color:#5B8C5A}.funnel{background:white;border-radius:16px;padding:16px 20px;margin-bottom:10px;border:1px solid #e8eee8;cursor:pointer;display:flex;align-items:center;gap:14px}.funnel .icon{font-size:28px;width:40px;text-align:center}.funnel .text{flex:1}.funnel .title{font-size:16px;font-weight:700}.funnel .sub{font-size:13px;color:#888}.funnel .arrow{font-size:18px;color:#ccc}.page{display:none}.page.active{display:block}.notif{padding:14px 18px;border-radius:14px;margin-bottom:12px;display:none}.notif.success{background:#d4edda;color:#155724;display:block}.notif.error{background:#f8d7da;color:#721c24;display:block}
+</style>
+</head>
+<body>
+<div id="notif" class="notif"></div>
+<div id="login-page" class="page active">
+<div style="text-align:center;padding:40px 0">
+<div style="width:80px;height:80px;background:#5B8C5A;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:40px;color:white;font-weight:700;box-shadow:0 4px 20px rgba(91,140,90,0.3)">🤝</div>
+<h1 style="font-size:32px;font-weight:800;color:#1a1a2e">Join <span class="green">In</span></h1>
+<p style="color:#5B8C5A;font-size:14px;font-weight:600;letter-spacing:1px">Asheville <span style="color:#D4A373">•</span> NC</p>
+<p style="color:#888;font-size:13px;margin:20px 0 24px">Find your people. Join the fun.</p>
+</div>
+<input type="email" id="email" placeholder="Email" value="test@test.com">
+<input type="password" id="pass" placeholder="Password" value="test123">
+<button class="btn" onclick="login()">Login</button>
+<p style="margin-top:16px;font-size:14px;color:#888;text-align:center">test@test.com / test123</p>
+</div>
+<div id="home-page" class="page">
+<div class="header">
+<div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:32px">🤝</span><span class="logo">Join <span class="green">In</span></span></div>
+<div style="color:#5B8C5A;font-size:14px;font-weight:600">Asheville <span style="color:#D4A373">•</span> NC</div>
+<div style="font-size:14px;color:#888;margin-top:4px">Find your people. Join the fun.</div>
+</div>
+<div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.05);margin-bottom:16px;cursor:pointer">
+<div style="width:48px;height:48px;border-radius:50%;background:#5B8C5A;color:white;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700">T</div>
+<div style="flex:1"><div style="font-size:17px;font-weight:700">Test User</div><div style="font-size:13px;color:#888">Tap to view profile</div></div>
+<button onclick="logout()" style="background:none;border:none;color:#e74c3c;font-size:13px;font-weight:600;cursor:pointer;padding:4px 8px">Logout</button>
+</div>
+<div style="margin:8px 0"><div style="display:flex;gap:8px;margin-bottom:6px">
+<button onclick="showTimePeriod('today')" id="period-today" class="period-btn active" style="padding:10px 12px;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;flex:1;background:#5B8C5A;color:white">📅 Today</button>
+<button onclick="showTimePeriod('week')" id="period-week" class="period-btn" style="padding:10px 12px;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;flex:1;background:#e8eee8;color:#666">📅 This Week</button>
+<button onclick="showTimePeriod('month')" id="period-month" class="period-btn" style="padding:10px 12px;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;flex:1;background:#e8eee8;color:#666">📅 This Month</button>
+</div></div>
+<div class="funnel" onclick="alert('Join a Group!')"><span class="icon">👥</span><div class="text"><div class="title">Join a Group</div><div class="sub">Find your community</div></div><span class="arrow">›</span></div>
+<div class="funnel" onclick="alert('Create a Group!')"><span class="icon">🚀</span><div class="text"><div class="title">Create a Group</div><div class="sub">Start something new</div></div><span class="arrow">›</span></div>
+<div class="funnel" onclick="alert('Create an Event!')"><span class="icon">📢</span><div class="text"><div class="title">Create an Event</div><div class="sub">Sell tickets, attract fans</div></div><span class="arrow">›</span></div>
+<div class="funnel" onclick="alert('My Hosting!')"><span class="icon">👑</span><div class="text"><div class="title">My Hosting</div><div class="sub">Manage your groups & events</div></div><span class="arrow">›</span></div>
+<div class="funnel" onclick="alert('Chat!')"><span class="icon">💬</span><div class="text"><div class="title">Chat</div><div class="sub">Messages & conversations</div></div><span class="arrow">›</span></div>
+<div class="funnel" onclick="alert('My Tickets!')"><span class="icon">🎟️</span><div class="text"><div class="title">My Tickets</div><div class="sub">Your event tickets</div></div><span class="arrow">›</span></div>
+<div class="funnel" onclick="alert('Feedback & Ratings!')"><span class="icon">💬</span><div class="text"><div class="title">Feedback & Ratings</div><div class="sub">Share your thoughts</div></div><span class="arrow">›</span></div>
+<button onclick="alert('Admin Dashboard!')" style="position:fixed;bottom:20px;right:20px;background:#1a1a2e;color:white;width:48px;height:48px;border-radius:50%;border:none;font-size:22px;cursor:pointer;z-index:100">⚙️</button>
+</div>
+<script>
+function login(){var e=document.getElementById('email').value,p=document.getElementById('pass').value;if(e==='test@test.com'&&p==='test123'){document.getElementById('login-page').classList.remove('active');document.getElementById('home-page').classList.add('active');showNotif('Welcome, Test User! 🎉','success')}else showNotif('Invalid login.','error')}
+function logout(){document.getElementById('home-page').classList.remove('active');document.getElementById('login-page').classList.add('active');document.getElementById('notif').style.display='none'}
+function showNotif(msg,type){var el=document.getElementById('notif');el.textContent=msg;el.className='notif '+type;el.style.display='block';setTimeout(function(){el.style.display='none'},5000)}
+function showTimePeriod(period){document.querySelectorAll('.period-btn').forEach(function(b){b.classList.remove('active');b.style.background='#e8eee8';b.style.color='#666'});var btn=document.getElementById('period-'+period);if(btn){btn.classList.add('active');btn.style.background='#5B8C5A';btn.style.color='white'}alert('Showing: '+period)}
+</script>
+</body>
+</html>
