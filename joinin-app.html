@@ -2,11 +2,88 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1B4B8F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Join In">
+<meta name="description" content="Find your people. Join the fun. Community groups and events in Asheville, NC.">
+<link id="manifest-link" rel="manifest">
+<link id="apple-icon" rel="apple-touch-icon">
 <title>Join In</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,sans-serif;background:#f0f4f0;max-width:500px;margin:0 auto;padding:20px}.card{background:white;border-radius:16px;padding:20px;margin-bottom:12px;border:1px solid #e8eee8}.btn{background:#5B8C5A;color:white;border:none;padding:16px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%}.btn-danger{background:#e74c3c;color:white;border:none;padding:16px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%}.btn-danger:hover{background:#c0392b}input,textarea,select{width:100%;padding:14px;border:2px solid #dce4dc;border-radius:14px;font-size:16px;margin-bottom:12px;font-family:inherit}.header{text-align:center;padding:16px 0}.logo{font-size:28px;font-weight:800;color:#1a1a2e}.green{color:#5B8C5A}.funnel{background:white;border-radius:16px;padding:16px 20px;margin-bottom:10px;border:1px solid #e8eee8;cursor:pointer;display:flex;align-items:center;gap:14px}.funnel:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}.funnel .icon{font-size:28px;width:40px;text-align:center}.funnel .text{flex:1}.funnel .title{font-size:16px;font-weight:700}.funnel .sub{font-size:13px;color:#888}.funnel .arrow{font-size:18px;color:#ccc}.page{display:none}.page.active{display:block}.notif{padding:14px 18px;border-radius:14px;margin-bottom:12px;display:none}.notif.success{background:#d4edda;color:#155724;display:block}.notif.error{background:#f8d7da;color:#721c24;display:block}.notif.info{background:#d1ecf1;color:#0c5460;display:block}.user-section{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.05);margin-bottom:16px;cursor:pointer}.user-avatar{width:48px;height:48px;border-radius:50%;background:#5B8C5A;color:white;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700}.admin-gear{position:fixed;bottom:20px;right:20px;background:#1a1a2e;color:white;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;border:none;z-index:100}.back-btn{background:none;border:none;color:#5B8C5A;font-size:16px;font-weight:600;cursor:pointer;padding:8px 0;display:flex;align-items:center;gap:6px;margin-bottom:8px}.ticket-counter-card{background:linear-gradient(135deg,#9C27B0,#7B1FA2);color:white;border:none}.ticket-counter-card .ticket-number{font-size:32px;font-weight:800}.ticket-counter-card .ticket-label{font-size:13px;opacity:.8}.period-btn{transition:all .2s;padding:10px 12px;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;flex:1;background:#e8eee8;color:#666}.period-btn.active{background:#5B8C5A;color:white}.error-text{color:#e74c3c;font-size:12px;margin-top:-8px;margin-bottom:8px;display:none}.error-text.show{display:block}input.error,textarea.error,select.error{border-color:#e74c3c;background:#fff5f5}.form-group{margin-bottom:4px}.submitted-badge{background:#2ecc71;color:white;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;display:inline-block}.group-item{background:white;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #e8eee8;border-left:4px solid #5B8C5A}.group-item h3{font-size:17px}.group-item .desc{color:#666;font-size:14px;margin:6px 0 10px 0}.group-item .meta-row{display:flex;justify-content:space-between;font-size:13px;color:#888;padding-top:8px;border-top:1px solid #f0f0f5}.event-card{background:white;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #e8eee8;border-left:4px solid #9C27B0}.event-card h3{font-size:17px}.event-card .desc{color:#666;font-size:14px;margin:6px 0 10px 0}.event-card .meta-row{display:flex;justify-content:space-between;font-size:13px;color:#888;padding-top:8px;border-top:1px solid #f0f0f5}.badge{display:inline-block;padding:2px 12px;border-radius:12px;font-size:11px;font-weight:600}.badge.public{background:#e8f8ed;color:#5B8C5A}.badge.private{background:#fef9e7;color:#f39c12}.badge.approved{background:#d4edda;color:#155724}.badge.denied{background:#f8d7da;color:#721c24}.badge.submitted{background:#fff3cd;color:#856404}.badge.paid{background:#9C27B0;color:white}.badge.free{background:#e8f8ed;color:#5B8C5A}.toggle-group{display:flex;gap:8px;margin:8px 0}.toggle-group button{padding:10px 20px;border:2px solid #dce4dc;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;background:#e8eee8;color:#666;flex:1}.toggle-group button.selected{background:#5B8C5A;color:white;border-color:#5B8C5A}.schedule-options{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.schedule-options button{padding:8px 16px;border:none;border-radius:14px;font-size:13px;font-weight:600;cursor:pointer;background:#e8eee8;color:#666;flex:1}.schedule-options button.selected{background:#5B8C5A;color:white}.image-upload-area{border:2px dashed #dce4dc;border-radius:14px;padding:20px;text-align:center;cursor:pointer;margin:8px 0}.image-upload-area:hover{border-color:#5B8C5A;background:#f6faf6}.image-preview{max-width:100%;max-height:150px;border-radius:12px;margin-top:8px}.map-btn{background:#2196F3;color:white;border:none;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px}.qr-code{text-align:center;padding:16px;background:white;border-radius:12px;border:1px solid #e8eee8}.qr-code .qr-placeholder{font-size:80px}.popup-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center;padding:20px}.popup-overlay.active{display:flex}.popup{background:white;border-radius:20px;padding:30px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);position:relative}.popup .popup-close{position:absolute;top:12px;right:16px;font-size:24px;cursor:pointer;color:#888;background:none;border:none}.popup .popup-icon{font-size:48px;margin-bottom:12px}.popup .popup-title{font-size:20px;font-weight:700;margin-bottom:8px}.popup .popup-text{color:#666;font-size:15px;line-height:1.5;margin-bottom:20px}.popup .popup-btn{background:#5B8C5A;color:white;border:none;padding:14px 24px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;width:100%}.popup .popup-btn-secondary{background:#e8eee8;color:#666;border:none;padding:12px 24px;border-radius:30px;font-size:15px;font-weight:600;cursor:pointer;width:100%;margin-top:8px}.seat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}.seat{padding:10px;border:2px solid #dce4dc;border-radius:8px;text-align:center;cursor:pointer;background:white;font-size:13px}.seat:hover{border-color:#9C27B0}.seat.selected{background:#9C27B0;color:white;border-color:#9C27B0}.seat.taken{background:#fce8ec;border-color:#e74c3c;color:#e74c3c;cursor:not-allowed;opacity:0.5}.ticket-tier{background:#f8faf8;padding:12px;border-radius:12px;margin-bottom:8px;border:1px solid #e8eee8}.ticket-tier .tier-name{font-weight:700}.ticket-tier .tier-price{color:#9C27B0;font-weight:600}.chat-message{background:#f0f8f0;border-radius:12px;padding:12px 16px;margin-bottom:8px}.chat-message .sender{font-weight:700;font-size:13px}.chat-message .time{font-size:11px;color:#888}.chat-message .text{margin-top:4px}.chat-message.self{background:#5B8C5A;color:white}.chat-message.self .time{color:rgba(255,255,255,0.7)}.feedback-item{background:#f8faf8;padding:12px 16px;border-radius:12px;margin-bottom:8px;border:1px solid #e8eee8}.feedback-item .stars{color:#f39c12;font-size:18px}.feedback-item .fb-text{margin:4px 0}.feedback-item .fb-meta{font-size:12px;color:#888}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,sans-serif;background:#f0f4f0;max-width:500px;margin:0 auto;padding:20px}.card{background:white;border-radius:16px;padding:20px;margin-bottom:12px;border:1px solid #e8eee8}.btn{background:#5B8C5A;color:white;border:none;padding:16px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%}.btn-danger{background:#e74c3c;color:white;border:none;padding:16px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%}.btn-danger:hover{background:#c0392b}input,textarea,select{width:100%;padding:14px;border:2px solid #dce4dc;border-radius:14px;font-size:16px;margin-bottom:12px;font-family:inherit}.header{text-align:center;padding:16px 0}.logo{font-size:28px;font-weight:800;color:#1a1a2e}.green{color:#5B8C5A}.funnel{background:white;border-radius:16px;padding:16px 20px;margin-bottom:10px;border:1px solid #e8eee8;cursor:pointer;display:flex;align-items:center;gap:14px}.funnel:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}.funnel .icon{font-size:28px;width:40px;text-align:center}.funnel .text{flex:1}.funnel .title{font-size:16px;font-weight:700}.funnel .sub{font-size:13px;color:#888}.funnel .arrow{font-size:18px;color:#ccc}.page{display:none}.page.active{display:block}.notif{padding:14px 18px;border-radius:14px;margin-bottom:12px;display:none}.notif.success{background:#d4edda;color:#155724;display:block}.notif.error{background:#f8d7da;color:#721c24;display:block}.notif.info{background:#d1ecf1;color:#0c5460;display:block}.user-section{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.05);margin-bottom:16px;cursor:pointer}.user-avatar{width:48px;height:48px;border-radius:50%;background:#5B8C5A;color:white;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700}.admin-gear{position:fixed;bottom:20px;right:20px;background:#1a1a2e;color:white;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;border:none;z-index:100}.back-btn{position:sticky;top:0;z-index:500;display:flex;align-items:center;gap:10px;width:calc(100% + 40px);margin:-20px -20px 14px -20px;padding:16px 20px;background:#5B8C5A;color:white;border:none;font-size:19px;font-weight:700;cursor:pointer;text-align:left;box-shadow:0 2px 10px rgba(0,0,0,0.15)}
+.back-btn:active{background:#4a7549}
+.back-btn .chev{font-size:26px;line-height:1}.ticket-counter-card{background:linear-gradient(135deg,#9C27B0,#7B1FA2);color:white;border:none}.ticket-counter-card .ticket-number{font-size:32px;font-weight:800}.ticket-counter-card .ticket-label{font-size:13px;opacity:.8}.period-btn{transition:all .2s;padding:10px 12px;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;flex:1;background:#e8eee8;color:#666}.period-btn.active{background:#5B8C5A;color:white}.error-text{color:#e74c3c;font-size:12px;margin-top:-8px;margin-bottom:8px;display:none}.error-text.show{display:block}input.error,textarea.error,select.error{border-color:#e74c3c;background:#fff5f5}.form-group{margin-bottom:4px}.submitted-badge{background:#2ecc71;color:white;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;display:inline-block}.group-item{background:white;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #e8eee8;border-left:4px solid #5B8C5A}.group-item h3{font-size:17px}.group-item .desc{color:#666;font-size:14px;margin:6px 0 10px 0}.group-item .meta-row{display:flex;justify-content:space-between;font-size:13px;color:#888;padding-top:8px;border-top:1px solid #f0f0f5}.event-card{background:white;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #e8eee8;border-left:4px solid #9C27B0}.event-card h3{font-size:17px}.event-card .desc{color:#666;font-size:14px;margin:6px 0 10px 0}.event-card .meta-row{display:flex;justify-content:space-between;font-size:13px;color:#888;padding-top:8px;border-top:1px solid #f0f0f5}.badge{display:inline-block;padding:2px 12px;border-radius:12px;font-size:11px;font-weight:600}.badge.public{background:#e8f8ed;color:#5B8C5A}.badge.private{background:#fef9e7;color:#f39c12}.badge.approved{background:#d4edda;color:#155724}.badge.denied{background:#f8d7da;color:#721c24}.badge.submitted{background:#fff3cd;color:#856404}.badge.paid{background:#9C27B0;color:white}.badge.free{background:#e8f8ed;color:#5B8C5A}.toggle-group{display:flex;gap:8px;margin:8px 0}.toggle-group button{padding:10px 20px;border:2px solid #dce4dc;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;background:#e8eee8;color:#666;flex:1}.toggle-group button.selected{background:#5B8C5A;color:white;border-color:#5B8C5A}.schedule-options{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.schedule-options button{padding:8px 16px;border:none;border-radius:14px;font-size:13px;font-weight:600;cursor:pointer;background:#e8eee8;color:#666;flex:1}.schedule-options button.selected{background:#5B8C5A;color:white}.image-upload-area{border:2px dashed #dce4dc;border-radius:14px;padding:20px;text-align:center;cursor:pointer;margin:8px 0}.image-upload-area:hover{border-color:#5B8C5A;background:#f6faf6}.image-preview{max-width:100%;max-height:150px;border-radius:12px;margin-top:8px}.map-btn{background:#2196F3;color:white;border:none;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px}.qr-code{text-align:center;padding:16px;background:white;border-radius:12px;border:1px solid #e8eee8}.qr-code .qr-placeholder{font-size:80px}.popup-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center;padding:20px}.popup-overlay.active{display:flex}.popup{background:white;border-radius:20px;padding:30px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);position:relative}.popup .popup-close{position:absolute;top:12px;right:16px;font-size:24px;cursor:pointer;color:#888;background:none;border:none}.popup .popup-icon{font-size:48px;margin-bottom:12px}.popup .popup-title{font-size:20px;font-weight:700;margin-bottom:8px}.popup .popup-text{color:#666;font-size:15px;line-height:1.5;margin-bottom:20px}.popup .popup-btn{background:#5B8C5A;color:white;border:none;padding:14px 24px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;width:100%}.popup .popup-btn-secondary{background:#e8eee8;color:#666;border:none;padding:12px 24px;border-radius:30px;font-size:15px;font-weight:600;cursor:pointer;width:100%;margin-top:8px}.seat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}.seat{padding:10px;border:2px solid #dce4dc;border-radius:8px;text-align:center;cursor:pointer;background:white;font-size:13px}.seat:hover{border-color:#9C27B0}.seat.selected{background:#9C27B0;color:white;border-color:#9C27B0}.seat.taken{background:#fce8ec;border-color:#e74c3c;color:#e74c3c;cursor:not-allowed;opacity:0.5}.ticket-tier{background:#f8faf8;padding:12px;border-radius:12px;margin-bottom:8px;border:1px solid #e8eee8}.ticket-tier .tier-name{font-weight:700}.ticket-tier .tier-price{color:#9C27B0;font-weight:600}.chat-message{background:#f0f8f0;border-radius:12px;padding:12px 16px;margin-bottom:8px}.chat-message .sender{font-weight:700;font-size:13px}.chat-message .time{font-size:11px;color:#888}.chat-message .text{margin-top:4px}.chat-message.self{background:#5B8C5A;color:white}.chat-message.self .time{color:rgba(255,255,255,0.7)}.feedback-item{background:#f8faf8;padding:12px 16px;border-radius:12px;margin-bottom:8px;border:1px solid #e8eee8}.feedback-item .stars{color:#f39c12;font-size:18px}.feedback-item .fb-text{margin:4px 0}.feedback-item .fb-meta{font-size:12px;color:#888}
+.gcard{background:white;border-radius:16px;margin-bottom:14px;border:1px solid #e8eee8;border-left:5px solid #5B8C5A;overflow:hidden}
+.gcard .cover{width:100%;height:140px;object-fit:cover;display:block;background:#e8eee8}
+.gcard .cover-empty{width:100%;height:90px;background:#eef4ee;display:flex;align-items:center;justify-content:center;font-size:38px}
+.gcard .body{padding:16px}
+.gcard h3{font-size:19px;margin-bottom:8px}
+.desc2{color:#444;font-size:15px;line-height:1.4;margin:10px 0 12px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.badge.joined{background:#5B8C5A;color:white}
+.btn-select{background:#5B8C5A;color:white;border:none;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:12px}
+.btn-outline{background:white;color:#5B8C5A;border:2px solid #5B8C5A;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
+.btn-leave{background:white;color:#e74c3c;border:2px solid #e74c3c;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
+.cat-header{display:flex;align-items:center;justify-content:space-between;gap:10px;background:white;border-radius:16px;padding:14px 16px;margin-bottom:12px;border:1px solid #e8eee8}
+.cat-header h3{font-size:18px}
+.cat-header button{background:#e8eee8;color:#333;border:none;padding:10px 16px;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0}
+.photo-grid img{width:100%;height:84px;object-fit:cover;border-radius:10px}
+.attendee{display:inline-block;background:#eef4ee;color:#2d5a2d;padding:7px 14px;border-radius:20px;font-size:14px;font-weight:600;margin:0 6px 6px 0}
+.detail-cover{width:100%;max-height:220px;object-fit:cover;border-radius:14px;margin-bottom:12px;display:block}
+.info-line{font-size:15px;margin:8px 0;color:#333}
+.sec-title{font-size:16px;font-weight:700;margin:16px 0 6px 0}
+.av{border-radius:50%;object-fit:cover;background:#5B8C5A;color:white;display:inline-flex;align-items:center;justify-content:center;font-weight:700;vertical-align:middle;flex-shrink:0}
+.av-sm{width:36px;height:36px;font-size:15px}
+.av-md{width:56px;height:56px;font-size:22px}
+.person{display:inline-flex;align-items:center;gap:8px;background:#eef4ee;border-radius:24px;padding:5px 14px 5px 5px;margin:0 6px 8px 0}
+.person .nm{font-size:14px;font-weight:600;color:#2d5a2d}
+.host-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+.host-row .hn{font-size:16px;font-weight:700}
+.host-row .hl{font-size:13px;color:#888}
+.unread-btn{background:#e74c3c;color:white;border:none;padding:10px 14px;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;line-height:1.2}
+.msg-card{background:white;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #e8eee8;border-left:5px solid #e74c3c}
+.msg-card.read{border-left-color:#c8d6c8;opacity:.75}
+.msg-card .mh{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.msg-card .mt{font-size:15px;line-height:1.45;margin:8px 0;color:#333}
+.msg-card .mm{font-size:13px;color:#888}
+.msg-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.msg-actions button{flex:1;min-width:110px;border:none;padding:12px 10px;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer}
+.act-read{background:#5B8C5A;color:white}
+.act-reply{background:#2196F3;color:white}
+.act-keep{background:#e8eee8;color:#555}
+.tk{background:white;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #e8eee8;border-left:5px solid #9C27B0}
+.tk h3{font-size:18px;margin-bottom:8px}
+.tk .tr{display:flex;justify-content:space-between;font-size:15px;margin:5px 0}
+.tk .tr span:first-child{color:#888}
+.qr-box{text-align:center;padding:18px;background:white;border-radius:14px;border:1px solid #e8eee8;margin:10px 0}
+.qr-box canvas{width:200px;height:200px;image-rendering:pixelated}
+.filter-row{display:flex;gap:8px;margin:10px 0}
+.filter-row button{flex:1;border:2px solid #dce4dc;background:white;color:#555;padding:12px 8px;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer}
+.filter-row button.on{background:#5B8C5A;border-color:#5B8C5A;color:white}
+.badge.gfree{background:#e8f8ed;color:#2d5a2d}
+.badge.gpaid{background:#9C27B0;color:white}
+.gender-row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.gender-row button{flex:1;min-width:90px;border:2px solid #dce4dc;background:#e8eee8;color:#666;padding:12px 8px;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer}
+.gender-row button.selected{background:#5B8C5A;border-color:#5B8C5A;color:white}
+.jilogo{display:block;margin:0 auto;width:100%;height:auto}
+.ji-w{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:72px;font-weight:800;letter-spacing:-1px;fill:#1B4B8F}
+.ji-w2{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:72px;font-weight:800;letter-spacing:-1px;fill:#2E7BC4}
+.ji-s{font-family:'Dancing Script',cursive;font-size:54px;fill:#E4572E;letter-spacing:1px}
+.ji-b{fill:#E4572E}
+.auth-tabs{display:flex;gap:8px;margin-bottom:14px}
+.auth-tabs button{flex:1;border:2px solid #dce4dc;background:#e8eee8;color:#666;padding:13px;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer}
+.auth-tabs button.on{background:#5B8C5A;border-color:#5B8C5A;color:white}
+.link-btn{background:none;border:none;color:#5B8C5A;font-size:15px;font-weight:600;cursor:pointer;text-decoration:underline;padding:8px}
+.cloud-note{background:#eef4ee;border:1px solid #cfe0cf;color:#2d5a2d;padding:10px 14px;border-radius:12px;font-size:13px;margin-bottom:10px}
+.busy{opacity:.55;pointer-events:none}
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div id="notif" class="notif"></div>
@@ -25,32 +102,37 @@
 
 <!-- LOGIN -->
 <div id="page-login" class="page active">
-<div style="text-align:center;padding:40px 0">
-<div style="width:80px;height:80px;background:#5B8C5A;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:40px;color:white;font-weight:700;box-shadow:0 4px 20px rgba(91,140,90,0.3)">🤝</div>
-<h1 style="font-size:32px;font-weight:800;color:#1a1a2e">Join <span class="green">In</span></h1>
-<p style="color:#5B8C5A;font-size:14px;font-weight:600;letter-spacing:1px">Asheville <span style="color:#D4A373">•</span> NC</p>
-<p style="color:#888;font-size:13px;margin:20px 0 24px">Find your people. Join the fun.</p>
+<div style="text-align:center;padding:24px 0 8px"><svg class="jilogo" style="max-width:380px" viewBox="100 40 490 200" role="img" aria-label="Join In Asheville" xmlns="http://www.w3.org/2000/svg"><defs><path id="ji-arc-login" d="M 252 194 Q 382 150 512 194" fill="none"/></defs><g transform="translate(178,138) scale(0.74) translate(-340,-108)"><circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/><g fill="#1B4B8F"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(72 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#E4572E" transform="rotate(144 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#1B4B8F" transform="rotate(216 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(288 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g></g><text x="248" y="122" class="ji-w">Join <tspan class="ji-w2">In</tspan></text><text class="ji-s"><textPath href="#ji-arc-login" startOffset="50%" text-anchor="middle">Asheville</textPath></text><path class="ji-b" d="M 240 214 C 294 197 338 187 384 186 C 440 185 486 194 526 209 C 484 202 438 196 386 199 C 336 202 292 209 240 214 Z"/><path class="ji-b" d="M 522 208 C 540 213 552 209 560 199 C 550 206 536 207 520 203 Z"/><path class="ji-b" opacity="0.55" d="M 300 213 C 340 204 372 199 410 199 C 372 203 336 208 300 213 Z"/></svg><p style="color:#888;font-size:15px;margin:2px 0 22px">Find your people. Join the fun.</p></div>
+<div class="auth-tabs">
+<button id="auth-tab-login" class="on" onclick="setAuthMode('login')">Log In</button>
+<button id="auth-tab-signup" onclick="setAuthMode('signup')">Sign Up</button>
 </div>
-<input type="email" id="email" placeholder="Email" value="test@test.com">
-<input type="password" id="pass" placeholder="Password" value="test123">
-<button class="btn" onclick="login()">Login</button>
-<p style="margin-top:16px;font-size:14px;color:#888;text-align:center">test@test.com / test123</p>
+<div id="signup-name-box" style="display:none">
+<input type="text" id="auth-name" placeholder="Your Name" autocomplete="name">
+</div>
+<input type="email" id="email" placeholder="Email" autocomplete="email">
+<input type="password" id="pass" placeholder="Password" autocomplete="current-password">
+<div id="signup-hint" style="display:none;font-size:13px;color:#888;margin:-6px 0 12px 4px">At least 6 characters.</div>
+<button class="btn" id="auth-btn" onclick="doAuth()">Log In</button>
+<div style="text-align:center;margin-top:10px">
+<button class="link-btn" onclick="forgotPassword()">Forgot your password?</button>
+</div>
+<p id="auth-status" style="margin-top:14px;font-size:14px;color:#888;text-align:center"></p>
 </div>
 
 <!-- HOME -->
 <div id="page-home" class="page">
-<div class="header">
-<div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:32px">🤝</span><span class="logo">Join <span class="green">In</span></span></div>
-<div style="color:#5B8C5A;font-size:14px;font-weight:600">Asheville <span style="color:#D4A373">•</span> NC</div>
-<div style="font-size:14px;color:#888;margin-top:4px">Find your people. Join the fun.</div>
-</div>
-<div class="user-section" onclick="showPage('profile')">
-<div class="user-avatar" id="home-avatar">T</div>
-<div class="user-info">
+<div style="position:sticky;top:0;z-index:400;background:#f0f4f0;margin:-20px -20px 6px;padding:12px 20px 8px"><svg class="jilogo" style="max-width:250px" viewBox="100 40 490 200" role="img" aria-label="Join In Asheville" xmlns="http://www.w3.org/2000/svg"><defs><path id="ji-arc-home" d="M 252 194 Q 382 150 512 194" fill="none"/></defs><g transform="translate(178,138) scale(0.74) translate(-340,-108)"><circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/><g fill="#1B4B8F"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(72 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#E4572E" transform="rotate(144 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#1B4B8F" transform="rotate(216 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(288 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g></g><text x="248" y="122" class="ji-w">Join <tspan class="ji-w2">In</tspan></text><text class="ji-s"><textPath href="#ji-arc-home" startOffset="50%" text-anchor="middle">Asheville</textPath></text><path class="ji-b" d="M 240 214 C 294 197 338 187 384 186 C 440 185 486 194 526 209 C 484 202 438 196 386 199 C 336 202 292 209 240 214 Z"/><path class="ji-b" d="M 522 208 C 540 213 552 209 560 199 C 550 206 536 207 520 203 Z"/><path class="ji-b" opacity="0.55" d="M 300 213 C 340 204 372 199 410 199 C 372 203 336 208 300 213 Z"/></svg></div><div style="text-align:center;font-size:14px;color:#888;margin-bottom:4px">Find your people. Join the fun.</div>
+<div class="user-section">
+<div class="user-avatar" id="home-avatar" onclick="showPage('edit-profile')">T</div>
+<div class="user-info" onclick="showPage('profile')" style="flex:1">
 <div class="name" id="home-username">Test User</div>
-<div class="sub" style="font-size:13px;color:#888">Tap to view profile</div>
+<div class="sub" style="font-size:13px;color:#888">Tap photo to edit profile</div>
 </div>
-<button onclick="logout()" style="background:none;border:none;color:#e74c3c;font-size:13px;font-weight:600;cursor:pointer;padding:4px 8px">Logout</button>
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+<button class="unread-btn" id="unread-btn" style="display:none" onclick="showPage('messages')">You have 0 unread messages</button>
+<button onclick="logout()" style="background:none;border:none;color:#e74c3c;font-size:13px;font-weight:600;cursor:pointer;padding:2px 4px">Logout</button>
+</div>
 </div>
 <div id="ticket-counter-container" style="display:none">
 <div class="card ticket-counter-card" onclick="showPage('tickets')">
@@ -60,11 +142,31 @@
 </div>
 </div>
 </div>
-<div style="margin:8px 0"><div style="display:flex;gap:8px;margin-bottom:6px">
-<button onclick="showTimePeriod('today')" id="period-today" class="period-btn active">📅 Today</button>
-<button onclick="showTimePeriod('week')" id="period-week" class="period-btn">📅 This Week</button>
-<button onclick="showTimePeriod('month')" id="period-month" class="period-btn">📅 This Month</button>
-</div></div>
+<div style="margin:14px 0 8px">
+<div style="font-size:19px;font-weight:700;color:#1B4B8F;margin-bottom:10px">See what's going on in Asheville</div>
+<div style="display:flex;gap:8px;margin-bottom:6px">
+<button onclick="showTimePeriod('today')" id="period-today" class="period-btn">Today</button>
+<button onclick="showTimePeriod('week')" id="period-week" class="period-btn">Next 7 Days</button>
+<button onclick="showTimePeriod('month')" id="period-month" class="period-btn">Next 30 Days</button>
+</div>
+<div id="upcoming-list"></div>
+</div>
+<div id="install-card" style="display:none;background:#1B4B8F;color:white;border-radius:16px;padding:16px 18px;margin-bottom:12px">
+<div style="display:flex;align-items:center;gap:14px">
+<div style="flex:1">
+<div style="font-size:17px;font-weight:700">Add the <span style="letter-spacing:.3px">Join <span style="color:#8FC3F5">In</span></span> app to your home screen</div>
+<div style="font-size:14px;opacity:.85;margin-top:2px">Opens full screen, like a real app.</div>
+</div>
+<button onclick="dismissInstall()" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:22px;cursor:pointer;padding:4px 8px">✕</button>
+</div>
+<button id="install-btn" onclick="doInstall()" style="background:white;color:#1B4B8F;border:none;padding:14px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;width:100%;margin-top:12px">📲 Add to Home Screen</button>
+<div id="ios-steps" style="display:none;background:rgba(255,255,255,.12);border-radius:12px;padding:14px;margin-top:12px;font-size:15px;line-height:1.6">
+<div style="font-weight:700;margin-bottom:6px">On iPhone, it takes three taps:</div>
+1. Tap the <strong>Share</strong> button at the bottom of Safari — the square with an arrow going up.<br>
+2. Scroll down and tap <strong>Add to Home Screen</strong>.<br>
+3. Tap <strong>Add</strong>.
+</div>
+</div>
 <div class="funnel" onclick="showPage('groups')"><span class="icon">👥</span><div class="text"><div class="title">Join a Group</div><div class="sub">Find your community</div></div><span class="arrow">›</span></div>
 <div class="funnel" onclick="showPage('events')"><span class="icon">🎟️</span><div class="text"><div class="title">Discover Events</div><div class="sub">Music, sports, workshops & more</div></div><span class="arrow">›</span></div>
 <div class="funnel" onclick="showPage('create-group')"><span class="icon">🚀</span><div class="text"><div class="title">Create a Group</div><div class="sub">Start something new</div></div><span class="arrow">›</span></div>
@@ -78,20 +180,21 @@
 
 <!-- GROUPS -->
 <div id="page-groups" class="page">
-<button class="back-btn" onclick="showPage('home')">‹ Back</button>
-<div class="card"><h3>👥 Groups</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Find your community. Join ongoing groups.</p>
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
+<div class="card" id="groups-category-card"><h3>👥 Groups</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Find your community. Join ongoing groups.</p>
 <div id="category-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:8px 0"></div>
 <div id="suggest-section" style="display:none;background:#fef9e7;padding:16px;border-radius:12px;border:1px solid #f9e79f;margin-top:12px">
 <p style="font-weight:600">🙋 Don't see what you're looking for?</p>
 <input type="text" id="suggest-topic" placeholder="What group would you like to see?">
 <button class="btn" style="background:#D4A373" onclick="suggestGroup()">📨 Suggest Interest</button>
 </div></div>
+<div id="category-header"></div>
 <div id="groups-list"></div>
 </div>
 
 <!-- EVENTS -->
 <div id="page-events" class="page">
-<button class="back-btn" onclick="showPage('home')">‹ Back</button>
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card"><h3>🎟️ Events</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Discover concerts, sports, workshops, and more.</p>
 <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
 <button onclick="filterEvents('all')" id="event-filter-all" style="background:#5B8C5A;color:white;border:none;padding:6px 14px;border-radius:12px;font-size:12px;cursor:pointer">All</button>
@@ -106,7 +209,7 @@
 
 <!-- CREATE GROUP -->
 <div id="page-create-group" class="page">
-<button class="back-btn" onclick="showPage('home')">‹ Back</button>
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card"><h3>🚀 Create a Group</h3>
 <p style="color:#888;font-size:13px;margin-bottom:12px">Groups are ongoing communities. Members join and stay.</p>
 <div style="background:#f0f8f0;padding:12px;border-radius:12px;margin-bottom:12px;font-size:13px;color:#2d5a2d">💡 Describe who this group is for, what you'll do, and how often you'll meet.</div>
@@ -119,20 +222,25 @@
 <div class="form-group"><input type="text" id="group-location" placeholder="City, State" value="Asheville, NC"></div>
 <button class="map-btn" onclick="openMap(document.getElementById('group-street').value+', '+document.getElementById('group-location').value)">🗺️ View on Map</button>
 <div style="margin-top:8px"></div>
-<div class="form-group"><input type="time" id="group-time" placeholder="Meeting Time"></div>
-<div class="form-group"><input type="date" id="group-date" placeholder="Start Date"></div>
+<div style="margin-top:8px"></div>
 <div style="margin:12px 0 8px 0"><label style="font-weight:600;display:block;margin-bottom:6px">Meeting Schedule:</label><div class="schedule-options"><button onclick="setSchedule('once')" class="selected" id="sch-once">One time</button><button onclick="setSchedule('weekly')" id="sch-weekly">Weekly</button><button onclick="setSchedule('monthly')" id="sch-monthly">Monthly</button></div></div>
-<div id="schedule-detail" style="margin-top:8px;padding:12px;background:#f8faf8;border-radius:12px"><div id="schedule-once"><input type="datetime-local" id="group-datetime"></div><div id="schedule-weekly" style="display:none"><select id="group-weekly-day"><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday" selected>Saturday</option><option value="Sunday">Sunday</option></select><input type="time" id="group-weekly-time" value="18:30"></div><div id="schedule-monthly" style="display:none"><select id="group-monthly-week"><option value="First">First</option><option value="Second" selected>Second</option><option value="Third">Third</option><option value="Fourth">Fourth</option><option value="Last">Last</option></select><select id="group-monthly-day"><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday" selected>Saturday</option><option value="Sunday">Sunday</option></select><input type="time" id="group-monthly-time" value="18:30"><p style="font-size:12px;color:#888;margin-top:4px">e.g., Second Saturday of each month</p></div></div>
-<div style="margin:8px 0"><label style="font-weight:600;display:block;margin-bottom:6px">Group Privacy:</label><div class="toggle-group"><button onclick="setPrivacy('public')" class="selected" id="priv-public">🔓 Public</button><button onclick="setPrivacy('private')" id="priv-private">🔒 Private</button></div><div id="privacy-description">🌍 <strong>Public:</strong> Anyone can see and join.</div></div>
+<div id="schedule-detail" style="margin-top:8px;padding:12px;background:#f8faf8;border-radius:12px"><div id="schedule-once"><input type="text" id="group-datetime" placeholder="Click to set date and time" onfocus="openDateTime(this)" onblur="closeDateTime(this)"><div class="error-text" id="group-datetime-error">Please pick a date that hasn't passed</div></div><div id="schedule-weekly" style="display:none"><select id="group-weekly-day"><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday" selected>Saturday</option><option value="Sunday">Sunday</option></select><input type="time" id="group-weekly-time" value="18:30"></div><div id="schedule-monthly" style="display:none"><select id="group-monthly-week"><option value="First">First</option><option value="Second" selected>Second</option><option value="Third">Third</option><option value="Fourth">Fourth</option><option value="Last">Last</option></select><select id="group-monthly-day"><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday" selected>Saturday</option><option value="Sunday">Sunday</option></select><input type="time" id="group-monthly-time" value="18:30"><p style="font-size:12px;color:#888;margin-top:4px">e.g., Second Saturday of each month</p></div></div>
+<div style="margin:8px 0"><label style="font-weight:600;display:block;margin-bottom:6px">Group Privacy:</label><div class="toggle-group"><button onclick="setPrivacy('public')" class="selected" id="priv-public">🌍 Public</button><button onclick="setPrivacy('private')" id="priv-private">🔒 Private</button></div><div id="privacy-description">🌍 <strong>Public:</strong> Anyone can see and join.</div></div>
+<div style="margin:8px 0"><label style="font-weight:600;display:block;margin-bottom:6px">Group Size:</label>
+<input type="number" id="group-max" placeholder="Maximum members (leave blank for no limit)" min="1">
+<p style="font-size:12px;color:#888;margin-top:-6px">When the group fills up, people can ask to be told if a spot opens.</p></div>
+<div style="margin:8px 0"><label style="font-weight:600;display:block;margin-bottom:6px">Cost to Join: *</label><div class="toggle-group"><button onclick="setGroupPaid('free')" id="gp-free">💰 Free Group</button><button onclick="setGroupPaid('paid')" id="gp-paid">💳 Paid Group</button></div>
+<div class="error-text" id="group-paid-error">Please choose Free or Paid</div>
+<div id="gp-price-box" style="display:none"><input type="number" id="group-price" placeholder="Price per member ($) *" min="1" step="0.01"><div class="error-text" id="group-price-error">Please enter a price</div><p style="font-size:12px;color:#888">One price for everyone in this group.</p></div></div>
 <div style="margin:8px 0"><label style="font-weight:600;display:block;margin-bottom:6px">Cover Image:</label><div class="image-upload-area" onclick="document.getElementById('image-upload').click()"><span style="font-size:32px;display:block">🖼️</span><div style="color:#888;font-size:14px;margin-top:4px">Tap to upload an image</div></div><input type="file" id="image-upload" accept="image/*" style="display:none" onchange="handleImageUpload(event)"><div id="image-preview-container"></div><button class="btn" style="background:#D4A373" onclick="generateAIImage()" style="margin-top:4px">🎨 AI Generate Cover</button></div>
 <button class="btn" id="submit-group-btn" onclick="handleCreateGroup()">🚀 Submit for Approval</button>
-<p style="font-size:12px;color:#888;text-align:center;margin-top:8px">Your group will be reviewed within 24 hours.</p>
+<p style="font-size:12px;color:#888;text-align:center;margin-top:8px">Your group is screened automatically. Most are approved in seconds.</p>
 </div></div>
 </div>
 
 <!-- CREATE EVENT -->
 <div id="page-create-event" class="page">
-<button class="back-btn" onclick="showPage('home')">‹ Back</button>
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card"><h3>📢 Create an Event</h3>
 <p style="color:#888;font-size:13px;margin-bottom:12px">Events are one-time or recurring gatherings. Sell tickets and attract attendees.</p>
 <div id="event-form">
@@ -154,32 +262,32 @@
 <input type="file" id="event-image-upload" accept="image/*" style="display:none" onchange="handleEventImageUpload(event)"><div id="event-image-preview"></div>
 <button class="btn" style="background:#D4A373" onclick="generateEventFlyer()" style="margin-top:4px">🎨 AI Generate Flyer</button>
 <button class="btn" id="submit-event-btn" onclick="handleCreateEvent()" style="padding:18px;font-size:18px">📢 Submit for Approval</button>
-<p style="font-size:12px;color:#888;text-align:center;margin-top:8px">Events are reviewed within 24 hours.</p>
+<p style="font-size:12px;color:#888;text-align:center;margin-top:8px">Your event will be reviewed and approved shortly.</p>
 </div></div>
 </div>
 
 <!-- HOSTING -->
 <div id="page-hosting" class="page">
-<button class="back-btn" onclick="showPage('home')">‹ Back</button>
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card"><h3>👑 My Hosting</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Manage your groups and events.</p><div id="hosting-list"></div></div>
 </div>
 
 <!-- CHAT -->
 <div id="page-chat" class="page">
-<button class="back-btn" onclick="showPage('home')">‹ Back</button>
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card"><h3>💬 Messages</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Chat with members of your groups.</p><div id="chat-list"></div></div>
 <div id="chat-messages" style="display:none"><div class="card"><h4 id="chat-room-name">Chat</h4><div id="chat-message-list" style="max-height:300px;overflow-y:auto;margin-bottom:8px"></div><div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="chat-input" placeholder="Type a message..." style="flex:1;margin-bottom:0"><button class="btn" onclick="sendMessage()" style="width:auto;padding:14px 20px">Send</button></div></div></div>
 </div>
 
 <!-- TICKETS -->
 <div id="page-tickets" class="page">
-<button class="back-btn" onclick="showPage('home')">‹ Back</button>
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card"><h3>🎟️ My Tickets</h3><p style="color:#888;font-size:14px;margin-bottom:12px">When you purchase tickets on the app, your QR codes will appear here.</p><div id="ticket-list"></div></div>
 </div>
 
 <!-- FEEDBACK -->
 <div id="page-feedback" class="page">
-<button class="back-btn" onclick="showPage('home')">‹ Back</button>
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card"><h3>💬 Feedback & Ratings</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Share your concerns, wishes, or praises. Rate the app 1-5 stars.</p>
 <div style="text-align:center;margin:12px 0"><label style="font-weight:600;display:block;margin-bottom:6px">Rate Join In:</label><div id="star-rating" style="font-size:40px;cursor:pointer"><span onclick="setRating(1)">☆</span><span onclick="setRating(2)">☆</span><span onclick="setRating(3)">☆</span><span onclick="setRating(4)">☆</span><span onclick="setRating(5)">☆</span></div><p style="font-size:14px;color:#888" id="rating-label">Tap a star to rate</p></div>
 <textarea id="feedback-text" placeholder="Share your experience, suggestions, or concerns..." rows="4"></textarea>
@@ -187,16 +295,62 @@
 <div id="feedback-list"></div>
 </div>
 
+<!-- GROUP DETAIL -->
+<div id="page-group-detail" class="page">
+<button class="back-btn" id="group-detail-back" onclick="backToCategory()"><span class="chev">‹</span> Back</button>
+<div id="group-detail-body"></div>
+<input type="file" id="group-photo-upload" accept="image/*" style="display:none" onchange="addGroupPhoto(event)">
+</div>
+
+<!-- EDIT PROFILE -->
+<div id="page-edit-profile" class="page">
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
+<div class="card"><h3>✏️ My Profile</h3>
+<div style="text-align:center;margin:12px 0">
+<div id="edit-avatar-preview"></div>
+<button class="btn-outline" style="max-width:240px;margin:10px auto 0" onclick="document.getElementById('profile-photo-upload').click()">📷 Add / Change Photo</button>
+<input type="file" id="profile-photo-upload" accept="image/*" style="display:none" onchange="handleProfilePhoto(event)">
+</div>
+<label style="font-weight:600;display:block;margin-bottom:6px">Display Name</label>
+<input type="text" id="pf-name" placeholder="Your name">
+<label style="font-weight:600;display:block;margin-bottom:6px">Bio (optional)</label>
+<textarea id="pf-bio" rows="4" placeholder="Tell people a little about yourself. This is optional."></textarea>
+<label style="font-weight:600;display:block;margin-bottom:6px">Gender</label>
+<div class="gender-row">
+<button id="gd-M" onclick="setGender('M')">Male</button>
+<button id="gd-F" onclick="setGender('F')">Female</button>
+<button id="gd-Other" onclick="setGender('Other')">Other</button>
+<button id="gd-Private" onclick="setGender('Private')">Prefer not to say</button>
+</div>
+<label style="font-weight:600;display:block;margin:10px 0 6px">Location</label>
+<input type="text" id="pf-location" placeholder="City, State">
+<button class="btn" onclick="saveProfile()">💾 Save Profile</button>
+</div>
+</div>
+
+<!-- MESSAGES -->
+<div id="page-messages" class="page">
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
+<div class="card"><h3>📬 My Messages</h3><p style="color:#888;font-size:14px" id="messages-sub">Your messages.</p></div>
+<div id="messages-list"></div>
+</div>
+
+<!-- TICKET QR -->
+<div id="page-ticket-qr" class="page">
+<button class="back-btn" onclick="showPage('tickets')"><span class="chev">‹</span> Back to My Tickets</button>
+<div id="ticket-qr-body"></div>
+</div>
+
 <!-- PROFILE -->
 <div id="page-profile" class="page">
-<button class="back-btn" onclick="showPage('home')">‹ Back</button>
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div id="profile-display"></div>
 <button class="btn" style="background:#D4A373" onclick="editProfile()">✏️ Edit Profile</button>
 </div>
 
 <!-- ADMIN -->
 <div id="page-admin" class="page">
-<button class="back-btn" onclick="showPage('home')">‹ Back</button>
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card"><h4>⚙️ Admin Dashboard</h4>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:8px 0">
 <div style="background:#f8faf8;padding:16px;border-radius:12px;text-align:center"><div style="font-size:28px;font-weight:700;color:#5B8C5A" id="admin-total-users">0</div><div style="font-size:12px;color:#888">Users</div></div>
@@ -218,6 +372,301 @@
 </div></div>
 
 <script>
+// ─── QR CODE ENGINE ───
+// Compact QR encoder: byte mode, EC level M, versions 1-10.
+var QR = (function () {
+    var EXP = [], LOG = [];
+    (function () {
+        var x = 1;
+        for (var i = 0; i < 255; i++) { EXP[i] = x; LOG[x] = i; x <<= 1; if (x & 0x100) { x ^= 0x11d; } }
+        for (var j = 255; j < 512; j++) { EXP[j] = EXP[j - 255]; }
+    })();
+    function gmul(a, b) { if (a === 0 || b === 0) return 0; return EXP[LOG[a] + LOG[b]]; }
+    function genPoly(n) {
+        var p = [1];
+        for (var i = 0; i < n; i++) {
+            var np = [];
+            for (var k = 0; k <= p.length; k++) { np[k] = 0; }
+            for (var j = 0; j < p.length; j++) {
+                np[j] ^= p[j];
+                np[j + 1] ^= gmul(p[j], EXP[i]);
+            }
+            p = np;
+        }
+        return p;
+    }
+    function rsEncode(data, ecLen) {
+        var gen = genPoly(ecLen), res = data.slice(), i, j;
+        for (i = 0; i < ecLen; i++) { res.push(0); }
+        for (i = 0; i < data.length; i++) {
+            var coef = res[i];
+            if (coef !== 0) { for (j = 0; j < gen.length; j++) { res[i + j] ^= gmul(gen[j], coef); } }
+        }
+        return res.slice(data.length);
+    }
+
+    // [totalCodewords, ecPerBlock, blocks1, data1, blocks2, data2]
+    var SPEC = {
+        1: [26, 10, 1, 16, 0, 0], 2: [44, 16, 1, 28, 0, 0], 3: [70, 26, 1, 44, 0, 0],
+        4: [100, 18, 2, 32, 0, 0], 5: [134, 24, 2, 43, 0, 0], 6: [172, 16, 4, 27, 0, 0],
+        7: [196, 18, 4, 31, 0, 0], 8: [242, 22, 2, 38, 2, 39], 9: [292, 22, 3, 36, 2, 37],
+        10: [346, 26, 4, 43, 1, 44]
+    };
+    var ALIGN = {
+        1: [], 2: [6, 18], 3: [6, 22], 4: [6, 26], 5: [6, 30],
+        6: [6, 34], 7: [6, 22, 38], 8: [6, 24, 42], 9: [6, 26, 46], 10: [6, 28, 50]
+    };
+    function dataCapacity(v) { var s = SPEC[v]; return s[2] * s[3] + s[4] * s[5]; }
+
+    function toBytes(str) {
+        var out = [], i, c;
+        for (i = 0; i < str.length; i++) {
+            c = str.charCodeAt(i);
+            if (c < 0x80) { out.push(c); }
+            else if (c < 0x800) { out.push(0xc0 | (c >> 6), 0x80 | (c & 0x3f)); }
+            else if (c < 0xd800 || c >= 0xe000) { out.push(0xe0 | (c >> 12), 0x80 | ((c >> 6) & 0x3f), 0x80 | (c & 0x3f)); }
+            else { i++; var cp = 0x10000 + (((c & 0x3ff) << 10) | (str.charCodeAt(i) & 0x3ff));
+                out.push(0xf0 | (cp >> 18), 0x80 | ((cp >> 12) & 0x3f), 0x80 | ((cp >> 6) & 0x3f), 0x80 | (cp & 0x3f)); }
+        }
+        return out;
+    }
+
+    function buildData(bytes, ver) {
+        var bits = [], i, j;
+        function push(val, len) { for (j = len - 1; j >= 0; j--) { bits.push((val >> j) & 1); } }
+        push(4, 4);
+        push(bytes.length, ver < 10 ? 8 : 16);
+        for (i = 0; i < bytes.length; i++) { push(bytes[i], 8); }
+        var cap = dataCapacity(ver) * 8;
+        for (i = 0; i < 4 && bits.length < cap; i++) { bits.push(0); }
+        while (bits.length % 8 !== 0) { bits.push(0); }
+        var words = [];
+        for (i = 0; i < bits.length; i += 8) {
+            var b = 0;
+            for (j = 0; j < 8; j++) { b = (b << 1) | bits[i + j]; }
+            words.push(b);
+        }
+        var pads = [0xEC, 0x11], p = 0;
+        while (words.length < dataCapacity(ver)) { words.push(pads[p++ % 2]); }
+        return words;
+    }
+
+    function interleave(words, ver) {
+        var s = SPEC[ver], ecLen = s[1];
+        var blocks = [], ecBlocks = [], pos = 0, i, j;
+        function take(n) { var b = words.slice(pos, pos + n); pos += n; return b; }
+        for (i = 0; i < s[2]; i++) { blocks.push(take(s[3])); }
+        for (i = 0; i < s[4]; i++) { blocks.push(take(s[5])); }
+        for (i = 0; i < blocks.length; i++) { ecBlocks.push(rsEncode(blocks[i], ecLen)); }
+        var out = [], maxD = Math.max(s[3], s[5]);
+        for (j = 0; j < maxD; j++) {
+            for (i = 0; i < blocks.length; i++) { if (j < blocks[i].length) { out.push(blocks[i][j]); } }
+        }
+        for (j = 0; j < ecLen; j++) {
+            for (i = 0; i < ecBlocks.length; i++) { out.push(ecBlocks[i][j]); }
+        }
+        return out;
+    }
+
+    function newMatrix(size) {
+        var m = [], i, j;
+        for (i = 0; i < size; i++) { m[i] = []; for (j = 0; j < size; j++) { m[i][j] = null; } }
+        return m;
+    }
+
+    function placeFunction(m, ver) {
+        var size = m.length, i, j, r, c;
+        function finder(row, col) {
+            for (r = -1; r <= 7; r++) {
+                for (c = -1; c <= 7; c++) {
+                    var rr = row + r, cc = col + c;
+                    if (rr < 0 || rr >= size || cc < 0 || cc >= size) continue;
+                    var on = (r >= 0 && r <= 6 && (c === 0 || c === 6)) ||
+                             (c >= 0 && c <= 6 && (r === 0 || r === 6)) ||
+                             (r >= 2 && r <= 4 && c >= 2 && c <= 4);
+                    m[rr][cc] = on ? 1 : 0;
+                }
+            }
+        }
+        finder(0, 0); finder(0, size - 7); finder(size - 7, 0);
+        for (i = 8; i < size - 8; i++) {
+            var v = (i % 2 === 0) ? 1 : 0;
+            m[6][i] = v; m[i][6] = v;
+        }
+        var al = ALIGN[ver];
+        for (i = 0; i < al.length; i++) {
+            for (j = 0; j < al.length; j++) {
+                var ar = al[i], ac = al[j];
+                if ((ar === 6 && ac === 6) || (ar === 6 && ac === size - 7) || (ar === size - 7 && ac === 6)) continue;
+                for (r = -2; r <= 2; r++) {
+                    for (c = -2; c <= 2; c++) {
+                        m[ar + r][ac + c] = (Math.max(Math.abs(r), Math.abs(c)) !== 1) ? 1 : 0;
+                    }
+                }
+            }
+        }
+        m[size - 8][8] = 1;
+        for (i = 0; i <= 8; i++) {
+            if (m[8][i] === null) { m[8][i] = 0; }
+            if (m[i][8] === null) { m[i][8] = 0; }
+        }
+        for (i = 0; i < 8; i++) {
+            if (m[8][size - 1 - i] === null) { m[8][size - 1 - i] = 0; }
+            if (m[size - 1 - i][8] === null) { m[size - 1 - i][8] = 0; }
+        }
+        if (ver >= 7) {
+            for (i = 0; i < 6; i++) {
+                for (j = 0; j < 3; j++) {
+                    m[size - 11 + j][i] = 0;
+                    m[i][size - 11 + j] = 0;
+                }
+            }
+        }
+        return m;
+    }
+
+    function placeData(m, words, reserved) {
+        var size = m.length, bitIdx = 0, total = words.length * 8;
+        var col = size - 1, row = size - 1, up = true;
+        function bitAt(i) { return (words[i >> 3] >> (7 - (i & 7))) & 1; }
+        while (col > 0) {
+            if (col === 6) { col--; }
+            for (var n = 0; n < size; n++) {
+                var r = up ? (size - 1 - n) : n;
+                for (var k = 0; k < 2; k++) {
+                    var c = col - k;
+                    if (reserved[r][c]) continue;
+                    m[r][c] = bitIdx < total ? bitAt(bitIdx) : 0;
+                    bitIdx++;
+                }
+            }
+            col -= 2; up = !up;
+        }
+        return m;
+    }
+
+    function maskFn(n, r, c) {
+        switch (n) {
+            case 0: return (r + c) % 2 === 0;
+            case 1: return r % 2 === 0;
+            case 2: return c % 3 === 0;
+            case 3: return (r + c) % 3 === 0;
+            case 4: return (Math.floor(r / 2) + Math.floor(c / 3)) % 2 === 0;
+            case 5: return ((r * c) % 2) + ((r * c) % 3) === 0;
+            case 6: return (((r * c) % 2) + ((r * c) % 3)) % 2 === 0;
+            default: return (((r + c) % 2) + ((r * c) % 3)) % 2 === 0;
+        }
+    }
+
+    function formatBits(mask) {
+        var data = (0x00 << 3) | mask; // level M = 00
+        var rem = data;
+        for (var i = 0; i < 10; i++) { rem = (rem << 1) ^ (((rem >> 9) & 1) * 0x537); }
+        return ((data << 10) | rem) ^ 0x5412;
+    }
+
+    function versionBits(ver) {
+        var rem = ver;
+        for (var i = 0; i < 12; i++) { rem = (rem << 1) ^ (((rem >> 11) & 1) * 0x1f25); }
+        return (ver << 12) | rem;
+    }
+
+    function applyFormat(m, mask) {
+        var size = m.length, bits = formatBits(mask), i;
+        for (i = 0; i <= 5; i++) { m[i][8] = (bits >> i) & 1; }
+        m[7][8] = (bits >> 6) & 1;
+        m[8][8] = (bits >> 7) & 1;
+        m[8][7] = (bits >> 8) & 1;
+        for (i = 9; i <= 14; i++) { m[8][14 - i] = (bits >> i) & 1; }
+        for (i = 0; i <= 7; i++) { m[8][size - 1 - i] = (bits >> i) & 1; }
+        for (i = 8; i <= 14; i++) { m[size - 15 + i][8] = (bits >> i) & 1; }
+        m[size - 8][8] = 1;
+    }
+
+    function applyVersion(m, ver) {
+        if (ver < 7) return;
+        var size = m.length, bits = versionBits(ver);
+        for (var i = 0; i < 18; i++) {
+            var b = (bits >> i) & 1;
+            var r = Math.floor(i / 3), c = i % 3;
+            m[size - 11 + c][r] = b;
+            m[r][size - 11 + c] = b;
+        }
+    }
+
+    function penalty(m) {
+        var size = m.length, score = 0, r, c, i;
+        for (r = 0; r < size; r++) {
+            var run = 1;
+            for (c = 1; c < size; c++) {
+                if (m[r][c] === m[r][c - 1]) { run++; } else { if (run >= 5) { score += 3 + (run - 5); } run = 1; }
+            }
+            if (run >= 5) { score += 3 + (run - 5); }
+        }
+        for (c = 0; c < size; c++) {
+            var run2 = 1;
+            for (r = 1; r < size; r++) {
+                if (m[r][c] === m[r - 1][c]) { run2++; } else { if (run2 >= 5) { score += 3 + (run2 - 5); } run2 = 1; }
+            }
+            if (run2 >= 5) { score += 3 + (run2 - 5); }
+        }
+        for (r = 0; r < size - 1; r++) {
+            for (c = 0; c < size - 1; c++) {
+                var v = m[r][c];
+                if (v === m[r][c + 1] && v === m[r + 1][c] && v === m[r + 1][c + 1]) { score += 3; }
+            }
+        }
+        var pat1 = [1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0], pat2 = [0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1];
+        function match(arr, pat) {
+            for (var k = 0; k < 11; k++) { if (arr[k] !== pat[k]) return false; }
+            return true;
+        }
+        for (r = 0; r < size; r++) {
+            for (c = 0; c <= size - 11; c++) {
+                var hrow = [], vcol = [];
+                for (i = 0; i < 11; i++) { hrow.push(m[r][c + i]); vcol.push(m[c + i][r]); }
+                if (match(hrow, pat1) || match(hrow, pat2)) { score += 40; }
+                if (match(vcol, pat1) || match(vcol, pat2)) { score += 40; }
+            }
+        }
+        var dark = 0;
+        for (r = 0; r < size; r++) { for (c = 0; c < size; c++) { if (m[r][c]) dark++; } }
+        var pct = (dark * 100) / (size * size);
+        score += Math.floor(Math.abs(pct - 50) / 5) * 10;
+        return score;
+    }
+
+    function encode(text) {
+        var bytes = toBytes(text), ver = 0, v;
+        for (v = 1; v <= 10; v++) {
+            var overhead = 4 + (v < 10 ? 8 : 16);
+            if (bytes.length * 8 + overhead <= dataCapacity(v) * 8) { ver = v; break; }
+        }
+        if (!ver) { throw new Error('Text too long for QR'); }
+        var words = interleave(buildData(bytes, ver), ver);
+        var size = ver * 4 + 17;
+        var base = placeFunction(newMatrix(size), ver);
+        var reserved = [], r, c;
+        for (r = 0; r < size; r++) { reserved[r] = []; for (c = 0; c < size; c++) { reserved[r][c] = base[r][c] !== null; } }
+        var best = null, bestScore = Infinity;
+        for (var mk = 0; mk < 8; mk++) {
+            var m = [];
+            for (r = 0; r < size; r++) { m[r] = base[r].slice(); }
+            placeData(m, words, reserved);
+            for (r = 0; r < size; r++) {
+                for (c = 0; c < size; c++) {
+                    if (!reserved[r][c] && maskFn(mk, r, c)) { m[r][c] ^= 1; }
+                }
+            }
+            applyFormat(m, mk); applyVersion(m, ver);
+            var sc = penalty(m);
+            if (sc < bestScore) { bestScore = sc; best = m; }
+        }
+        return best;
+    }
+    return { encode: encode };
+})();
+
 // ─── DATA ───
 var currentUser = null;
 var allGroups = [];
@@ -241,6 +690,196 @@ var ticketTiers = [];
 var currentEventFilter = 'all';
 var selectedEventPaid = 'free';
 var notificationLog = [];
+var currentGroupCategory = null;
+var currentDetailGroup = null;
+var directMessages = [];
+var selectedGroupPaid = null;
+var selectedGender = null;
+var myWaitlist = [];
+var cloudNotifications = [];
+var pendingInviteGroup = null;
+var pendingReplyTo = null;
+
+// ─── SUPABASE ───
+var SUPABASE_URL = 'https://wtioqxzlaxgpcjhggkhg.supabase.co';
+var SUPABASE_KEY = 'sb_publishable_QHi1YKpSB5j6FlW7jOgyrw_PBcjEAS8';
+var sb = null;
+var authMode = 'login';
+var cloudReady = false;
+var categoryIcons = {};
+
+function initSupabase() {
+    if (!window.supabase || !window.supabase.createClient) { return false; }
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    return true;
+}
+
+function setAuthMode(mode) {
+    authMode = mode;
+    document.getElementById('auth-tab-login').classList.toggle('on', mode === 'login');
+    document.getElementById('auth-tab-signup').classList.toggle('on', mode === 'signup');
+    document.getElementById('signup-name-box').style.display = mode === 'signup' ? 'block' : 'none';
+    document.getElementById('signup-hint').style.display = mode === 'signup' ? 'block' : 'none';
+    document.getElementById('auth-btn').textContent = mode === 'signup' ? 'Create My Account' : 'Log In';
+    document.getElementById('auth-status').textContent = '';
+    document.getElementById('pass').setAttribute('autocomplete', mode === 'signup' ? 'new-password' : 'current-password');
+}
+
+function authStatus(msg) { document.getElementById('auth-status').textContent = msg || ''; }
+
+async function doAuth() {
+    if (!sb) { showNotif('Still connecting. Try again in a moment.', 'error'); return; }
+    var email = document.getElementById('email').value.trim();
+    var pass = document.getElementById('pass').value;
+    if (!email || !pass) { showNotif('Enter your email and password.', 'error'); return; }
+    var btn = document.getElementById('auth-btn');
+    btn.classList.add('busy');
+    try {
+        if (authMode === 'signup') {
+            var name = document.getElementById('auth-name').value.trim();
+            if (!name) { showNotif('Please enter your name.', 'error'); return; }
+            if (pass.length < 6) { showNotif('Password must be at least 6 characters.', 'error'); return; }
+            authStatus('Creating your account...');
+            var su = await sb.auth.signUp({
+                email: email, password: pass,
+                options: { data: { display_name: name } }
+            });
+            if (su.error) { authStatus(''); showNotif(su.error.message, 'error'); return; }
+            if (!su.data.session) {
+                authStatus('Check your email to confirm your account, then log in.');
+                showNotif('Account created. Confirm your email to continue.', 'success');
+                setAuthMode('login');
+                return;
+            }
+            showNotif('Welcome to Join In, ' + name + '!', 'success');
+        } else {
+            authStatus('Logging in...');
+            var li = await sb.auth.signInWithPassword({ email: email, password: pass });
+            if (li.error) { authStatus(''); showNotif(li.error.message, 'error'); return; }
+            showNotif('Welcome back!', 'success');
+        }
+        authStatus('');
+        await enterApp();
+    } catch (e) {
+        authStatus('');
+        showNotif('Could not reach the server. Check your connection.', 'error');
+    } finally {
+        btn.classList.remove('busy');
+    }
+}
+
+async function forgotPassword() {
+    var email = document.getElementById('email').value.trim();
+    if (!email) { showNotif('Enter your email first, then tap this.', 'error'); return; }
+    var r = await sb.auth.resetPasswordForEmail(email);
+    if (r.error) { showNotif(r.error.message, 'error'); return; }
+    showNotif('Password reset link sent to ' + email, 'success');
+}
+
+async function enterApp() {
+    var s = await sb.auth.getUser();
+    if (!s.data || !s.data.user) { return false; }
+    currentUser = { id: s.data.user.id, email: s.data.user.email };
+    await loadFromCloud();
+    loadLocalExtras();
+    document.getElementById('page-login').classList.remove('active');
+    document.getElementById('page-home').classList.add('active');
+    currentPage = 'home';
+    history.replaceState({ page: 'home' }, '', '#home');
+    showApp();
+    return true;
+}
+
+// Pulls the shared data every device sees.
+async function loadFromCloud() {
+    if (!sb || !currentUser) return;
+    try {
+        var cats = await sb.from('categories').select('name,icon,is_approved').order('name');
+        if (cats.data) {
+            allCategories = cats.data.filter(function(c) { return c.is_approved; }).map(function(c) { return c.name; });
+            pendingCategories = cats.data.filter(function(c) { return !c.is_approved; }).map(function(c) { return c.name; });
+            categoryIcons = {};
+            cats.data.forEach(function(c) { if (c.icon) { categoryIcons[c.name] = c.icon; } });
+        }
+        var profs = await sb.from('profiles').select('*');
+        userProfiles = {};
+        allUsers = [];
+        (profs.data || []).forEach(function(p) {
+            userProfiles[p.id] = {
+                displayName: p.display_name, bio: p.bio, gender: p.gender,
+                avatar: p.avatar_url, location: p.location, interests: []
+            };
+            allUsers.push({ id: p.id, name: p.display_name, email: '', isAdmin: p.is_admin });
+            if (p.id === currentUser.id) {
+                currentUser.name = p.display_name;
+                currentUser.isAdmin = p.is_admin;
+            }
+        });
+        var grps = await sb.from('groups').select('*');
+        var mems = await sb.from('group_members').select('group_id,user_id');
+        var phos = await sb.from('group_photos').select('group_id,url');
+        var byGroup = {}, photosBy = {};
+        (mems.data || []).forEach(function(m) {
+            (byGroup[m.group_id] = byGroup[m.group_id] || []).push(m.user_id);
+        });
+        (phos.data || []).forEach(function(p) {
+            (photosBy[p.group_id] = photosBy[p.group_id] || []).push(p.url);
+        });
+        allGroups = (grps.data || []).map(function(g) {
+            return {
+                id: g.id, name: g.name, description: g.description, category: g.category,
+                street_address: g.street_address, location: g.location,
+                is_private: g.is_private, is_paid: g.is_paid, price: Number(g.price) || 0,
+                cover_image: g.cover_image, organizer_id: g.organizer_id,
+                organizer_name: (userProfiles[g.organizer_id] || {}).displayName || 'Unknown',
+                recurring: g.recurring, meeting_datetime: g.meeting_datetime,
+                weekly_day: g.weekly_day, weekly_time: g.weekly_time,
+                monthly_week: g.monthly_week, monthly_day: g.monthly_day, monthly_time: g.monthly_time,
+                max_members: g.max_members,
+                member_count: g.member_count, members: byGroup[g.id] || [],
+                photos: photosBy[g.id] || [], status: g.status, denial_reason: g.denial_reason,
+                created: g.created_at
+            };
+        });
+        var wl = await sb.from('group_waitlist').select('group_id,user_id');
+        myWaitlist = (wl.data || [])
+            .filter(function(w) { return w.user_id === currentUser.id; })
+            .map(function(w) { return w.group_id; });
+
+        var nt = await sb.from('notifications').select('*').order('created_at', { ascending: false });
+        cloudNotifications = nt.data || [];
+
+        cloudReady = true;
+    } catch (e) {
+        cloudReady = false;
+        showNotif('Could not load your groups. Check your connection.', 'error');
+    }
+}
+
+async function refreshGroups() {
+    await loadFromCloud();
+    renderCategories();
+    renderGroups();
+    renderHosting();
+    renderAdminDashboard();
+    if (currentDetailGroup) { renderGroupDetail(); }
+}
+
+// Events, tickets, messages, chat and feedback still live on this device only.
+function loadLocalExtras() {
+    var saved = localStorage.getItem('joinin_data');
+    if (!saved) return;
+    try {
+        var data = JSON.parse(saved);
+        allEvents = data.events || [];
+        allInterests = data.interests || [];
+        feedbackList = data.feedbackList || [];
+        chatMessages = data.chatMessages || [];
+        tickets = data.tickets || [];
+        directMessages = data.directMessages || [];
+        notificationLog = data.notificationLog || [];
+    } catch (e) {}
+}
 
 // ─── LOAD/SAVE ───
 function loadData() {
@@ -261,6 +900,7 @@ function loadData() {
             tickets = data.tickets || [];
             ticketTiers = data.ticketTiers || [];
             notificationLog = data.notificationLog || [];
+            directMessages = data.directMessages || [];
         } catch(e) {}
     }
     var user = localStorage.getItem('joinin_user');
@@ -270,21 +910,18 @@ function loadData() {
     }
 }
 
+// Groups, profiles and categories live in the database now.
+// This only stores the features that are still device-local.
 function saveData() {
     localStorage.setItem('joinin_data', JSON.stringify({
-        groups: allGroups,
         events: allEvents,
         interests: allInterests,
-        categories: allCategories,
-        pendingCategories: pendingCategories,
-        nextId: idCounter,
-        userProfiles: userProfiles,
-        allUsers: allUsers,
         feedbackList: feedbackList,
         chatMessages: chatMessages,
         tickets: tickets,
         ticketTiers: ticketTiers,
-        notificationLog: notificationLog
+        notificationLog: notificationLog,
+        directMessages: directMessages
     }));
 }
 
@@ -303,37 +940,18 @@ function showNotif(msg, type) {
 }
 
 // ─── AUTH ───
-function login() {
-    var email = document.getElementById('email').value;
-    var pass = document.getElementById('pass').value;
-    if (email === 'test@test.com' && pass === 'test123') {
-        var users = JSON.parse(localStorage.getItem('joinin_users') || '[]');
-        var existing = users.find(function(u) { return u.email === email; });
-        if (!existing) {
-            var testUser = { id: Date.now(), name: 'Test User', email: 'test@test.com', password: 'test123', isAdmin: true };
-            users.push(testUser);
-            localStorage.setItem('joinin_users', JSON.stringify(users));
-            allUsers.push({ id: testUser.id, name: 'Test User', email: 'test@test.com', isAdmin: true });
-            userProfiles[testUser.id] = { displayName: 'Test User', bio: '', location: 'Asheville, NC', interests: [], avatar: null };
-            saveData();
-        }
-        currentUser = users.find(function(u) { return u.email === email; });
-        localStorage.setItem('joinin_user', JSON.stringify(currentUser));
-        document.getElementById('page-login').classList.remove('active');
-        document.getElementById('page-home').classList.add('active');
-        showNotif('Welcome, Test User! 🎉', 'success');
-        showApp();
-    } else {
-        showNotif('Invalid login.', 'error');
-    }
-}
-
-function logout() {
-    localStorage.removeItem('joinin_user');
+async function logout() {
+    if (sb) { await sb.auth.signOut(); }
     currentUser = null;
-    document.getElementById('page-home').classList.remove('active');
+    allGroups = [];
+    cloudReady = false;
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     document.getElementById('page-login').classList.add('active');
     document.getElementById('notif').style.display = 'none';
+    document.getElementById('pass').value = '';
+    currentPage = 'login';
+    history.replaceState({ page: 'login' }, '', '#login');
+    setAuthMode('login');
 }
 
 function showApp() {
@@ -346,32 +964,76 @@ function showApp() {
     renderTickets();
     renderFeedback();
     renderAdminDashboard();
+    renderMessages();
+    updateAdminVisibility();
     updateHome();
     updateTicketCounter();
+    updateUnreadButton();
+    updateInstallCard();
+    renderUpcoming();
 }
 
-function showPage(page) {
+var currentPage = null;
+
+function showPage(page, fromHistory) {
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     var target = document.getElementById('page-' + page);
     if (target) { target.classList.add('active'); target.scrollTop = 0; }
+    window.scrollTo(0, 0);
     if (page === 'home') { updateHome(); }
-    if (page === 'groups') { renderCategories(); }
+    if (page === 'groups') { renderCategories(); if (!currentGroupCategory) { showCategoryGrid(true); } }
     if (page === 'events') { renderEvents(); }
     if (page === 'hosting') { renderHosting(); }
-    if (page === 'chat') { renderChatRooms(); }
+    if (page === 'chat') { renderChatRooms(); document.getElementById('chat-list').style.display = 'block'; document.getElementById('chat-messages').style.display = 'none'; }
     if (page === 'tickets') { renderTickets(); }
     if (page === 'feedback') { renderFeedback(); }
     if (page === 'admin') { renderAdminDashboard(); }
     if (page === 'profile') { showProfile(); }
+    if (page === 'edit-profile') { loadProfileForm(); }
+    if (page === 'messages') { renderMessages(); }
+    updateUnreadButton();
+
+    // Give the phone's back gesture something to go back to.
+    if (!fromHistory) {
+        var state = { page: page, group: currentDetailGroup, category: currentGroupCategory };
+        if (currentPage === null) {
+            history.replaceState(state, '', '#' + page);
+        } else if (currentPage !== page || page === 'group-detail') {
+            history.pushState(state, '', '#' + page);
+        }
+    }
+    currentPage = page;
 }
+
+// A back swipe moves one screen inside the app instead of leaving it.
+window.addEventListener('popstate', function(e) {
+    var st = e.state;
+    if (!currentUser) { return; }
+    if (!st || !st.page) { showPage('home', true); return; }
+    currentGroupCategory = st.category || null;
+    currentDetailGroup = st.group || null;
+    showPage(st.page, true);
+    if (st.page === 'groups') {
+        if (currentGroupCategory) { showGroupsByCategory(currentGroupCategory, true); }
+        else { showCategoryGrid(true); }
+    }
+    if (st.page === 'group-detail' && currentDetailGroup) { renderGroupDetail(); }
+});
 
 function updateHome() {
     var profile = userProfiles[currentUser?.id];
     var nameEl = document.getElementById('home-username');
     var avatarEl = document.getElementById('home-avatar');
     if (nameEl) { nameEl.textContent = profile?.displayName || currentUser?.name || 'User'; }
-    if (avatarEl) { avatarEl.textContent = profile?.displayName?.charAt(0).toUpperCase() || 'T'; }
+    if (avatarEl) {
+        if (profile && profile.avatar) {
+            avatarEl.innerHTML = '<img src="' + profile.avatar + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover">';
+        } else {
+            avatarEl.textContent = (profile?.displayName || currentUser?.name || 'U').charAt(0).toUpperCase();
+        }
+    }
     updateTicketCounter();
+    updateUnreadButton();
 }
 
 function updateTicketCounter() {
@@ -392,15 +1054,351 @@ function updateTicketCounter() {
 function showProfile() {
     var profile = userProfiles[currentUser?.id];
     if (!profile) { document.getElementById('profile-display').innerHTML = '<div class="card"><p>No profile found.</p></div>'; return; }
-    var html = '<div class="card"><h3>' + profile.displayName + '</h3><p>📍 ' + profile.location + '</p><p>' + (profile.bio || 'No bio yet.') + '</p>';
+    var html = '<div class="card" style="text-align:center">';
+    html += '<div style="margin-bottom:10px">' + avatarHTML(currentUser.id, 'md') + '</div>';
+    html += '<h3 style="font-size:22px">' + profile.displayName + '</h3>';
+    html += '<p style="color:#666">📍 ' + (profile.location || 'Asheville, NC') + '</p>';
+    if (profile.gender) { html += '<p style="color:#666">' + genderLabel(profile.gender) + '</p>'; }
+    html += '<p style="margin-top:10px;font-size:15px;line-height:1.5">' + (profile.bio || 'No bio yet.') + '</p>';
     if (profile.interests && profile.interests.length) {
-        html += '<p><strong>Interests:</strong> ' + profile.interests.join(', ') + '</p>';
+        html += '<p style="margin-top:8px"><strong>Interests:</strong> ' + profile.interests.join(', ') + '</p>';
     }
-    html += '<p style="color:#888;font-size:12px;margin-top:12px">Member since ' + new Date().toLocaleDateString() + '</p></div>';
+    html += '</div>';
     document.getElementById('profile-display').innerHTML = html;
 }
 
-function editProfile() { showNotif('Edit profile coming soon!', 'info'); }
+// ─── AVATARS ───
+function avatarOf(uid) {
+    var p = userProfiles[uid];
+    return (p && p.avatar) ? p.avatar : null;
+}
+
+function avatarHTML(uid, size) {
+    var cls = size === 'md' ? 'av av-md' : 'av av-sm';
+    var pic = avatarOf(uid);
+    if (pic) { return '<img class="' + cls + '" src="' + pic + '" alt="">'; }
+    var initial = (memberName(uid) || '?').charAt(0).toUpperCase();
+    return '<span class="' + cls + '">' + initial + '</span>';
+}
+
+// ─── PROFILE EDITOR ───
+function editProfile() { showPage('edit-profile'); }
+
+function loadProfileForm() {
+    if (!currentUser) return;
+    var p = userProfiles[currentUser.id] || {};
+    document.getElementById('pf-name').value = p.displayName || currentUser.name || '';
+    document.getElementById('pf-bio').value = p.bio || '';
+    document.getElementById('pf-location').value = p.location || 'Asheville, NC';
+    selectedGender = p.gender || null;
+    setGender(selectedGender);
+    renderAvatarPreview(p.avatar || null);
+}
+
+function renderAvatarPreview(pic) {
+    var el = document.getElementById('edit-avatar-preview');
+    if (!el) return;
+    if (pic) {
+        el.innerHTML = '<img src="' + pic + '" style="width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid #5B8C5A">';
+    } else {
+        var initial = (document.getElementById('pf-name').value || 'U').charAt(0).toUpperCase();
+        el.innerHTML = '<span style="width:110px;height:110px;border-radius:50%;background:#5B8C5A;color:white;display:inline-flex;align-items:center;justify-content:center;font-size:44px;font-weight:700">' + initial + '</span>';
+    }
+}
+
+function setGender(g) {
+    selectedGender = g;
+    ['M', 'F', 'Other', 'Private'].forEach(function(x) {
+        var b = document.getElementById('gd-' + x);
+        if (b) { b.classList.toggle('selected', x === g); }
+    });
+}
+
+// Shrink photos before storing so browser storage doesn't fill up.
+function shrinkImage(dataUrl, maxW, cb) {
+    var img = new Image();
+    img.onload = function() {
+        var w = img.width, h = img.height;
+        if (w > maxW) { h = Math.round(h * (maxW / w)); w = maxW; }
+        var cv = document.createElement('canvas');
+        cv.width = w; cv.height = h;
+        cv.getContext('2d').drawImage(img, 0, 0, w, h);
+        try { cb(cv.toDataURL('image/jpeg', 0.75)); }
+        catch (e) { cb(dataUrl); }
+    };
+    img.onerror = function() { cb(dataUrl); };
+    img.src = dataUrl;
+}
+
+function handleProfilePhoto(event) {
+    var file = event.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        shrinkImage(e.target.result, 400, function(small) {
+            if (!userProfiles[currentUser.id]) { userProfiles[currentUser.id] = {}; }
+            userProfiles[currentUser.id].avatar = small;
+            renderAvatarPreview(small);
+            showNotif('Photo added. Tap Save Profile to keep it.', 'info');
+        });
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+}
+
+async function saveProfile() {
+    if (!currentUser || !sb) return;
+    var name = document.getElementById('pf-name').value.trim();
+    if (!name) { showNotif('Please enter a display name.', 'error'); return; }
+    var local = userProfiles[currentUser.id] || {};
+    var res = await sb.from('profiles').update({
+        display_name: name,
+        bio: document.getElementById('pf-bio').value.trim(),
+        location: document.getElementById('pf-location').value.trim() || 'Asheville, NC',
+        gender: selectedGender,
+        avatar_url: local.avatar || null
+    }).eq('id', currentUser.id);
+    if (res.error) { showNotif('Could not save: ' + res.error.message, 'error'); return; }
+    showNotif('Profile saved!', 'success');
+    await refreshGroups();
+    updateHome();
+    showPage('home');
+}
+
+function genderLabel(g) {
+    return { 'M': 'Male', 'F': 'Female', 'Other': 'Other', 'Private': 'Prefer not to say' }[g] || '';
+}
+
+// Storage is limited, so warn instead of silently losing data.
+function safeSave() {
+    try { saveData(); return true; }
+    catch (e) {
+        showNotif('Storage is full. Remove some photos and try again.', 'error');
+        return false;
+    }
+}
+
+// ─── MESSAGES ───
+function unreadCount() {
+    if (!currentUser) return 0;
+    var local = directMessages.filter(function(m) { return m.toId === currentUser.id && !m.read; }).length;
+    var cloud = cloudNotifications.filter(function(n) { return !n.read; }).length;
+    return local + cloud;
+}
+
+function updateUnreadButton() {
+    var btn = document.getElementById('unread-btn');
+    if (!btn) return;
+    var n = unreadCount();
+    if (n === 0) { btn.style.display = 'none'; return; }
+    btn.style.display = 'block';
+    btn.textContent = 'You have ' + n + ' unread message' + (n !== 1 ? 's' : '');
+}
+
+function sendDirectMessage(toId, groupId, groupName, text, type) {
+    directMessages.push({
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        groupId: groupId, groupName: groupName,
+        fromId: currentUser.id, fromName: memberName(currentUser.id),
+        toId: toId, text: text, type: type || 'message',
+        read: false, time: new Date().toISOString()
+    });
+    return safeSave();
+}
+
+function renderMessages() {
+    var container = document.getElementById('messages-list');
+    if (!container) return;
+    var mine = directMessages.filter(function(m) { return m.toId === currentUser?.id; });
+    var unread = mine.filter(function(m) { return !m.read; });
+    var read = mine.filter(function(m) { return m.read; });
+    var sub = document.getElementById('messages-sub');
+    if (sub) { sub.textContent = unread.length + ' unread, ' + read.length + ' read.'; }
+    if (mine.length === 0 && cloudNotifications.length === 0) {
+        container.innerHTML = '<div class="card" style="text-align:center;color:#888">No messages yet.</div>';
+        return;
+    }
+    var html = '';
+    var unreadNotes = cloudNotifications.filter(function(n) { return !n.read; });
+    var readNotes = cloudNotifications.filter(function(n) { return n.read; });
+    function noteCard(n) {
+        var s = '<div class="msg-card' + (n.read ? ' read' : '') + '" style="border-left-color:#5B8C5A">';
+        s += '<div class="mm">🔔 Notification</div>';
+        s += '<div class="mt">' + n.message + '</div>';
+        s += '<div class="mm">' + new Date(n.created_at).toLocaleString() + '</div>';
+        s += '<div class="msg-actions">';
+        if (n.group_id) {
+            s += '<button class="act-reply" onclick="openGroupDetail(\'' + n.group_id + '\')">Open Group</button>';
+        }
+        if (!n.read) {
+            s += '<button class="act-read" onclick="markCloudRead(\'' + n.id + '\')">Mark as Read</button>';
+        }
+        s += '</div></div>';
+        return s;
+    }
+    if (unreadNotes.length) {
+        html += '<div class="sec-title">Notifications (' + unreadNotes.length + ')</div>';
+        unreadNotes.forEach(function(n) { html += noteCard(n); });
+    }
+    function card(m) {
+        var label = m.type === 'invite' ? '🙋 Invitation request' : (m.type === 'reply' ? '↩️ Reply' : '💬 Message');
+        var s = '<div class="msg-card' + (m.read ? ' read' : '') + '">';
+        s += '<div class="mh">' + avatarHTML(m.fromId, 'sm') + '<div><div style="font-weight:700">' + m.fromName + '</div>';
+        s += '<div class="mm">' + label + (m.groupName ? ' · ' + m.groupName : '') + '</div></div></div>';
+        s += '<div class="mt">' + m.text + '</div>';
+        s += '<div class="mm">' + new Date(m.time).toLocaleString() + '</div>';
+        s += '<div class="msg-actions">';
+        if (!m.read) { s += '<button class="act-read" onclick="markRead(' + m.id + ')">Mark as Read</button>'; }
+        s += '<button class="act-reply" onclick="startReply(' + m.id + ')">Reply</button>';
+        s += '<button class="act-keep" onclick="keepUnread(' + m.id + ')">Keep as Unread</button>';
+        s += '</div></div>';
+        return s;
+    }
+    if (unread.length) {
+        html += '<div class="sec-title">Unread (' + unread.length + ')</div>';
+        unread.slice().reverse().forEach(function(m) { html += card(m); });
+    }
+    if (read.length) {
+        html += '<div class="sec-title">Read (' + read.length + ')</div>';
+        read.slice().reverse().forEach(function(m) { html += card(m); });
+    }
+    if (readNotes.length) {
+        html += '<div class="sec-title">Past Notifications (' + readNotes.length + ')</div>';
+        readNotes.forEach(function(n) { html += noteCard(n); });
+    }
+    container.innerHTML = html;
+}
+
+function markRead(id) {
+    var m = directMessages.find(function(x) { return x.id === id; });
+    if (!m) return;
+    m.read = true;
+    if (!safeSave()) return;
+    showNotif('Moved to your read messages.', 'success');
+    renderMessages();
+    updateUnreadButton();
+    showPage('home');
+}
+
+function keepUnread(id) {
+    var m = directMessages.find(function(x) { return x.id === id; });
+    if (!m) return;
+    m.read = false;
+    if (!safeSave()) return;
+    showNotif('Kept as unread.', 'info');
+    renderMessages();
+    updateUnreadButton();
+    showPage('home');
+}
+
+function startReply(id) {
+    var m = directMessages.find(function(x) { return x.id === id; });
+    if (!m) return;
+    pendingReplyTo = id;
+    showWritePopup('↩️', 'Reply to ' + m.fromName,
+        'Your reply goes straight to ' + m.fromName + '.', 'Send Reply', 'sendReply()');
+}
+
+function sendReply() {
+    var text = (document.getElementById('write-text').value || '').trim();
+    if (!text) { showNotif('Please write a message first.', 'error'); return; }
+    var m = directMessages.find(function(x) { return x.id === pendingReplyTo; });
+    if (!m) return;
+    if (!sendDirectMessage(m.fromId, m.groupId, m.groupName, text, 'reply')) return;
+    m.read = true;
+    safeSave();
+    closePopup();
+    showNotif('Reply sent to ' + m.fromName + '.', 'success');
+    renderMessages();
+    updateUnreadButton();
+}
+
+// ─── WRITE POPUP ───
+function showWritePopup(icon, title, help, btnLabel, action) {
+    document.getElementById('popup-icon').textContent = icon;
+    document.getElementById('popup-title').textContent = title;
+    document.getElementById('popup-text').innerHTML = help +
+        '<textarea id="write-text" rows="5" style="margin-top:12px" placeholder="Type your message here..."></textarea>';
+    var btn = document.getElementById('popup-btn');
+    btn.textContent = btnLabel;
+    btn.onclick = function() { eval(action); };
+    var sec = document.querySelector('.popup-btn-secondary');
+    sec.style.display = 'block';
+    sec.textContent = 'Cancel';
+    document.getElementById('popup-overlay').classList.add('active');
+    setTimeout(function() { var t = document.getElementById('write-text'); if (t) { t.focus(); } }, 50);
+}
+
+function requestInvitation(groupId) {
+    var g = allGroups.find(function(x) { return x.id === groupId; });
+    if (!g) return;
+    pendingInviteGroup = groupId;
+    showWritePopup('🙋', 'Request an Invitation',
+        'Tell ' + (g.organizer_name || 'the host') + ' why you would like to join "' + g.name + '".',
+        'Send Request', 'sendInviteRequest()');
+}
+
+function sendInviteRequest() {
+    var text = (document.getElementById('write-text').value || '').trim();
+    if (!text) { showNotif('Please write a message first.', 'error'); return; }
+    var g = allGroups.find(function(x) { return x.id === pendingInviteGroup; });
+    if (!g) return;
+    if (!sendDirectMessage(g.organizer_id, g.id, g.name, text, 'invite')) return;
+    closePopup();
+    showNotif('Your request was sent to ' + (g.organizer_name || 'the host') + '.', 'success');
+    renderGroupDetail();
+}
+
+function messageHostWrite(groupId) {
+    var g = allGroups.find(function(x) { return x.id === groupId; });
+    if (!g) return;
+    pendingInviteGroup = groupId;
+    showWritePopup('💬', 'Message the Host',
+        'Send a message to ' + (g.organizer_name || 'the host') + ' about "' + g.name + '".',
+        'Send Message', 'sendHostMessage()');
+}
+
+function sendHostMessage() {
+    var text = (document.getElementById('write-text').value || '').trim();
+    if (!text) { showNotif('Please write a message first.', 'error'); return; }
+    var g = allGroups.find(function(x) { return x.id === pendingInviteGroup; });
+    if (!g) return;
+    if (!sendDirectMessage(g.organizer_id, g.id, g.name, text, 'message')) return;
+    closePopup();
+    showNotif('Message sent to ' + (g.organizer_name || 'the host') + '.', 'success');
+}
+
+// ─── DIRECTIONS ───
+function openDirections(address) {
+    if (!address || address.trim() === '') { showNotif('No address for this group yet.', 'error'); return; }
+    var dest = encodeURIComponent(address);
+    var isApple = /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
+    var url = isApple
+        ? 'https://maps.apple.com/?daddr=' + dest + '&dirflg=d'
+        : 'https://www.google.com/maps/dir/?api=1&destination=' + dest + '&travelmode=driving';
+    window.open(url, '_blank');
+}
+
+// ─── GROUP COST ───
+function setGroupPaid(type) {
+    selectedGroupPaid = type;
+    ['free', 'paid'].forEach(function(t) {
+        var b = document.getElementById('gp-' + t);
+        if (b) { b.classList.toggle('selected', t === type); }
+    });
+    var box = document.getElementById('gp-price-box');
+    if (box) { box.style.display = type === 'paid' ? 'block' : 'none'; }
+    document.getElementById('group-paid-error').classList.remove('show');
+}
+
+function groupCostBadge(g) {
+    return g.is_paid
+        ? '<span class="badge gpaid">💳 $' + g.price + '</span>'
+        : '<span class="badge gfree">💰 Free</span>';
+}
+
+
+
 
 // ─── CATEGORIES ───
 function populateCategoryDropdown() {
@@ -420,40 +1418,468 @@ function populateCategoryDropdown() {
 function renderCategories() {
     var container = document.getElementById('category-grid');
     if (!container) return;
-    var counts = {};
+    var free = {}, paid = {};
     for (var i = 0; i < allGroups.length; i++) {
         var cat = allGroups[i].category || 'Other';
-        counts[cat] = (counts[cat] || 0) + 1;
+        if (allGroups[i].is_paid) { paid[cat] = (paid[cat] || 0) + 1; }
+        else { free[cat] = (free[cat] || 0) + 1; }
     }
-    var icons = { 'Hiking': '🏔️', 'Book Club': '📚', 'Social': '🍷', 'Arts': '🎨', 'Food': '🍽️', 'Music': '🎵', 'Tech': '💻', 'Wellness': '🧘', 'Sports': '⚽', 'Gaming': '🎮' };
     var html = '';
     for (var j = 0; j < allCategories.length; j++) {
-        var cat = allCategories[j];
-        var count = counts[cat] || 0;
-        html += '<div style="background:white;border:2px solid #e8eee8;border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer" onclick="showGroupsByCategory(\'' + cat + '\')">';
-        html += '<div style="font-size:24px">' + (icons[cat] || '📌') + '</div>';
-        html += '<div style="font-size:13px;font-weight:600;margin-top:4px">' + cat + '</div>';
-        html += '<div style="font-size:11px;color:#888">' + count + ' group' + (count !== 1 ? 's' : '') + '</div></div>';
+        var c = allCategories[j];
+        var f = free[c] || 0, p = paid[c] || 0;
+        var lines = '';
+        if (f === 0 && p === 0) {
+            lines = '<div style="font-size:12px;color:#bbb">none yet</div>';
+        } else {
+            if (f > 0) { lines += '<div style="font-size:12px;color:#5B8C5A;font-weight:700">' + f + ' free</div>'; }
+            if (p > 0) { lines += '<div style="font-size:12px;color:#9C27B0;font-weight:700">' + p + ' paid</div>'; }
+        }
+        html += '<div style="background:white;border:2px solid #e8eee8;border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer" onclick="showGroupsByCategory(\'' + c + '\')">';
+        html += '<div style="font-size:24px">' + categoryIcon(c) + '</div>';
+        html += '<div style="font-size:13px;font-weight:600;margin-top:4px">' + c + '</div>';
+        html += lines + '</div>';
     }
     container.innerHTML = html;
 }
 
-function showGroupsByCategory(category) {
+// ─── CATEGORY DRILL-DOWN ───
+function showCategoryGrid(noHistory) {
+    currentGroupCategory = null;
+    var card = document.getElementById('groups-category-card');
+    if (card) { card.style.display = 'block'; }
+    var header = document.getElementById('category-header');
+    if (header) { header.innerHTML = ''; }
+    var list = document.getElementById('groups-list');
+    if (list) { list.innerHTML = ''; }
+    if (!noHistory) {
+        history.pushState({ page: 'groups', category: null }, '', '#groups');
+    }
+}
+
+function showGroupsByCategory(category, noHistory) {
+    currentGroupCategory = category;
+    if (!noHistory) {
+        history.pushState({ page: 'groups', category: category }, '', '#groups');
+    }
+    var card = document.getElementById('groups-category-card');
+    if (card) { card.style.display = 'none'; }
+    var header = document.getElementById('category-header');
     var container = document.getElementById('groups-list');
     if (!container) return;
     var groups = [];
     for (var i = 0; i < allGroups.length; i++) {
         if ((allGroups[i].category || 'Other') === category) groups.push(allGroups[i]);
     }
+    if (header) {
+        header.innerHTML = '<div class="cat-header"><h3>' + categoryIcon(category) + ' ' + category +
+            '<div style="font-size:13px;color:#888;font-weight:400">' + groups.length + ' group' + (groups.length !== 1 ? 's' : '') + '</div></h3>' +
+            '<button onclick="showCategoryGrid()">‹ All Categories</button></div>';
+    }
     if (groups.length === 0) {
-        container.innerHTML = '<div class="card" style="text-align:center;color:#888"><p>No groups in "' + category + '" yet.</p></div>';
+        container.innerHTML = '<div class="card" style="text-align:center;color:#888"><p>No groups in "' + category + '" yet.</p>' +
+            '<button class="btn-select" onclick="showPage(\'create-group\')">🚀 Start One</button></div>';
         return;
     }
     var html = '';
     for (var j = 0; j < groups.length; j++) {
-        html += renderGroupItem(groups[j]);
+        html += renderGroupCard(groups[j]);
     }
     container.innerHTML = html;
+}
+
+function categoryIcon(cat) {
+    if (categoryIcons[cat]) { return categoryIcons[cat]; }
+    var icons = { 'Hiking': '🏔️', 'Book Club': '📚', 'Social': '🍷', 'Arts': '🎨', 'Food': '🍽️', 'Music': '🎵', 'Tech': '💻', 'Wellness': '🧘', 'Sports': '⚽', 'Gaming': '🎮' };
+    return icons[cat] || '📌';
+}
+
+// Condense a full description down to about two lines of text.
+function shortDesc(text) {
+    if (!text) return 'No description yet.';
+    var clean = text.replace(/\s+/g, ' ').trim();
+    var out = '';
+    var parts = (clean.match(/[^.!?]+[.!?]*/g) || [clean]).map(function(s) { return s.trim(); });
+    for (var i = 0; i < parts.length; i++) {
+        if (out.length && (out + ' ' + parts[i]).length > 120) break;
+        out = out ? out + ' ' + parts[i] : parts[i];
+    }
+    if (!out) { out = clean; }
+    if (out.length > 140) { out = out.slice(0, 137).replace(/[\s,;:.-]+$/, '') + '…'; }
+    return out;
+}
+
+function isMemberOf(g) {
+    return !!(g && g.members && currentUser && g.members.indexOf(currentUser.id) > -1);
+}
+
+// ─── SHORT GROUP CARD ───
+function renderGroupCard(g) {
+    var joined = isMemberOf(g);
+    var privacyBadge = g.is_private ? '<span class="badge private">🔒 Private</span>' : '<span class="badge public">🌍 Public</span>';
+    var joinedBadge = joined ? ' <span class="badge joined">✅ Joined</span>' : '';
+    var cover = g.cover_image
+        ? '<img class="cover" src="' + g.cover_image + '" alt="">'
+        : '<div class="cover-empty">' + categoryIcon(g.category) + '</div>';
+    return '<div class="gcard">' + cover + '<div class="body">' +
+        '<h3>' + g.name + '</h3>' +
+        '<div>' + privacyBadge + ' ' + groupCostBadge(g) + joinedBadge + '</div>' +
+        '<div class="desc2">' + shortDesc(g.description) + '</div>' +
+        '<div class="meta-row"><span>' + capacityText(g) + '</span><span>Host: ' + (g.organizer_name || 'Unknown') + '</span></div>' +
+        '<button class="btn-select" onclick="openGroupDetail(\'' + g.id + '\')">Select</button>' +
+        '</div></div>';
+}
+
+// ─── EXPANDED GROUP CARD ───
+function openGroupDetail(id) {
+    currentDetailGroup = id;
+    showPage('group-detail');
+    renderGroupDetail();
+}
+
+function backToCategory() {
+    currentDetailGroup = null;
+    showPage('groups');
+    if (currentGroupCategory) { showGroupsByCategory(currentGroupCategory, true); }
+}
+
+function groupMeetingText(g) {
+    if (!g) return 'Schedule to be announced.';
+    if (g.recurring === 'weekly' && g.weekly_day) {
+        return 'Every ' + g.weekly_day + ' at ' + formatTime(g.weekly_time);
+    }
+    if (g.recurring === 'monthly' && g.monthly_day) {
+        return g.monthly_week + ' ' + g.monthly_day + ' of each month at ' + formatTime(g.monthly_time);
+    }
+    if (g.meeting_datetime) {
+        return new Date(g.meeting_datetime).toLocaleString();
+    }
+    if (g.meeting_date || g.meeting_time) {
+        return (g.meeting_date ? new Date(g.meeting_date + 'T12:00').toLocaleDateString() : '') +
+            (g.meeting_time ? ' at ' + formatTime(g.meeting_time) : '');
+    }
+    return 'Schedule to be announced.';
+}
+
+function formatTime(t) {
+    if (!t) return 'TBA';
+    var bits = t.split(':');
+    var h = parseInt(bits[0], 10);
+    var m = bits[1] || '00';
+    var ap = h >= 12 ? 'PM' : 'AM';
+    h = h % 12; if (h === 0) { h = 12; }
+    return h + ':' + m + ' ' + ap;
+}
+
+function memberName(uid) {
+    if (userProfiles[uid] && userProfiles[uid].displayName) { return userProfiles[uid].displayName; }
+    var u = allUsers.find(function(x) { return x.id === uid; });
+    if (u && u.name) { return u.name; }
+    if (currentUser && currentUser.id === uid) { return currentUser.name || 'You'; }
+    return 'Member';
+}
+
+function groupAddress(g) {
+    return [g.street_address, g.location].filter(Boolean).join(', ');
+}
+
+function renderGroupDetail() {
+    var body = document.getElementById('group-detail-body');
+    if (!body) return;
+    var g = allGroups.find(function(x) { return x.id === currentDetailGroup; });
+    if (!g) { body.innerHTML = '<div class="card">Group not found.</div>'; return; }
+    var joined = isMemberOf(g);
+    var isHost = currentUser && g.organizer_id === currentUser.id;
+    var locked = g.is_private && !joined && !isHost;
+    document.getElementById('group-detail-back').innerHTML =
+        '<span class="chev">‹</span> Back to ' + (currentGroupCategory || 'Groups');
+
+    var html = '<div class="card">';
+    if (g.cover_image) { html += '<img class="detail-cover" src="' + g.cover_image + '" alt="">'; }
+    html += '<h3 style="font-size:22px">' + g.name + '</h3>';
+    html += '<div style="margin:8px 0">' +
+        (g.is_private ? '<span class="badge private">🔒 Private</span>' : '<span class="badge public">🌍 Public</span>') +
+        ' ' + groupCostBadge(g) + (joined ? ' <span class="badge joined">✅ Joined</span>' : '') + '</div>';
+
+    html += '<div class="sec-title">About this group</div>';
+    html += '<p style="font-size:15px;line-height:1.5;color:#333">' + (g.description || 'No description yet.') + '</p>';
+
+    html += '<div class="sec-title">Host</div>';
+    html += '<div class="host-row">' + avatarHTML(g.organizer_id, 'md') +
+        '<div><div class="hn">' + (g.organizer_name || 'Unknown') + '</div><div class="hl">Host</div></div></div>';
+
+    // A private group shows only the description, the host, and one way in.
+    if (locked) {
+        html += '<div style="background:#fef9e7;border:1px solid #f9e79f;padding:14px;border-radius:12px;margin-top:14px;font-size:15px;color:#7a5c10">' +
+            '🔒 This is a private group. The meeting time, location and member list are hidden until the host invites you.</div>';
+        html += '<button class="btn-select" onclick="requestInvitation(\'' + g.id + '\')">✉️ Message the Host to Request an Invitation</button>';
+        html += '</div>';
+        body.innerHTML = html;
+        return;
+    }
+
+    html += '<div class="sec-title">Next meeting</div>';
+    html += '<div class="info-line">🗓️ ' + groupMeetingText(g) + '</div>';
+    html += '<div class="info-line">📍 ' + (groupAddress(g) || 'Location to be announced') + '</div>';
+    if (groupAddress(g)) {
+        html += '<button class="map-btn" onclick="openDirections(\'' + groupAddress(g).replace(/'/g, "\\'") + '\')">🧭 Directions from Where I Am</button>';
+    }
+    if (g.is_paid) {
+        html += '<div class="info-line">💳 $' + g.price + ' per member — paid directly to the host</div>';
+    }
+
+    html += '<div class="sec-title">Signed up (' + (g.members ? g.members.length : 0) +
+        (g.max_members ? ' of ' + g.max_members : '') + ')</div>';
+    if (g.max_members) {
+        var left = spotsLeft(g);
+        html += '<div class="info-line" style="font-weight:700;color:' + (left === 0 ? '#e74c3c' : '#2d5a2d') + '">' +
+            (left === 0 ? '🚫 This group is full' : '✅ ' + left + ' spot' + (left !== 1 ? 's' : '') + ' left of ' + g.max_members) +
+            '</div>';
+    }
+    if (g.members && g.members.length) {
+        var names = '';
+        for (var i = 0; i < g.members.length; i++) {
+            names += '<span class="person">' + avatarHTML(g.members[i], 'sm') +
+                '<span class="nm">' + memberName(g.members[i]) + '</span></span>';
+        }
+        html += '<div>' + names + '</div>';
+    } else {
+        html += '<p style="color:#888;font-size:14px">Nobody signed up yet. Be the first!</p>';
+    }
+
+    html += '<div class="sec-title">Photos from the host</div>';
+    if (g.photos && g.photos.length) {
+        var pics = '';
+        for (var p = 0; p < g.photos.length; p++) { pics += '<img src="' + g.photos[p] + '" alt="">'; }
+        html += '<div class="photo-grid">' + pics + '</div>';
+    } else {
+        html += '<p style="color:#888;font-size:14px">No photos posted yet.</p>';
+    }
+    if (isHost) {
+        html += '<button class="btn-outline" onclick="document.getElementById(\'group-photo-upload\').click()">📷 Add a Photo</button>';
+    }
+
+    html += '<div style="margin-top:18px">';
+    if (joined) {
+        html += '<button class="btn-outline" onclick="emailMeDetails(\'' + g.id + '\')">📧 Email Me the Details</button>';
+        html += '<button class="btn-leave" onclick="leaveGroup(\'' + g.id + '\')">Remove My Name</button>';
+    } else if (isFull(g)) {
+        if (onWaitlist(g)) {
+            html += '<div style="background:#eef4ee;border:1px solid #cfe0cf;padding:14px;border-radius:12px;font-size:15px;color:#2d5a2d;margin-bottom:8px">' +
+                '🔔 You\'re on the waiting list. We\'ll notify you here if a spot opens.</div>';
+            html += '<button class="btn-leave" onclick="leaveWaitlist(\'' + g.id + '\')">Take Me Off the List</button>';
+        } else {
+            html += '<div style="background:#fdecea;border:1px solid #f5c6cb;padding:14px;border-radius:12px;font-size:15px;color:#8a2620;margin-bottom:8px">' +
+                '🚫 This group is full — all ' + g.max_members + ' spots are taken.</div>';
+            html += '<button class="btn-select" onclick="joinWaitlist(\'' + g.id + '\')">🔔 Notify Me If a Spot Opens</button>';
+        }
+    } else {
+        html += '<button class="btn-select" onclick="joinGroup(\'' + g.id + '\')">✋ Join This Group' +
+            (g.is_paid ? ' — $' + g.price : '') + '</button>';
+    }
+    html += '<button class="btn-outline" onclick="messageHostWrite(\'' + g.id + '\')">💬 Message the Host</button>';
+    html += '</div></div>';
+    body.innerHTML = html;
+}
+
+// ─── DATE PICKER ───
+// Shows friendly text until tapped, then becomes a real picker that
+// refuses dates in the past.
+function localNowISO() {
+    var d = new Date();
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0, 16);
+}
+
+function openDateTime(el) {
+    if (el.type !== 'datetime-local') {
+        el.type = 'datetime-local';
+        el.min = localNowISO();
+    }
+    try { if (el.showPicker) { el.showPicker(); } } catch (e) {}
+}
+
+function closeDateTime(el) {
+    if (!el.value) { el.type = 'text'; }
+}
+
+// ─── CAPACITY ───
+function spotsLeft(g) {
+    if (!g.max_members) return null;
+    return Math.max(0, g.max_members - (g.member_count || 0));
+}
+
+function isFull(g) {
+    var left = spotsLeft(g);
+    return left !== null && left === 0;
+}
+
+function capacityText(g) {
+    var count = g.member_count || 0;
+    if (!g.max_members) { return '👥 ' + count + ' member' + (count !== 1 ? 's' : ''); }
+    var left = spotsLeft(g);
+    return '👥 ' + count + ' of ' + g.max_members + (left === 0 ? ' · Full' : ' · ' + left + ' left');
+}
+
+function onWaitlist(g) {
+    return myWaitlist.indexOf(g.id) > -1;
+}
+
+async function joinWaitlist(id) {
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g || !sb || !currentUser) return;
+    var res = await sb.from('group_waitlist').insert({ group_id: g.id, user_id: currentUser.id });
+    if (res.error) { showNotif('Could not add you: ' + res.error.message, 'error'); return; }
+    showPopup('🔔', 'You\'re on the List',
+        'We\'ll notify you here the moment a spot opens in "' + g.name + '".');
+    await refreshGroups();
+}
+
+async function leaveWaitlist(id) {
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g || !sb || !currentUser) return;
+    var res = await sb.from('group_waitlist').delete()
+        .eq('group_id', g.id).eq('user_id', currentUser.id);
+    if (res.error) { showNotif('Could not remove you: ' + res.error.message, 'error'); return; }
+    showNotif('Taken off the waiting list.', 'info');
+    await refreshGroups();
+}
+
+async function markCloudRead(id) {
+    var res = await sb.from('notifications').update({ read: true }).eq('id', id);
+    if (res.error) { showNotif('Could not update: ' + res.error.message, 'error'); return; }
+    await loadFromCloud();
+    renderMessages();
+    updateUnreadButton();
+    showNotif('Marked as read.', 'success');
+    showPage('home');
+}
+
+// ─── JOIN / LEAVE ───
+async function joinGroup(id) {
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g || !currentUser || !sb) return;
+    if (isMemberOf(g)) { showNotif('You already joined this group.', 'info'); return; }
+    var res = await sb.from('group_members').insert({ group_id: g.id, user_id: currentUser.id });
+    if (res.error) {
+        if (/full/i.test(res.error.message)) {
+            showNotif('That group just filled up. You can ask to be notified instead.', 'error');
+            await refreshGroups();
+            return;
+        }
+        showNotif('Could not join: ' + res.error.message, 'error'); return;
+    }
+    var details = 'You are signed up for "' + g.name + '".\n\nWhen: ' + groupMeetingText(g) +
+        '\nWhere: ' + (groupAddress(g) || 'To be announced') +
+        '\nHost: ' + (g.organizer_name || 'Unknown');
+    showPopup('🎉', 'You\'re In!', details.replace(/\n/g, '<br>'));
+    await refreshGroups();
+    renderChatRooms();
+}
+
+async function leaveGroup(id) {
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g || !currentUser || !sb) return;
+    if (!confirm('Remove your name from "' + g.name + '"?')) return;
+    var res = await sb.from('group_members').delete()
+        .eq('group_id', g.id).eq('user_id', currentUser.id);
+    if (res.error) { showNotif('Could not leave: ' + res.error.message, 'error'); return; }
+    showNotif('Your name was removed from "' + g.name + '".', 'info');
+    await refreshGroups();
+    renderChatRooms();
+}
+
+function emailMeDetails(id) {
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g) return;
+    var subject = 'Join In: ' + g.name;
+    var body = 'Welcome to ' + g.name + '!\n\n' +
+        'When: ' + groupMeetingText(g) + '\n' +
+        'Where: ' + (groupAddress(g) || 'To be announced') + '\n' +
+        'Host: ' + (g.organizer_name || 'Unknown') + '\n\n' +
+        (g.description || '') + '\n\n— Join In, Asheville NC';
+    window.location.href = 'mailto:' + (currentUser?.email || '') +
+        '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+}
+
+function messageHost(id) {
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g) return;
+    showPage('chat');
+    document.getElementById('chat-list').style.display = 'none';
+    openChatRoom(g.id);
+}
+
+function addGroupPhoto(event) {
+    var file = event.target.files[0];
+    if (!file) return;
+    var g = allGroups.find(function(x) { return x.id === currentDetailGroup; });
+    if (!g || !sb) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        shrinkImage(e.target.result, 900, async function(small) {
+            var res = await sb.from('group_photos').insert({
+                group_id: g.id, url: small, uploaded_by: currentUser.id
+            });
+            if (res.error) { showNotif('Could not add photo: ' + res.error.message, 'error'); return; }
+            showNotif('Photo added!', 'success');
+            await refreshGroups();
+        });
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+}
+
+function showPopup(icon, title, text, onDone) {
+    document.getElementById('popup-icon').textContent = icon;
+    document.getElementById('popup-title').textContent = title;
+    document.getElementById('popup-text').innerHTML = text;
+    var btn = document.getElementById('popup-btn');
+    btn.textContent = 'Got It';
+    btn.onclick = function() {
+        closePopup();
+        if (typeof onDone === 'function') { onDone(); }
+    };
+    document.querySelector('.popup-btn-secondary').style.display = 'none';
+    document.getElementById('popup-overlay').classList.add('active');
+}
+
+// Wipes the create-group form so the next one starts clean.
+function resetGroupForm() {
+    ['group-name', 'group-desc', 'group-street', 'group-max', 'group-price',
+     'group-datetime', 'other-category'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) { el.value = ''; el.classList.remove('error'); }
+    });
+    var dt = document.getElementById('group-datetime');
+    if (dt) { dt.type = 'text'; }
+    var loc = document.getElementById('group-location');
+    if (loc) { loc.value = 'Asheville, NC'; }
+    var cat = document.getElementById('group-category');
+    if (cat) { cat.value = ''; cat.classList.remove('error'); }
+    var other = document.getElementById('other-category-container');
+    if (other) { other.style.display = 'none'; }
+    document.querySelectorAll('#page-create-group .error-text').forEach(function(e) {
+        e.classList.remove('show');
+    });
+    uploadedImage = null;
+    var prev = document.getElementById('image-preview-container');
+    if (prev) { prev.innerHTML = ''; }
+    selectedGroupPaid = null;
+    ['gp-free', 'gp-paid'].forEach(function(id) {
+        var b = document.getElementById(id);
+        if (b) { b.classList.remove('selected'); }
+    });
+    var priceBox = document.getElementById('gp-price-box');
+    if (priceBox) { priceBox.style.display = 'none'; }
+    setPrivacy('public');
+    setSchedule('once');
+    var btn = document.getElementById('submit-group-btn');
+    if (btn) {
+        btn.textContent = '🚀 Submit for Approval';
+        btn.classList.remove('submitted', 'busy');
+        btn.disabled = false;
+    }
 }
 
 function renderGroupItem(g) {
@@ -464,22 +1890,16 @@ function renderGroupItem(g) {
     if (status === 'approved') statusBadge = '<span class="badge approved">✅ Approved</span>';
     else if (status === 'denied') statusBadge = '<span class="badge denied">❌ Denied</span>';
     else if (status === 'submitted') statusBadge = '<span class="badge submitted">📩 Submitted</span>';
-    var privacyBadge = g.is_private ? '<span class="badge private">🔒 Private</span>' : '<span class="badge public">🔓 Public</span>';
-    return '<div class="group-item"><div class="title-row"><h3>' + g.name + '</h3>' + privacyBadge + ' ' + statusBadge + '</div><div class="desc">' + (g.description || '') + '</div><div class="meta-row"><span>👥 ' + (g.member_count || 0) + ' members</span><span>By ' + (g.organizer_name || 'Unknown') + '</span></div></div>';
+    var privacyBadge = g.is_private ? '<span class="badge private">🔒 Private</span>' : '<span class="badge public">🌍 Public</span>';
+    var joinedBadge = isMember ? ' <span class="badge joined">✅ Joined</span>' : '';
+    return '<div class="group-item"><div class="title-row"><h3>' + g.name + '</h3>' + privacyBadge + ' ' + statusBadge + joinedBadge + '</div><div class="desc">' + (g.description || '') + '</div><div class="meta-row"><span>👥 ' + (g.member_count || 0) + ' members</span><span>By ' + (g.organizer_name || 'Unknown') + '</span></div></div>';
 }
 
 function renderGroups() {
     var container = document.getElementById('groups-list');
     if (!container) return;
-    if (allGroups.length === 0) {
-        container.innerHTML = '<div class="card" style="text-align:center;color:#888">No groups yet. <a href="#" onclick="showPage(\'create-group\')">Create one</a>!</div>';
-        return;
-    }
-    var html = '';
-    for (var i = 0; i < allGroups.length; i++) {
-        html += renderGroupItem(allGroups[i]);
-    }
-    container.innerHTML = html;
+    if (currentGroupCategory) { showGroupsByCategory(currentGroupCategory, true); }
+    else { showCategoryGrid(true); }
 }
 
 function renderEventItem(e) {
@@ -560,14 +1980,72 @@ function handleImageUpload(event) {
     }
 }
 
-function generateAIImage() {
-    var covers = ['https://picsum.photos/seed/ai1/400/200', 'https://picsum.photos/seed/ai2/400/200', 'https://picsum.photos/seed/ai3/400/200'];
-    uploadedImage = covers[Math.floor(Math.random() * covers.length)];
-    document.getElementById('image-preview-container').innerHTML = '<img src="' + uploadedImage + '" class="image-preview">';
-    showNotif('AI cover generated!', 'success');
+// Keywords used to find a cover photo that matches the group's category.
+function categoryKeywords(cat) {
+    var map = {
+        'Hiking': 'hiking,trail,mountain',
+        'Book Club': 'books,reading,library',
+        'Social': 'cafe,friends,gathering',
+        'Arts': 'art,painting,studio',
+        'Food': 'food,cooking,restaurant',
+        'Music': 'music,concert,band',
+        'Tech': 'technology,computer,workshop',
+        'Wellness': 'yoga,meditation,wellness',
+        'Sports': 'sports,team,field',
+        'Gaming': 'videogame,arcade,gaming'
+    };
+    if (map[cat]) return map[cat];
+    var clean = (cat || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().replace(/\s+/g, ',');
+    return clean || 'community,people';
 }
 
-function handleCreateGroup() {
+// Drawn locally, so it always works even with no internet.
+function fallbackCover(cat) {
+    var colors = {
+        'Hiking': ['#5B8C5A', '#2d5a2d'], 'Book Club': ['#D4A373', '#8a6642'],
+        'Social': ['#9C27B0', '#6a1b7a'], 'Arts': ['#e74c3c', '#a83226'],
+        'Food': ['#f39c12', '#b8730b'], 'Music': ['#2196F3', '#14568f'],
+        'Tech': ['#1a1a2e', '#43436b'], 'Wellness': ['#5B8C5A', '#3f7a6d'],
+        'Sports': ['#2ecc71', '#1a8d4b'], 'Gaming': ['#7B1FA2', '#4a1163']
+    };
+    var c = colors[cat] || ['#5B8C5A', '#2d5a2d'];
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200">' +
+        '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0%" stop-color="' + c[0] + '"/><stop offset="100%" stop-color="' + c[1] + '"/>' +
+        '</linearGradient></defs><rect width="400" height="200" fill="url(#g)"/>' +
+        '<text x="200" y="105" font-size="56" text-anchor="middle">' + categoryIcon(cat) + '</text>' +
+        '<text x="200" y="150" font-size="20" font-weight="bold" fill="#ffffff" text-anchor="middle" ' +
+        'font-family="-apple-system,sans-serif">' + (cat || 'Group') + '</text></svg>';
+    return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+}
+
+function generateAIImage() {
+    var sel = document.getElementById('group-category');
+    var cat = sel ? sel.value : '';
+    if (cat === '__other__') {
+        cat = (document.getElementById('other-category').value || '').trim();
+    }
+    if (!cat) { showNotif('Pick a category first, then generate a cover.', 'error'); return; }
+    var container = document.getElementById('image-preview-container');
+    container.innerHTML = '<div style="color:#888;font-size:14px;padding:8px">Finding a ' + cat + ' photo…</div>';
+    // "lock" keeps the same photo every time the card is shown, instead of reshuffling.
+    var url = 'https://loremflickr.com/400/200/' + encodeURIComponent(categoryKeywords(cat)) +
+        '?lock=' + Math.floor(Math.random() * 100000);
+    var img = new Image();
+    img.onload = function() {
+        uploadedImage = url;
+        container.innerHTML = '<img src="' + url + '" class="image-preview">';
+        showNotif(cat + ' cover added! Tap again for a different photo.', 'success');
+    };
+    img.onerror = function() {
+        uploadedImage = fallbackCover(cat);
+        container.innerHTML = '<img src="' + uploadedImage + '" class="image-preview">';
+        showNotif('No photo available — used a ' + cat + ' graphic instead.', 'info');
+    };
+    img.src = url;
+}
+
+async function handleCreateGroup() {
     var btn = document.getElementById('submit-group-btn');
     if (btn.classList.contains('submitted')) { return showNotif('Already submitted!', 'info'); }
     var name = document.getElementById('group-name').value.trim();
@@ -584,19 +2062,78 @@ function handleCreateGroup() {
     else { document.getElementById('group-street').classList.remove('error'); document.getElementById('group-street-error').classList.remove('show'); }
     if (!category || category === '') { document.getElementById('group-category').classList.add('error'); document.getElementById('group-category-error').classList.add('show'); isValid = false; }
     else { document.getElementById('group-category').classList.remove('error'); document.getElementById('group-category-error').classList.remove('show'); }
+    var price = 0;
+    if (!selectedGroupPaid) { document.getElementById('group-paid-error').classList.add('show'); isValid = false; }
+    else if (selectedGroupPaid === 'paid') {
+        price = parseFloat(document.getElementById('group-price').value);
+        if (!price || price <= 0) { document.getElementById('group-price').classList.add('error'); document.getElementById('group-price-error').classList.add('show'); isValid = false; }
+        else { document.getElementById('group-price').classList.remove('error'); document.getElementById('group-price-error').classList.remove('show'); }
+    }
+    var onceWhen = document.getElementById('group-datetime').value;
+    if (selectedSchedule === 'once') {
+        if (!onceWhen || new Date(onceWhen) <= new Date()) {
+            document.getElementById('group-datetime').classList.add('error');
+            document.getElementById('group-datetime-error').classList.add('show');
+            isValid = false;
+        } else {
+            document.getElementById('group-datetime').classList.remove('error');
+            document.getElementById('group-datetime-error').classList.remove('show');
+        }
+    }
     if (!isValid) { showNotif('Please fill in all required fields *', 'error'); return; }
-    var newGroup = { id: idCounter++, name: name, description: description, category: category, street_address: street, location: location || 'Asheville, NC', is_private: selectedPrivacy === 'private', organizer_id: currentUser.id, organizer_name: userProfiles[currentUser.id]?.displayName || currentUser.name || 'Unknown', member_count: 1, members: [currentUser.id], recurring: selectedSchedule, cover_image: uploadedImage || null, created: new Date().toISOString(), status: 'submitted', submitted_date: new Date().toLocaleDateString() };
-    allGroups.push(newGroup);
-    saveData();
-    btn.textContent = '✅ Submitted on ' + newGroup.submitted_date;
+    if (!sb || !currentUser) { showNotif('You need to be logged in.', 'error'); return; }
+    btn.classList.add('busy');
+    btn.textContent = 'Submitting...';
+    var row = {
+        name: name, description: description, category: category,
+        street_address: street, location: location || 'Asheville, NC',
+        is_private: selectedPrivacy === 'private',
+        is_paid: selectedGroupPaid === 'paid', price: price,
+        max_members: parseInt(document.getElementById('group-max').value, 10) || null,
+        cover_image: uploadedImage || null,
+        organizer_id: currentUser.id,
+        recurring: selectedSchedule,
+        meeting_datetime: document.getElementById('group-datetime').value || null,
+        weekly_day: document.getElementById('group-weekly-day').value || null,
+        weekly_time: document.getElementById('group-weekly-time').value || null,
+        monthly_week: document.getElementById('group-monthly-week').value || null,
+        monthly_day: document.getElementById('group-monthly-day').value || null,
+        monthly_time: document.getElementById('group-monthly-time').value || null,
+        status: 'submitted'
+    };
+    var res = await sb.from('groups').insert(row).select().single();
+    btn.classList.remove('busy');
+    if (res.error) {
+        btn.textContent = '🚀 Submit for Approval';
+        showNotif('Could not save: ' + res.error.message, 'error');
+        return;
+    }
+    btn.textContent = 'Reviewing...';
+    var verdict = { decision: 'hold', reason: 'Sent for review.' };
+    try {
+        var scr = await sb.functions.invoke('screen-group', { body: { group_id: res.data.id } });
+        if (scr.data && scr.data.decision) { verdict = scr.data; }
+    } catch (e) { /* leave it held for a human */ }
+
+    function done() { resetGroupForm(); showPage('home'); }
+
+    if (verdict.decision === 'approve') {
+        btn.textContent = '✅ Approved and live!';
+        showPopup('🎉', 'Your Group Is Live',
+            '"' + name + '" passed review and is now visible to everyone.', done);
+    } else if (verdict.decision === 'reject') {
+        btn.textContent = '❌ Not approved';
+        showPopup('😕', 'Not Approved',
+            (verdict.reason || 'This submission did not meet the guidelines.') +
+            '<br><br>Nothing was published. You can start a new group from the home screen.', done);
+    } else {
+        btn.textContent = '📩 Submitted for review';
+        showPopup('📩', 'Sent for Review',
+            'A person will look at "' + name + '" shortly. You will find it under My Hosting.', done);
+    }
     btn.classList.add('submitted');
     btn.disabled = true;
-    addNotification(currentUser.id, 'Your group "' + name + '" has been submitted for review.', 'info');
-    showNotif('Group submitted! 📩', 'success');
-    renderGroups();
-    renderCategories();
-    renderHosting();
-    renderAdminDashboard();
+    await refreshGroups();
 }
 
 function setEventPaid(type) {
@@ -744,7 +2281,7 @@ function renderChatRooms() {
     var html = '';
     for (var i = 0; i < groups.length; i++) {
         var g = groups[i];
-        html += '<div class="group-item" onclick="openChatRoom(' + g.id + ')"><h3>💬 ' + g.name + '</h3><div style="font-size:13px;color:#888">' + (g.member_count || 0) + ' members</div></div>';
+        html += '<div class="group-item" onclick="openChatRoom(\'' + g.id + '\')"><h3>💬 ' + g.name + '</h3><div style="font-size:13px;color:#888">' + (g.member_count || 0) + ' members</div></div>';
     }
     container.innerHTML = html;
 }
@@ -783,20 +2320,109 @@ function sendMessage() {
     renderChatMessages();
 }
 
+// ─── TICKETS ───
+// Demo tickets may not carry event details, so fall back to the event record.
+function ticketEvent(t) {
+    if (t.eventId) {
+        var byId = allEvents.find(function(e) { return e.id === t.eventId; });
+        if (byId) return byId;
+    }
+    return allEvents.find(function(e) { return e.name === t.eventName; }) || null;
+}
+
+function ticketEventDate(t) {
+    var ev = ticketEvent(t);
+    var raw = t.eventDate || (ev && ev.datetime);
+    if (!raw) return 'Date to be announced';
+    var d = new Date(raw);
+    return isNaN(d.getTime()) ? String(raw) : d.toLocaleString();
+}
+
+function ticketEventPlace(t) {
+    var ev = ticketEvent(t);
+    if (t.eventLocation) return t.eventLocation;
+    if (ev) return [ev.street_address, ev.venue].filter(Boolean).join(', ');
+    return 'Location to be announced';
+}
+
+function groupTickets() {
+    var mine = tickets.filter(function(t) { return t.userId === currentUser?.id; });
+    var byEvent = {};
+    mine.forEach(function(t) {
+        var key = t.eventId || t.eventName;
+        if (!byEvent[key]) { byEvent[key] = { key: String(key), name: t.eventName, price: t.price, items: [] }; }
+        byEvent[key].items.push(t);
+    });
+    return Object.keys(byEvent).map(function(k) { return byEvent[k]; });
+}
+
 function renderTickets() {
     var container = document.getElementById('ticket-list');
     if (!container) return;
-    var userTickets = tickets.filter(function(t) { return t.userId === currentUser?.id; });
-    if (userTickets.length === 0) {
+    var groups = groupTickets();
+    if (groups.length === 0) {
         container.innerHTML = '<div class="card" style="text-align:center;color:#888">No tickets yet.</div>';
         return;
     }
     var html = '';
-    for (var i = 0; i < userTickets.length; i++) {
-        var t = userTickets[i];
-        html += '<div class="event-card"><h3>🎟️ ' + t.eventName + '</h3><div style="font-size:13px;color:#888">$' + t.price + ' | ' + new Date(t.purchased).toLocaleDateString() + '</div><div style="font-size:13px;color:#888">QR: ' + t.qrCode + '</div><div class="qr-code"><div class="qr-placeholder">📱</div><p style="font-size:12px;color:#888">Scan at event</p></div></div>';
-    }
+    groups.forEach(function(grp) {
+        var qty = grp.items.length;
+        var total = grp.items.reduce(function(s, t) { return s + (parseFloat(t.price) || 0); }, 0);
+        html += '<div class="tk"><h3>🎟️ ' + grp.name + '</h3>';
+        html += '<div class="tr"><span>Ticket price</span><span>$' + (parseFloat(grp.price) || 0) + '</span></div>';
+        html += '<div class="tr"><span>Event date</span><span>' + ticketEventDate(grp.items[0]) + '</span></div>';
+        html += '<div class="tr"><span>Tickets purchased</span><span>' + qty + '</span></div>';
+        if (qty > 1) { html += '<div class="tr"><span>Total paid</span><span>$' + total.toFixed(2) + '</span></div>'; }
+        html += '<button class="btn-select" onclick="showTicketQR(\'' + grp.key.replace(/'/g, "\\'") + '\')">Show QR Code Ticket' + (qty > 1 ? 's' : '') + '</button>';
+        html += '</div>';
+    });
     container.innerHTML = html;
+}
+
+function showTicketQR(key) {
+    var grp = groupTickets().find(function(g) { return g.key === String(key); });
+    if (!grp) { showNotif('Ticket not found.', 'error'); return; }
+    showPage('ticket-qr');
+    var body = document.getElementById('ticket-qr-body');
+    var first = grp.items[0];
+    var when = ticketEventDate(first), where = ticketEventPlace(first);
+    var html = '<div class="card"><h3 style="font-size:22px">' + grp.name + '</h3>';
+    html += '<div class="info-line">🗓️ ' + when + '</div>';
+    html += '<div class="info-line">📍 ' + where + '</div>';
+    html += '<div class="info-line">🎟️ ' + grp.items.length + ' ticket' + (grp.items.length !== 1 ? 's' : '') + '</div>';
+    html += '<p style="color:#888;font-size:14px;margin-top:10px">Show this at the door.</p></div>';
+    grp.items.forEach(function(t, i) {
+        html += '<div class="card"><div style="font-weight:700;font-size:17px;margin-bottom:4px">Ticket ' + (i + 1) + ' of ' + grp.items.length + '</div>';
+        html += '<div class="qr-box"><canvas id="qr-' + i + '"></canvas>';
+        html += '<div style="font-size:15px;font-weight:700;margin-top:10px">' + (t.qrCode || 'NO-CODE') + '</div>';
+        html += '<div style="font-size:13px;color:#888;margin-top:4px">' + grp.name + '<br>' + when + '<br>' + where + '</div></div></div>';
+    });
+    body.innerHTML = html;
+    grp.items.forEach(function(t, i) {
+        var payload = 'JOININ TICKET\nEvent: ' + grp.name + '\nDate: ' + when + '\nWhere: ' + where + '\nCode: ' + (t.qrCode || 'NO-CODE');
+        drawQR(document.getElementById('qr-' + i), payload);
+    });
+}
+
+function drawQR(canvas, text) {
+    if (!canvas) return;
+    var m;
+    try { m = QR.encode(text); }
+    catch (e) {
+        try { m = QR.encode(text.slice(0, 200)); }
+        catch (e2) { canvas.parentNode.innerHTML = '<p style="color:#888">Could not build a code.</p>'; return; }
+    }
+    var size = m.length, quiet = 4, scale = 6, dim = (size + quiet * 2) * scale;
+    canvas.width = dim; canvas.height = dim;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) { return; }
+    ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, dim, dim);
+    ctx.fillStyle = '#000000';
+    for (var r = 0; r < size; r++) {
+        for (var c = 0; c < size; c++) {
+            if (m[r][c]) { ctx.fillRect((c + quiet) * scale, (r + quiet) * scale, scale, scale); }
+        }
+    }
 }
 
 function setRating(rating) {
@@ -860,7 +2486,7 @@ function renderAdminPending() {
     }
     var html = '';
     pendingGroups.forEach(function(g) {
-        html += '<div class="card" style="padding:12px;border-left:4px solid #f39c12"><strong>👥 ' + g.name + '</strong> <span class="badge submitted">Submitted</span><div style="font-size:13px;color:#666">By ' + g.organizer_name + '</div><div style="display:flex;gap:8px;margin-top:8px"><button onclick="adminApproveItem(' + g.id + ',\'group\')" style="background:#5B8C5A;color:white;border:none;padding:6px 16px;border-radius:12px;cursor:pointer">✅ Approve</button><button onclick="adminDenyItem(' + g.id + ',\'group\')" style="background:#e74c3c;color:white;border:none;padding:6px 16px;border-radius:12px;cursor:pointer">❌ Deny</button></div></div>';
+        html += '<div class="card" style="padding:12px;border-left:4px solid #f39c12"><strong>👥 ' + g.name + '</strong> <span class="badge submitted">Submitted</span><div style="font-size:13px;color:#666">By ' + g.organizer_name + '</div><div style="display:flex;gap:8px;margin-top:8px"><button onclick="adminApproveItem(\'' + g.id + '\',\'group\')" style="background:#5B8C5A;color:white;border:none;padding:6px 16px;border-radius:12px;cursor:pointer">✅ Approve</button><button onclick="adminDenyItem(\'' + g.id + '\',\'group\')" style="background:#e74c3c;color:white;border:none;padding:6px 16px;border-radius:12px;cursor:pointer">❌ Deny</button></div></div>';
     });
     pendingEvents.forEach(function(e) {
         html += '<div class="card" style="padding:12px;border-left:4px solid #f39c12"><strong>🎟️ ' + e.name + '</strong> <span class="badge submitted">Submitted</span><div style="font-size:13px;color:#666">By ' + e.organizer_name + '</div><div style="display:flex;gap:8px;margin-top:8px"><button onclick="adminApproveItem(' + e.id + ',\'event\')" style="background:#5B8C5A;color:white;border:none;padding:6px 16px;border-radius:12px;cursor:pointer">✅ Approve</button><button onclick="adminDenyItem(' + e.id + ',\'event\')" style="background:#e74c3c;color:white;border:none;padding:6px 16px;border-radius:12px;cursor:pointer">❌ Deny</button></div></div>';
@@ -868,32 +2494,46 @@ function renderAdminPending() {
     container.innerHTML = html;
 }
 
-function adminApproveItem(id, type) {
-    var item = type === 'group' ? allGroups.find(function(g) { return g.id === id; }) : allEvents.find(function(e) { return e.id === id; });
+async function adminApproveItem(id, type) {
+    if (type === 'group') {
+        var g = allGroups.find(function(x) { return x.id === id; });
+        if (!g) return;
+        var res = await sb.from('groups').update({ status: 'approved' }).eq('id', id);
+        if (res.error) { showNotif('Could not approve: ' + res.error.message, 'error'); return; }
+        showNotif('"' + g.name + '" approved! ✅', 'success');
+        await refreshGroups();
+        return;
+    }
+    var item = allEvents.find(function(e) { return e.id === id; });
     if (!item) return;
     item.status = 'approved';
     item.approval_date = new Date().toISOString();
-    saveData();
-    addNotification(item.organizer_id, 'Your ' + (type === 'group' ? 'group' : 'event') + ' "' + item.name + '" has been approved! 🎉', 'success');
+    safeSave();
     showNotif('"' + item.name + '" approved! ✅', 'success');
     renderAdminDashboard();
-    renderGroups();
     renderEvents();
     renderHosting();
 }
 
-function adminDenyItem(id, type) {
-    var item = type === 'group' ? allGroups.find(function(g) { return g.id === id; }) : allEvents.find(function(e) { return e.id === id; });
-    if (!item) return;
+async function adminDenyItem(id, type) {
     var reason = prompt('Reason for denial:');
     if (reason === null) return;
+    if (type === 'group') {
+        var g = allGroups.find(function(x) { return x.id === id; });
+        if (!g) return;
+        var res = await sb.from('groups').update({ status: 'denied', denial_reason: reason }).eq('id', id);
+        if (res.error) { showNotif('Could not deny: ' + res.error.message, 'error'); return; }
+        showNotif('"' + g.name + '" denied.', 'error');
+        await refreshGroups();
+        return;
+    }
+    var item = allEvents.find(function(e) { return e.id === id; });
+    if (!item) return;
     item.status = 'denied';
     item.denial_reason = reason;
-    saveData();
-    addNotification(item.organizer_id, 'Your ' + (type === 'group' ? 'group' : 'event') + ' "' + item.name + '" was denied.', 'error');
+    safeSave();
     showNotif('"' + item.name + '" denied.', 'error');
     renderAdminDashboard();
-    renderGroups();
     renderEvents();
     renderHosting();
 }
@@ -909,6 +2549,21 @@ function renderAdminUsers() {
     container.innerHTML = html;
 }
 
+
+function renderAdminFeedback() {
+    var container = document.getElementById('admin-feedback-list');
+    if (!container) return;
+    if (feedbackList.length === 0) { container.innerHTML = '<p style="color:#888">No feedback yet.</p>'; return; }
+    var html = '';
+    var sorted = feedbackList.slice().reverse();
+    for (var i = 0; i < sorted.length; i++) {
+        var f = sorted[i];
+        var stars = '';
+        for (var s = 0; s < 5; s++) { stars += s < f.rating ? '★' : '☆'; }
+        html += '<div class="feedback-item"><div class="stars">' + stars + '</div><div class="fb-text">' + f.text + '</div><div class="fb-meta">— ' + f.userName + ' · ' + new Date(f.date).toLocaleDateString() + '</div></div>';
+    }
+    container.innerHTML = html;
+}
 
 function renderAdminCategories() {
     var container = document.getElementById('admin-category-list');
@@ -943,10 +2598,10 @@ function renderAdminCategories() {
     }
 }
 
-function approveCategory(name) {
-    if (allCategories.indexOf(name) === -1) allCategories.push(name);
-    pendingCategories = pendingCategories.filter(function(c) { return c !== name; });
-    saveData();
+async function approveCategory(name) {
+    var res = await sb.from('categories').update({ is_approved: true }).eq('name', name);
+    if (res.error) { showNotif('Could not approve: ' + res.error.message, 'error'); return; }
+    await loadFromCloud();
     populateCategoryDropdown();
     renderCategories();
     renderAdminDashboard();
@@ -959,24 +2614,29 @@ function rejectCategory(name) {
     renderAdminDashboard();
     showNotif('"' + name + '" rejected.', 'info');
 }
-function deleteCategory(name) {
+async function deleteCategory(name) {
     if (!confirm('Delete category "' + name + '"?')) return;
-    allCategories = allCategories.filter(function(c) { return c !== name; });
-    saveData();
+    var res = await sb.from('categories').delete().eq('name', name);
+    if (res.error) { showNotif('Could not delete: ' + res.error.message, 'error'); return; }
+    await loadFromCloud();
     populateCategoryDropdown();
     renderCategories();
     renderAdminDashboard();
     showNotif('Category "' + name + '" deleted!', 'success');
 }
-function addCategory() {
+
+async function addCategory() {
     var input = document.getElementById('new-category');
     if (!input) return;
     var name = input.value.trim();
     if (!name) { showNotif('Enter a category name', 'error'); return; }
     if (allCategories.indexOf(name) > -1) { showNotif('Category already exists', 'error'); return; }
-    allCategories.push(name);
-    saveData();
+    var res = await sb.from('categories').insert({
+        name: name, is_approved: true, suggested_by: currentUser.id
+    });
+    if (res.error) { showNotif('Could not add: ' + res.error.message, 'error'); return; }
     input.value = '';
+    await loadFromCloud();
     populateCategoryDropdown();
     renderCategories();
     renderAdminDashboard();
@@ -1006,34 +2666,327 @@ function suggestGroup() {
     } else { showNotif('You already suggested this!', 'info'); }
 }
 
+// ─── WHAT'S COMING UP ───
+var timePeriod = null;
+var DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+function dayIndex(name) { return DAY_NAMES.indexOf(name); }
+
+function applyTime(d, hhmm) {
+    var p = (hhmm || '00:00').split(':');
+    d.setHours(parseInt(p[0], 10) || 0, parseInt(p[1], 10) || 0, 0, 0);
+    return d;
+}
+
+// The Nth named weekday of a month, e.g. the Second Saturday.
+function nthWeekdayOfMonth(year, month, which, dayName) {
+    var target = dayIndex(dayName);
+    if (target < 0) return null;
+    if (which === 'Last') {
+        var last = new Date(year, month + 1, 0);
+        while (last.getDay() !== target) { last.setDate(last.getDate() - 1); }
+        return last;
+    }
+    var n = { First: 1, Second: 2, Third: 3, Fourth: 4 }[which] || 1;
+    var d = new Date(year, month, 1);
+    var baseMonth = d.getMonth();
+    var count = 0;
+    while (d.getMonth() === baseMonth) {
+        if (d.getDay() === target) {
+            count++;
+            if (count === n) { return new Date(d); }
+        }
+        d.setDate(d.getDate() + 1);
+    }
+    return null;
+}
+
+function nextOccurrence(g) {
+    var now = new Date();
+    if (g.recurring === 'weekly' && g.weekly_day) {
+        var target = dayIndex(g.weekly_day);
+        if (target < 0) return null;
+        var d = new Date(now);
+        d.setDate(d.getDate() + ((target - d.getDay() + 7) % 7));
+        applyTime(d, g.weekly_time);
+        if (d < now) { d.setDate(d.getDate() + 7); applyTime(d, g.weekly_time); }
+        return d;
+    }
+    if (g.recurring === 'monthly' && g.monthly_day && g.monthly_week) {
+        for (var i = 0; i < 3; i++) {
+            var m = nthWeekdayOfMonth(now.getFullYear(), now.getMonth() + i, g.monthly_week, g.monthly_day);
+            if (m) {
+                applyTime(m, g.monthly_time);
+                if (m >= now) { return m; }
+            }
+        }
+        return null;
+    }
+    if (g.meeting_datetime) {
+        var once = new Date(g.meeting_datetime);
+        return isNaN(once.getTime()) ? null : once;
+    }
+    return null;
+}
+
+function periodEnd(period) {
+    var end = new Date();
+    if (period === 'today') { end.setHours(23, 59, 59, 999); return end; }
+    end.setDate(end.getDate() + (period === 'week' ? 7 : 30));
+    return end;
+}
+
+function whenLabel(d) {
+    var now = new Date();
+    var today = new Date(now); today.setHours(0, 0, 0, 0);
+    var that = new Date(d); that.setHours(0, 0, 0, 0);
+    var days = Math.round((that - today) / 86400000);
+    var time = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    if (days === 0) return 'Today at ' + time;
+    if (days === 1) return 'Tomorrow at ' + time;
+    if (days < 7) return DAY_NAMES[d.getDay()] + ' at ' + time;
+    return d.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' at ' + time;
+}
+
+function renderUpcoming() {
+    var box = document.getElementById('upcoming-list');
+    if (!box) return;
+    // Nothing shows until one of the three buttons is tapped.
+    if (!timePeriod) { box.innerHTML = ''; return; }
+    var now = new Date();
+    var end = periodEnd(timePeriod);
+    var items = [];
+
+    allGroups.forEach(function(g) {
+        if (g.status !== 'approved') return;
+        var d = nextOccurrence(g);
+        if (d && d >= now && d <= end) {
+            items.push({ kind: 'group', id: g.id, name: g.name, when: d, category: g.category, sub: capacityText(g) });
+        }
+    });
+    allEvents.forEach(function(e) {
+        if (e.status !== 'approved') return;
+        var d = e.datetime ? new Date(e.datetime) : null;
+        if (d && !isNaN(d.getTime()) && d >= now && d <= end) {
+            items.push({ kind: 'event', id: e.id, name: e.name, when: d, sub: e.is_paid ? '$' + e.price : 'Free' });
+        }
+    });
+    items.sort(function(a, b) { return a.when - b.when; });
+
+    var label = timePeriod === 'today' ? 'today' : (timePeriod === 'week' ? 'in the next 7 days' : 'in the next 30 days');
+    if (items.length === 0) {
+        box.innerHTML = '<div style="background:white;border:1px solid #e8eee8;border-radius:14px;padding:16px;text-align:center;color:#888;font-size:15px">' +
+            'Nothing scheduled ' + label + '.</div>';
+        return;
+    }
+    var html = '<div style="font-size:14px;color:#666;font-weight:600;margin:4px 0 8px">' +
+        items.length + (items.length === 1 ? ' thing ' : ' things ') + label + '</div>';
+    items.forEach(function(it) {
+        var tap = it.kind === 'group'
+            ? 'openUpcomingGroup(\'' + it.id + '\',\'' + String(it.category).replace(/'/g, "\\'") + '\')'
+            : 'showPage(\'events\')';
+        html += '<div onclick="' + tap + '" style="background:white;border:1px solid #e8eee8;border-left:5px solid ' +
+            (it.kind === 'group' ? '#5B8C5A' : '#9C27B0') + ';border-radius:14px;padding:14px 16px;margin-bottom:8px;cursor:pointer">' +
+            '<div style="font-size:17px;font-weight:700">' + (it.kind === 'group' ? '👥 ' : '🎟️ ') + it.name + '</div>' +
+            '<div style="font-size:15px;color:#2d5a2d;font-weight:600;margin-top:4px">🗓️ ' + whenLabel(it.when) + '</div>' +
+            '<div style="font-size:14px;color:#888;margin-top:2px">' + it.sub + '</div>' +
+            '</div>';
+    });
+    box.innerHTML = html;
+}
+
+function openUpcomingGroup(id, category) {
+    currentGroupCategory = category || null;
+    openGroupDetail(id);
+}
+
 function showTimePeriod(period) {
+    // Tapping the one that's already on turns it back off.
+    timePeriod = (timePeriod === period) ? null : period;
     document.querySelectorAll('.period-btn').forEach(function(b) {
         b.classList.remove('active');
         b.style.background = '#e8eee8';
         b.style.color = '#666';
     });
-    var btn = document.getElementById('period-' + period);
-    if (btn) {
-        btn.classList.add('active');
-        btn.style.background = '#5B8C5A';
-        btn.style.color = 'white';
+    if (timePeriod) {
+        var btn = document.getElementById('period-' + timePeriod);
+        if (btn) {
+            btn.classList.add('active');
+            btn.style.background = '#5B8C5A';
+            btn.style.color = 'white';
+        }
     }
-    showNotif('Showing: ' + period, 'info');
+    renderUpcoming();
 }
 
-function closePopup() { document.getElementById('popup-overlay').classList.remove('active'); }
+function closePopup() {
+    document.getElementById('popup-overlay').classList.remove('active');
+    var sec = document.querySelector('.popup-btn-secondary');
+    sec.style.display = 'block';
+    sec.textContent = 'Maybe Later';
+    var btn = document.getElementById('popup-btn');
+    btn.onclick = closePopup;
+}
 function closePopupAndCreate() { closePopup(); showPage('create-group'); }
 
+// ─── APP ICON & INSTALL ───
+// The five-person ring from the Join In logo, drawn as a square app icon.
+function iconSVG(size) {
+    var fig = '<circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size + '" viewBox="0 0 512 512">' +
+        '<rect width="512" height="512" fill="#FFFFFF"/>' +
+        '<g transform="translate(256,256) scale(2.05) translate(-340,-108)">' +
+        '<circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/>' +
+        '<g fill="#1B4B8F">' + fig + '</g>' +
+        '<g fill="#2E7BC4" transform="rotate(72 340 108)">' + fig + '</g>' +
+        '<g fill="#E4572E" transform="rotate(144 340 108)">' + fig + '</g>' +
+        '<g fill="#1B4B8F" transform="rotate(216 340 108)">' + fig + '</g>' +
+        '<g fill="#2E7BC4" transform="rotate(288 340 108)">' + fig + '</g>' +
+        '</g></svg>';
+}
+
+function svgToPng(svg, size) {
+    return new Promise(function(resolve) {
+        var img = new Image();
+        img.onload = function() {
+            var cv = document.createElement('canvas');
+            cv.width = size; cv.height = size;
+            var ctx = cv.getContext('2d');
+            if (!ctx) { resolve(null); return; }
+            ctx.drawImage(img, 0, 0, size, size);
+            try { resolve(cv.toDataURL('image/png')); } catch (e) { resolve(null); }
+        };
+        img.onerror = function() { resolve(null); };
+        img.src = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+    });
+}
+
+var deferredInstall = null;
+
+async function setupPWA() {
+    try {
+        var icon180 = await svgToPng(iconSVG(180), 180);
+        var icon512 = await svgToPng(iconSVG(512), 512);
+        if (icon180) { document.getElementById('apple-icon').href = icon180; }
+
+        var dir = window.location.pathname.replace(/[^/]*$/, '');
+        var manifest = {
+            name: 'Join In — Asheville',
+            short_name: 'Join In',
+            description: 'Find your people. Join the fun.',
+            start_url: window.location.pathname,
+            scope: dir || '/',
+            display: 'standalone',
+            orientation: 'portrait',
+            background_color: '#f0f4f0',
+            theme_color: '#1B4B8F',
+            icons: []
+        };
+        if (icon180) {
+            manifest.icons.push({ src: icon180, sizes: '180x180', type: 'image/png' });
+        }
+        if (icon512) {
+            manifest.icons.push({ src: icon512, sizes: '512x512', type: 'image/png' });
+            manifest.icons.push({ src: icon512, sizes: '512x512', type: 'image/png', purpose: 'maskable' });
+        }
+        var link = document.getElementById('manifest-link');
+        if (link && window.URL && typeof URL.createObjectURL === 'function') {
+            var blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+            link.href = URL.createObjectURL(blob);
+        }
+    } catch (e) { /* the app still works without an icon */ }
+
+    updateInstallCard();
+}
+
+function isStandalone() {
+    try {
+        if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) { return true; }
+    } catch (e) {}
+    return window.navigator.standalone === true;
+}
+
+function isApplePhone() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent);
+}
+
+window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredInstall = e;
+    updateInstallCard();
+});
+
+window.addEventListener('appinstalled', function() {
+    deferredInstall = null;
+    localStorage.setItem('joinin_installed', '1');
+    updateInstallCard();
+});
+
+function updateInstallCard() {
+    var card = document.getElementById('install-card');
+    if (!card) return;
+    var alreadyDone = isStandalone() || localStorage.getItem('joinin_installed') === '1';
+    var dismissed = localStorage.getItem('joinin_install_dismissed') === '1';
+    var canOffer = deferredInstall !== null || isApplePhone();
+    card.style.display = (!alreadyDone && !dismissed && canOffer && currentUser) ? 'block' : 'none';
+}
+
+async function doInstall() {
+    if (deferredInstall) {
+        deferredInstall.prompt();
+        var choice = await deferredInstall.userChoice;
+        deferredInstall = null;
+        if (choice && choice.outcome === 'accepted') {
+            localStorage.setItem('joinin_installed', '1');
+        }
+        updateInstallCard();
+        return;
+    }
+    // iPhone has no install prompt, so show the three taps instead.
+    var steps = document.getElementById('ios-steps');
+    var btn = document.getElementById('install-btn');
+    if (steps) {
+        var open = steps.style.display === 'block';
+        steps.style.display = open ? 'none' : 'block';
+        if (btn) { btn.textContent = open ? '📲 Add to Home Screen' : '📲 Hide the steps'; }
+    }
+}
+
+function dismissInstall() {
+    localStorage.setItem('joinin_install_dismissed', '1');
+    updateInstallCard();
+}
+
 // ─── START ───
-loadData();
-if (currentUser) {
-    showApp();
-    document.getElementById('page-login').classList.remove('active');
-    document.getElementById('page-home').classList.add('active');
+async function boot() {
+    if (!initSupabase()) {
+        showNotif('Could not load the connection library. Check your internet.', 'error');
+        document.getElementById('page-login').classList.add('active');
+        return;
+    }
+    setAuthMode('login');
+    setupPWA();
+    var s = await sb.auth.getSession();
+    if (s.data && s.data.session) {
+        await enterApp();
+    } else {
+        document.getElementById('page-login').classList.add('active');
+        currentPage = 'login';
+        history.replaceState({ page: 'login' }, '', '#login');
+    }
+}
+
+// Only real admins see the admin gear.
+function updateAdminVisibility() {
+    var gear = document.querySelector('.admin-gear');
+    if (gear) { gear.style.display = (currentUser && currentUser.isAdmin) ? 'flex' : 'none'; }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
 } else {
-    document.getElementById('page-login').classList.add('active');
+    boot();
 }
 </script>
 </body>
 </html>
-Restore full app code with delete button
