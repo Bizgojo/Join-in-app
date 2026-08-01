@@ -1067,6 +1067,12 @@ function showProfile() {
     document.getElementById('profile-display').innerHTML = html;
 }
 
+function escapeHTML(s) {
+    return String(s === null || s === undefined ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 // ─── AVATARS ───
 function avatarOf(uid) {
     var p = userProfiles[uid];
@@ -1222,9 +1228,10 @@ function renderMessages() {
     var unreadNotes = cloudNotifications.filter(function(n) { return !n.read; });
     var readNotes = cloudNotifications.filter(function(n) { return n.read; });
     function noteCard(n) {
-        var s = '<div class="msg-card' + (n.read ? ' read' : '') + '" style="border-left-color:#5B8C5A">';
-        s += '<div class="mm">🔔 Notification</div>';
-        s += '<div class="mt">' + n.message + '</div>';
+        var welcome = n.kind === 'welcome';
+        var s = '<div class="msg-card' + (n.read ? ' read' : '') + '" style="border-left-color:' + (welcome ? '#1B4B8F' : '#5B8C5A') + '">';
+        s += '<div class="mm">' + (welcome ? '👋 From the Join In team' : '🔔 Notification') + '</div>';
+        s += '<div class="mt">' + escapeHTML(n.message).replace(/\n/g, '<br>') + '</div>';
         s += '<div class="mm">' + new Date(n.created_at).toLocaleString() + '</div>';
         s += '<div class="msg-actions">';
         if (n.group_id) {
