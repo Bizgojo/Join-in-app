@@ -183,7 +183,15 @@
 <!-- HOME -->
 <div id="page-home" class="page">
 <div style="position:sticky;top:0;z-index:400;background:#f0f4f0;margin:-20px -20px 6px;padding:12px 20px 8px"><svg class="jilogo" style="max-width:250px" viewBox="100 40 490 200" role="img" aria-label="Join In Asheville" xmlns="http://www.w3.org/2000/svg"><defs><path id="ji-arc-home" d="M 252 194 Q 382 150 512 194" fill="none"/></defs><g transform="translate(178,138) scale(0.74) translate(-340,-108)"><circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/><g fill="#1B4B8F"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(72 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#E4572E" transform="rotate(144 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#1B4B8F" transform="rotate(216 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(288 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g></g><text x="248" y="122" class="ji-w">Join <tspan class="ji-w2">In</tspan></text><text class="ji-s"><textPath href="#ji-arc-home" startOffset="50%" text-anchor="middle">Asheville</textPath></text><path class="ji-b" d="M 240 214 C 294 197 338 187 384 186 C 440 185 486 194 526 209 C 484 202 438 196 386 199 C 336 202 292 209 240 214 Z"/><path class="ji-b" d="M 522 208 C 540 213 552 209 560 199 C 550 206 536 207 520 203 Z"/><path class="ji-b" opacity="0.55" d="M 300 213 C 340 204 372 199 410 199 C 372 203 336 208 300 213 Z"/></svg></div><div style="text-align:center;font-size:14px;color:#888;margin-bottom:4px">Find your people. Join the fun.</div>
-<div class="user-section">
+<div class="user-section" id="home-guest-row" style="display:none">
+<div class="user-avatar" style="background:#8a948a">•</div>
+<div class="user-info" style="flex:1">
+<div class="name">Looking around</div>
+<div class="sub" style="font-size:13px;color:#888">Free to join. No credit card.</div>
+</div>
+<button class="btn-select" onclick="goToSignUp()" style="width:auto;padding:10px 16px">Create Free Account</button>
+</div>
+<div class="user-section" id="home-user-row">
 <div class="user-avatar" id="home-avatar" onclick="showPage('edit-profile')">T</div>
 <div class="user-info" onclick="showPage('profile')" style="flex:1">
 <div class="name" id="home-username">Test User</div>
@@ -1371,11 +1379,136 @@ async function logout() {
     setAuthMode('login');
 }
 
+// ─── LOOKING AROUND WITHOUT AN ACCOUNT ───
+// A visitor lands in the app itself, not on a login wall. They can read
+// everything that is approved and public; anything that puts their name
+// on something asks them to make an account first.
+
+var MEMBER_ONLY_PAGES = ['hosting', 'chat', 'messages', 'tickets', 'ticket-qr',
+                         'profile', 'edit-profile', 'admin', 'create-group',
+                         'create-event', 'feedback'];
+
+function isGuest() { return !currentUser; }
+
+function goToSignUp() {
+    showPage('login');
+    setAuthMode('signup');
+}
+
+// Returns true when there is an account behind the tap. When there is not,
+// it explains what is missing and offers to fix it.
+function requireAccount(what) {
+    if (currentUser) { return true; }
+    document.getElementById('popup-icon').textContent = '\uD83D\uDC4B';
+    document.getElementById('popup-title').textContent = 'Create a free account';
+    document.getElementById('popup-text').innerHTML =
+        'You need an account to ' + (what || 'do that') + '.<br><br>' +
+        'Join In is free to join and free to create groups, classes or events. ' +
+        'No credit card is required.';
+    var btn = document.getElementById('popup-btn');
+    btn.textContent = 'Create Free Account';
+    btn.onclick = function() { closePopup(); goToSignUp(); };
+    var sec = document.querySelector('.popup-btn-secondary');
+    if (sec) {
+        sec.style.display = 'block';
+        sec.textContent = 'Keep Looking';
+        sec.onclick = closePopup;
+    }
+    document.getElementById('popup-overlay').classList.add('active');
+    return false;
+}
+
+// The same shared data as a member sees, minus anything private.
+// Organiser names come from a view that exposes nothing but the name.
+async function loadPublicData() {
+    await loadTownsAndSettings();
+    await loadGroupPhotos();
+    if (!sb) { return; }
+    try {
+        var cats = await sb.from('categories').select('name,icon,is_approved').order('name');
+        if (cats.data) {
+            allCategories = cats.data.filter(function(c) { return c.is_approved; })
+                                    .map(function(c) { return c.name; });
+            categoryIcons = {};
+            cats.data.forEach(function(c) { if (c.icon) { categoryIcons[c.name] = c.icon; } });
+        }
+
+        var orgs = await sb.from('organizers_public').select('id,display_name');
+        userProfiles = {};
+        allUsers = [];
+        (orgs.data || []).forEach(function(o) {
+            userProfiles[o.id] = { displayName: o.display_name, interests: [] };
+        });
+
+        var grps = await sb.from('groups').select('*');
+        var phos = await sb.from('group_photos').select('group_id,url');
+        var photosBy = {};
+        (phos.data || []).forEach(function(p) {
+            (photosBy[p.group_id] = photosBy[p.group_id] || []).push(p.url);
+        });
+
+        allGroups = (grps.data || []).map(function(g) {
+            return {
+                id: g.id, name: g.name, description: g.description, category: g.category,
+                street_address: g.street_address, location: g.location,
+                venue_name: g.venue_name, host_org: g.host_org,
+                instructor_bio: g.instructor_bio,
+                is_private: g.is_private, is_paid: g.is_paid, price: Number(g.price) || 0,
+                cover_image: g.cover_image, organizer_id: g.organizer_id,
+                organizer_name: (userProfiles[g.organizer_id] || {}).displayName || 'A local host',
+                kind: g.kind, cost_note: g.cost_note, instructor: g.instructor,
+                venue_type: g.venue_type, visibility: g.visibility,
+                payment_mode: g.payment_mode, registration_url: g.registration_url,
+                recurring: g.recurring, meeting_datetime: g.meeting_datetime,
+                weekly_day: g.weekly_day, weekly_time: g.weekly_time,
+                monthly_week: g.monthly_week, monthly_day: g.monthly_day,
+                monthly_time: g.monthly_time,
+                max_members: g.max_members,
+                member_count: g.member_count, members: [],
+                photos: photosBy[g.id] || [], status: g.status,
+                created: g.created_at
+            };
+        });
+
+        myWaitlist = [];
+        cloudNotifications = [];
+        cloudReady = true;
+    } catch (e) {
+        cloudReady = false;
+    }
+}
+
+// Swaps the signed-in header for an invitation to join.
+function applyGuestChrome() {
+    var mine = document.getElementById('home-user-row');
+    var guest = document.getElementById('home-guest-row');
+    if (mine) { mine.style.display = isGuest() ? 'none' : 'flex'; }
+    if (guest) { guest.style.display = isGuest() ? 'flex' : 'none'; }
+}
+
+async function enterAsGuest() {
+    currentUser = null;
+    await loadPublicData();
+    document.getElementById('page-login').classList.remove('active');
+    document.getElementById('page-home').classList.add('active');
+    currentPage = 'home';
+    history.replaceState({ page: 'home' }, '', '#home');
+    showApp();
+}
+
 function showApp() {
     populateCategoryDropdown();
     renderCategories();
     renderGroups();
     renderEvents();
+    applyGuestChrome();
+    if (isGuest()) {
+        updateAdminVisibility();
+        updateHome();
+        updateInstallCard();
+        renderUpcoming();
+        return;
+    }
     renderHosting();
     renderChatRooms();
     renderTickets();
@@ -1421,6 +1554,10 @@ function paintPageName(page) {
 }
 
 function showPage(page, fromHistory) {
+    if (isGuest() && MEMBER_ONLY_PAGES.indexOf(page) > -1) {
+        requireAccount('use that part of Join In');
+        return;
+    }
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     var target = document.getElementById('page-' + page);
     if (target) { target.classList.add('active'); target.scrollTop = 0; }
@@ -2084,6 +2221,7 @@ async function saveGroupEdits() {
 }
 
 function startCreate(kind) {
+    if (!requireAccount('create a group, class or event')) { return; }
     createKind = kind === 'class' ? 'class' : 'group';
     resetGroupForm();
     applyCreateKind();
@@ -2931,6 +3069,7 @@ function onWaitlist(g) {
 }
 
 async function joinWaitlist(id) {
+    if (!requireAccount('be told when a spot opens')) { return; }
     var g = allGroups.find(function(x) { return x.id === id; });
     if (!g || !sb || !currentUser) return;
     var res = await sb.from('group_waitlist').insert({ group_id: g.id, user_id: currentUser.id });
@@ -3006,6 +3145,7 @@ function messageHostGate(id) {
 }
 
 async function joinGroup(id) {
+    if (!requireAccount('sign up for this')) { return; }
     var g = allGroups.find(function(x) { return x.id === id; });
     if (!g || !currentUser || !sb) return;
     if (isMemberOf(g)) { showNotif('You already joined this group.', 'info'); return; }
@@ -3030,6 +3170,7 @@ async function joinGroup(id) {
 }
 
 async function leaveGroup(id) {
+    if (!requireAccount('change your sign-up')) { return; }
     var g = allGroups.find(function(x) { return x.id === id; });
     if (!g || !currentUser || !sb) return;
     if (!confirm('Remove your name from "' + g.name + '"?')) return;
@@ -4977,9 +5118,7 @@ async function boot() {
     if (s.data && s.data.session) {
         await enterApp();
     } else {
-        document.getElementById('page-login').classList.add('active');
-        currentPage = 'login';
-        history.replaceState({ page: 'login' }, '', '#login');
+        await enterAsGuest();
     }
 }
 
