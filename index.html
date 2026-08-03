@@ -7,11 +7,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Join In">
+<meta name="apple-mobile-web-app-title" content="JoinIn">
 <meta name="description" content="Find your people. Join the fun. Community groups and events in Asheville, NC.">
 <link id="manifest-link" rel="manifest">
 <link id="apple-icon" rel="apple-touch-icon">
-<title>Join In</title>
+<title>JoinIn</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,sans-serif;background:#f0f4f0;max-width:500px;margin:0 auto;padding:20px}.card{background:white;border-radius:16px;padding:20px;margin-bottom:12px;border:1px solid #e8eee8}.btn{background:#5B8C5A;color:white;border:none;padding:16px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%}.btn-danger{background:#e74c3c;color:white;border:none;padding:16px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%}.btn-danger:hover{background:#c0392b}input,textarea,select{width:100%;padding:14px;border:2px solid #dce4dc;border-radius:14px;font-size:16px;margin-bottom:12px;font-family:inherit}input::placeholder,textarea::placeholder{color:#6b7a6b;opacity:1}#group-desc::placeholder{line-height:1.45}.header{text-align:center;padding:16px 0}.logo{font-size:28px;font-weight:800;color:#1a1a2e}.green{color:#5B8C5A}.funnel{background:white;border-radius:16px;padding:16px 20px;margin-bottom:10px;border:1px solid #e8eee8;cursor:pointer;display:flex;align-items:center;gap:14px}.funnel:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}.funnel .icon{font-size:28px;width:40px;text-align:center}.funnel .text{flex:1}.funnel .title{font-size:16px;font-weight:700}.funnel .sub{font-size:13px;color:#888}.funnel .arrow{font-size:18px;color:#ccc}.page{display:none}.page.active{display:block}.notif{padding:14px 18px;border-radius:14px;margin-bottom:12px;display:none}.notif.success{background:#d4edda;color:#155724;display:block}.notif.error{background:#f8d7da;color:#721c24;display:block}.notif.info{background:#d1ecf1;color:#0c5460;display:block}.user-section{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.05);margin-bottom:16px;cursor:pointer}.user-avatar{width:48px;height:48px;border-radius:50%;background:#5B8C5A;color:white;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700}.admin-gear{position:fixed;bottom:20px;right:20px;background:#1a1a2e;color:white;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;border:none;z-index:100}.back-btn{position:sticky;top:0;z-index:500;display:flex;align-items:center;gap:10px;width:calc(100% + 40px);margin:-20px -20px 14px -20px;padding:16px 20px;background:#5B8C5A;color:white;border:none;font-size:19px;font-weight:700;cursor:pointer;text-align:left;box-shadow:0 2px 10px rgba(0,0,0,0.15)}
 .back-btn:active{background:#4a7549}
@@ -120,7 +120,7 @@
 <button class="popup-close" onclick="closeShare()">✕</button>
 <div class="popup-icon">🎉</div>
 <div class="popup-title">Thanks — now pass it on!</div>
-<div class="share-note"><strong>Join In is free to join</strong> and free to create groups, classes or events. No credit card is required.</div>
+<div class="share-note"><strong>JoinIn is free to join</strong> and free to create groups, classes or events. No credit card is required.</div>
 <div class="share-link" id="share-link-text">joinin.today</div>
 <button class="popup-btn" onclick="shareJoinIn()">📤 Share with Friends</button>
 <button class="popup-btn-secondary" onclick="copyShareLink()">🔗 Copy Link</button>
@@ -215,7 +215,7 @@
 <div id="install-card" style="display:none;background:#1B4B8F;color:white;border-radius:16px;padding:16px 18px;margin-bottom:12px">
 <div style="display:flex;align-items:center;gap:14px">
 <div style="flex:1">
-<div style="font-size:17px;font-weight:700">Add the <span style="letter-spacing:.3px">Join <span style="color:#8FC3F5">In</span></span> app to your home screen</div>
+<div style="font-size:17px;font-weight:700">Add the <span style="letter-spacing:.3px">Join<span style="color:#F5A78F">In</span></span> app to your home screen</div>
 <div style="font-size:14px;opacity:.85;margin-top:2px">Opens full screen, like a real app.</div>
 </div>
 <button onclick="dismissInstall()" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:22px;cursor:pointer;padding:4px 8px">✕</button>
@@ -405,13 +405,13 @@
 <div class="error-text" id="pay-mode-error">Please choose how students pay</div>
 
 <div id="pay-cash-box" style="display:none">
-<div class="cash-note">💵 <strong>Students pay you in cash, at the class.</strong> Join In never handles the money, so there is nothing to refund and no card details to lose.</div>
+<div class="cash-note">💵 <strong>Students pay you in cash, at the class.</strong> JoinIn never handles the money, so there is nothing to refund and no card details to lose.</div>
 </div>
 
 <div id="pay-external-box" style="display:none">
 <input type="url" id="registration-url" placeholder="https://yourschool.edu/classes/... *" autocapitalize="off" spellcheck="false">
 <div class="error-text" id="registration-url-error">Please enter the full web address, starting https://</div>
-<div class="cash-note">🔗 <strong>Students register and pay on your own site.</strong> Join In never handles the money. Your web address is shown on the listing so people can see where they are going.</div>
+<div class="cash-note">🔗 <strong>Students register and pay on your own site.</strong> JoinIn never handles the money. Your web address is shown on the listing so people can see where they are going.</div>
 </div>
 </div>
 </div>
@@ -488,14 +488,14 @@
 <div id="page-feedback" class="page">
 <button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card"><h3>💬 Feedback & Ratings</h3>
-<div class="mission">In this age of AI, Join In’s goal is to further <strong>human</strong> interaction — a platform where humans join with other humans, for social sanity.</div>
-<div class="fb-q"><span class="num">1</span>What do you like most about Join In?</div>
+<div class="mission">In this age of AI, JoinIn’s goal is to further <strong>human</strong> interaction — a platform where humans join with other humans, for social sanity.</div>
+<div class="fb-q"><span class="num">1</span>What do you like most about JoinIn?</div>
 <textarea id="fb-most" rows="3" placeholder="The part that works for you…"></textarea>
-<div class="fb-q"><span class="num">2</span>What do you like least about Join In?</div>
+<div class="fb-q"><span class="num">2</span>What do you like least about JoinIn?</div>
 <textarea id="fb-least" rows="3" placeholder="What gets in your way…"></textarea>
-<div class="fb-q"><span class="num">3</span>What would you like potential users to know about Join In?</div>
+<div class="fb-q"><span class="num">3</span>What would you like potential users to know about JoinIn?</div>
 <textarea id="fb-know" rows="3" placeholder="What you’d tell a friend…"></textarea>
-<div style="text-align:center;margin:18px 0 12px"><label style="font-weight:700;font-size:17px;display:block;margin-bottom:6px">Rate Join In:</label><div id="star-rating" style="font-size:46px;cursor:pointer"><span onclick="setRating(1)">☆</span><span onclick="setRating(2)">☆</span><span onclick="setRating(3)">☆</span><span onclick="setRating(4)">☆</span><span onclick="setRating(5)">☆</span></div><p style="font-size:15px;color:#888" id="rating-label">Tap a star to rate</p></div>
+<div style="text-align:center;margin:18px 0 12px"><label style="font-weight:700;font-size:17px;display:block;margin-bottom:6px">Rate JoinIn:</label><div id="star-rating" style="font-size:46px;cursor:pointer"><span onclick="setRating(1)">☆</span><span onclick="setRating(2)">☆</span><span onclick="setRating(3)">☆</span><span onclick="setRating(4)">☆</span><span onclick="setRating(5)">☆</span></div><p style="font-size:15px;color:#888" id="rating-label">Tap a star to rate</p></div>
 <button class="btn" onclick="submitFeedback()">📨 Submit Feedback</button></div>
 <div id="feedback-list"></div>
 </div>
@@ -1126,7 +1126,7 @@ function authErrorText(raw) {
         return 'That email and password combination did not work. Check both and try again.';
     }
     if (m.indexOf('email not confirmed') > -1) {
-        return 'Your account is not confirmed yet. Open the email from Join In and tap the link.';
+        return 'Your account is not confirmed yet. Open the email from JoinIn and tap the link.';
     }
     if (m.indexOf('already registered') > -1 || m.indexOf('already been registered') > -1) {
         return 'An account with that email already exists. Try logging in instead.';
@@ -1172,7 +1172,7 @@ async function doAuth() {
                 setAuthMode('login');
                 return;
             }
-            showNotif('Welcome to Join In, ' + name + '!', 'success');
+            showNotif('Welcome to JoinIn, ' + name + '!', 'success');
         } else {
             authStatus('Logging in...');
             var li = await sb.auth.signInWithPassword({ email: email, password: pass });
@@ -1403,7 +1403,7 @@ function requireAccount(what) {
     document.getElementById('popup-title').textContent = 'Create a free account';
     document.getElementById('popup-text').innerHTML =
         'You need an account to ' + (what || 'do that') + '.<br><br>' +
-        'Join In is free to join and free to create groups, classes or events. ' +
+        'JoinIn is free to join and free to create groups, classes or events. ' +
         'No credit card is required.';
     var btn = document.getElementById('popup-btn');
     btn.textContent = 'Create Free Account';
@@ -1555,7 +1555,7 @@ function paintPageName(page) {
 
 function showPage(page, fromHistory) {
     if (isGuest() && MEMBER_ONLY_PAGES.indexOf(page) > -1) {
-        requireAccount('use that part of Join In');
+        requireAccount('use that part of JoinIn');
         return;
     }
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
@@ -1896,7 +1896,7 @@ function renderMessages() {
     function noteCard(n) {
         var welcome = n.kind === 'welcome';
         var s = '<div class="msg-card' + (n.read ? ' read' : '') + '" style="border-left-color:' + (welcome ? '#1B4B8F' : '#5B8C5A') + '">';
-        s += '<div class="mm">' + (welcome ? '👋 From the Join In team' : '🔔 Notification') + '</div>';
+        s += '<div class="mm">' + (welcome ? '👋 From the JoinIn team' : '🔔 Notification') + '</div>';
         s += '<div class="mt">' + escapeHTML(n.message).replace(/\n/g, '<br>') + '</div>';
         s += '<div class="mm">' + new Date(n.created_at).toLocaleString() + '</div>';
         s += '<div class="msg-actions">';
@@ -3140,7 +3140,7 @@ async function signMeUp(id) {
 
 function messageHostGate(id) {
     var g = allGroups.find(function(x) { return x.id === id; });
-    if (!isSignedIn()) { askToRegister('send messages through Join In'); return; }
+    if (!isSignedIn()) { askToRegister('send messages through JoinIn'); return; }
     messageHostWrite(id);
 }
 
@@ -3185,12 +3185,12 @@ async function leaveGroup(id) {
 function emailMeDetails(id) {
     var g = allGroups.find(function(x) { return x.id === id; });
     if (!g) return;
-    var subject = 'Join In: ' + g.name;
+    var subject = 'JoinIn: ' + g.name;
     var body = 'Welcome to ' + g.name + '!\n\n' +
         'When: ' + groupMeetingText(g) + '\n' +
         'Where: ' + (groupAddress(g) || 'To be announced') + '\n' +
         'Host: ' + (g.organizer_name || 'Unknown') + '\n\n' +
-        (g.description || '') + '\n\n— Join In, Asheville NC';
+        (g.description || '') + '\n\n— JoinIn, Asheville NC';
     window.location.href = 'mailto:' + (currentUser?.email || '') +
         '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 }
@@ -4160,7 +4160,7 @@ function setRating(rating) {
 }
 
 var SHARE_URL = 'https://joinin.today';
-var SHARE_MSG = 'Join In — find your people in Asheville, NC. Free to join, free to create groups, classes or events. No credit card is required.';
+var SHARE_MSG = 'JoinIn — find your people in Asheville, NC. Free to join, free to create groups, classes or events. No credit card is required.';
 
 function submitFeedback() {
     var most = document.getElementById('fb-most').value.trim();
@@ -4202,7 +4202,7 @@ function shareState(msg) {
 }
 
 async function shareJoinIn() {
-    var payload = { title: 'Join In', text: SHARE_MSG, url: SHARE_URL };
+    var payload = { title: 'JoinIn', text: SHARE_MSG, url: SHARE_URL };
     if (navigator.share) {
         try { await navigator.share(payload); shareState('Thanks for spreading the word!'); return; }
         catch (e) { if (e && e.name === 'AbortError') { return; } }
@@ -4967,7 +4967,7 @@ function closePopup() {
 function closePopupAndCreate() { closePopup(); showPage('create-group'); }
 
 // ─── APP ICON & INSTALL ───
-// The five-person ring from the Join In logo, drawn as a square app icon.
+// The five-person ring from the JoinIn logo, drawn as a square app icon.
 function iconSVG(size) {
     var fig = '<circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/>';
     return '<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size + '" viewBox="0 0 512 512">' +
@@ -5008,8 +5008,8 @@ async function setupPWA() {
 
         var dir = window.location.pathname.replace(/[^/]*$/, '');
         var manifest = {
-            name: 'Join In — Asheville',
-            short_name: 'Join In',
+            name: 'JoinIn — Asheville',
+            short_name: 'JoinIn',
             description: 'Find your people. Join the fun.',
             start_url: window.location.pathname,
             scope: dir || '/',
