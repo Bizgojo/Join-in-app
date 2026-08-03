@@ -2590,10 +2590,28 @@ function openGroupDetail(id) {
     renderGroupDetail();
 }
 
+// How many browsable items sit in a category alongside this one.
+function categoryCount(category) {
+    if (!category) { return 0; }
+    var mine = itemsOfKind();
+    var n = 0;
+    for (var i = 0; i < mine.length; i++) {
+        if ((mine[i].category || 'Other') === category) { n++; }
+    }
+    return n;
+}
+
+// A category holding nothing but this one card is not worth going back to,
+// so the back button skips it and returns home.
 function backToCategory() {
     currentDetailGroup = null;
-    showPage('groups');
-    if (currentGroupCategory) { showGroupsByCategory(currentGroupCategory, true); }
+    if (categoryCount(currentGroupCategory) > 1) {
+        showPage('groups');
+        showGroupsByCategory(currentGroupCategory, true);
+        return;
+    }
+    currentGroupCategory = null;
+    showPage('home');
 }
 
 function groupMeetingText(g) {
@@ -2645,7 +2663,8 @@ function renderGroupDetail() {
     var isHost = currentUser && g.organizer_id === currentUser.id;
     var locked = visibilityOf(g) === 'hidden' && !joined && !isHost;
     document.getElementById('group-detail-back').innerHTML =
-        '<span class="chev">‹</span> Back to ' + (currentGroupCategory || 'Groups');
+        '<span class="chev">‹</span> Back to ' +
+        (categoryCount(currentGroupCategory) > 1 ? currentGroupCategory : 'Home');
 
     var html = '<div class="card">';
     var pics = photosFor(g);
