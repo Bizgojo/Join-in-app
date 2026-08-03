@@ -92,6 +92,7 @@
 .cloud-note{background:#eef4ee;border:1px solid #cfe0cf;color:#2d5a2d;padding:10px 14px;border-radius:12px;font-size:13px;margin-bottom:10px}
 .busy{opacity:.55;pointer-events:none}
 .mission{background:#eaf2fb;border:1px solid #cfe0f2;border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:16px;line-height:1.5;color:#1B4B8F}.fb-q{font-weight:700;font-size:17px;margin:16px 0 6px;line-height:1.4}.fb-q .num{display:inline-block;background:#1B4B8F;color:#fff;border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;font-size:15px;margin-right:8px}.share-note{background:#f0f8f0;border-radius:12px;padding:12px 14px;font-size:16px;line-height:1.45;color:#2d5a2d;margin-bottom:14px}.share-link{display:block;width:100%;background:#eaf2fb;border:1px solid #cfe0f2;border-radius:10px;padding:12px;font-family:ui-monospace,Menlo,monospace;font-size:17px;font-weight:700;color:#1B4B8F;text-align:center;margin-bottom:12px;word-break:break-all}
+.host-tag{flex:none;background:#1B4B8F;color:#fff;border-radius:20px;padding:6px 14px;font-size:14px;font-weight:700}.host-hint{font-size:13px;color:#8a948a;margin-top:2px}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -225,7 +226,6 @@
 <div class="funnel f-red" onclick="startCreate('group')"><span class="icon">🚀</span><div class="text"><div class="title">Create a Group</div><div class="sub">Start something new</div></div><span class="arrow">›</span></div>
 <div class="funnel f-red" onclick="startCreate('class')"><span class="icon">🧑‍🏫</span><div class="text"><div class="title">Offer a Class or Course</div><div class="sub">Share a skill, get paid</div></div><span class="arrow">›</span></div>
 <div class="funnel f-red" onclick="showPage('create-event')"><span class="icon">📢</span><div class="text"><div class="title">Create an Event</div><div class="sub">Sell tickets, attract fans</div></div><span class="arrow">›</span></div>
-<div class="funnel" onclick="showPage('hosting')"><span class="icon">👑</span><div class="text"><div class="title">My Hosting</div><div class="sub">Manage your groups & events</div></div><span class="arrow">›</span></div>
 <div class="funnel" onclick="showPage('chat')"><span class="icon">💬</span><div class="text"><div class="title">Chat</div><div class="sub">Messages & conversations</div></div><span class="arrow">›</span></div>
 <div class="funnel" onclick="showPage('feedback')"><span class="icon">💬</span><div class="text"><div class="title">Feedback & Ratings</div><div class="sub">Share your thoughts</div></div><span class="arrow">›</span></div>
 <button class="admin-gear" onclick="showPage('admin')">⚙️</button>
@@ -1496,15 +1496,20 @@ function myScheduleItems() {
     var items = [];
 
     allGroups.forEach(function(g) {
-        if (!isMemberOf(g)) { return; }
+        var host = !!(currentUser && g.organizer_id === currentUser.id);
+        if (!isMemberOf(g) && !host) { return; }
         var cls = isClass(g);
         items.push({
             sort: nextOccurrence(g),
             icon: cls ? '\u{1F393}' : '\u{1F465}',
             colour: cls ? '#7B1FA2' : '#5B8C5A',
             name: g.name,
-            tap: "openUpcomingGroup('" + String(g.id).replace(/'/g, "\\'") +
-                 "','" + String(g.category || '').replace(/'/g, "\\'") + "')"
+            host: host,
+            note: host ? 'Tap to edit' : null,
+            tap: host
+                ? "startEditGroup('" + String(g.id).replace(/'/g, "\\'") + "')"
+                : "openUpcomingGroup('" + String(g.id).replace(/'/g, "\\'") +
+                  "','" + String(g.category || '').replace(/'/g, "\\'") + "')"
         });
     });
 
@@ -1550,10 +1555,11 @@ function renderMySchedule() {
         html += '<div onclick="' + it.tap + '" style="background:white;border:1px solid #e8eee8;' +
             'border-left:5px solid ' + it.colour + ';border-radius:14px;padding:14px 16px;' +
             'margin-bottom:8px;cursor:pointer">' +
+            '<div style="display:flex;align-items:center;gap:12px"><div style="flex:1;min-width:0">' +
             '<div style="font-size:17px;font-weight:700">' + it.icon + ' ' + escapeHTML(it.name) + '</div>' +
             '<div style="font-size:15px;color:#2d5a2d;font-weight:600;margin-top:4px">\u{1F5D3}\uFE0F ' + when + '</div>' +
-            (it.note ? '<div style="font-size:14px;color:#888;margin-top:2px">' + it.note + '</div>' : '') +
-            '</div>';
+            (it.note ? '<div class="host-hint">' + it.note + '</div>' : '') +
+            '</div>' + (it.host ? '<span class="host-tag">Host</span>' : '') + '</div></div>';
     });
     box.innerHTML = html;
     box.style.display = 'block';
@@ -1916,6 +1922,165 @@ function isClass(g) { return (g && g.kind) === 'class'; }
 function kindNoun(kind, capital) {
     var w = kind === 'class' ? 'class' : 'group';
     return capital ? w.charAt(0).toUpperCase() + w.slice(1) : w;
+}
+
+var editingGroupId = null;
+
+function localInputValue(iso) {
+    if (!iso) { return ''; }
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) { return ''; }
+    var p = function(n) { return String(n).padStart(2, '0'); };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) +
+           'T' + p(d.getHours()) + ':' + p(d.getMinutes());
+}
+
+function hhmm(t) { return t ? String(t).slice(0, 5) : ''; }
+
+function setVal(id, v) {
+    var el = document.getElementById(id);
+    if (el) { el.value = (v === null || v === undefined) ? '' : v; }
+}
+
+// A host edits in the same form they created in, already filled in.
+function startEditGroup(id) {
+    var g = allGroups.find(function(x) { return String(x.id) === String(id); });
+    if (!g) { return showNotif('That is no longer available.', 'error'); }
+    if (!currentUser || g.organizer_id !== currentUser.id) {
+        return showNotif('Only the host can edit this.', 'error');
+    }
+
+    createKind = isClass(g) ? 'class' : 'group';
+    resetGroupForm();
+    applyCreateKind();
+    editingGroupId = g.id;
+
+    setVal('group-category', g.category);
+    setVal('group-name', g.name);
+    setVal('group-desc', g.description);
+    setVal('group-venue-name', g.venue_name);
+    setVal('group-street', g.street_address);
+    setVal('group-max', g.max_members);
+    setVal('group-cost-note', g.cost_note);
+    setVal('group-price', g.price);
+    setVal('registration-url', g.registration_url);
+    setVal('class-instructor', g.instructor);
+    setVal('class-bio', g.instructor_bio);
+    setVal('class-org', g.host_org);
+
+    populateTownDropdown();
+    setVal('group-location', g.location);
+
+    var pub = document.getElementById('class-venue-public');
+    if (pub) { pub.checked = g.venue_type === 'public'; }
+
+    var rec = (g.recurring === 'weekly' || g.recurring === 'monthly') ? g.recurring : 'once';
+    setSchedule(rec);
+    setVal('group-weekly-day', g.weekly_day || 'Saturday');
+    setVal('group-weekly-time', hhmm(g.weekly_time) || '18:30');
+    setVal('group-monthly-week', g.monthly_week || 'Second');
+    setVal('group-monthly-day', g.monthly_day || 'Saturday');
+    setVal('group-monthly-time', hhmm(g.monthly_time) || '18:30');
+
+    var local = localInputValue(g.meeting_datetime);
+    setVal('group-datetime', local);
+    var shown = document.getElementById('group-datetime-shown');
+    if (shown && local) {
+        var d = new Date(g.meeting_datetime);
+        calPicked = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        shown.textContent = '\u2705 ' + calPrettyDate(calPicked, local.slice(11));
+        shown.style.display = 'block';
+    }
+
+    setPrivacy(g.visibility || 'public');
+    if (createKind === 'class') { setPayMode(g.payment_mode || 'cash'); }
+
+    var title = document.getElementById('create-title');
+    if (title) { title.textContent = '\u270F\uFE0F Edit ' + kindNoun(createKind, true); }
+    var blurb = document.getElementById('create-blurb');
+    if (blurb) {
+        blurb.textContent = 'Change anything below, then save. ' +
+            'If you move the date or time, everyone signed up is told automatically.';
+    }
+
+    var btn = document.getElementById('submit-group-btn');
+    if (btn) {
+        btn.textContent = '\uD83D\uDCBE Save Changes';
+        btn.classList.remove('submitted');
+        btn.disabled = false;
+    }
+    showPage('create-group');
+}
+
+// The date and time members were promised, so a change can be spotted.
+function scheduleStamp(g) {
+    return [g.recurring, g.meeting_datetime, g.weekly_day, hhmm(g.weekly_time),
+            g.monthly_week, g.monthly_day, hhmm(g.monthly_time)].join('|');
+}
+
+async function saveGroupEdits() {
+    var g = allGroups.find(function(x) { return String(x.id) === String(editingGroupId); });
+    if (!g) { editingGroupId = null; return showNotif('That is no longer available.', 'error'); }
+
+    var name = document.getElementById('group-name').value.trim();
+    var description = document.getElementById('group-desc').value.trim();
+    if (!name || !description) {
+        return showNotif('A name and description are both required.', 'error');
+    }
+
+    var btn = document.getElementById('submit-group-btn');
+    btn.disabled = true;
+    btn.textContent = 'Saving\u2026';
+
+    var before = scheduleStamp(g);
+    var once = selectedSchedule === 'once';
+    var weekly = selectedSchedule === 'weekly';
+    var monthly = selectedSchedule === 'monthly';
+
+    var row = {
+        name: name,
+        description: description,
+        category: document.getElementById('group-category').value,
+        venue_name: document.getElementById('group-venue-name').value.trim() || null,
+        street_address: document.getElementById('group-street').value.trim() || null,
+        location: document.getElementById('group-location').value || g.location,
+        visibility: selectedPrivacy || 'public',
+        cost_note: document.getElementById('group-cost-note').value.trim() || null,
+        max_members: parseInt(document.getElementById('group-max').value, 10) || null,
+        recurring: selectedSchedule,
+        meeting_datetime: once ? (document.getElementById('group-datetime').value || null) : null,
+        weekly_day: weekly ? document.getElementById('group-weekly-day').value : null,
+        weekly_time: weekly ? document.getElementById('group-weekly-time').value : null,
+        monthly_week: monthly ? document.getElementById('group-monthly-week').value : null,
+        monthly_day: monthly ? document.getElementById('group-monthly-day').value : null,
+        monthly_time: monthly ? document.getElementById('group-monthly-time').value : null
+    };
+
+    if (createKind === 'class') {
+        row.price = parseFloat(document.getElementById('group-price').value) || g.price;
+        row.instructor = document.getElementById('class-instructor').value.trim() || null;
+        row.instructor_bio = document.getElementById('class-bio').value.trim() || null;
+        row.host_org = document.getElementById('class-org').value.trim() || null;
+        row.payment_mode = selectedPayMode;
+        row.registration_url = selectedPayMode === 'external'
+            ? document.getElementById('registration-url').value.trim() : null;
+    }
+
+    var res = await sb.from('groups').update(row).eq('id', editingGroupId).select().single();
+    btn.disabled = false;
+    if (res.error) {
+        btn.textContent = '\uD83D\uDCBE Save Changes';
+        return showNotif('Could not save: ' + res.error.message, 'error');
+    }
+
+    var moved = scheduleStamp(res.data) !== before;
+    editingGroupId = null;
+    await refreshGroups();
+    resetGroupForm();
+    showPage('home');
+    showNotif(moved
+        ? 'Saved. Everyone signed up has been told about the new time.'
+        : 'Saved.', 'success');
 }
 
 function startCreate(kind) {
@@ -2943,6 +3108,7 @@ function resetGroupForm() {
     document.querySelectorAll('#page-create-group .error-text').forEach(function(e) {
         e.classList.remove('show');
     });
+    editingGroupId = null;
     uploadedImage = null;
     var prev = document.getElementById('image-preview-container');
     if (prev) { prev.innerHTML = ''; }
@@ -3378,6 +3544,7 @@ function generateAIImage() {
 }
 
 async function handleCreateGroup() {
+    if (editingGroupId) { return saveGroupEdits(); }
     var btn = document.getElementById('submit-group-btn');
     if (btn.classList.contains('submitted')) { return showNotif('Already submitted!', 'info'); }
     var name = document.getElementById('group-name').value.trim();
@@ -3527,7 +3694,7 @@ async function handleCreateGroup() {
     } else {
         btn.textContent = '📩 Submitted for review';
         showPopup('📩', 'Sent for Review',
-            'A person will look at "' + name + '" shortly. You will find it under My Hosting.', done);
+            'A person will look at "' + name + '" shortly. You will find it on your home screen.', done);
     }
     btn.classList.add('submitted');
     btn.disabled = true;
