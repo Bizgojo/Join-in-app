@@ -91,6 +91,7 @@
 .link-btn{background:none;border:none;color:#5B8C5A;font-size:15px;font-weight:600;cursor:pointer;text-decoration:underline;padding:8px}
 .cloud-note{background:#eef4ee;border:1px solid #cfe0cf;color:#2d5a2d;padding:10px 14px;border-radius:12px;font-size:13px;margin-bottom:10px}
 .busy{opacity:.55;pointer-events:none}
+.mission{background:#eaf2fb;border:1px solid #cfe0f2;border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:16px;line-height:1.5;color:#1B4B8F}.fb-q{font-weight:700;font-size:17px;margin:16px 0 6px;line-height:1.4}.fb-q .num{display:inline-block;background:#1B4B8F;color:#fff;border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;font-size:15px;margin-right:8px}.share-note{background:#f0f8f0;border-radius:12px;padding:12px 14px;font-size:16px;line-height:1.45;color:#2d5a2d;margin-bottom:14px}.share-link{display:block;width:100%;background:#eaf2fb;border:1px solid #cfe0f2;border-radius:10px;padding:12px;font-family:ui-monospace,Menlo,monospace;font-size:17px;font-weight:700;color:#1B4B8F;text-align:center;margin-bottom:12px;word-break:break-all}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -109,6 +110,21 @@
 <div class="popup-text" id="popup-text">There are no groups in this category yet. Be the first to start one!</div>
 <button class="popup-btn" id="popup-btn" onclick="closePopupAndCreate()">🚀 Start a Group</button>
 <button class="popup-btn-secondary" onclick="closePopup()">Maybe Later</button>
+</div>
+</div>
+
+<!-- SHARE POPUP -->
+<div id="share-overlay" class="popup-overlay" onclick="if(event.target===this) closeShare()">
+<div class="popup">
+<button class="popup-close" onclick="closeShare()">✕</button>
+<div class="popup-icon">🎉</div>
+<div class="popup-title">Thanks — now pass it on!</div>
+<div class="share-note"><strong>Join In is free to join</strong> and free to create groups, classes or events. No credit card is required.</div>
+<div class="share-link" id="share-link-text">joinin.today</div>
+<button class="popup-btn" onclick="shareJoinIn()">📤 Share with Friends</button>
+<button class="popup-btn-secondary" onclick="copyShareLink()">🔗 Copy Link</button>
+<button class="popup-btn-secondary" onclick="closeShare()">Maybe Later</button>
+<p id="share-state" style="font-size:14px;color:#8a948a;margin-top:10px;min-height:20px"></p>
 </div>
 </div>
 
@@ -463,9 +479,15 @@
 <!-- FEEDBACK -->
 <div id="page-feedback" class="page">
 <button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
-<div class="card"><h3>💬 Feedback & Ratings</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Share your concerns, wishes, or praises. Rate the app 1-5 stars.</p>
-<div style="text-align:center;margin:12px 0"><label style="font-weight:600;display:block;margin-bottom:6px">Rate Join In:</label><div id="star-rating" style="font-size:40px;cursor:pointer"><span onclick="setRating(1)">☆</span><span onclick="setRating(2)">☆</span><span onclick="setRating(3)">☆</span><span onclick="setRating(4)">☆</span><span onclick="setRating(5)">☆</span></div><p style="font-size:14px;color:#888" id="rating-label">Tap a star to rate</p></div>
-<textarea id="feedback-text" placeholder="Share your experience, suggestions, or concerns..." rows="4"></textarea>
+<div class="card"><h3>💬 Feedback & Ratings</h3>
+<div class="mission">In this age of AI, Join In’s goal is to further <strong>human</strong> interaction — a platform where humans join with other humans, for social sanity.</div>
+<div class="fb-q"><span class="num">1</span>What do you like most about Join In?</div>
+<textarea id="fb-most" rows="3" placeholder="The part that works for you…"></textarea>
+<div class="fb-q"><span class="num">2</span>What do you like least about Join In?</div>
+<textarea id="fb-least" rows="3" placeholder="What gets in your way…"></textarea>
+<div class="fb-q"><span class="num">3</span>What would you like potential users to know about Join In?</div>
+<textarea id="fb-know" rows="3" placeholder="What you’d tell a friend…"></textarea>
+<div style="text-align:center;margin:18px 0 12px"><label style="font-weight:700;font-size:17px;display:block;margin-bottom:6px">Rate Join In:</label><div id="star-rating" style="font-size:46px;cursor:pointer"><span onclick="setRating(1)">☆</span><span onclick="setRating(2)">☆</span><span onclick="setRating(3)">☆</span><span onclick="setRating(4)">☆</span><span onclick="setRating(5)">☆</span></div><p style="font-size:15px;color:#888" id="rating-label">Tap a star to rate</p></div>
 <button class="btn" onclick="submitFeedback()">📨 Submit Feedback</button></div>
 <div id="feedback-list"></div>
 </div>
@@ -3810,17 +3832,65 @@ function setRating(rating) {
     document.getElementById('rating-label').textContent = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'][rating] || 'Tap a star';
 }
 
+var SHARE_URL = 'https://joinin.today';
+var SHARE_MSG = 'Join In — find your people in Asheville, NC. Free to join, free to create groups, classes or events. No credit card is required.';
+
 function submitFeedback() {
-    var text = document.getElementById('feedback-text').value.trim();
-    if (!text) { showNotif('Please enter feedback', 'error'); return; }
+    var most = document.getElementById('fb-most').value.trim();
+    var least = document.getElementById('fb-least').value.trim();
+    var know = document.getElementById('fb-know').value.trim();
+    if (!most && !least && !know) { showNotif('Please answer at least one question', 'error'); return; }
     if (selectedRating === 0) { showNotif('Please rate the app', 'error'); return; }
-    feedbackList.push({ userId: currentUser.id, userName: userProfiles[currentUser.id]?.displayName || currentUser.name || 'User', rating: selectedRating, text: text, date: new Date().toISOString() });
+    var parts = [];
+    if (most) { parts.push('Likes most: ' + most); }
+    if (least) { parts.push('Likes least: ' + least); }
+    if (know) { parts.push('For new users: ' + know); }
+    feedbackList.push({ userId: currentUser.id, userName: userProfiles[currentUser.id]?.displayName || currentUser.name || 'User', rating: selectedRating, likeMost: most, likeLeast: least, tellOthers: know, text: parts.join(' — '), date: new Date().toISOString() });
     saveData();
-    document.getElementById('feedback-text').value = '';
+    var wasHigh = selectedRating >= 4;
+    document.getElementById('fb-most').value = '';
+    document.getElementById('fb-least').value = '';
+    document.getElementById('fb-know').value = '';
     selectedRating = 0;
     setRating(0);
     showNotif('Thank you for your feedback! 💬', 'success');
     renderFeedback();
+    if (wasHigh) { openShare(); }
+}
+
+function openShare() {
+    var el = document.getElementById('share-link-text');
+    if (el) { el.textContent = SHARE_URL.replace('https://', ''); }
+    shareState('');
+    document.getElementById('share-overlay').classList.add('active');
+}
+
+function closeShare() {
+    document.getElementById('share-overlay').classList.remove('active');
+}
+
+function shareState(msg) {
+    var el = document.getElementById('share-state');
+    if (el) { el.textContent = msg || ''; }
+}
+
+async function shareJoinIn() {
+    var payload = { title: 'Join In', text: SHARE_MSG, url: SHARE_URL };
+    if (navigator.share) {
+        try { await navigator.share(payload); shareState('Thanks for spreading the word!'); return; }
+        catch (e) { if (e && e.name === 'AbortError') { return; } }
+    }
+    copyShareLink();
+}
+
+async function copyShareLink() {
+    var full = SHARE_MSG + ' ' + SHARE_URL;
+    try {
+        await navigator.clipboard.writeText(full);
+        shareState('Copied — paste it into a text or email.');
+    } catch (e) {
+        window.location.href = 'sms:?&body=' + encodeURIComponent(full);
+    }
 }
 
 function renderFeedback() {
