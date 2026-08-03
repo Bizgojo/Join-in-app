@@ -189,11 +189,14 @@
 <div class="name">Looking around</div>
 <div class="sub" style="font-size:13px;color:#888">Free to join. No credit card.</div>
 </div>
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
 <button class="btn-select" onclick="goToSignUp()" style="width:auto;padding:10px 16px">Create Free Account</button>
+<button onclick="goToLogin()" style="background:none;border:none;color:#2E7BC4;font-size:14px;font-weight:600;cursor:pointer;padding:2px 4px;text-decoration:underline">Already have an account? Log in</button>
+</div>
 </div>
 <div class="user-section" id="home-user-row">
 <div class="user-avatar" id="home-avatar" onclick="showPage('edit-profile')">T</div>
-<div class="user-info" onclick="showPage('profile')" style="flex:1">
+<div class="user-info" onclick="openMyProfile()" style="flex:1">
 <div class="name" id="home-username">Test User</div>
 <div class="sub" style="font-size:13px;color:#888">Tap photo to edit profile</div>
 </div>
@@ -524,7 +527,6 @@
 <div class="gender-row">
 <button id="gd-M" onclick="setGender('M')">Male</button>
 <button id="gd-F" onclick="setGender('F')">Female</button>
-<button id="gd-Other" onclick="setGender('Other')">Other</button>
 <button id="gd-Private" onclick="setGender('Private')">Prefer not to say</button>
 </div>
 <label style="font-weight:600;display:block;margin:10px 0 6px">Location</label>
@@ -548,9 +550,9 @@
 
 <!-- PROFILE -->
 <div id="page-profile" class="page">
-<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
+<button class="back-btn" onclick="profileBack()"><span class="chev">‹</span> Back</button>
 <div id="profile-display"></div>
-<button class="btn" style="background:#D4A373" onclick="editProfile()">✏️ Edit Profile</button>
+<button class="btn" id="profile-edit-btn" style="background:#D4A373" onclick="editProfile()">✏️ Edit Profile</button>
 </div>
 
 <!-- ADMIN -->
@@ -1395,6 +1397,11 @@ function goToSignUp() {
     setAuthMode('signup');
 }
 
+function goToLogin() {
+    showPage('login');
+    setAuthMode('login');
+}
+
 // Returns true when there is an account behind the tap. When there is not,
 // it explains what is missing and offers to fix it.
 function requireAccount(what) {
@@ -1717,20 +1724,63 @@ function updateTicketCounter() {
     }
 }
 
+var viewingProfileId = null;
+var profileBackTo = 'home';
+
+// Tapping a host opens their profile; tapping your own name opens yours.
+function openUserProfile(uid) {
+    if (!requireAccount('see a host profile')) { return; }
+    viewingProfileId = uid;
+    profileBackTo = 'group-detail';
+    showPage('profile');
+}
+
+function openMyProfile() {
+    viewingProfileId = null;
+    profileBackTo = 'home';
+    showPage('profile');
+}
+
+function profileBack() {
+    var back = profileBackTo;
+    viewingProfileId = null;
+    profileBackTo = 'home';
+    if (back === 'group-detail' && currentDetailGroup) {
+        openGroupDetail(currentDetailGroup);
+        return;
+    }
+    showPage('home');
+}
+
 function showProfile() {
-    var profile = userProfiles[currentUser?.id];
-    if (!profile) { document.getElementById('profile-display').innerHTML = '<div class="card"><p>No profile found.</p></div>'; return; }
+    var uid = viewingProfileId || currentUser?.id;
+    var mine = !!(currentUser && uid === currentUser.id);
+    var editBtn = document.getElementById('profile-edit-btn');
+    if (editBtn) { editBtn.style.display = mine ? 'block' : 'none'; }
+
+    var profile = userProfiles[uid];
+    var box = document.getElementById('profile-display');
+    if (!profile) {
+        box.innerHTML = '<div class="card"><p>That profile is not available.</p></div>';
+        return;
+    }
     var html = '<div class="card" style="text-align:center">';
-    html += '<div style="margin-bottom:10px">' + avatarHTML(currentUser.id, 'md') + '</div>';
-    html += '<h3 style="font-size:22px">' + profile.displayName + '</h3>';
-    html += '<p style="color:#666">📍 ' + (profile.location || 'Asheville, NC') + '</p>';
-    if (profile.gender) { html += '<p style="color:#666">' + genderLabel(profile.gender) + '</p>'; }
-    html += '<p style="margin-top:10px;font-size:15px;line-height:1.5">' + (profile.bio || 'No bio yet.') + '</p>';
+    html += '<div style="margin-bottom:10px">' + avatarHTML(uid, 'md') + '</div>';
+    html += '<h3 style="font-size:22px">' + escapeHTML(profile.displayName || 'A local host') + '</h3>';
+    if (profile.location) {
+        html += '<p style="color:#666">\u{1F4CD} ' + escapeHTML(profile.location) + '</p>';
+    }
+    if (profile.gender) {
+        html += '<p style="color:#666">' + genderLabel(profile.gender) + '</p>';
+    }
+    html += '<p style="margin-top:10px;font-size:15px;line-height:1.5">' +
+            escapeHTML(profile.bio || 'No bio yet.') + '</p>';
     if (profile.interests && profile.interests.length) {
-        html += '<p style="margin-top:8px"><strong>Interests:</strong> ' + profile.interests.join(', ') + '</p>';
+        html += '<p style="margin-top:8px"><strong>Interests:</strong> ' +
+                escapeHTML(profile.interests.join(', ')) + '</p>';
     }
     html += '</div>';
-    document.getElementById('profile-display').innerHTML = html;
+    box.innerHTML = html;
 }
 
 function escapeHTML(s) {
@@ -1780,14 +1830,14 @@ function renderAvatarPreview(pic) {
 
 function setGender(g) {
     selectedGender = g;
-    ['M', 'F', 'Other', 'Private'].forEach(function(x) {
+    ['M', 'F', 'Private'].forEach(function(x) {
         var b = document.getElementById('gd-' + x);
         if (b) { b.classList.toggle('selected', x === g); }
     });
 }
 
 // Shrink photos before storing so browser storage doesn't fill up.
-function shrinkImage(dataUrl, maxW, cb) {
+function shrinkDataUrl(dataUrl, maxW, cb) {
     var img = new Image();
     img.onload = function() {
         var w = img.width, h = img.height;
@@ -1807,7 +1857,7 @@ function handleProfilePhoto(event) {
     if (!file) return;
     var reader = new FileReader();
     reader.onload = function(e) {
-        shrinkImage(e.target.result, 400, function(small) {
+        shrinkDataUrl(e.target.result, 400, function(small) {
             if (!userProfiles[currentUser.id]) { userProfiles[currentUser.id] = {}; }
             userProfiles[currentUser.id].avatar = small;
             renderAvatarPreview(small);
@@ -1838,7 +1888,7 @@ async function saveProfile() {
 }
 
 function genderLabel(g) {
-    return { 'M': 'Male', 'F': 'Female', 'Other': 'Other', 'Private': 'Prefer not to say' }[g] || '';
+    return { 'M': 'Male', 'F': 'Female', 'Private': 'Prefer not to say' }[g] || '';
 }
 
 // Storage is limited, so warn instead of silently losing data.
@@ -2823,7 +2873,8 @@ function renderGroupDetail() {
 
     var cls = isClass(g);
     html += '<div class="sec-title">' + (cls ? 'Instructor' : 'Host') + '</div>';
-    html += '<div class="host-row">' + avatarHTML(g.organizer_id, 'md') +
+    html += '<div class="host-row" style="cursor:pointer" onclick="openUserProfile(\'' +
+        String(g.organizer_id).replace(/'/g, "\\'") + '\')">' + avatarHTML(g.organizer_id, 'md') +
         '<div><div class="hn">' + escapeHTML(cls ? (g.instructor || g.organizer_name || 'Unknown') : (g.organizer_name || 'Unknown')) +
         '</div><div class="hl">' + (cls ? 'Instructor' : 'Host') + '</div></div></div>';
     if (cls && g.host_org) {
@@ -3210,7 +3261,7 @@ function addGroupPhoto(event) {
     if (!g || !sb) return;
     var reader = new FileReader();
     reader.onload = function(e) {
-        shrinkImage(e.target.result, 900, async function(small) {
+        shrinkDataUrl(e.target.result, 900, async function(small) {
             var res = await sb.from('group_photos').insert({
                 group_id: g.id, url: small, uploaded_by: currentUser.id
             });
