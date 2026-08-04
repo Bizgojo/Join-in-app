@@ -142,6 +142,12 @@
 <input type="email" id="email" placeholder="Email" autocomplete="email">
 <div class="pw-wrap"><input type="password" id="pass" placeholder="Password" autocomplete="current-password"><button type="button" class="pw-eye" id="pw-eye" onclick="togglePassword()" aria-label="Show password" title="Show password">&#128065;</button></div>
 <div id="signup-hint" style="display:none;font-size:13px;color:#888;margin:-6px 0 12px 4px">At least 6 characters.</div>
+<div id="signup-age-box" style="display:none;margin:2px 0 14px 2px">
+<label style="display:flex;gap:12px;align-items:flex-start;font-size:16px;line-height:1.4;cursor:pointer">
+<input type="checkbox" id="auth-age" style="width:24px;height:24px;flex:none;margin:1px 0 0 0">
+<span>I am 18 years of age or older.</span></label>
+<div id="auth-age-error" style="display:none;color:#a3271b;font-size:14px;margin-top:6px">JoinIn is for adults 18 and over. Please confirm your age to continue.</div>
+</div>
 <button class="btn" id="auth-btn" onclick="doAuth()">Log In</button>
 <div style="text-align:center;margin-top:10px">
 <button class="link-btn" onclick="forgotPassword()">Forgot your password?</button>
@@ -477,8 +483,28 @@
 <!-- CHAT -->
 <div id="page-chat" class="page">
 <button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
-<div class="card"><h3>💬 Messages</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Chat with members of your groups.</p><div id="chat-list"></div></div>
+<div class="card"><h3>💬 Messages</h3>
+<div style="display:flex;gap:8px;margin:10px 0">
+<button id="chat-tab-groups" class="period-btn active" onclick="setChatTab('groups')">👥 Groups</button>
+<button id="chat-tab-people" class="period-btn" onclick="setChatTab('people')">🙋 People</button>
+</div>
+<div id="chat-tab-groups-body">
+<p style="color:#888;font-size:14px;margin-bottom:12px">Chat with members of your groups.</p>
+<div id="chat-list"></div></div>
+<div id="chat-tab-people-body" style="display:none">
+<p style="color:#888;font-size:14px;margin-bottom:12px">People you have shared a group with.</p>
+<div id="people-list"></div></div>
+</div>
 <div id="chat-messages" style="display:none"><div class="card"><h4 id="chat-room-name">Chat</h4><div id="chat-message-list" style="max-height:300px;overflow-y:auto;margin-bottom:8px"></div><div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="chat-input" placeholder="Type a message..." style="flex:1;margin-bottom:0"><button class="btn" onclick="sendMessage()" style="width:auto;padding:14px 20px">Send</button></div></div></div>
+<div id="dm-thread" style="display:none"><div class="card">
+<h4 id="dm-thread-name">Direct message</h4>
+<div id="dm-message-list" style="max-height:300px;overflow-y:auto;margin-bottom:8px"></div>
+<div style="display:flex;gap:8px;margin-top:8px">
+<input type="text" id="dm-input" placeholder="Type a message..." style="flex:1;margin-bottom:0">
+<button class="btn" onclick="sendDM()" style="width:auto;padding:14px 20px">Send</button></div>
+<div style="margin-top:14px;text-align:right">
+<button class="link-btn" style="color:#a3271b" onclick="blockCurrentDM()">Block this person</button></div>
+</div></div>
 </div>
 
 <!-- TICKETS -->
@@ -1077,6 +1103,8 @@ function setAuthMode(mode) {
     document.getElementById('auth-tab-signup').classList.toggle('on', mode === 'signup');
     document.getElementById('signup-name-box').style.display = mode === 'signup' ? 'block' : 'none';
     document.getElementById('signup-hint').style.display = mode === 'signup' ? 'block' : 'none';
+    document.getElementById('signup-age-box').style.display = mode === 'signup' ? 'block' : 'none';
+    document.getElementById('auth-age-error').style.display = 'none';
     document.getElementById('auth-btn').textContent = mode === 'signup' ? 'Create My Account' : 'Log In';
     document.getElementById('auth-status').textContent = '';
     document.getElementById('pass').setAttribute('autocomplete', mode === 'signup' ? 'new-password' : 'current-password');
@@ -1162,6 +1190,12 @@ async function doAuth() {
             var name = document.getElementById('auth-name').value.trim();
             if (!name) { authFail('auth-name', 'Please enter your name.'); return; }
             if (pass.length < 6) { authFail('pass', 'Password is too short. It needs at least 6 characters -- yours has ' + pass.length + '.'); return; }
+            if (!document.getElementById('auth-age').checked) {
+                document.getElementById('auth-age-error').style.display = 'block';
+                authStatus('');
+                return;
+            }
+            document.getElementById('auth-age-error').style.display = 'none';
             authStatus('Creating your account...');
             var su = await sb.auth.signUp({
                 email: email, password: pass,
@@ -1174,6 +1208,10 @@ async function doAuth() {
                 setAuthMode('login');
                 return;
             }
+            try {
+                await sb.from('profiles').update({ age_confirmed_at: new Date().toISOString() })
+                    .eq('id', su.data.user.id);
+            } catch (ageErr) { /* non-blocking */ }
             showNotif('Welcome to JoinIn, ' + name + '!', 'success');
         } else {
             authStatus('Logging in...');
@@ -1576,7 +1614,7 @@ function showPage(page, fromHistory) {
     if (page === 'classes') { browseKind = 'class'; renderCategories(); if (!currentGroupCategory) { showCategoryGrid(true); } }
     if (page === 'events') { renderEvents(); }
     if (page === 'hosting') { renderHosting(); }
-    if (page === 'chat') { renderChatRooms(); document.getElementById('chat-list').style.display = 'block'; document.getElementById('chat-messages').style.display = 'none'; }
+    if (page === 'chat') { renderChatRooms(); setChatTab('groups'); }
     if (page === 'tickets') { renderTickets(); }
     if (page === 'feedback') { renderFeedback(); }
     if (page === 'admin') { renderAdminDashboard(); }
@@ -4076,7 +4114,9 @@ function stopChatPoll() {
 async function openChatRoom(roomId) {
     currentChatRoom = roomId;
     document.getElementById('chat-messages').style.display = 'block';
-    document.getElementById('chat-list').style.display = 'none';
+    document.getElementById('chat-tab-groups-body').style.display = 'none';
+    document.getElementById('chat-tab-people-body').style.display = 'none';
+    document.getElementById('dm-thread').style.display = 'none';
     var group = allGroups.find(function(g) { return g.id === roomId; });
     document.getElementById('chat-room-name').textContent = '\uD83D\uDCAC ' + (group ? group.name : 'Chat');
     document.getElementById('chat-message-list').innerHTML =
@@ -4142,6 +4182,206 @@ async function sendMessage() {
     input.value = '';
     await loadChatMessages();
     input.focus();
+}
+
+// ─── DIRECT MESSAGES ───
+// Who can DM whom is decided by the database, not by this file.
+// A "connections" row is written when two people are in an approved group together.
+
+var chatTab = 'groups';
+var currentDM = null;
+
+function setChatTab(tab) {
+    chatTab = tab;
+    stopChatPoll();
+    var gb = document.getElementById('chat-tab-groups');
+    var pb = document.getElementById('chat-tab-people');
+    if (gb) { gb.classList.toggle('active', tab === 'groups'); }
+    if (pb) { pb.classList.toggle('active', tab === 'people'); }
+    document.getElementById('chat-tab-groups-body').style.display = tab === 'groups' ? 'block' : 'none';
+    document.getElementById('chat-tab-people-body').style.display = tab === 'people' ? 'block' : 'none';
+    document.getElementById('chat-messages').style.display = 'none';
+    document.getElementById('dm-thread').style.display = 'none';
+    currentChatRoom = null;
+    currentDM = null;
+    if (tab === 'people') { renderPeopleList(); }
+}
+
+function dmPair(otherId) {
+    var me = currentUser.id;
+    return me < otherId ? { a: me, b: otherId } : { a: otherId, b: me };
+}
+
+async function renderPeopleList() {
+    var box = document.getElementById('people-list');
+    if (!box || !sb || !currentUser) return;
+    box.innerHTML = '<p style="color:#8a948a;padding:12px">Loading\u2026</p>';
+
+    var cons = await sb.from('connections').select('user_a,user_b');
+    if (cons.error) {
+        box.innerHTML = '<p style="color:#a3271b;padding:12px">Could not load people.</p>';
+        return;
+    }
+    var others = [];
+    (cons.data || []).forEach(function(c) {
+        var o = (c.user_a === currentUser.id) ? c.user_b : c.user_a;
+        if (others.indexOf(o) === -1) { others.push(o); }
+    });
+
+    var thr = await sb.from('dm_threads_visible').select('id,user_a,user_b,requester_id,status');
+    var threads = (thr.data || []);
+    var byOther = {};
+    threads.forEach(function(t) {
+        var o = (t.user_a === currentUser.id) ? t.user_b : t.user_a;
+        byOther[o] = t;
+    });
+
+    var html = '';
+    var incoming = threads.filter(function(t) {
+        return t.status === 'pending' && t.requester_id !== currentUser.id;
+    });
+    if (incoming.length) {
+        html += '<h4 style="margin:6px 0 8px 0">Message requests</h4>';
+        incoming.forEach(function(t) {
+            var o = (t.user_a === currentUser.id) ? t.user_b : t.user_a;
+            html += '<div class="group-item"><strong>' + escapeHTML(memberName(o)) + '</strong>' +
+                '<div style="font-size:13px;color:#888;margin-top:2px">wants to message you</div>' +
+                '<div style="display:flex;gap:8px;margin-top:10px">' +
+                '<button class="btn" style="padding:12px" onclick="respondDM(\'' + t.id + '\',true)">Accept</button>' +
+                '<button class="btn" style="padding:12px;background:#8a948a" onclick="respondDM(\'' + t.id + '\',false)">Decline</button>' +
+                '</div></div>';
+        });
+    }
+
+    if (!others.length) {
+        html += '<div class="card" style="text-align:center;color:#888">' +
+            'Nobody here yet. When you join a group, the people already in it show up here.</div>';
+    } else {
+        html += '<h4 style="margin:14px 0 8px 0">People</h4>';
+        others.forEach(function(o) {
+            var t = byOther[o];
+            var label = 'Send a message';
+            if (t && t.status === 'accepted') { label = 'Open chat'; }
+            else if (t && t.status === 'pending' && t.requester_id === currentUser.id) { label = 'Request sent'; }
+            else if (t && t.status === 'pending') { label = 'Waiting for your answer'; }
+            html += '<div class="group-item" onclick="openDM(\'' + o + '\')">' +
+                '<strong>' + escapeHTML(memberName(o)) + '</strong>' +
+                '<div style="font-size:13px;color:#888;margin-top:2px">' + label + '</div></div>';
+        });
+    }
+    box.innerHTML = html;
+}
+
+async function openDM(otherId) {
+    if (!sb || !currentUser) return;
+    var pair = dmPair(otherId);
+    var res = await sb.from('dm_threads_visible')
+        .select('id,requester_id,status')
+        .eq('user_a', pair.a).eq('user_b', pair.b).maybeSingle();
+    var t = res.data || null;
+    currentDM = {
+        otherId: otherId,
+        threadId: t ? t.id : null,
+        status: t ? t.status : null,
+        requesterId: t ? t.requester_id : null
+    };
+    document.getElementById('chat-tab-groups-body').style.display = 'none';
+    document.getElementById('chat-tab-people-body').style.display = 'none';
+    document.getElementById('chat-messages').style.display = 'none';
+    document.getElementById('dm-thread').style.display = 'block';
+    document.getElementById('dm-thread-name').textContent = '\uD83D\uDCAC ' + memberName(otherId);
+    await loadDMMessages();
+}
+
+async function loadDMMessages() {
+    var list = document.getElementById('dm-message-list');
+    if (!list || !currentDM || !sb) return;
+
+    if (!currentDM.threadId) {
+        list.innerHTML = '<p style="color:#8a948a;text-align:center;padding:16px">' +
+            'Send a message request. They can accept it or let it go.</p>';
+        return;
+    }
+    var res = await sb.from('dm_messages')
+        .select('id,sender_id,body,created_at')
+        .eq('thread_id', currentDM.threadId)
+        .order('created_at', { ascending: true }).limit(200);
+    if (res.error) {
+        list.innerHTML = '<p style="color:#a3271b;text-align:center;padding:16px">Could not load messages.</p>';
+        return;
+    }
+    var html = '';
+    if (currentDM.status === 'pending' && currentDM.requesterId === currentUser.id) {
+        html += '<p style="color:#8a948a;text-align:center;padding:8px;font-size:14px">' +
+            'Request sent. You can send more once they accept.</p>';
+    }
+    (res.data || []).forEach(function(m) {
+        var isSelf = m.sender_id === currentUser.id;
+        var when = new Date(m.created_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+        html += '<div class="chat-message' + (isSelf ? ' self' : '') + '">' +
+            '<div class="sender">' + escapeHTML(memberName(m.sender_id)) +
+            ' <span class="time">' + escapeHTML(when) + '</span></div>' +
+            '<div class="text">' + escapeHTML(m.body) + '</div></div>';
+    });
+    list.innerHTML = html || '<p style="color:#8a948a;text-align:center;padding:16px">No messages yet.</p>';
+    list.scrollTop = list.scrollHeight;
+}
+
+async function sendDM() {
+    var input = document.getElementById('dm-input');
+    var text = input.value.trim();
+    if (!text) { showNotif('Type a message first.', 'error'); return; }
+    if (!currentDM || !sb || !currentUser) return;
+    input.disabled = true;
+    try {
+        if (!currentDM.threadId) {
+            var pair = dmPair(currentDM.otherId);
+            var ins = await sb.from('dm_threads').insert({
+                user_a: pair.a, user_b: pair.b,
+                requester_id: currentUser.id, status: 'pending'
+            }).select('id').single();
+            if (ins.error) {
+                showNotif('You cannot message this person.', 'error');
+                return;
+            }
+            currentDM.threadId = ins.data.id;
+            currentDM.status = 'pending';
+            currentDM.requesterId = currentUser.id;
+        }
+        var msg = await sb.from('dm_messages').insert({
+            thread_id: currentDM.threadId, sender_id: currentUser.id, body: text
+        });
+        if (msg.error) {
+            showNotif('Waiting for them to accept your request.', 'info');
+            return;
+        }
+        input.value = '';
+        await loadDMMessages();
+    } finally {
+        input.disabled = false;
+    }
+}
+
+async function respondDM(threadId, accept) {
+    if (!sb) return;
+    var res = await sb.from('dm_threads')
+        .update({ status: accept ? 'accepted' : 'declined' })
+        .eq('id', threadId);
+    if (res.error) { showNotif('Could not answer that request.', 'error'); return; }
+    showNotif(accept ? 'Request accepted.' : 'Request declined.', accept ? 'success' : 'info');
+    renderPeopleList();
+}
+
+async function blockCurrentDM() {
+    if (!currentDM || !currentUser || !sb) return;
+    var who = memberName(currentDM.otherId);
+    if (!confirm('Block ' + who + '? They will not be able to message you.')) return;
+    var res = await sb.from('blocks').insert({
+        blocker_id: currentUser.id, blocked_id: currentDM.otherId
+    });
+    if (res.error) { showNotif('Could not block that person.', 'error'); return; }
+    showNotif(who + ' is blocked.', 'info');
+    setChatTab('people');
 }
 
 // ─── TICKETS ───
