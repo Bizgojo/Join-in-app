@@ -1565,6 +1565,7 @@ function showPage(page, fromHistory) {
         requireAccount('use that part of JoinIn');
         return;
     }
+    stopChatPoll();
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     var target = document.getElementById('page-' + page);
     if (target) { target.classList.add('active'); target.scrollTop = 0; }
@@ -3207,6 +3208,10 @@ async function joinGroup(id) {
             await refreshGroups();
             return;
         }
+        if (/join_rate_limit/i.test(res.error.message)) {
+            showNotif('You have joined a lot of groups this week. Please try again in a few days.', 'error');
+            return;
+        }
         showNotif('Could not join: ' + res.error.message, 'error'); return;
     }
     var place = groupAddress(g) || 'a place still to be announced';
@@ -4062,38 +4067,81 @@ function renderChatRooms() {
     container.innerHTML = html;
 }
 
-function openChatRoom(roomId) {
+var chatPoll = null;
+
+function stopChatPoll() {
+    if (chatPoll) { clearInterval(chatPoll); chatPoll = null; }
+}
+
+async function openChatRoom(roomId) {
     currentChatRoom = roomId;
     document.getElementById('chat-messages').style.display = 'block';
     document.getElementById('chat-list').style.display = 'none';
     var group = allGroups.find(function(g) { return g.id === roomId; });
-    document.getElementById('chat-room-name').textContent = '💬 ' + (group ? group.name : 'Chat');
-    renderChatMessages();
+    document.getElementById('chat-room-name').textContent = '\uD83D\uDCAC ' + (group ? group.name : 'Chat');
+    document.getElementById('chat-message-list').innerHTML =
+        '<p style="color:#8a948a;text-align:center;padding:16px">Loading messages\u2026</p>';
+    await loadChatMessages();
+    stopChatPoll();
+    chatPoll = setInterval(loadChatMessages, 10000);
 }
 
-function renderChatMessages() {
+// Messages live in Supabase. Only current members of the group can read them.
+async function loadChatMessages() {
+    var list = document.getElementById('chat-message-list');
+    if (!currentChatRoom || !sb || !list) { return; }
+    var res = await sb.from('group_messages')
+        .select('id,sender_id,body,created_at')
+        .eq('group_id', currentChatRoom)
+        .order('created_at', { ascending: true })
+        .limit(200);
+    if (res.error) {
+        list.innerHTML = '<p style="color:#a3271b;text-align:center;padding:16px">Could not load messages.</p>';
+        return;
+    }
+    renderChatMessages(res.data || []);
+}
+
+function renderChatMessages(rows) {
     var list = document.getElementById('chat-message-list');
     if (!list) return;
-    var messages = chatMessages.filter(function(m) { return m.groupId === currentChatRoom; });
+    if (!rows || !rows.length) {
+        list.innerHTML = '<p style="color:#8a948a;text-align:center;padding:16px">No messages yet. Say hello.</p>';
+        return;
+    }
     var html = '';
-    for (var i = 0; i < messages.length; i++) {
-        var m = messages[i];
-        var isSelf = m.sender === currentUser.id;
-        html += '<div class="chat-message' + (isSelf ? ' self' : '') + '"><div class="sender">' + m.senderName + ' <span class="time">' + new Date(m.time).toLocaleTimeString() + '</span></div><div class="text">' + m.text + '</div></div>';
+    for (var i = 0; i < rows.length; i++) {
+        var m = rows[i];
+        var isSelf = currentUser && m.sender_id === currentUser.id;
+        var when = new Date(m.created_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+        html += '<div class="chat-message' + (isSelf ? ' self' : '') + '">' +
+            '<div class="sender">' + escapeHTML(memberName(m.sender_id)) +
+            ' <span class="time">' + escapeHTML(when) + '</span></div>' +
+            '<div class="text">' + escapeHTML(m.body) + '</div></div>';
     }
     list.innerHTML = html;
     list.scrollTop = list.scrollHeight;
 }
 
-function sendMessage() {
+async function sendMessage() {
     var input = document.getElementById('chat-input');
     var text = input.value.trim();
-    if (!text || !currentChatRoom) { showNotif('No chat room selected', 'error'); return; }
-    var msg = { groupId: currentChatRoom, sender: currentUser.id, senderName: userProfiles[currentUser.id]?.displayName || currentUser.name || 'User', text: text, time: new Date().toISOString() };
-    chatMessages.push(msg);
-    saveData();
+    if (!text) { showNotif('Type a message first.', 'error'); return; }
+    if (!currentChatRoom || !sb || !currentUser) { showNotif('No chat room selected.', 'error'); return; }
+    input.disabled = true;
+    var res = await sb.from('group_messages').insert({
+        group_id: currentChatRoom,
+        sender_id: currentUser.id,
+        body: text
+    });
+    input.disabled = false;
+    if (res.error) {
+        showNotif('Could not send. You may no longer be a member of this group.', 'error');
+        return;
+    }
     input.value = '';
-    renderChatMessages();
+    await loadChatMessages();
+    input.focus();
 }
 
 // ─── TICKETS ───
