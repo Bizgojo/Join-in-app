@@ -4334,6 +4334,7 @@ async function sendDM() {
     if (!currentDM || !sb || !currentUser) return;
     input.disabled = true;
     try {
+        var createdNow = false;
         if (!currentDM.threadId) {
             var pair = dmPair(currentDM.otherId);
             var ins = await sb.from('dm_threads').insert({
@@ -4341,20 +4342,33 @@ async function sendDM() {
                 requester_id: currentUser.id, status: 'pending'
             }).select('id').single();
             if (ins.error) {
-                showNotif('You cannot message this person.', 'error');
+                showNotif('Could not start a message: ' + ins.error.message, 'error');
                 return;
             }
             currentDM.threadId = ins.data.id;
             currentDM.status = 'pending';
             currentDM.requesterId = currentUser.id;
+            createdNow = true;
         }
         var msg = await sb.from('dm_messages').insert({
             thread_id: currentDM.threadId, sender_id: currentUser.id, body: text
         });
         if (msg.error) {
-            showNotif('Waiting for them to accept your request.', 'info');
+            if (/dm_request_already_sent/i.test(msg.error.message)) {
+                showNotif('You already sent a request. Wait for them to accept.', 'info');
+            } else {
+                showNotif('Could not send: ' + msg.error.message, 'error');
+                // Do not leave an empty thread behind if the very first message failed.
+                if (createdNow) {
+                    await sb.from('dm_threads').delete().eq('id', currentDM.threadId);
+                    currentDM.threadId = null;
+                    currentDM.status = null;
+                    currentDM.requesterId = null;
+                }
+            }
             return;
         }
+        if (createdNow) { showNotif('Request sent.', 'success'); }
         input.value = '';
         await loadDMMessages();
     } finally {
