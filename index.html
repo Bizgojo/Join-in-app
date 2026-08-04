@@ -153,7 +153,7 @@
 <button class="link-btn" onclick="forgotPassword()">Forgot your password?</button>
 </div>
 <p id="auth-status" style="margin-top:14px;font-size:14px;color:#888;text-align:center"></p>
-<p style="margin-top:18px;font-size:14px;color:#9aa39a;text-align:center">Build 23 · Aug 4</p>
+<p style="margin-top:18px;font-size:14px;color:#9aa39a;text-align:center">Build 24 · Aug 4</p>
 </div>
 
 <!-- RESET PASSWORD -->
@@ -209,6 +209,7 @@
 </div>
 <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
 <button class="unread-btn" id="unread-btn" style="display:none" onclick="showPage('messages')">You have 0 unread messages</button>
+<button class="unread-btn" id="dm-request-btn" style="display:none;background:#1B4B8F" onclick="goToRequests()">0 message requests</button>
 <button onclick="logout()" style="background:none;border:none;color:#e74c3c;font-size:13px;font-weight:600;cursor:pointer;padding:2px 4px">Logout</button>
 </div>
 </div>
@@ -1653,6 +1654,7 @@ window.addEventListener('popstate', function(e) {
 });
 
 function updateHome() {
+    refreshDMRequests();
     var profile = userProfiles[currentUser?.id];
     var nameEl = document.getElementById('home-username');
     var avatarEl = document.getElementById('home-avatar');
@@ -1946,6 +1948,32 @@ function unreadCount() {
     var local = directMessages.filter(function(m) { return m.toId === currentUser.id && !m.read; }).length;
     var cloud = cloudNotifications.filter(function(n) { return !n.read; }).length;
     return local + cloud;
+}
+
+var dmRequestCount = 0;
+
+// Pending DM requests live in Supabase, so this is a fetch, not a local count.
+async function refreshDMRequests() {
+    if (!sb || !currentUser) { dmRequestCount = 0; updateDMRequestButton(); return; }
+    var res = await sb.from('dm_threads_visible').select('id,requester_id,status');
+    if (res.error) { return; }
+    dmRequestCount = (res.data || []).filter(function(t) {
+        return t.status === 'pending' && t.requester_id !== currentUser.id;
+    }).length;
+    updateDMRequestButton();
+}
+
+function updateDMRequestButton() {
+    var btn = document.getElementById('dm-request-btn');
+    if (!btn) return;
+    if (!dmRequestCount) { btn.style.display = 'none'; return; }
+    btn.style.display = 'block';
+    btn.textContent = dmRequestCount + ' message request' + (dmRequestCount !== 1 ? 's' : '');
+}
+
+function goToRequests() {
+    showPage('chat');
+    setChatTab('people');
 }
 
 function updateUnreadButton() {
@@ -4385,6 +4413,7 @@ async function respondDM(threadId, accept) {
     if (res.error) { showNotif('Could not answer that request.', 'error'); return; }
     showNotif(accept ? 'Request accepted.' : 'Request declined.', accept ? 'success' : 'info');
     renderPeopleList();
+    refreshDMRequests();
 }
 
 async function blockCurrentDM() {
