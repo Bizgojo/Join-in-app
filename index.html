@@ -1267,7 +1267,7 @@ async function loadFromCloud() {
     await loadGroupPhotos();
     if (!sb || !currentUser) return;
     try {
-        var cats = await sb.from('categories').select('name,icon,is_approved').order('name');
+        var cats = await sb.from('categories').select('name,icon,is_approved,sort_order').order('sort_order').order('name');
         if (cats.data) {
             allCategories = cats.data.filter(function(c) { return c.is_approved; }).map(function(c) { return c.name; });
             pendingCategories = cats.data.filter(function(c) { return !c.is_approved; }).map(function(c) { return c.name; });
@@ -1480,7 +1480,7 @@ async function loadPublicData() {
     await loadGroupPhotos();
     if (!sb) { return; }
     try {
-        var cats = await sb.from('categories').select('name,icon,is_approved').order('name');
+        var cats = await sb.from('categories').select('name,icon,is_approved,sort_order').order('sort_order').order('name');
         if (cats.data) {
             allCategories = cats.data.filter(function(c) { return c.is_approved; })
                                     .map(function(c) { return c.name; });
