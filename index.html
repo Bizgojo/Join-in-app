@@ -366,11 +366,11 @@
 
 <!-- 1b. Sponsor, classes only -->
 <div id="sponsor-block" style="margin:14px 0 8px 0;display:none">
-<label style="font-weight:600;display:block;margin-bottom:6px" id="sponsor-label">Who is sponsoring the class? *</label>
+<label style="font-weight:600;display:block;margin-bottom:6px" id="sponsor-label">Who is offering the class? *</label>
 <input autocomplete="off" type="text" id="class-org" placeholder="Name of organization, or Self *">
-<div class="error-text" id="class-org-error">Please name the sponsor, or enter Self</div>
-<button type="button" class="info-link" onclick="toggleSponsorNote()">What counts as a sponsor?</button>
-<div class="info-note" id="sponsor-note" style="display:none">The sponsor is the organization the class is run under &mdash; a university, college, library, museum, recreation centre, church, government body, business or non-profit. If you are teaching on your own, enter <strong>Self</strong>.</div>
+<div class="error-text" id="class-org-error">Please name the organization, or enter Self</div>
+<button type="button" class="info-link" onclick="toggleSponsorNote()">Who counts as an organization?</button>
+<div class="info-note" id="sponsor-note" style="display:none">This is the organization the class is offered under &mdash; a university, college, library, museum, recreation centre, church, government body, business or non-profit. If you are teaching on your own, enter <strong>Self</strong>.</div>
 </div>
 
 <!-- 2. Name -->
@@ -2192,7 +2192,7 @@ function requestInvitation(groupId) {
     if (!g) return;
     pendingInviteGroup = groupId;
     showWritePopup('🙋', 'Request an Invitation',
-        'Tell ' + (g.organizer_name || 'the host') + ' why you would like to join "' + g.name + '".',
+        'Tell ' + (g.organizer_name || 'the ' + roleLabel(g, true)) + ' why you would like to join "' + g.name + '".',
         'Send Request', 'sendInviteRequest()');
 }
 
@@ -2203,7 +2203,7 @@ function sendInviteRequest() {
     if (!g) return;
     if (!sendDirectMessage(g.organizer_id, g.id, g.name, text, 'invite')) return;
     closePopup();
-    showNotif('Your request was sent to ' + (g.organizer_name || 'the host') + '.', 'success');
+    showNotif('Your request was sent to ' + (g.organizer_name || 'the ' + roleLabel(g, true)) + '.', 'success');
     renderGroupDetail();
 }
 
@@ -2211,8 +2211,8 @@ function messageHostWrite(groupId) {
     var g = allGroups.find(function(x) { return x.id === groupId; });
     if (!g) return;
     pendingInviteGroup = groupId;
-    showWritePopup('💬', 'Message the Host',
-        'Send a message to ' + (g.organizer_name || 'the host') + ' about "' + g.name + '".',
+    showWritePopup('💬', 'Message the ' + roleLabel(g),
+        'Send a message to ' + (g.organizer_name || 'the ' + roleLabel(g, true)) + ' about "' + g.name + '".',
         'Send Message', 'sendHostMessage()');
 }
 
@@ -2223,7 +2223,7 @@ function sendHostMessage() {
     if (!g) return;
     if (!sendDirectMessage(g.organizer_id, g.id, g.name, text, 'message')) return;
     closePopup();
-    showNotif('Message sent to ' + (g.organizer_name || 'the host') + '.', 'success');
+    showNotif('Message sent to ' + (g.organizer_name || 'the ' + roleLabel(g, true)) + '.', 'success');
 }
 
 // ─── DIRECTIONS ───
@@ -2244,6 +2244,15 @@ function isClass(g) { return (g && g.kind) === 'class'; }
 function kindNoun(kind, capital) {
     var w = kind === 'class' ? 'class' : 'group';
     return capital ? w.charAt(0).toUpperCase() + w.slice(1) : w;
+}
+
+// What the person in charge is called depends on what they are running.
+// Groups have a Host, events an Organizer, classes an Instructor.
+// Pass either a listing or a bare kind string.
+function roleLabel(g, lower) {
+    var kind = (g && typeof g === 'object') ? (g.kind || 'group') : (g || 'group');
+    var w = kind === 'class' ? 'Instructor' : (kind === 'event' ? 'Organizer' : 'Host');
+    return lower ? w.toLowerCase() : w;
 }
 
 var editingGroupId = null;
@@ -2279,7 +2288,7 @@ function startEditGroup(id) {
     var g = allGroups.find(function(x) { return String(x.id) === String(id); });
     if (!g) { return showNotif('That is no longer available.', 'error'); }
     if (!currentUser || g.organizer_id !== currentUser.id) {
-        return showNotif('Only the host can edit this.', 'error');
+        return showNotif('Only the ' + roleLabel(g, true) + ' can edit this.', 'error');
     }
 
     createKind = isClass(g) ? 'class' : 'group';
@@ -2435,7 +2444,7 @@ function startCreate(kind) {
 // A blank entry means the field does not apply to that kind.
 var FIELD_STEPS = [
     { id: 'cat-label',     group: 'What kind of group is it? *', klass: 'What are you teaching? *' },
-    { id: 'sponsor-label', group: '',                            klass: 'Who is sponsoring the class? *' },
+    { id: 'sponsor-label', group: '',                            klass: 'Who is offering the class? *' },
     { id: 'name-label',    group: 'Group name *',                klass: 'Class name *' },
     { id: 'desc-label',    group: 'Description *',               klass: 'Description *' },
     { id: 'sched-label',   group: 'Meeting schedule',            klass: 'Meeting schedule' },
@@ -2918,7 +2927,7 @@ function renderGroupCard(g) {
         '<h3>' + g.name + '</h3>' +
         '<div>' + kindBadge(g) + ' ' + privacyBadge(g) + ' ' + groupCostBadge(g) + joinedBadge + '</div>' +
         '<div class="desc2">' + shortDesc(g.description) + '</div>' +
-        '<div class="meta-row"><span>' + capacityText(g) + '</span><span>Host: ' + (g.organizer_name || 'Unknown') + '</span></div>' +
+        '<div class="meta-row"><span>' + capacityText(g) + '</span><span>' + roleLabel(g) + ': ' + (g.organizer_name || 'Unknown') + '</span></div>' +
         '<button class="btn-select" onclick="openGroupDetail(\'' + g.id + '\')">Select</button>' +
         '</div></div>';
 }
@@ -3077,13 +3086,13 @@ function renderGroupDetail() {
     html += '<p style="font-size:15px;line-height:1.5;color:#333">' + (g.description || 'No description yet.') + '</p>';
 
     var cls = isClass(g);
-    html += '<div class="sec-title">' + (cls ? 'Instructor' : 'Host') + '</div>';
+    html += '<div class="sec-title">' + roleLabel(g) + '</div>';
     html += '<div class="host-row" style="cursor:pointer" onclick="openUserProfile(\'' +
         String(g.organizer_id).replace(/'/g, "\\'") + '\')">' + avatarHTML(g.organizer_id, 'md') +
         '<div><div class="hn">' + escapeHTML(cls ? (g.instructor || g.organizer_name || 'Unknown') : (g.organizer_name || 'Unknown')) +
-        '</div><div class="hl">' + (cls ? 'Instructor' : 'Host') + '</div></div></div>';
+        '</div><div class="hl">' + roleLabel(g) + '</div></div></div>';
     if (cls && g.host_org) {
-        html += '<div class="info-line">🏢 Hosted by ' + escapeHTML(g.host_org) + '</div>';
+        html += '<div class="info-line">🏢 Offered by ' + escapeHTML(g.host_org) + '</div>';
     }
     if (cls && g.instructor_bio) {
         html += '<p style="font-size:15px;line-height:1.5;color:#444;margin-top:8px">' +
@@ -3094,7 +3103,7 @@ function renderGroupDetail() {
     if (locked) {
         html += '<div style="background:#fef9e7;border:1px solid #f9e79f;padding:14px;border-radius:12px;margin-top:14px;font-size:15px;color:#7a5c10">' +
             '🔒 This is a private group. The meeting time, location and member list are hidden until the host invites you.</div>';
-        html += '<button class="btn-select" onclick="requestInvitation(\'' + g.id + '\')">✉️ Message the Host to Request an Invitation</button>';
+        html += '<button class="btn-select" onclick="requestInvitation(\'' + g.id + '\')">✉️ Message the ' + roleLabel(g) + ' to Request an Invitation</button>';
         html += '</div>';
         body.innerHTML = html;
         return;
@@ -3153,7 +3162,7 @@ function renderGroupDetail() {
         html += '<button class="btn-select" onclick="signMeUp(\'' + g.id + '\')">✋ Sign Me Up' +
             (g.is_paid ? ' — $' + g.price : '') + '</button>';
     }
-    html += '<button class="btn-outline" onclick="messageHostGate(\'' + g.id + '\')">💬 Message the Host</button>';
+    html += '<button class="btn-outline" onclick="messageHostGate(\'' + g.id + '\')">💬 Message the ' + roleLabel(g) + '</button>';
     if (g.slug) {
         html += '<button class="btn-outline" onclick="copyGroupLink(\'' + g.id + '\')">\ud83d\udd17 Copy Link to This ' +
             (g.kind === 'class' ? 'Class' : 'Group') + '</button>';
@@ -3427,7 +3436,7 @@ async function joinGroup(id) {
         'We look forward to seeing you for <strong>' + escapeHTML(g.name) + '</strong><br>' +
         'at ' + escapeHTML(place) + '<br>' +
         escapeHTML(groupMeetingText(g)) +
-        '<br><br><span style="color:#8a948a;font-size:14px">Host: ' +
+        '<br><br><span style="color:#8a948a;font-size:14px">' + roleLabel(g) + ': ' +
         escapeHTML(g.organizer_name || 'Unknown') + '</span>');
     await refreshGroups();
     renderChatRooms();
@@ -3453,7 +3462,7 @@ function emailMeDetails(id) {
     var body = 'Welcome to ' + g.name + '!\n\n' +
         'When: ' + groupMeetingText(g) + '\n' +
         'Where: ' + (groupAddress(g) || 'To be announced') + '\n' +
-        'Host: ' + (g.organizer_name || 'Unknown') + '\n\n' +
+        roleLabel(g) + ': ' + (g.organizer_name || 'Unknown') + '\n\n' +
         (g.description || '') + '\n\n— JoinIn, Asheville NC';
     window.location.href = 'mailto:' + (currentUser?.email || '') +
         '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
@@ -3569,7 +3578,7 @@ function startEditEvent(id) {
     var e = allGroups.find(function(x) { return String(x.id) === String(id); });
     if (!e) { return showNotif('That is no longer available.', 'error'); }
     if (!currentUser || e.organizer_id !== currentUser.id) {
-        return showNotif('Only the host can edit this.', 'error');
+        return showNotif('Only the ' + roleLabel(e, true) + ' can edit this.', 'error');
     }
     resetEventForm(false);
     editingEventId = e.id;
