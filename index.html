@@ -2241,6 +2241,16 @@ function localInputValue(iso) {
            'T' + p(d.getHours()) + ':' + p(d.getMinutes());
 }
 
+// A datetime-local input carries no timezone. Turn the organizer's
+// wall-clock time into a real UTC instant so Postgres stores the moment
+// they meant, not the digits they typed.
+function localToISO(v) {
+    if (!v) { return null; }
+    var d = new Date(v);
+    if (isNaN(d.getTime())) { return null; }
+    return d.toISOString();
+}
+
 function hhmm(t) { return t ? String(t).slice(0, 5) : ''; }
 
 function setVal(id, v) {
@@ -2355,7 +2365,7 @@ async function saveGroupEdits() {
         cost_note: document.getElementById('group-cost-note').value.trim() || null,
         max_members: parseInt(document.getElementById('group-max').value, 10) || null,
         recurring: selectedSchedule,
-        meeting_datetime: once ? (document.getElementById('group-datetime').value || null) : null,
+        meeting_datetime: once ? localToISO(document.getElementById('group-datetime').value) : null,
         weekly_day: weekly ? document.getElementById('group-weekly-day').value : null,
         weekly_time: weekly ? document.getElementById('group-weekly-time').value : null,
         monthly_week: monthly ? document.getElementById('group-monthly-week').value : null,
@@ -4073,7 +4083,7 @@ async function handleCreateGroup() {
         cover_image: uploadedImage || null,
         organizer_id: currentUser.id,
         recurring: selectedSchedule,
-        meeting_datetime: document.getElementById('group-datetime').value || null,
+        meeting_datetime: localToISO(document.getElementById('group-datetime').value),
         weekly_day: document.getElementById('group-weekly-day').value || null,
         weekly_time: document.getElementById('group-weekly-time').value || null,
         monthly_week: document.getElementById('group-monthly-week').value || null,
