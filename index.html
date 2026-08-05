@@ -254,7 +254,7 @@
 <div id="page-groups" class="page">
 <button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card" id="groups-category-card"><h3>👥 Groups</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Find your community. Join ongoing groups.</p>
-<div id="category-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:8px 0"></div>
+<div id="category-grid" style="display:grid;grid-template-columns:1fr;gap:10px;margin:8px 0"></div>
 <div id="suggest-section" style="display:none;background:#fef9e7;padding:16px;border-radius:12px;border:1px solid #f9e79f;margin-top:12px">
 <p style="font-weight:600">🙋 Don't see what you're looking for?</p>
 <input type="text" id="suggest-topic" placeholder="What group would you like to see?">
@@ -268,7 +268,7 @@
 <div id="page-classes" class="page">
 <button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card" id="classes-category-card"><h3>🎓 Classes</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Learn a skill from someone local. Classes are paid, in cash, at the class.</p>
-<div id="class-category-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:8px 0"></div>
+<div id="class-category-grid" style="display:grid;grid-template-columns:1fr;gap:10px;margin:8px 0"></div>
 </div>
 <div id="class-category-header"></div>
 <div id="classes-list"></div>
@@ -919,7 +919,7 @@ var currentUser = null;
 var allGroups = [];
 var allEvents = [];
 var allInterests = [];
-var allCategories = ['Hiking', 'Book Club', 'Social', 'Arts', 'Food', 'Music', 'Tech', 'Wellness', 'Sports', 'Gaming'];
+var allCategories = ['Outdoors & Active', 'Indoors & Social', 'Arts & Making'];
 var pendingCategories = [];
 var allTowns = [];
 var appSettings = {};
@@ -1365,7 +1365,7 @@ function loadData() {
             allGroups = data.groups || [];
             allEvents = data.events || [];
             allInterests = data.interests || [];
-            allCategories = data.categories || ['Hiking', 'Book Club', 'Social', 'Arts', 'Food', 'Music', 'Tech', 'Wellness', 'Sports', 'Gaming'];
+            allCategories = data.categories || ['Outdoors & Active', 'Indoors & Social', 'Arts & Making'];
             pendingCategories = data.pendingCategories || [];
             idCounter = data.nextId || 1;
             userProfiles = data.userProfiles || {};
@@ -2767,16 +2767,16 @@ function renderCategories() {
         var f = free[c] || 0, p = paid[c] || 0;
         var lines = '';
         if (f === 0 && p === 0) {
-            lines = '<div style="font-size:12px;color:#bbb">none yet</div>';
+            lines = '<div style="font-size:14px;color:#aaa">none yet</div>';
         } else if (browseKind === 'class') {
-            lines = '<div style="font-size:12px;color:#7B1FA2;font-weight:700">' + p + ' class' + (p !== 1 ? 'es' : '') + '</div>';
+            lines = '<div style="font-size:14px;color:#7B1FA2;font-weight:700">' + p + ' class' + (p !== 1 ? 'es' : '') + '</div>';
         } else {
-            lines = '<div style="font-size:12px;color:#5B8C5A;font-weight:700">' + f + ' group' + (f !== 1 ? 's' : '') + '</div>';
+            lines = '<div style="font-size:14px;color:#5B8C5A;font-weight:700">' + f + ' group' + (f !== 1 ? 's' : '') + '</div>';
         }
-        html += '<div style="background:white;border:2px solid #e8eee8;border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer" onclick="showGroupsByCategory(\'' + c + '\')">';
-        html += '<div style="font-size:24px">' + categoryIcon(c) + '</div>';
-        html += '<div style="font-size:13px;font-weight:600;margin-top:4px">' + c + '</div>';
-        html += lines + '</div>';
+        html += '<div style="background:white;border:2px solid #e8eee8;border-radius:14px;padding:18px 16px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:14px" onclick="showGroupsByCategory(\'' + c + '\')">';
+        html += '<div style="font-size:34px">' + categoryIcon(c) + '</div>';
+        html += '<div style="flex:1"><div style="font-size:18px;font-weight:700">' + c + '</div>';
+        html += lines + '</div></div>';
     }
     container.innerHTML = html;
 }
@@ -2837,7 +2837,7 @@ function showGroupsByCategory(category, noHistory) {
 
 function categoryIcon(cat) {
     if (categoryIcons[cat]) { return categoryIcons[cat]; }
-    var icons = { 'Hiking': '🏔️', 'Book Club': '📚', 'Social': '🍷', 'Arts': '🎨', 'Food': '🍽️', 'Music': '🎵', 'Tech': '💻', 'Wellness': '🧘', 'Sports': '⚽', 'Gaming': '🎮' };
+    var icons = { 'Outdoors & Active': '🏔️', 'Indoors & Social': '🍷', 'Arts & Making': '🎨' };
     return icons[cat] || '📌';
 }
 
@@ -3909,16 +3909,9 @@ async function savePhotoRows(groupId) {
 // Keywords used to find a cover photo that matches the group's category.
 function categoryKeywords(cat) {
     var map = {
-        'Hiking': 'hiking,trail,mountain',
-        'Book Club': 'books,reading,library',
-        'Social': 'cafe,friends,gathering',
-        'Arts': 'art,painting,studio',
-        'Food': 'food,cooking,restaurant',
-        'Music': 'music,concert,band',
-        'Tech': 'technology,computer,workshop',
-        'Wellness': 'yoga,meditation,wellness',
-        'Sports': 'sports,team,field',
-        'Gaming': 'videogame,arcade,gaming'
+        'Outdoors & Active': 'hiking,trail,mountain,outdoors',
+        'Indoors & Social': 'cafe,friends,gathering',
+        'Arts & Making': 'art,studio,craft,workshop'
     };
     if (map[cat]) return map[cat];
     var clean = (cat || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().replace(/\s+/g, ',');
@@ -3928,11 +3921,9 @@ function categoryKeywords(cat) {
 // Drawn locally, so it always works even with no internet.
 function fallbackCover(cat) {
     var colors = {
-        'Hiking': ['#5B8C5A', '#2d5a2d'], 'Book Club': ['#D4A373', '#8a6642'],
-        'Social': ['#9C27B0', '#6a1b7a'], 'Arts': ['#e74c3c', '#a83226'],
-        'Food': ['#f39c12', '#b8730b'], 'Music': ['#2196F3', '#14568f'],
-        'Tech': ['#1a1a2e', '#43436b'], 'Wellness': ['#5B8C5A', '#3f7a6d'],
-        'Sports': ['#2ecc71', '#1a8d4b'], 'Gaming': ['#7B1FA2', '#4a1163']
+        'Outdoors & Active': ['#5B8C5A', '#2d5a2d'],
+        'Indoors & Social': ['#9C27B0', '#6a1b7a'],
+        'Arts & Making': ['#e74c3c', '#a83226']
     };
     var c = colors[cat] || ['#5B8C5A', '#2d5a2d'];
     var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200">' +
