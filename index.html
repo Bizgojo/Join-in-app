@@ -1307,6 +1307,10 @@ async function loadFromCloud() {
                 is_private: g.is_private, is_paid: g.is_paid, price: Number(g.price) || 0,
                 cover_image: g.cover_image, organizer_id: g.organizer_id,
                 organizer_name: (userProfiles[g.organizer_id] || {}).displayName || 'Unknown',
+                slug: g.slug,
+                kind: g.kind, cost_note: g.cost_note, instructor: g.instructor,
+                venue_type: g.venue_type, visibility: g.visibility,
+                payment_mode: g.payment_mode, registration_url: g.registration_url,
                 recurring: g.recurring, meeting_datetime: g.meeting_datetime,
                 weekly_day: g.weekly_day, weekly_time: g.weekly_time,
                 monthly_week: g.monthly_week, monthly_day: g.monthly_day, monthly_time: g.monthly_time,
@@ -1511,6 +1515,7 @@ async function loadPublicData() {
                 is_private: g.is_private, is_paid: g.is_paid, price: Number(g.price) || 0,
                 cover_image: g.cover_image, organizer_id: g.organizer_id,
                 organizer_name: (userProfiles[g.organizer_id] || {}).displayName || 'A local host',
+                slug: g.slug,
                 kind: g.kind, cost_note: g.cost_note, instructor: g.instructor,
                 venue_type: g.venue_type, visibility: g.visibility,
                 payment_mode: g.payment_mode, registration_url: g.registration_url,
@@ -2930,6 +2935,41 @@ function openGroupDetail(id) {
     renderGroupDetail();
 }
 
+// The public address of one group or class. Slugs are locked at creation,
+// so a link an organizer pastes into Facebook keeps working forever.
+function groupShareUrl(g) {
+    if (!g || !g.slug) { return SHARE_URL; }
+    return SHARE_URL + '/g/' + g.slug;
+}
+
+async function copyGroupLink(id) {
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g) { return; }
+    var url = groupShareUrl(g);
+    try {
+        await navigator.clipboard.writeText(url);
+        showNotif('Link copied \u2014 paste it anywhere. \ud83d\udd17', 'success');
+    } catch (e) {
+        window.prompt('Copy this link:', url);
+    }
+}
+
+// A shared link looks like /g/south-slope-crawlers. Once the listings have
+// loaded, open that card rather than dropping the visitor on the home page.
+function openSlugFromPath() {
+    var m = (window.location.pathname || '').match(/^\/g\/([A-Za-z0-9-]+)\/?$/);
+    if (!m) { return; }
+    var slug = m[1].toLowerCase();
+    var g = allGroups.find(function(x) { return x.slug === slug; });
+    if (!g) {
+        showNotif('That link points to something that is no longer listed.', 'info');
+        return;
+    }
+    browseKind = g.kind === 'class' ? 'class' : 'group';
+    currentGroupCategory = g.category || null;
+    openGroupDetail(g.id);
+}
+
 // How many browsable items sit in a category alongside this one.
 function categoryCount(category) {
     if (!category) { return 0; }
@@ -3103,6 +3143,10 @@ function renderGroupDetail() {
             (g.is_paid ? ' — $' + g.price : '') + '</button>';
     }
     html += '<button class="btn-outline" onclick="messageHostGate(\'' + g.id + '\')">💬 Message the Host</button>';
+    if (g.slug) {
+        html += '<button class="btn-outline" onclick="copyGroupLink(\'' + g.id + '\')">\ud83d\udd17 Copy Link to This ' +
+            (g.kind === 'class' ? 'Class' : 'Group') + '</button>';
+    }
     html += '</div></div>';
     body.innerHTML = html;
 }
@@ -5656,6 +5700,7 @@ async function boot() {
     } else {
         await enterAsGuest();
     }
+    openSlugFromPath();
 }
 
 // Only real admins see the admin gear.
