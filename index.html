@@ -37,6 +37,7 @@
 .badge.joined{background:#5B8C5A;color:white}
 .btn-select{background:#5B8C5A;color:white;border:none;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:12px}
 .btn-outline{background:white;color:#5B8C5A;border:2px solid #5B8C5A;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
+.btn-invite{background:#1B4B8F;color:white;border:none;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
 .btn-leave{background:white;color:#e74c3c;border:2px solid #e74c3c;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
 .gsearch{position:relative;margin:4px 0 12px}.gsearch input{font-size:17px;padding:15px 46px 15px 44px;margin-bottom:0}.gsearch .mag{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none}.gsearch .wipe{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#e8eee8;color:#444;border:none;width:32px;height:32px;border-radius:50%;font-size:16px;font-weight:700;cursor:pointer;display:none}.gsearch .wipe.on{display:block}
 .cat-header{display:flex;align-items:center;justify-content:space-between;gap:10px;background:white;border-radius:16px;padding:14px 16px;margin-bottom:12px;border:1px solid #e8eee8}
@@ -2080,7 +2081,7 @@ function renderMessages() {
         var s = '<div class="msg-card' + (n.read ? ' read' : '') + '" style="border-left-color:' + (welcome ? '#1B4B8F' : '#5B8C5A') + '">';
         s += '<div class="mm">' + (welcome ? '👋 From the JoinIn team' : '🔔 Notification') + '</div>';
         s += '<div class="mt">' + escapeHTML(n.message).replace(/\n/g, '<br>') + '</div>';
-        s += '<div class="mm">' + new Date(n.created_at).toLocaleString() + '</div>';
+        s += '<div class="mm">' + whenLong(n.created_at) + '</div>';
         s += '<div class="msg-actions">';
         if (n.group_id) {
             s += '<button class="act-reply" onclick="openGroupDetail(\'' + n.group_id + '\')">Open Group</button>';
@@ -2101,7 +2102,7 @@ function renderMessages() {
         s += '<div class="mh">' + avatarHTML(m.fromId, 'sm') + '<div><div style="font-weight:700">' + m.fromName + '</div>';
         s += '<div class="mm">' + label + (m.groupName ? ' · ' + m.groupName : '') + '</div></div></div>';
         s += '<div class="mt">' + m.text + '</div>';
-        s += '<div class="mm">' + new Date(m.time).toLocaleString() + '</div>';
+        s += '<div class="mm">' + whenLong(m.time) + '</div>';
         s += '<div class="msg-actions">';
         if (!m.read) { s += '<button class="act-read" onclick="markRead(' + m.id + ')">Mark as Read</button>'; }
         s += '<button class="act-reply" onclick="startReply(' + m.id + ')">Reply</button>';
@@ -3038,6 +3039,46 @@ function groupShareUrl(g) {
     return SHARE_URL + '/g/' + g.slug;
 }
 
+// Invitations go out from the person's own phone, through whichever app
+// they already use, from their own address. JoinIn sends nothing and never
+// reads an address book.
+//
+// Hidden groups are left out on purpose: the database refuses to show one
+// to a non-member, so a link would land the friend on an empty page.
+function canInvite(g) {
+    if (!g || g.status !== 'approved') { return false; }
+    if (visibilityOf(g) === 'hidden') { return false; }
+    return isMemberOf(g) || (currentUser && g.organizer_id === currentUser.id);
+}
+
+function inviteWording(g) {
+    var line = 'Join me at ' + g.name + ' on JoinIn.';
+    var when = groupMeetingText(g);
+    if (when && when.indexOf('announced') === -1) { line += ' ' + when + '.'; }
+    return line;
+}
+
+async function inviteToGroup(id) {
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g) { return; }
+    var url = groupShareUrl(g);
+    var line = inviteWording(g);
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: g.name, text: line, url: url });
+            return;
+        } catch (e) {
+            if (e && e.name === 'AbortError') { return; }
+        }
+    }
+    try {
+        await navigator.clipboard.writeText(line + ' ' + url);
+        showNotif('Invitation copied \u2014 paste it into a text or email. \ud83d\udd17', 'success');
+    } catch (e) {
+        window.prompt('Copy this invitation:', line + ' ' + url);
+    }
+}
+
 async function copyGroupLink(id) {
     var g = allGroups.find(function(x) { return x.id === id; });
     if (!g) { return; }
@@ -3099,13 +3140,31 @@ function groupMeetingText(g) {
         return g.monthly_week + ' ' + g.monthly_day + ' of each month at ' + formatTime(g.monthly_time);
     }
     if (g.meeting_datetime) {
-        return new Date(g.meeting_datetime).toLocaleString();
+        return whenLong(g.meeting_datetime);
     }
     if (g.meeting_date || g.meeting_time) {
-        return (g.meeting_date ? new Date(g.meeting_date + 'T12:00').toLocaleDateString() : '') +
+        return (g.meeting_date ? dateLong(g.meeting_date + 'T12:00') : '') +
             (g.meeting_time ? ' at ' + formatTime(g.meeting_time) : '');
     }
     return 'Schedule to be announced.';
+}
+
+// One date format across the whole app, so nothing has to be decoded:
+// Saturday, May 3, 2026, at 2:30 PM
+function whenLong(raw) {
+    if (!raw) { return ''; }
+    var d = (raw instanceof Date) ? raw : new Date(raw);
+    if (isNaN(d.getTime())) { return String(raw); }
+    return d.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) +
+           ', at ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+}
+
+// The same, for things that have a day but no clock time.
+function dateLong(raw) {
+    if (!raw) { return ''; }
+    var d = (raw instanceof Date) ? raw : new Date(raw);
+    if (isNaN(d.getTime())) { return String(raw); }
+    return d.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 }
 
 function formatTime(t) {
@@ -3223,6 +3282,11 @@ function renderGroupDetail() {
     html += '<div style="margin-top:18px">';
     if (joined) {
         html += '<div class="btn-done">✅ You are already signed up</div>';
+    }
+    if (canInvite(g)) {
+        html += '<button class="btn-invite" onclick="inviteToGroup(\'' + g.id + '\')">\uD83D\uDCE3 Invite Friends to Join</button>';
+    }
+    if (joined) {
         html += '<button class="btn-leave" onclick="leaveGroup(\'' + g.id + '\')">Remove My Name</button>';
     } else if (isFull(g)) {
         if (onWaitlist(g)) {
@@ -3513,7 +3577,10 @@ async function joinGroup(id) {
         'at ' + escapeHTML(place) + '<br>' +
         escapeHTML(groupMeetingText(g)) +
         '<br><br><span style="color:#8a948a;font-size:14px">' + roleLabel(g) + ': ' +
-        escapeHTML(g.organizer_name || 'Unknown') + '</span>');
+        escapeHTML(g.organizer_name || 'Unknown') + '</span>',
+        null,
+        visibilityOf(g) === 'hidden' ? null
+            : { label: '\uD83D\uDCE3 Invite Friends', run: function() { inviteToGroup(g.id); } });
     await refreshGroups();
     renderChatRooms();
 }
@@ -3572,17 +3639,33 @@ function addGroupPhoto(event) {
     event.target.value = '';
 }
 
-function showPopup(icon, title, text, onDone) {
+// When a popup is handed an action, that action becomes the main button
+// and "Got It" steps down to the quiet one underneath.
+function showPopup(icon, title, text, onDone, action) {
     document.getElementById('popup-icon').textContent = icon;
     document.getElementById('popup-title').textContent = title;
     document.getElementById('popup-text').innerHTML = text;
     var btn = document.getElementById('popup-btn');
-    btn.textContent = 'Got It';
-    btn.onclick = function() {
+    var sec = document.querySelector('.popup-btn-secondary');
+    var done = function() {
         closePopup();
         if (typeof onDone === 'function') { onDone(); }
     };
-    document.querySelector('.popup-btn-secondary').style.display = 'none';
+    if (action && action.label) {
+        btn.textContent = action.label;
+        btn.onclick = function() {
+            closePopup();
+            if (typeof action.run === 'function') { action.run(); }
+        };
+        sec.textContent = 'Got It';
+        sec.style.display = 'block';
+        sec.onclick = done;
+    } else {
+        btn.textContent = 'Got It';
+        btn.onclick = done;
+        sec.style.display = 'none';
+        sec.onclick = closePopup;
+    }
     document.getElementById('popup-overlay').classList.add('active');
 }
 
@@ -3620,10 +3703,7 @@ function removeEventDate(i) {
 }
 
 function prettyEventDate(v) {
-    var d = new Date(v);
-    if (isNaN(d.getTime())) { return v; }
-    return d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) +
-           ' at ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    return whenLong(v);
 }
 
 function renderEventDates() {
@@ -3836,7 +3916,9 @@ function renderGroupItem(g) {
     else if (status === 'submitted') statusBadge = '<span class="badge submitted">📩 Submitted</span>';
     var privacyBadge = g.is_private ? '<span class="badge private">🔒 Private</span>' : '<span class="badge public">🌍 Public</span>';
     var joinedBadge = isMember ? ' <span class="badge joined">✅ Joined</span>' : '';
-    return '<div class="group-item"><div class="title-row"><h3>' + g.name + '</h3>' + privacyBadge + ' ' + statusBadge + joinedBadge + '</div><div class="desc">' + (g.description || '') + '</div><div class="meta-row"><span>👥 ' + (g.member_count || 0) + ' members</span><span>By ' + (g.organizer_name || 'Unknown') + '</span></div></div>';
+    return '<div class="group-item"><div class="title-row"><h3>' + g.name + '</h3>' + privacyBadge + ' ' + statusBadge + joinedBadge + '</div><div class="desc">' + (g.description || '') + '</div><div class="meta-row"><span>👥 ' + (g.member_count || 0) + ' members</span><span>By ' + (g.organizer_name || 'Unknown') + '</span></div>' +
+        (canInvite(g) ? '<button class="btn-invite" onclick="inviteToGroup(\'' + g.id + '\')">\uD83D\uDCE3 Invite Friends to Join</button>' : '') +
+        '</div>';
 }
 
 function renderGroups() {
@@ -5008,8 +5090,7 @@ function ticketEventDate(t) {
     var ev = ticketEvent(t);
     var raw = t.eventDate || (ev && ev.datetime);
     if (!raw) return 'Date to be announced';
-    var d = new Date(raw);
-    return isNaN(d.getTime()) ? String(raw) : d.toLocaleString();
+    return whenLong(raw);
 }
 
 function ticketEventPlace(t) {
@@ -5179,7 +5260,7 @@ function renderFeedback() {
         var f = sorted[i];
         var stars = '';
         for (var s = 0; s < 5; s++) { stars += s < f.rating ? '★' : '☆'; }
-        html += '<div class="feedback-item"><div class="stars">' + stars + '</div><div class="fb-text">' + f.text + '</div><div class="fb-meta">— ' + f.userName + ' · ' + new Date(f.date).toLocaleDateString() + '</div></div>';
+        html += '<div class="feedback-item"><div class="stars">' + stars + '</div><div class="fb-text">' + f.text + '</div><div class="fb-meta">— ' + f.userName + ' · ' + dateLong(f.date) + '</div></div>';
     }
     container.innerHTML = html;
 }
@@ -5335,8 +5416,7 @@ async function loadAdminUsers() {
 
 function whenText(iso) {
     if (!iso) return 'never';
-    var d = new Date(iso);
-    return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    return whenLong(iso);
 }
 
 async function adminRemoveUser(id, label) {
@@ -5392,7 +5472,7 @@ function renderAdminFeedback() {
         var f = sorted[i];
         var stars = '';
         for (var s = 0; s < 5; s++) { stars += s < f.rating ? '★' : '☆'; }
-        html += '<div class="feedback-item"><div class="stars">' + stars + '</div><div class="fb-text">' + f.text + '</div><div class="fb-meta">— ' + f.userName + ' · ' + new Date(f.date).toLocaleDateString() + '</div></div>';
+        html += '<div class="feedback-item"><div class="stars">' + stars + '</div><div class="fb-text">' + f.text + '</div><div class="fb-meta">— ' + f.userName + ' · ' + dateLong(f.date) + '</div></div>';
     }
     container.innerHTML = html;
 }
@@ -5525,9 +5605,7 @@ async function saveNotes() {
 function stampNote() {
     var box = document.getElementById('admin-note-body');
     if (!box) return;
-    var d = new Date();
-    var stamp = d.toLocaleDateString() + ' ' +
-                d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    var stamp = whenLong(new Date());
     var sep = box.value && !/\n\n$/.test(box.value) ? '\n\n' : '';
     box.value += sep + '--- ' + stamp + ' ---\n';
     box.focus();
@@ -5672,7 +5750,7 @@ function whenLabel(d) {
     if (days === 0) return 'Today at ' + time;
     if (days === 1) return 'Tomorrow at ' + time;
     if (days < 7) return DAY_NAMES[d.getDay()] + ' at ' + time;
-    return d.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' at ' + time;
+    return whenLong(d);
 }
 
 function renderUpcoming() {
