@@ -289,14 +289,7 @@
 <div id="page-events" class="page">
 <button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card"><h3>🎟️ Events</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Discover concerts, sports, workshops, and more.</p>
-<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
-<button onclick="filterEvents('all')" id="event-filter-all" style="background:#5B8C5A;color:white;border:none;padding:6px 14px;border-radius:12px;font-size:12px;cursor:pointer">All</button>
-<button onclick="filterEvents('music')" id="event-filter-music" style="background:#e8eee8;color:#666;border:none;padding:6px 14px;border-radius:12px;font-size:12px;cursor:pointer">🎵 Music</button>
-<button onclick="filterEvents('sports')" id="event-filter-sports" style="background:#e8eee8;color:#666;border:none;padding:6px 14px;border-radius:12px;font-size:12px;cursor:pointer">⚽ Sports</button>
-<button onclick="filterEvents('arts')" id="event-filter-arts" style="background:#e8eee8;color:#666;border:none;padding:6px 14px;border-radius:12px;font-size:12px;cursor:pointer">🎨 Arts</button>
-<button onclick="filterEvents('food')" id="event-filter-food" style="background:#e8eee8;color:#666;border:none;padding:6px 14px;border-radius:12px;font-size:12px;cursor:pointer">🍽️ Food</button>
-<button onclick="filterEvents('festival')" id="event-filter-festival" style="background:#e8eee8;color:#666;border:none;padding:6px 14px;border-radius:12px;font-size:12px;cursor:pointer">🎉 Festival</button>
-</div></div>
+</div>
 <div id="events-list"></div>
 </div>
 
@@ -944,7 +937,6 @@ var chatMessages = [];
 var tickets = [];
 var currentChatRoom = null;
 var ticketTiers = [];
-var currentEventFilter = 'all';
 var selectedEventPaid = 'free';
 var notificationLog = [];
 var currentGroupCategory = null;
@@ -961,11 +953,14 @@ var pendingReplyTo = null;
 
 // ─── SUPABASE ───
 // ─── BUILD STAMP — development only, strip before launch ───
-var BUILD_NO   = '0002';
-var BUILD_WHEN = '4 Aug 2026, 11:25 AM';
+// Netlify rewrites the token below at deploy time with the real commit
+// hash. Untouched here, so a local copy always reads "local".
+var BUILD_NO = '__DEPLOY__';
 function stampBuild() {
     var el = document.getElementById('build-stamp');
-    if (el) { el.textContent = 'BUILD ' + BUILD_NO + '  \u00B7  ' + BUILD_WHEN; }
+    if (!el) { return; }
+    var b = (BUILD_NO.indexOf('DEPLOY') > -1) ? 'local' : BUILD_NO;
+    el.textContent = 'BUILD ' + b;
 }
 
 var SUPABASE_URL = 'https://wtioqxzlaxgpcjhggkhg.supabase.co';
@@ -1275,7 +1270,7 @@ async function loadFromCloud() {
     await loadGroupPhotos();
     if (!sb || !currentUser) return;
     try {
-        var cats = await sb.from('categories').select('name,icon,is_approved,sort_order').order('sort_order').order('name');
+        var cats = await sb.from('categories').select('name,icon,is_approved,sort_order').eq('scope', 'group').order('sort_order').order('name');
         if (cats.data) {
             allCategories = cats.data.filter(function(c) { return c.is_approved; }).map(function(c) { return c.name; });
             pendingCategories = cats.data.filter(function(c) { return !c.is_approved; }).map(function(c) { return c.name; });
@@ -1492,7 +1487,7 @@ async function loadPublicData() {
     await loadGroupPhotos();
     if (!sb) { return; }
     try {
-        var cats = await sb.from('categories').select('name,icon,is_approved,sort_order').order('sort_order').order('name');
+        var cats = await sb.from('categories').select('name,icon,is_approved,sort_order').eq('scope', 'group').order('sort_order').order('name');
         if (cats.data) {
             allCategories = cats.data.filter(function(c) { return c.is_approved; })
                                     .map(function(c) { return c.name; });
@@ -1635,7 +1630,7 @@ function showPage(page, fromHistory) {
     if (page === 'home') { updateHome(); }
     if (page === 'create-group') { applyCreateKind(); }
     if (page === 'groups') { browseKind = 'group'; renderCategories(); if (!currentGroupCategory) { showCategoryGrid(true); } }
-    if (page === 'classes') { browseKind = 'class'; renderCategories(); if (!currentGroupCategory) { showCategoryGrid(true); } }
+    if (page === 'classes') { browseKind = 'class'; currentGroupCategory = null; renderClassList(); }
     if (page === 'events') { renderEvents(); }
     if (page === 'hosting') { renderHosting(); }
     if (page === 'chat') { renderChatRooms(); setChatTab('groups'); }
@@ -3805,12 +3800,7 @@ function deriveEvents() {
 function renderEvents() {
     var container = document.getElementById('events-list');
     if (!container) return;
-    var events = [];
-    for (var i = 0; i < allEvents.length; i++) {
-        if (currentEventFilter === 'all' || allEvents[i].category === currentEventFilter) {
-            events.push(allEvents[i]);
-        }
-    }
+    var events = allEvents.slice().sort(byStartDate);
     if (events.length === 0) {
         container.innerHTML = '<div class="card" style="text-align:center;color:#888">No events yet. <a href="#" onclick="showPage(\'create-event\')">Create one</a>!</div>';
         return;
@@ -3822,18 +3812,34 @@ function renderEvents() {
     container.innerHTML = html;
 }
 
-function filterEvents(category) {
-    currentEventFilter = category;
-    document.querySelectorAll('[id^="event-filter-"]').forEach(function(b) {
-        b.style.background = '#e8eee8';
-        b.style.color = '#666';
-    });
-    var btn = document.getElementById('event-filter-' + category);
-    if (btn) {
-        btn.style.background = '#5B8C5A';
-        btn.style.color = 'white';
+// Undated entries sink to the bottom rather than jumping to the top.
+function byStartDate(a, b) {
+    var x = a.meeting_datetime ? new Date(a.meeting_datetime).getTime() : Infinity;
+    var y = b.meeting_datetime ? new Date(b.meeting_datetime).getTime() : Infinity;
+    return x - y;
+}
+
+// Classes are too few to sort into categories yet. One list, soonest
+// first, is faster to read than a grid of empty tiles.
+function renderClassList() {
+    var container = document.getElementById('classes-list');
+    if (!container) return;
+    var header = document.getElementById('class-category-header');
+    if (header) { header.innerHTML = ''; }
+    var grid = document.getElementById('class-category-grid');
+    if (grid) { grid.innerHTML = ''; }
+    var card = document.getElementById('classes-category-card');
+    if (card) { card.style.display = 'block'; }
+    var classes = itemsOfKind().sort(byStartDate);
+    if (classes.length === 0) {
+        container.innerHTML = '<div class="card" style="text-align:center;color:#888">' +
+            '<p>No classes yet.</p>' +
+            '<button class="btn-select" onclick="startCreate(\'class\')">\uD83E\uDDD1\u200D\uD83C\uDFEB Teach One</button></div>';
+        return;
     }
-    renderEvents();
+    var html = '';
+    for (var i = 0; i < classes.length; i++) { html += renderGroupCard(classes[i]); }
+    container.innerHTML = html;
 }
 
 function setSchedule(type) {
