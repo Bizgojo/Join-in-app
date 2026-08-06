@@ -621,6 +621,7 @@
 <button onclick="switchAdminTab('users')" id="admin-tab-users-btn" style="padding:8px 16px;border:none;border-radius:12px;font-size:12px;cursor:pointer;background:#e8eee8;color:#666">👥 Users</button>
 <button onclick="switchAdminTab('categories')" id="admin-tab-categories-btn" style="padding:8px 16px;border:none;border-radius:12px;font-size:12px;cursor:pointer;background:#e8eee8;color:#666">📁 Categories</button>
 <button onclick="switchAdminTab('feedback')" id="admin-tab-feedback-btn" style="padding:8px 16px;border:none;border-radius:12px;font-size:12px;cursor:pointer;background:#e8eee8;color:#666">💬 Feedback</button>
+<button onclick="switchAdminTab('sources')" id="admin-tab-sources-btn" style="padding:8px 16px;border:none;border-radius:12px;font-size:12px;cursor:pointer;background:#e8eee8;color:#666">📈 Sources</button>
 </div>
 <div id="admin-pending-content"><h4 style="font-size:14px">⏳ Pending Approvals</h4><div id="admin-pending-list"></div></div>
 <div id="admin-users-content" style="display:none"><h4 style="font-size:14px">👥 Users</h4><div id="admin-user-list"></div></div>
@@ -638,6 +639,7 @@
 </div>
 
 <div id="admin-feedback-content" style="display:none"><h4 style="font-size:14px">💬 User Feedback</h4><div id="admin-feedback-list"></div></div>
+<div id="admin-sources-content" style="display:none"><h4 style="font-size:14px">📈 Where Members Came From</h4><div id="admin-sources-list"></div></div>
 </div></div>
 
 <script>
@@ -1246,6 +1248,7 @@ async function doAuth() {
                 await sb.from('profiles').update({ age_confirmed_at: new Date().toISOString() })
                     .eq('id', su.data.user.id);
             } catch (ageErr) { /* non-blocking */ }
+            await saveAttribution(su.data.user.id);
             showNotif('Welcome to JoinIn, ' + name + '!', 'success');
         } else {
             authStatus('Logging in...');
@@ -1304,7 +1307,8 @@ async function loadFromCloud() {
         (profs.data || []).forEach(function(p) {
             userProfiles[p.id] = {
                 displayName: p.display_name, bio: p.bio, gender: p.gender,
-                avatar: p.avatar_url, location: p.location, interests: []
+                avatar: p.avatar_url, location: p.location, interests: [],
+                referralCode: p.referral_code
             };
             allUsers.push({ id: p.id, name: p.display_name, email: '', isAdmin: p.is_admin });
             if (p.id === currentUser.id) {
@@ -3116,6 +3120,20 @@ function groupShareUrl(g) {
     return SHARE_URL + '/g/' + g.slug;
 }
 
+// The same link, tagged so the credit for anyone who signs up lands with the
+// person who shared it. Falls back to the plain link if the code is missing.
+function myReferralCode() {
+    var prof = currentUser ? userProfiles[currentUser.id] : null;
+    return (prof && prof.referralCode) || '';
+}
+
+function invitedShareUrl(g) {
+    var url = groupShareUrl(g);
+    var code = myReferralCode();
+    if (!code) { return url; }
+    return url + (url.indexOf('?') > -1 ? '&' : '?') + 'r=' + encodeURIComponent(code);
+}
+
 // Invitations go out from the person's own phone, through whichever app
 // they already use, from their own address. JoinIn sends nothing and never
 // reads an address book.
@@ -3138,7 +3156,7 @@ function inviteWording(g) {
 async function inviteToGroup(id) {
     var g = allGroups.find(function(x) { return x.id === id; });
     if (!g) { return; }
-    var url = groupShareUrl(g);
+    var url = invitedShareUrl(g);
     var line = inviteWording(g);
     if (navigator.share) {
         try {
@@ -5729,13 +5747,50 @@ async function clearNotes() {
 }
 
 function switchAdminTab(tab) {
-    var tabs = ['pending', 'users', 'categories', 'feedback'];
+    if (tab === 'sources') { renderAdminSources(); }
+    var tabs = ['pending', 'users', 'categories', 'feedback', 'sources'];
     tabs.forEach(function(t) {
         var btn = document.getElementById('admin-tab-' + t + '-btn');
         var content = document.getElementById('admin-' + t + '-content');
         if (btn) { btn.style.background = t === tab ? '#5B8C5A' : '#e8eee8'; btn.style.color = t === tab ? 'white' : '#666'; }
         if (content) { content.style.display = t === tab ? 'block' : 'none'; }
     });
+}
+
+async function renderAdminSources() {
+    var box = document.getElementById('admin-sources-list');
+    if (!box) { return; }
+    box.innerHTML = '<p style="color:#888">Counting\u2026</p>';
+    var rows = [];
+    try {
+        var r = await sb.rpc('attribution_report');
+        rows = r.data || [];
+    } catch (e) {
+        box.innerHTML = '<p style="color:#e74c3c">Could not load the figures.</p>';
+        return;
+    }
+    if (!rows.length) {
+        box.innerHTML = '<p style="color:#888">No members yet.</p>';
+        return;
+    }
+    var groups = {};
+    rows.forEach(function(row) {
+        (groups[row.bucket] = groups[row.bucket] || []).push(row);
+    });
+    var html = '<p style="color:#888;font-size:13px;margin-bottom:10px">' +
+        'Recorded on a member\u2019s first visit and never changed afterwards.</p>';
+    Object.keys(groups).sort().forEach(function(bucket) {
+        html += '<h4 style="font-size:14px;margin:12px 0 6px;color:#1B4B8F">' +
+                escapeHTML(bucket) + '</h4>';
+        groups[bucket].sort(function(a, b) { return (b.signups || 0) - (a.signups || 0); })
+            .forEach(function(row) {
+                html += '<div style="display:flex;justify-content:space-between;gap:12px;' +
+                    'padding:8px 0;border-bottom:1px solid #e8eee8">' +
+                    '<span>' + escapeHTML(row.label || 'Unknown') + '</span>' +
+                    '<strong>' + (row.signups || 0) + '</strong></div>';
+            });
+    });
+    box.innerHTML = html;
 }
 
 function suggestGroup() {
@@ -6193,8 +6248,55 @@ function dismissInstall() {
 }
 
 // ─── START ───
+// Where somebody came from is knowable only at the moment they arrive, and
+// most people do not sign up on that first visit. So it is recorded now and
+// kept until an account exists to attach it to.
+//
+// First touch wins. If a person follows one organiser's link in March and a
+// different one in April, the March organiser gets the credit — they did the
+// work of finding them. Overwriting would also let a late link steal a
+// signup that was already earned.
+var ATTR_KEY = 'joinin_attr';
+
+function readAttribution() {
+    try {
+        var raw = localStorage.getItem(ATTR_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+}
+
+function captureAttribution() {
+    if (readAttribution()) { return; }          // already recorded
+    var out = { first_seen_at: new Date().toISOString() };
+    var got = false;
+    try {
+        var q = new URLSearchParams(window.location.search);
+        var code = (q.get('r') || q.get('ref') || '').trim().toUpperCase();
+        if (/^[A-Z0-9]{4,12}$/.test(code)) { out.referred_by_code = code; got = true; }
+        ['source', 'medium', 'campaign'].forEach(function(k) {
+            var v = (q.get('utm_' + k) || '').trim().slice(0, 60);
+            if (v) { out['utm_' + k] = v; got = true; }
+        });
+        var m = window.location.pathname.match(/^\/g\/([a-z0-9-]+)/i);
+        if (m) { out.landed_slug = m[1].toLowerCase(); got = true; }
+    } catch (e) { return; }
+    if (!got) { return; }                        // plain visit, nothing to store
+    try { localStorage.setItem(ATTR_KEY, JSON.stringify(out)); } catch (e) {}
+}
+
+// Written once, straight after the account exists. The database refuses any
+// later edit, so a second attempt is harmless.
+async function saveAttribution(userId) {
+    var attr = readAttribution();
+    if (!attr || !sb || !userId) { return; }
+    try {
+        await sb.from('profiles').update(attr).eq('id', userId);
+    } catch (e) { /* never block a signup over analytics */ }
+}
+
 async function boot() {
     stampBuild();
+    captureAttribution();
     if (!initSupabase()) {
         showNotif('Could not load the connection library. Check your internet.', 'error');
         document.getElementById('page-login').classList.add('active');
