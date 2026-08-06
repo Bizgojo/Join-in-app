@@ -4534,8 +4534,20 @@ async function handleCreateGroup() {
 
     if (verdict.decision === 'approve') {
         btn.textContent = '✅ Approved and live!';
+        // Pull the new row in first so its share link exists the moment the
+        // host taps Invite. A group is never emptier than right now, and the
+        // host will not be this motivated again.
+        await refreshGroups();
+        var fresh = allGroups.find(function(x) { return x.id === res.data.id; });
+        var canAsk = !!fresh && visibilityOf(fresh) !== 'hidden';
         showPopup('🎉', 'Your Group Is Live',
-            '"' + name + '" passed review and is now visible to everyone.', done);
+            '"' + escapeHTML(name) + '" passed review and is now visible to everyone.' +
+            (canAsk ? '<br><br>A new group fills fastest when the host asks a few people directly.' : ''),
+            done,
+            canAsk ? {
+                label: '\uD83D\uDCE3 Invite Friends',
+                run: async function() { await inviteToGroup(res.data.id); done(); }
+            } : null);
     } else if (verdict.decision === 'reject') {
         btn.textContent = '❌ Not approved';
         showPopup('😕', 'Not Approved',
@@ -4544,7 +4556,8 @@ async function handleCreateGroup() {
     } else {
         btn.textContent = '📩 Submitted for review';
         showPopup('📩', 'Sent for Review',
-            'A person will look at "' + name + '" shortly. You will find it on your home screen.', done);
+            'A person will look at "' + escapeHTML(name) + '" shortly. You will find it on your home screen.' +
+            '<br><br>Once it is approved, an <strong>Invite Friends</strong> button will be waiting on it under My Hosting.', done);
     }
     btn.classList.add('submitted');
     btn.disabled = true;
