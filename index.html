@@ -38,6 +38,7 @@
 .btn-select{background:#5B8C5A;color:white;border:none;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:12px}
 .btn-outline{background:white;color:#5B8C5A;border:2px solid #5B8C5A;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
 .btn-leave{background:white;color:#e74c3c;border:2px solid #e74c3c;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
+.gsearch{position:relative;margin:4px 0 12px}.gsearch input{font-size:17px;padding:15px 46px 15px 44px;margin-bottom:0}.gsearch .mag{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none}.gsearch .wipe{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#e8eee8;color:#444;border:none;width:32px;height:32px;border-radius:50%;font-size:16px;font-weight:700;cursor:pointer;display:none}.gsearch .wipe.on{display:block}
 .cat-header{display:flex;align-items:center;justify-content:space-between;gap:10px;background:white;border-radius:16px;padding:14px 16px;margin-bottom:12px;border:1px solid #e8eee8}
 .cat-header h3{font-size:18px}
 .cat-header button{background:#e8eee8;color:#333;border:none;padding:10px 16px;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap}
@@ -266,6 +267,7 @@
 <div id="page-groups" class="page">
 <button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card" id="groups-category-card"><h3>👥 Groups</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Find your community. Join ongoing groups.</p>
+<div class="gsearch"><span class="mag">🔍</span><input type="search" id="group-search" placeholder="Search groups by keyword" autocomplete="off" oninput="onGroupSearch()"><button class="wipe" id="group-search-wipe" onclick="clearGroupSearch()" aria-label="Clear search">✕</button></div>
 <div id="category-grid" style="display:grid;grid-template-columns:1fr;gap:10px;margin:8px 0"></div>
 <div id="suggest-section" style="display:none;background:#fef9e7;padding:16px;border-radius:12px;border:1px solid #f9e79f;margin-top:12px">
 <p style="font-weight:600">🙋 Don't see what you're looking for?</p>
@@ -2814,9 +2816,12 @@ function renderCategories() {
 // ─── CATEGORY DRILL-DOWN ───
 function showCategoryGrid(noHistory) {
     currentGroupCategory = null;
+    if (browseKind !== 'class') { resetGroupSearch(); }
     var ids = browseIds();
     var card = document.getElementById(ids.card);
     if (card) { card.style.display = 'block'; }
+    var g = document.getElementById(ids.grid);
+    if (g) { g.style.display = ''; }
     var header = document.getElementById(ids.header);
     if (header) { header.innerHTML = ''; }
     var list = document.getElementById(ids.list);
@@ -2863,6 +2868,82 @@ function showGroupsByCategory(category, noHistory) {
         html += renderGroupCard(groups[j]);
     }
     container.innerHTML = html;
+}
+
+// Categories are a fine way in when you're browsing, but a poor one when
+// you already know what you want. This searches every group at once so a
+// person never has to guess which category something was filed under.
+var groupSearchTimer = null;
+
+function onGroupSearch() {
+    clearTimeout(groupSearchTimer);
+    groupSearchTimer = setTimeout(runGroupSearch, 150);
+}
+
+function clearGroupSearch() {
+    var box = document.getElementById('group-search');
+    if (box) { box.value = ''; box.focus(); }
+    runGroupSearch();
+}
+
+// Empties the box without stealing focus — for arriving at the page.
+function resetGroupSearch() {
+    var box = document.getElementById('group-search');
+    if (box && box.value) { box.value = ''; }
+    var wipe = document.getElementById('group-search-wipe');
+    if (wipe) { wipe.classList.remove('on'); }
+}
+
+function groupMatches(g, q) {
+    var hay = [g.name, g.description, g.category, g.venue_name, g.location]
+        .map(function(v) { return v || ''; }).join(' ').toLowerCase();
+    return hay.indexOf(q) > -1;
+}
+
+function runGroupSearch() {
+    var box = document.getElementById('group-search');
+    if (!box) { return; }
+    var q = box.value.trim().toLowerCase();
+    var grid = document.getElementById('category-grid');
+    var header = document.getElementById('category-header');
+    var list = document.getElementById('groups-list');
+    var wipe = document.getElementById('group-search-wipe');
+    if (wipe) { wipe.classList.toggle('on', q.length > 0); }
+
+    if (!q) {
+        if (grid) { grid.style.display = ''; }
+        if (header) { header.innerHTML = ''; }
+        if (list) { list.innerHTML = ''; }
+        return;
+    }
+
+    currentGroupCategory = null;
+    if (grid) { grid.style.display = 'none'; }
+
+    var hits = [];
+    var pool = itemsOfKind();
+    for (var i = 0; i < pool.length; i++) {
+        if (groupMatches(pool[i], q)) { hits.push(pool[i]); }
+    }
+
+    if (header) {
+        header.innerHTML = '<div class="cat-header"><h3>\uD83D\uDD0D ' + hits.length +
+            ' match' + (hits.length !== 1 ? 'es' : '') +
+            '<div style="font-size:13px;color:#888;font-weight:400">for \u201C' +
+            escapeHTML(box.value.trim()) + '\u201D</div></h3>' +
+            '<button onclick="clearGroupSearch()">\u2715 Clear</button></div>';
+    }
+    if (!list) { return; }
+    if (hits.length === 0) {
+        list.innerHTML = '<div class="card" style="text-align:center;color:#888">' +
+            '<p>No groups match that word.</p>' +
+            '<p style="font-size:13px">Try a shorter word, or browse the categories.</p>' +
+            '<button class="btn-select" onclick="startCreate(\'group\')">\uD83D\uDE80 Start One</button></div>';
+        return;
+    }
+    var html = '';
+    for (var j = 0; j < hits.length; j++) { html += renderGroupCard(hits[j]); }
+    list.innerHTML = html;
 }
 
 function categoryIcon(cat) {
