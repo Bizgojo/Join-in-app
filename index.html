@@ -37,6 +37,23 @@
 .gcard h3{font-size:19px;margin-bottom:8px}
 .desc2{color:#444;font-size:15px;line-height:1.4;margin:10px 0 12px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .badge.joined{background:#5B8C5A;color:white}
+.rsvp-row{display:flex;gap:10px;margin:10px 0}
+.rsvp-btn{flex:1;background:#e8eee8;color:#2d5a2d;border:2px solid #dce4dc;padding:14px 8px;border-radius:20px;font-size:16px;font-weight:700;cursor:pointer}
+.rsvp-btn.on{background:#5B8C5A;color:white;border-color:#5B8C5A}
+.rsvp-btn.off{background:#8a948a;color:white;border-color:#8a948a}
+.about-tab{flex:1;background:#e8eee8;color:#2d5a2d;border:none;padding:14px 10px;border-radius:20px;font-size:16px;font-weight:700;cursor:pointer}
+.about-tab.on{background:#5B8C5A;color:white}
+.team-photo{width:100%;height:190px;background:#eef4ee;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#7d907d;font-size:16px;font-weight:600}
+.team-caption{font-size:15px;color:#555;margin-top:10px;line-height:1.5}
+.team-row{background:white;border:1px solid #e8eee8;border-left:5px solid #5B8C5A;border-radius:16px;padding:16px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start}
+.team-face{flex:none;width:74px;height:74px;border-radius:50%;background:#eef4ee;display:flex;align-items:center;justify-content:center;font-size:34px}
+.team-name{font-size:18px;font-weight:700}
+.team-why{font-size:15px;color:#444;line-height:1.45;margin:6px 0 10px}
+.team-row{cursor:pointer}
+.team-chev{flex:none;align-self:center;font-size:26px;color:#c4cec4}
+.team-big{width:100%;max-width:340px;aspect-ratio:1/1;min-height:260px;margin:0 auto;background:#eef4ee;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:74px}
+.team-bio{font-size:16px;line-height:1.6;color:#333;margin:14px 0 18px}
+.team-text-btn{background:#2E7BC4;color:white;border:none;padding:12px 18px;border-radius:24px;font-size:16px;font-weight:700;cursor:pointer}
 .btn-select{background:#5B8C5A;color:white;border:none;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:12px}
 .btn-outline{background:white;color:#5B8C5A;border:2px solid #5B8C5A;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
 .btn-invite{background:#1B4B8F;color:white;border:none;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
@@ -270,6 +287,11 @@
 <!-- ABOUT -->
 <div id="page-about" class="page">
 <button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
+<div style="display:flex;gap:8px;margin-bottom:12px">
+<button id="about-tab-mission" onclick="showAboutTab('mission')" class="about-tab on">Our Mission</button>
+<button id="about-tab-team" onclick="showAboutTab('team')" class="about-tab">Who Are We</button>
+</div>
+<div id="about-mission">
 <div class="card" style="font-size:16px;line-height:1.65;color:#333">
 <h3 style="font-size:22px;margin-bottom:14px">Our Mission</h3>
 <p style="margin-bottom:14px">Asheville is unlike anywhere else. It’s a city of artists, musicians, entrepreneurs, hikers, volunteers, craft brewers, makers, and neighbors who value creativity, kindness, and community. That spirit deserves a place where people can easily find one another and share real experiences.</p>
@@ -279,6 +301,17 @@
 <p style="margin-bottom:14px">We also believe community access should be open. That’s why JoinIn is free for everyone—hosts and members alike—so we can focus on real connections instead of paywalls. Our goal is to remove barriers and help more people connect locally, starting in places like Asheville and growing outward. While we may introduce sustainable pricing in the future, it will always reflect our local roots and never resemble the extractive models of large, out-of-town platforms.</p>
 <p style="margin-bottom:14px">Our mission is simple: to help the people of Asheville meet, build friendships, support local organizations and businesses, and create a stronger, more connected community.</p>
 <p style="font-weight:700;color:#1B4B8F;font-size:17px">Because the future shouldn’t only be smarter. It should be more human.</p>
+</div>
+</div>
+<div id="about-team" style="display:none">
+<div id="team-index">
+<div class="card">
+<div class="team-photo">Team photo coming soon</div>
+<div class="team-caption" id="team-caption"></div>
+</div>
+<div id="team-list"></div>
+</div>
+<div id="team-detail" style="display:none"></div>
 </div>
 </div>
 
@@ -942,6 +975,7 @@ var QR = (function () {
 var currentUser = null;
 var allGroups = [];
 var allEvents = [];
+var allRsvps = [];
 var allInterests = [];
 var allCategories = ['Outdoors & Active', 'Indoors & Social', 'Arts & Making'];
 var pendingCategories = [];
@@ -1349,6 +1383,9 @@ async function loadFromCloud() {
             };
         });
         deriveEvents();
+        var rs = await sb.from('group_rsvps').select('group_id,user_id,occurs_at,status');
+        allRsvps = rs.data || [];
+
         var wl = await sb.from('group_waitlist').select('group_id,user_id');
         myWaitlist = (wl.data || [])
             .filter(function(w) { return w.user_id === currentUser.id; })
@@ -1664,6 +1701,7 @@ function showPage(page, fromHistory) {
     if (page === 'groups') { browseKind = 'group'; renderCategories(); if (!currentGroupCategory) { showCategoryGrid(true); } }
     if (page === 'classes') { browseKind = 'class'; currentGroupCategory = null; renderClassList(); }
     if (page === 'events') { renderEvents(); }
+    if (page === 'about') { showAboutTab('mission'); }
     if (page === 'hosting') { renderHosting(); }
     if (page === 'chat') { renderChatRooms(); setChatTab('groups'); }
     if (page === 'tickets') { renderTickets(); }
@@ -1776,6 +1814,17 @@ function myScheduleItems() {
     return items;
 }
 
+// Open to start, so what's coming up is the first thing seen. Hiding it
+// is a choice the person makes once and the app remembers.
+function scheduleOpen() {
+    return localStorage.getItem('joinin_schedule_open') !== '0';
+}
+
+function toggleSchedule() {
+    localStorage.setItem('joinin_schedule_open', scheduleOpen() ? '0' : '1');
+    renderMySchedule();
+}
+
 function renderMySchedule() {
     var box = document.getElementById('my-schedule');
     if (!box) { return; }
@@ -1785,8 +1834,18 @@ function renderMySchedule() {
         box.innerHTML = '';
         return;
     }
-    var html = '<div style="font-size:19px;font-weight:700;color:#1B4B8F;margin:4px 0 10px">' +
-        'What you have coming up</div>';
+    var open = scheduleOpen();
+    var html = '<div style="display:flex;align-items:center;justify-content:space-between;' +
+        'gap:10px;margin:4px 0 10px">' +
+        '<div style="font-size:19px;font-weight:700;color:#1B4B8F">What you have coming up</div>' +
+        '<button onclick="toggleSchedule()" style="flex:none;background:#e8eee8;color:#2d5a2d;' +
+        'border:none;padding:8px 16px;border-radius:20px;font-size:15px;font-weight:700;' +
+        'cursor:pointer">' + (open ? 'Hide' : 'View (' + items.length + ')') + '</button></div>';
+    if (!open) {
+        box.innerHTML = html;
+        box.style.display = 'block';
+        return;
+    }
     items.forEach(function(it) {
         var when = it.sort ? whenLabel(it.sort) : 'Date to be announced';
         html += '<div onclick="' + it.tap + '" style="background:white;border:1px solid #e8eee8;' +
@@ -3049,6 +3108,63 @@ function shortDesc(text) {
     return out;
 }
 
+// A weekly group is one row whose dates are worked out on the fly, so an
+// RSVP has to name the night it belongs to, not just the group.
+function nextOccursISO(g) {
+    var d = g ? nextOccurrence(g) : null;
+    return (d && !isNaN(d.getTime())) ? d.toISOString() : null;
+}
+
+// Two clocks can disagree by a second or two on the same meeting, so
+// occurrences are matched to the minute rather than exactly.
+function sameOccurrence(a, b) {
+    if (!a || !b) { return false; }
+    return new Date(a).getTime() - (new Date(a).getTime() % 60000) ===
+           new Date(b).getTime() - (new Date(b).getTime() % 60000);
+}
+
+function goingTo(g) {
+    var when = nextOccursISO(g);
+    if (!when) { return []; }
+    return allRsvps.filter(function(r) {
+        return r.group_id === g.id && r.status === 'going' && sameOccurrence(r.occurs_at, when);
+    });
+}
+
+function myRsvpStatus(g) {
+    var when = nextOccursISO(g);
+    if (!when || !currentUser) { return null; }
+    var mine = allRsvps.find(function(r) {
+        return r.group_id === g.id && r.user_id === currentUser.id && sameOccurrence(r.occurs_at, when);
+    });
+    return mine ? mine.status : null;
+}
+
+// Names and faces belong to the people who joined. Everyone else gets
+// the count, which is all the reassurance a stranger needs.
+function canSeePeople(g) {
+    if (!g || !currentUser) { return false; }
+    return isMemberOf(g) || g.organizer_id === currentUser.id || !!currentUser.isAdmin;
+}
+
+async function setRsvp(id, going) {
+    if (!requireAccount('say whether you are coming')) { return; }
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g || !currentUser || !sb) { return; }
+    var when = nextOccursISO(g);
+    if (!when) { showNotif('This group has no date set yet.', 'info'); return; }
+    var res = await sb.from('group_rsvps').upsert({
+        group_id: g.id, user_id: currentUser.id, occurs_at: when,
+        status: going ? 'going' : 'not_going'
+    }, { onConflict: 'group_id,user_id,occurs_at' });
+    if (res.error) { showNotif('Could not save that: ' + res.error.message, 'error'); return; }
+    var rs = await sb.from('group_rsvps').select('group_id,user_id,occurs_at,status');
+    allRsvps = rs.data || [];
+    showNotif(going ? 'You are down as coming. \uD83C\uDF89' : 'Thanks for letting the host know.', going ? 'success' : 'info');
+    renderGroupDetail();
+    renderMySchedule();
+}
+
 function isMemberOf(g) {
     return !!(g && g.members && currentUser && g.members.indexOf(currentUser.id) > -1);
 }
@@ -3216,7 +3332,9 @@ function categoryCount(category) {
 // A category holding nothing but this one card is not worth going back to,
 // so the back button skips it and returns home.
 function backToCategory() {
+    var was = allGroups.find(function(x) { return x.id === currentDetailGroup; });
     currentDetailGroup = null;
+    if (was && was.kind === 'event') { showPage('events'); return; }
     if (categoryCount(currentGroupCategory) > 1) {
         showPage('groups');
         showGroupsByCategory(currentGroupCategory, true);
@@ -3294,7 +3412,8 @@ function renderGroupDetail() {
     var locked = visibilityOf(g) === 'hidden' && !joined && !isHost;
     document.getElementById('group-detail-back').innerHTML =
         '<span class="chev">‹</span> Back to ' +
-        (categoryCount(currentGroupCategory) > 1 ? currentGroupCategory : 'Home');
+        (g.kind === 'event' ? 'Events'
+            : (categoryCount(currentGroupCategory) > 1 ? currentGroupCategory : 'Home'));
 
     var html = '<div class="card">';
     var pics = photosFor(g);
@@ -3355,6 +3474,8 @@ function renderGroupDetail() {
         html += '<div class="info-line">💳 $' + g.price + ' per member — paid directly to the host</div>';
     }
 
+    html += rsvpSection(g, joined);
+
     html += '<div class="sec-title">Signed up (' + (g.members ? g.members.length : 0) +
         (g.max_members ? ' of ' + g.max_members : '') + ')</div>';
     if (g.max_members) {
@@ -3363,13 +3484,17 @@ function renderGroupDetail() {
             (left === 0 ? '🚫 This group is full' : '✅ ' + left + ' spot' + (left !== 1 ? 's' : '') + ' left of ' + g.max_members) +
             '</div>';
     }
-    if (g.members && g.members.length) {
+    if (g.members && g.members.length && canSeePeople(g)) {
         var names = '';
         for (var i = 0; i < g.members.length; i++) {
             names += '<span class="person">' + avatarHTML(g.members[i], 'sm') +
                 '<span class="nm">' + memberName(g.members[i]) + '</span></span>';
         }
         html += '<div>' + names + '</div>';
+    } else if (g.members && g.members.length) {
+        html += '<p style="color:#666;font-size:15px">' + g.members.length + ' ' +
+            (g.members.length === 1 ? 'person has' : 'people have') +
+            ' signed up. Sign up yourself to see who they are.</p>';
     } else {
         html += '<p style="color:#888;font-size:14px">Nobody signed up yet. Be the first!</p>';
     }
@@ -3404,6 +3529,42 @@ function renderGroupDetail() {
     }
     html += '</div></div>';
     body.innerHTML = html;
+}
+
+// Who is coming to the very next meeting, which is a different question
+// from who belongs to the group. A roster of 200 can still be a table of 6.
+function rsvpSection(g, joined) {
+    var when = nextOccursISO(g);
+    if (!when) { return ''; }
+    var going = goingTo(g);
+    var mine = myRsvpStatus(g);
+    var html = '<div class="sec-title">Who\'s coming \u2014 ' + shortDate(when) + '</div>';
+    html += '<div class="info-line" style="font-weight:700;color:#2d5a2d">\u2705 ' +
+        going.length + ' ' + (going.length === 1 ? 'person is' : 'people are') + ' coming</div>';
+
+    if (going.length && canSeePeople(g)) {
+        var faces = '';
+        going.forEach(function(r) {
+            faces += '<span class="person">' + avatarHTML(r.user_id, 'sm') +
+                '<span class="nm">' + memberName(r.user_id) + '</span></span>';
+        });
+        html += '<div>' + faces + '</div>';
+    } else if (going.length) {
+        html += '<p style="color:#666;font-size:15px">Sign up to see who is coming.</p>';
+    }
+
+    if (joined) {
+        html += '<div class="rsvp-row">' +
+            '<button class="rsvp-btn' + (mine === 'going' ? ' on' : '') +
+                '" onclick="setRsvp(\'' + g.id + '\', true)">\u2705 I\'m coming</button>' +
+            '<button class="rsvp-btn' + (mine === 'not_going' ? ' off' : '') +
+                '" onclick="setRsvp(\'' + g.id + '\', false)">\u274c Can\'t make it</button>' +
+            '</div>';
+        if (mine === 'going') {
+            html += '<div class="info-line" style="color:#2d5a2d">You are on the list for this one.</div>';
+        }
+    }
+    return html;
 }
 
 // ─── DATE PICKER ───
@@ -4058,16 +4219,108 @@ function deriveEvents() {
 function renderEvents() {
     var container = document.getElementById('events-list');
     if (!container) return;
-    var events = allEvents.slice().sort(byStartDate);
-    if (events.length === 0) {
+    var series = eventSeries();
+    if (series.length === 0) {
         container.innerHTML = '<div class="card" style="text-align:center;color:#888">No events yet. <a href="#" onclick="showPage(\'create-event\')">Create one</a>!</div>';
         return;
     }
     var html = '';
-    for (var j = 0; j < events.length; j++) {
-        html += renderEventItem(events[j]);
+    for (var j = 0; j < series.length; j++) {
+        html += renderEventSeriesCard(series[j]);
     }
     container.innerHTML = html;
+}
+
+// Four nights of the same band are four rows sharing a series_id. Grouping
+// them means the list reads as one act with several dates, not four acts.
+function eventSeries() {
+    var order = [];
+    var byKey = {};
+    eventRows().sort(byStartDate).forEach(function(e) {
+        var key = seriesKey(e);
+        if (!byKey[key]) { byKey[key] = []; order.push(key); }
+        byKey[key].push(e);
+    });
+    return order.map(function(k) { return byKey[k]; });
+}
+
+// Read from the groups list itself. allEvents is a convenience copy that
+// other code clears and rebuilds, and the page went blank whenever we
+// happened to draw it while that copy was empty.
+function eventRows() {
+    return allGroups.filter(function(g) { return g && g.kind === 'event'; });
+}
+
+// Same act, same room, different nights. Events entered one at a time
+// have no series_id, so fall back to matching the name and the venue.
+// 'Music @ Foggy' and 'Music at Foggy' are meant to be one listing.
+function seriesKey(e) {
+    if (e.series_id) { return String(e.series_id); }
+    var name = String(e.name || '').toLowerCase()
+        .replace(/@/g, 'at').replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
+    var place = String(e.venue_name || e.location || '').toLowerCase()
+        .replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
+    return name ? 'n:' + name + '|' + place : String(e.id);
+}
+
+// A short day for the range line, where the full sentence would crowd the card.
+function shortDate(raw) {
+    if (!raw) { return 'TBA'; }
+    var d = new Date(raw);
+    if (isNaN(d.getTime())) { return 'TBA'; }
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
+function seriesDatesLine(list) {
+    if (list.length === 1) { return whenLong(list[0].meeting_datetime); }
+    return list.length + ' dates \u00b7 ' + shortDate(list[0].meeting_datetime) +
+           ' \u2013 ' + shortDate(list[list.length - 1].meeting_datetime);
+}
+
+function renderEventSeriesCard(list) {
+    var e = list[0];
+    var many = list.length > 1;
+    var shots = photosFor(e);
+    var extra = shots.length > 1
+        ? '<div class="morepics">+' + (shots.length - 1) + ' more</div>' : '';
+    var cover = e.cover_image
+        ? '<div class="coverwrap"><img class="cover" src="' + e.cover_image + '" alt="">' + extra + '</div>'
+        : '<div class="cover-empty">\ud83c\udf9f\ufe0f</div>';
+    var action = many
+        ? 'openEventDates(\'' + seriesKey(e) + '\')'
+        : 'openGroupDetail(\'' + e.id + '\')';
+    var place = e.venue_name || e.location || '';
+    return '<div class="gcard">' + cover + '<div class="body">' +
+        '<h3>' + e.name + '</h3>' +
+        '<div>' + groupCostBadge(e) + '</div>' +
+        '<div style="font-size:15px;font-weight:600;color:#2E7BC4;margin-top:8px">\ud83d\udcc5 ' +
+            seriesDatesLine(list) + '</div>' +
+        '<div class="desc2">' + shortDesc(e.description) + '</div>' +
+        '<div class="meta-row"><span>' + place + '</span><span>By ' +
+            (e.organizer_name || 'Unknown') + '</span></div>' +
+        '<button class="btn-select" onclick="' + action + '">' +
+            (many ? 'Pick a Date' : 'Select') + '</button>' +
+        '</div></div>';
+}
+
+// Step between the list and the detail screen: which night?
+function openEventDates(key) {
+    var container = document.getElementById('events-list');
+    if (!container) return;
+    var list = null;
+    eventSeries().forEach(function(l) { if (seriesKey(l[0]) === String(key)) { list = l; } });
+    if (!list) { renderEvents(); return; }
+    var html = '<div class="card">' +
+        '<button class="back-btn" onclick="renderEvents()"><span class="chev">\u2039</span> Back to Events</button>' +
+        '<h3>' + list[0].name + '</h3>' +
+        '<p style="color:#888;font-size:14px;margin:6px 0 12px">Pick a date to see the details.</p>';
+    list.forEach(function(e) {
+        html += '<button class="btn-select" style="margin-top:8px" onclick="openGroupDetail(\'' +
+                e.id + '\')">\ud83d\udcc5 ' + whenLong(e.meeting_datetime) + '</button>';
+    });
+    html += '</div>';
+    container.innerHTML = html;
+    window.scrollTo(0, 0);
 }
 
 // Undated entries sink to the bottom rather than jumping to the top.
@@ -5804,6 +6057,77 @@ function suggestGroup() {
         document.getElementById('suggest-topic').value = '';
         renderAdminDashboard();
     } else { showNotif('You already suggested this!', 'info'); }
+}
+
+// ─── WHO ARE WE ───
+// Placeholder people. Replace name, why and phone as they come in; an
+// empty phone just tells the person the number isn't up yet.
+var TEAM = [
+    { name: 'Marc Postlewaite',
+      why: 'Text me if something in the app is broken, confusing, or missing.',
+      bio: 'Bio coming soon.', phone: '' },
+    { name: 'Team Member Two',
+      why: 'Text about listing your venue or business on JoinIn.',
+      bio: 'Bio coming soon.', phone: '' },
+    { name: 'Team Member Three',
+      why: 'Text about starting a group or getting your first members.',
+      bio: 'Bio coming soon.', phone: '' },
+    { name: 'Team Member Four',
+      why: 'Text about events, tickets, and getting your show listed.',
+      bio: 'Bio coming soon.', phone: '' }
+];
+
+function showAboutTab(tab) {
+    var mission = tab !== 'team';
+    document.getElementById('about-mission').style.display = mission ? 'block' : 'none';
+    document.getElementById('about-team').style.display = mission ? 'none' : 'block';
+    document.getElementById('about-tab-mission').className = 'about-tab' + (mission ? ' on' : '');
+    document.getElementById('about-tab-team').className = 'about-tab' + (mission ? '' : ' on');
+    if (!mission) { renderTeam(); }
+    window.scrollTo(0, 0);
+}
+
+function renderTeam() {
+    var cap = document.getElementById('team-caption');
+    if (cap) {
+        cap.textContent = TEAM.map(function(m) { return m.name; }).join(', ') +
+            ' \u2014 the people behind JoinIn.';
+    }
+    var list = document.getElementById('team-list');
+    if (!list) return;
+    var html = '';
+    TEAM.forEach(function(m, i) {
+        html += '<div class="team-row" onclick="openTeamMember(' + i + ')">' +
+            '<div class="team-face">\ud83d\udc64</div>' +
+            '<div style="flex:1;min-width:0">' +
+            '<div class="team-name">' + escapeHTML(m.name) + '</div>' +
+            '<div class="team-why">' + escapeHTML(m.why) + '</div>' +
+            '</div><span class="team-chev">\u203a</span></div>';
+    });
+    list.innerHTML = html;
+    document.getElementById('team-index').style.display = 'block';
+    document.getElementById('team-detail').style.display = 'none';
+}
+
+// One person, full size: the picture people recognise, then why they'd
+// reach out, then the way to do it.
+function openTeamMember(i) {
+    var m = TEAM[i];
+    var panel = document.getElementById('team-detail');
+    if (!m || !panel) { return; }
+    var action = m.phone
+        ? 'window.location.href=\'sms:' + m.phone + '\''
+        : 'showNotif(\'Number coming soon.\', \'info\')';
+    panel.innerHTML = '<button class="back-btn" onclick="renderTeam()">' +
+        '<span class="chev">\u2039</span> Back to Who Are We</button>' +
+        '<div class="card"><div class="team-big">\ud83d\udc64</div>' +
+        '<h3 style="font-size:22px;margin-top:14px">' + escapeHTML(m.name) + '</h3>' +
+        '<div class="team-bio">' + escapeHTML(m.bio || 'Bio coming soon.') + '</div>' +
+        '<button class="team-text-btn" style="width:100%" onclick="' + action + '">' +
+        '\ud83d\udcac Text ' + escapeHTML(m.name.split(' ')[0]) + '</button></div>';
+    document.getElementById('team-index').style.display = 'none';
+    panel.style.display = 'block';
+    window.scrollTo(0, 0);
 }
 
 // ─── WHAT'S COMING UP ───
