@@ -7,11 +7,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="JoinIn">
+<meta name="apple-mobile-web-app-title" content="Asheville Pulse">
 <meta name="description" content="Find your people. Join the fun. Community groups and events in Asheville, NC.">
 <link id="manifest-link" rel="manifest">
 <link id="apple-icon" rel="apple-touch-icon">
-<title>JoinIn</title>
+<title>Asheville Pulse</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,sans-serif;background:#f0f4f0;max-width:500px;margin:0 auto;padding:20px}.card{background:white;border-radius:16px;padding:20px;margin-bottom:12px;border:1px solid #e8eee8}.btn{background:#5B8C5A;color:white;border:none;padding:16px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%}.btn-danger{background:#e74c3c;color:white;border:none;padding:16px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%}.btn-danger:hover{background:#c0392b}input,textarea,select{width:100%;padding:14px;border:2px solid #dce4dc;border-radius:14px;font-size:16px;margin-bottom:12px;font-family:inherit}input::placeholder,textarea::placeholder{color:#6b7a6b;opacity:1}#group-desc::placeholder{line-height:1.45}.header{text-align:center;padding:16px 0}.logo{font-size:28px;font-weight:800;color:#1a1a2e}.green{color:#5B8C5A}.funnel{background:white;border-radius:16px;padding:16px 20px;margin-bottom:10px;border:1px solid #e8eee8;cursor:pointer;display:flex;align-items:center;gap:14px}.funnel:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}.funnel .icon{font-size:28px;width:40px;text-align:center}.funnel .text{flex:1}.funnel .title{font-size:16px;font-weight:700}.funnel .sub{font-size:13px;color:#888}.funnel .arrow{font-size:18px;color:#ccc}.page{display:none}.page.active{display:block}.notif{padding:14px 18px;border-radius:14px;margin-bottom:12px;display:none}.notif.success{background:#d4edda;color:#155724;display:block}.notif.error{background:#f8d7da;color:#721c24;display:block}.notif.info{background:#d1ecf1;color:#0c5460;display:block}.user-section{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.05);margin-bottom:16px;cursor:pointer}.user-avatar{width:48px;height:48px;border-radius:50%;background:#5B8C5A;color:white;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700}.admin-gear{position:fixed;bottom:20px;right:20px;background:#1a1a2e;color:white;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;border:none;z-index:100}.liq{display:none;text-align:center;font-size:14px;font-weight:700;color:#1B4B8F;background:#eaf2fb;border:1px solid #cfe0f2;border-radius:20px;padding:8px 14px;margin:0 auto 10px;max-width:400px;line-height:1.4}.liq.on{display:block}.liq .num{color:#E4572E}
 .bb-brand{order:-1;flex:0 0 100%;text-align:center;font-size:15px;font-weight:800;letter-spacing:.4px;line-height:1.1;margin-bottom:5px;opacity:.95;pointer-events:none}.bb-brand .in{color:#FFD2C2}
@@ -114,6 +114,62 @@
 .busy{opacity:.55;pointer-events:none}
 .mission{background:#eaf2fb;border:1px solid #cfe0f2;border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:16px;line-height:1.5;color:#1B4B8F}.fb-q{font-weight:700;font-size:17px;margin:16px 0 6px;line-height:1.4}.fb-q .num{display:inline-block;background:#1B4B8F;color:#fff;border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;font-size:15px;margin-right:8px}.share-note{background:#f0f8f0;border-radius:12px;padding:12px 14px;font-size:16px;line-height:1.45;color:#2d5a2d;margin-bottom:14px}.share-link{display:block;width:100%;background:#eaf2fb;border:1px solid #cfe0f2;border-radius:10px;padding:12px;font-family:ui-monospace,Menlo,monospace;font-size:17px;font-weight:700;color:#1B4B8F;text-align:center;margin-bottom:12px;word-break:break-all}
 .host-tag{flex:none;background:#1B4B8F;color:#fff;border-radius:20px;padding:6px 14px;font-size:14px;font-weight:700}.host-hint{font-size:13px;color:#8a948a;margin-top:2px}
+/* ── PULSE FEED ── */
+.hood-row{display:flex;align-items:center;justify-content:space-between;margin:2px 0 12px}
+.hood-row select{width:auto;flex:0 0 auto;padding:8px 12px;margin:0;font-size:14px;font-weight:600;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#eaf2fb}
+.pulse-heading{font-size:19px;font-weight:700;color:#1B4B8F;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
+.pulse-heading .dot{width:8px;height:8px;border-radius:50%;background:#E4572E;flex:0 0 auto}
+.rail-wrap{margin-bottom:6px}
+.rail{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.rail::-webkit-scrollbar{display:none}
+.rail-card{flex:0 0 auto;width:120px;background:#fff;border:1px solid #e8eee8;border-radius:16px;padding:12px 10px;text-align:left;cursor:pointer}
+.rail-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.rail-card .ico{font-size:22px;display:block;margin-bottom:6px}
+.rail-card .t{font-size:13px;font-weight:700;line-height:1.25;color:#222}
+.rail-card .s{font-size:11px;color:#888;margin-top:2px}
+.rail-card.cta{background:#1B4B8F;color:#fff}
+.rail-card.cta .t{color:#fff}
+.rail-card.cta .s{color:#cfe0f2}
+.pulse-post{background:#fff;border-radius:16px;margin-bottom:12px;overflow:hidden;border:1px solid #e8eee8;display:flex}
+.blaze-bar{width:5px;flex-shrink:0}
+.blaze-bar.group{background:#3F9142}
+.blaze-bar.event{background:#7B1FA2}
+.blaze-bar.trend{background:#D9A441}
+.blaze-bar.talk{background:#8a948a}
+.pulse-body{padding:13px 14px 14px;flex:1;min-width:0}
+.pulse-tag{font-size:11px;letter-spacing:.04em;text-transform:uppercase;font-weight:700}
+.pulse-tag.group{color:#3F9142}
+.pulse-tag.event{color:#7B1FA2}
+.pulse-tag.trend{color:#B9860E}
+.pulse-tag.talk{color:#8a948a}
+.pulse-meta{display:flex;align-items:center;gap:7px;margin-top:6px;margin-bottom:8px}
+.pulse-avatar{width:26px;height:26px;border-radius:50%;background:#1B4B8F;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pulse-who{font-size:12.5px;font-weight:600;color:#333}
+.pulse-who span{font-weight:400;color:#888}
+.pulse-post h3{font-size:16.5px;font-weight:700;line-height:1.32;margin-bottom:5px;color:#1a1a2e}
+.pulse-post p{font-size:14.5px;color:#333;line-height:1.48}
+.pulse-sponsor{margin-top:8px;font-size:11.5px;color:#888}
+.pulse-img{width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-top:10px}
+.poll-opt{position:relative;background:#f4f6f4;border-radius:10px;padding:10px 12px;margin-bottom:6px;overflow:hidden;cursor:pointer;border:none;width:100%;text-align:left}
+.poll-opt .fill{position:absolute;inset:0;background:#dceae1;z-index:0}
+.poll-opt .lbl{position:relative;z-index:1;font-size:14px;font-weight:600;display:flex;justify-content:space-between;color:#1a1a2e}
+.pulse-actions{display:flex;align-items:center;gap:16px;margin-top:11px;font-size:13px;color:#888}
+.pulse-act{display:flex;align-items:center;gap:5px;cursor:pointer;background:none;border:none;color:#888;font-size:13px;padding:2px}
+.pulse-act.voted{color:#1B4B8F;font-weight:700}
+.pulse-act b{color:#1a1a2e}
+.pulse-comments{margin-top:10px;border-top:1px solid #f0f0f5;padding-top:10px;display:none}
+.pulse-comment{font-size:13.5px;margin-bottom:8px;line-height:1.4}
+.pulse-comment b{color:#1B4B8F}
+.pulse-comment-form{display:flex;gap:8px;margin-top:6px}
+.pulse-comment-form input{margin:0;font-size:14px;padding:10px 12px}
+.pulse-comment-form button{width:auto;padding:10px 16px;margin:0}
+.pulse-composer{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;border:1px solid #e8eee8}
+.pulse-type-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.pulse-type-row button{flex:1 1 auto;min-width:76px;padding:8px 10px;border:2px solid #dce4dc;border-radius:12px;font-size:13px;font-weight:600;background:#f4f6f4;color:#666;cursor:pointer}
+.pulse-type-row button.selected{background:#1B4B8F;color:#fff;border-color:#1B4B8F}
+.poll-opt-input{display:flex;gap:8px;margin-bottom:6px}
+.poll-opt-input input{margin:0}
+.pulse-empty{text-align:center;color:#888;padding:20px;background:#fff;border-radius:16px;border:1px solid #e8eee8;margin-bottom:12px;font-size:14px}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -153,9 +209,9 @@
 <button class="popup-close" onclick="closeShare()">✕</button>
 <div class="popup-icon">🎉</div>
 <div class="popup-title">Thanks — now pass it on!</div>
-<div class="share-note"><strong>JoinIn is free to join</strong> and free to create groups, classes or events. No credit card is required.</div>
+<div class="share-note"><strong>Asheville Pulse is free to join</strong> and free to create groups, classes or events. No credit card is required.</div>
 <div class="share-link" id="share-link-text">joinin.today</div>
-<button class="popup-btn" onclick="shareJoinIn()">📤 Share with Friends</button>
+<button class="popup-btn" onclick="shareApp()">📤 Share with Friends</button>
 <button class="popup-btn-secondary" onclick="copyShareLink()">🔗 Copy Link</button>
 <button class="popup-btn-secondary" onclick="closeShare()">Maybe Later</button>
 <p id="share-state" style="font-size:14px;color:#8a948a;margin-top:10px;min-height:20px"></p>
@@ -164,7 +220,7 @@
 
 <!-- LOGIN -->
 <div id="page-login" class="page active">
-<div style="text-align:center;padding:24px 0 8px"><svg class="jilogo" style="max-width:380px" viewBox="100 40 490 200" role="img" aria-label="JoinIn Asheville" xmlns="http://www.w3.org/2000/svg"><defs><path id="ji-arc-login" d="M 252 194 Q 382 150 512 194" fill="none"/></defs><g transform="translate(178,138) scale(0.74) translate(-340,-108)"><circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/><g fill="#1B4B8F"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(72 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#E4572E" transform="rotate(144 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#1B4B8F" transform="rotate(216 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(288 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g></g><text x="248" y="122" class="ji-w">Join<tspan class="ji-w2">In</tspan></text><text class="ji-s"><textPath href="#ji-arc-login" startOffset="50%" text-anchor="middle">Asheville</textPath></text><path class="ji-b" d="M 240 214 C 294 197 338 187 384 186 C 440 185 486 194 526 209 C 484 202 438 196 386 199 C 336 202 292 209 240 214 Z"/><path class="ji-b" d="M 522 208 C 540 213 552 209 560 199 C 550 206 536 207 520 203 Z"/><path class="ji-b" opacity="0.55" d="M 300 213 C 340 204 372 199 410 199 C 372 203 336 208 300 213 Z"/></svg><p style="color:#888;font-size:15px;margin:2px 0 4px">Find your people. Join the fun.</p><p style="color:#1B4B8F;font-size:15px;font-weight:700;margin:0 0 12px">Built in Asheville, for Asheville. Free for everyone.</p><div class="liq" id="liq-login"></div><div style="height:10px"></div></div>
+<div style="text-align:center;padding:24px 0 8px"><svg class="jilogo" style="max-width:380px" viewBox="100 40 490 200" role="img" aria-label="Asheville Pulse" xmlns="http://www.w3.org/2000/svg"><defs><path id="ji-arc-login" d="M 252 194 Q 382 150 512 194" fill="none"/></defs><g transform="translate(178,138) scale(0.74) translate(-340,-108)"><circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/><g fill="#1B4B8F"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(72 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#E4572E" transform="rotate(144 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#1B4B8F" transform="rotate(216 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(288 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g></g><text x="248" y="122" class="ji-w">Pulse</text><text class="ji-s"><textPath href="#ji-arc-login" startOffset="50%" text-anchor="middle">Asheville</textPath></text><path class="ji-b" d="M 240 214 C 294 197 338 187 384 186 C 440 185 486 194 526 209 C 484 202 438 196 386 199 C 336 202 292 209 240 214 Z"/><path class="ji-b" d="M 522 208 C 540 213 552 209 560 199 C 550 206 536 207 520 203 Z"/><path class="ji-b" opacity="0.55" d="M 300 213 C 340 204 372 199 410 199 C 372 203 336 208 300 213 Z"/></svg><p style="color:#888;font-size:15px;margin:2px 0 4px">Find your people. Join the fun.</p><p style="color:#1B4B8F;font-size:15px;font-weight:700;margin:0 0 12px">Built in Asheville, for Asheville. Free for everyone.</p><div class="liq" id="liq-login"></div><div style="height:10px"></div></div>
 <div class="auth-tabs">
 <button id="auth-tab-login" class="on" onclick="setAuthMode('login')">Log In</button>
 <button id="auth-tab-signup" onclick="setAuthMode('signup')">Sign Up</button>
@@ -179,7 +235,7 @@
 <label style="display:flex;gap:12px;align-items:flex-start;font-size:16px;line-height:1.4;cursor:pointer">
 <input type="checkbox" id="auth-age" style="width:24px;height:24px;flex:none;margin:1px 0 0 0">
 <span>I am 18 years of age or older.</span></label>
-<div id="auth-age-error" style="display:none;color:#a3271b;font-size:14px;margin-top:6px">JoinIn is for adults 18 and over. Please confirm your age to continue.</div>
+<div id="auth-age-error" style="display:none;color:#a3271b;font-size:14px;margin-top:6px">Asheville Pulse is for adults 18 and over. Please confirm your age to continue.</div>
 </div>
 <button class="btn" id="auth-btn" onclick="doAuth()">Log In</button>
 <div style="text-align:center;margin-top:10px">
@@ -222,7 +278,7 @@
 
 <!-- HOME -->
 <div id="page-home" class="page">
-<div style="position:sticky;top:0;z-index:400;background:#f0f4f0;margin:-20px -20px 6px;padding:12px 20px 8px"><svg class="jilogo" style="max-width:310px" viewBox="100 40 490 200" role="img" aria-label="JoinIn Asheville" xmlns="http://www.w3.org/2000/svg"><defs><path id="ji-arc-home" d="M 252 194 Q 382 150 512 194" fill="none"/></defs><g transform="translate(178,138) scale(0.74) translate(-340,-108)"><circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/><g fill="#1B4B8F"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(72 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#E4572E" transform="rotate(144 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#1B4B8F" transform="rotate(216 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(288 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g></g><text x="248" y="122" class="ji-w">Join<tspan class="ji-w2">In</tspan></text><text class="ji-s"><textPath href="#ji-arc-home" startOffset="50%" text-anchor="middle">Asheville</textPath></text><path class="ji-b" d="M 240 214 C 294 197 338 187 384 186 C 440 185 486 194 526 209 C 484 202 438 196 386 199 C 336 202 292 209 240 214 Z"/><path class="ji-b" d="M 522 208 C 540 213 552 209 560 199 C 550 206 536 207 520 203 Z"/><path class="ji-b" opacity="0.55" d="M 300 213 C 340 204 372 199 410 199 C 372 203 336 208 300 213 Z"/></svg></div><div style="text-align:center;font-size:14px;color:#888;margin-bottom:8px">Find your people. Join the fun.</div><div class="liq" id="liq-home"></div><div class="buildstamp" id="build-stamp"></div>
+<div style="position:sticky;top:0;z-index:400;background:#f0f4f0;margin:-20px -20px 6px;padding:12px 20px 8px"><svg class="jilogo" style="max-width:310px" viewBox="100 40 490 200" role="img" aria-label="Asheville Pulse" xmlns="http://www.w3.org/2000/svg"><defs><path id="ji-arc-home" d="M 252 194 Q 382 150 512 194" fill="none"/></defs><g transform="translate(178,138) scale(0.74) translate(-340,-108)"><circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/><g fill="#1B4B8F"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(72 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#E4572E" transform="rotate(144 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#1B4B8F" transform="rotate(216 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(288 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g></g><text x="248" y="122" class="ji-w">Pulse</text><text class="ji-s"><textPath href="#ji-arc-home" startOffset="50%" text-anchor="middle">Asheville</textPath></text><path class="ji-b" d="M 240 214 C 294 197 338 187 384 186 C 440 185 486 194 526 209 C 484 202 438 196 386 199 C 336 202 292 209 240 214 Z"/><path class="ji-b" d="M 522 208 C 540 213 552 209 560 199 C 550 206 536 207 520 203 Z"/><path class="ji-b" opacity="0.55" d="M 300 213 C 340 204 372 199 410 199 C 372 203 336 208 300 213 Z"/></svg></div><div style="text-align:center;font-size:14px;color:#888;margin-bottom:8px">Find your people. Join the fun.</div><div class="liq" id="liq-home"></div><div class="buildstamp" id="build-stamp"></div>
 <div class="user-section" id="home-guest-row" style="display:none">
 <div class="user-avatar" style="background:#8a948a">•</div>
 <div class="user-info" style="flex:1">
@@ -259,7 +315,7 @@
 <div id="install-card" style="display:none;background:#1B4B8F;color:white;border-radius:16px;padding:16px 18px;margin-bottom:12px">
 <div style="display:flex;align-items:center;gap:14px">
 <div style="flex:1">
-<div style="font-size:17px;font-weight:700">Add the <span style="letter-spacing:.3px">Join<span style="color:#F5A78F">In</span></span> app to your home screen</div>
+<div style="font-size:17px;font-weight:700">Add <span style="letter-spacing:.3px">Asheville <span style="color:#F5A78F">Pulse</span></span> to your home screen</div>
 <div style="font-size:14px;opacity:.85;margin-top:2px">Opens full screen, like a real app.</div>
 </div>
 <button onclick="dismissInstall()" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:22px;cursor:pointer;padding:4px 8px">✕</button>
@@ -272,15 +328,30 @@
 3. Tap <strong>Add</strong>.
 </div>
 </div>
-<div class="funnel f-blue" onclick="showPage('groups')"><span class="icon">👥</span><div class="text"><div class="title">Join a Group</div><div class="sub">Find your community</div></div><span class="arrow">›</span></div>
-<div class="funnel f-blue" onclick="showPage('classes')"><span class="icon">🎓</span><div class="text"><div class="title">Take a Class</div><div class="sub">Learn from a local instructor</div></div><span class="arrow">›</span></div>
-<div class="funnel f-blue" onclick="showPage('events')"><span class="icon">🎟️</span><div class="text"><div class="title">Discover Events</div><div class="sub">Music, sports, workshops & more</div></div><span class="arrow">›</span></div>
-<div class="funnel f-red" onclick="startCreate('group')"><span class="icon">🚀</span><div class="text"><div class="title">Create a Group</div><div class="sub">Start something new</div></div><span class="arrow">›</span></div>
-<div class="funnel f-red" onclick="startCreate('class')"><span class="icon">🧑‍🏫</span><div class="text"><div class="title">Offer a Class or Course</div><div class="sub">Share a skill, get paid</div></div><span class="arrow">›</span></div>
-<div class="funnel f-red" onclick="showPage('create-event')"><span class="icon">📢</span><div class="text"><div class="title">Create an Event</div><div class="sub">Sell tickets, attract fans</div></div><span class="arrow">›</span></div>
+<div class="hood-row">
+<div style="font-size:13px;color:#888">📍 Neighborhood</div>
+<select id="pulse-hood-select" onchange="onHoodChange()"><option value="">All Asheville</option></select>
+</div>
+
+<div class="rail-wrap">
+<div class="rail">
+<div class="rail-card" onclick="showPage('groups')"><span class="ico">👥</span><div class="t">Join a Group</div><div class="s">Find your community</div></div>
+<div class="rail-card" onclick="showPage('classes')"><span class="ico">🎓</span><div class="t">Take a Class</div><div class="s">Learn locally</div></div>
+<div class="rail-card" onclick="showPage('events')"><span class="ico">🎟️</span><div class="t">Discover Events</div><div class="s">Music, sports & more</div></div>
+<div class="rail-card" onclick="startCreate('group')"><span class="ico">🚀</span><div class="t">Create a Group</div><div class="s">Always free</div></div>
+<div class="rail-card" onclick="startCreate('class')"><span class="ico">🧑‍🏫</span><div class="t">Offer a Class</div><div class="s">Share a skill</div></div>
+<div class="rail-card" onclick="showPage('create-event')"><span class="ico">📢</span><div class="t">Create an Event</div><div class="s">Sell tickets</div></div>
+</div>
+</div>
+
+<div class="pulse-heading"><span class="dot"></span>The Pulse</div>
+<div id="pulse-composer-toggle"><button class="btn" style="background:#1B4B8F" onclick="openPulseComposer()">+ Post to the Pulse</button></div>
+<div id="pulse-composer-card" style="display:none"></div>
+<div id="pulse-feed-list"><div class="pulse-empty">Loading the Pulse…</div></div>
+
 <div class="funnel" onclick="showPage('chat')"><span class="icon">💬</span><div class="text"><div class="title">Chat</div><div class="sub">Messages & conversations</div></div><span class="arrow">›</span></div>
 <div class="funnel" onclick="showPage('feedback')"><span class="icon">💬</span><div class="text"><div class="title">Feedback & Ratings</div><div class="sub">Share your thoughts</div></div><span class="arrow">›</span></div>
-<div class="funnel" onclick="showPage('about')"><span class="icon">ℹ️</span><div class="text"><div class="title">About JoinIn</div><div class="sub">Our mission and who we are</div></div><span class="arrow">›</span></div>
+<div class="funnel" onclick="showPage('about')"><span class="icon">ℹ️</span><div class="text"><div class="title">About Asheville Pulse</div><div class="sub">Our mission and who we are</div></div><span class="arrow">›</span></div>
 <button class="admin-gear" onclick="showPage('admin')">⚙️</button>
 </div>
 
@@ -295,10 +366,10 @@
 <div class="card" style="font-size:16px;line-height:1.65;color:#333">
 <h3 style="font-size:22px;margin-bottom:14px">Our Mission</h3>
 <p style="margin-bottom:14px">Asheville is unlike anywhere else. It’s a city of artists, musicians, entrepreneurs, hikers, volunteers, craft brewers, makers, and neighbors who value creativity, kindness, and community. That spirit deserves a place where people can easily find one another and share real experiences.</p>
-<p style="margin-bottom:14px">JoinIn was created in Asheville, for Asheville. We’re not a distant tech company or a global social platform optimized for screen time. We’re a local company with a simple goal: to strengthen the community we call home.</p>
-<p style="margin-bottom:14px">Artificial intelligence is becoming part of everyday life. People are learning from it, creating with it, and talking to it more than ever. JoinIn isn’t pro-AI or anti-AI—we simply believe that as technology grows more present, real human connection becomes more important.</p>
-<p style="margin-bottom:14px">That’s why JoinIn is human-first by design. Every feature is built to help people meet face-to-face through shared interests, events, clubs, volunteer opportunities, and local activities. You’ll find neighbors instead of bots, conversations instead of algorithms, and experiences that happen in the real world.</p>
-<p style="margin-bottom:14px">We also believe community access should be open. That’s why JoinIn is free for everyone—hosts and members alike—so we can focus on real connections instead of paywalls. Our goal is to remove barriers and help more people connect locally, starting in places like Asheville and growing outward. While we may introduce sustainable pricing in the future, it will always reflect our local roots and never resemble the extractive models of large, out-of-town platforms.</p>
+<p style="margin-bottom:14px">Asheville Pulse was created in Asheville, for Asheville. We’re not a distant tech company or a global social platform optimized for screen time. We’re a local company with a simple goal: to strengthen the community we call home.</p>
+<p style="margin-bottom:14px">Artificial intelligence is becoming part of everyday life. People are learning from it, creating with it, and talking to it more than ever. Asheville Pulse isn’t pro-AI or anti-AI—we simply believe that as technology grows more present, real human connection becomes more important.</p>
+<p style="margin-bottom:14px">That’s why Asheville Pulse is human-first by design. Every feature is built to help people meet face-to-face through shared interests, events, clubs, volunteer opportunities, and local activities. You’ll find neighbors instead of bots, conversations instead of algorithms, and experiences that happen in the real world.</p>
+<p style="margin-bottom:14px">We also believe community access should be open. That’s why Asheville Pulse is free for everyone—hosts and members alike—so we can focus on real connections instead of paywalls. Our goal is to remove barriers and help more people connect locally, starting in places like Asheville and growing outward. While we may introduce sustainable pricing in the future, it will always reflect our local roots and never resemble the extractive models of large, out-of-town platforms.</p>
 <p style="margin-bottom:14px">Our mission is simple: to help the people of Asheville meet, build friendships, support local organizations and businesses, and create a stronger, more connected community.</p>
 <p style="font-weight:700;color:#1B4B8F;font-size:17px">Because the future shouldn’t only be smarter. It should be more human.</p>
 </div>
@@ -475,13 +546,13 @@
 <div class="error-text" id="pay-mode-error">Please choose how students pay</div>
 
 <div id="pay-cash-box" style="display:none">
-<div class="cash-note">💵 <strong>Students pay you in cash, at the class.</strong> JoinIn never handles the money, so there is nothing to refund and no card details to lose.</div>
+<div class="cash-note">💵 <strong>Students pay you in cash, at the class.</strong> Asheville Pulse never handles the money, so there is nothing to refund and no card details to lose.</div>
 </div>
 
 <div id="pay-external-box" style="display:none">
 <input type="url" id="registration-url" placeholder="https://yourschool.edu/classes/... *" autocapitalize="off" spellcheck="false">
 <div class="error-text" id="registration-url-error">Please enter the full web address, starting https://</div>
-<div class="cash-note">🔗 <strong>Students register and pay on your own site.</strong> JoinIn never handles the money. Your web address is shown on the listing so people can see where they are going.</div>
+<div class="cash-note">🔗 <strong>Students register and pay on your own site.</strong> Asheville Pulse never handles the money. Your web address is shown on the listing so people can see where they are going.</div>
 </div>
 </div>
 </div>
@@ -522,7 +593,7 @@
 <div style="margin-top:8px"></div>
 <div class="form-group"><input autocomplete="off" type="hidden" id="event-datetime"><button class="btn" style="background:#2E7BC4" onclick="openCalendar('event-datetime')">&#128197; Pick Date &amp; Time</button><div class="picked-line" id="event-datetime-shown" style="display:none"></div><div id="event-dates-list"></div><div class="error-text" id="event-datetime-error">Please pick at least one date that hasn't passed</div></div>
 <div class="form-group"><input autocomplete="off" type="text" id="event-org" placeholder="Organization/Group Name (optional)"></div>
-<div style="margin:8px 0"><label style="font-weight:600;display:block;margin-bottom:6px">Ticketing:</label><div class="toggle-group"><button onclick="setEventPaid('free')" class="selected" id="ev-paid-free">&#127873; Free to attend</button><button onclick="setEventPaid('paid')" id="ev-paid-paid">&#127903;&#65039; Tickets sold elsewhere</button></div><div id="ev-paid-price-container" style="display:none"><input autocomplete="off" type="url" id="ev-ticket-url" placeholder="https://... where tickets are sold"><div class="error-text" id="ev-ticket-url-error">Please give the https address where tickets are sold</div><input autocomplete="off" type="number" id="ev-price" placeholder="Starting price ($) &mdash; optional" min="0" step="0.01"><input autocomplete="off" type="number" id="ev-max-tickets" placeholder="Capacity &mdash; optional" min="1"><div class="info-note">&#127903;&#65039; <strong>JoinIn never handles the money.</strong> People buy from your own ticket seller or box office. This just sends them there.</div></div><div id="ev-paid-description">&#127873; <strong>Free:</strong> No charge to attend.</div></div>
+<div style="margin:8px 0"><label style="font-weight:600;display:block;margin-bottom:6px">Ticketing:</label><div class="toggle-group"><button onclick="setEventPaid('free')" class="selected" id="ev-paid-free">&#127873; Free to attend</button><button onclick="setEventPaid('paid')" id="ev-paid-paid">&#127903;&#65039; Tickets sold elsewhere</button></div><div id="ev-paid-price-container" style="display:none"><input autocomplete="off" type="url" id="ev-ticket-url" placeholder="https://... where tickets are sold"><div class="error-text" id="ev-ticket-url-error">Please give the https address where tickets are sold</div><input autocomplete="off" type="number" id="ev-price" placeholder="Starting price ($) &mdash; optional" min="0" step="0.01"><input autocomplete="off" type="number" id="ev-max-tickets" placeholder="Capacity &mdash; optional" min="1"><div class="info-note">&#127903;&#65039; <strong>Asheville Pulse never handles the money.</strong> People buy from your own ticket seller or box office. This just sends them there.</div></div><div id="ev-paid-description">&#127873; <strong>Free:</strong> No charge to attend.</div></div>
 <div class="image-upload-area" onclick="document.getElementById('event-image-upload').click()"><span style="font-size:32px;display:block">🖼️</span><div style="color:#888;font-size:14px;margin-top:4px">Tap to upload a flyer image</div></div>
 <input autocomplete="off" type="file" id="event-image-upload" accept="image/*" style="display:none" onchange="handleEventImageUpload(event)"><div id="event-image-preview"></div>
 <button class="btn" style="background:#D4A373" onclick="generateEventFlyer()" style="margin-top:4px">🎨 AI Generate Flyer</button>
@@ -574,14 +645,14 @@
 <div id="page-feedback" class="page">
 <button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
 <div class="card"><h3>💬 Feedback & Ratings</h3>
-<div class="mission">In this age of AI, JoinIn’s goal is to further <strong>human</strong> interaction — a platform where humans join with other humans, for social sanity.</div>
-<div class="fb-q"><span class="num">1</span>What do you like most about JoinIn?</div>
+<div class="mission">In this age of AI, Asheville Pulse’s goal is to further <strong>human</strong> interaction — a platform where humans join with other humans, for social sanity.</div>
+<div class="fb-q"><span class="num">1</span>What do you like most about Asheville Pulse?</div>
 <textarea id="fb-most" rows="3" placeholder="The part that works for you…"></textarea>
-<div class="fb-q"><span class="num">2</span>What do you like least about JoinIn?</div>
+<div class="fb-q"><span class="num">2</span>What do you like least about Asheville Pulse?</div>
 <textarea id="fb-least" rows="3" placeholder="What gets in your way…"></textarea>
-<div class="fb-q"><span class="num">3</span>What would you like potential users to know about JoinIn?</div>
+<div class="fb-q"><span class="num">3</span>What would you like potential users to know about Asheville Pulse?</div>
 <textarea id="fb-know" rows="3" placeholder="What you’d tell a friend…"></textarea>
-<div style="text-align:center;margin:18px 0 12px"><label style="font-weight:700;font-size:17px;display:block;margin-bottom:6px">Rate JoinIn:</label><div id="star-rating" style="font-size:46px;cursor:pointer"><span onclick="setRating(1)">☆</span><span onclick="setRating(2)">☆</span><span onclick="setRating(3)">☆</span><span onclick="setRating(4)">☆</span><span onclick="setRating(5)">☆</span></div><p style="font-size:15px;color:#888" id="rating-label">Tap a star to rate</p></div>
+<div style="text-align:center;margin:18px 0 12px"><label style="font-weight:700;font-size:17px;display:block;margin-bottom:6px">Rate Asheville Pulse:</label><div id="star-rating" style="font-size:46px;cursor:pointer"><span onclick="setRating(1)">☆</span><span onclick="setRating(2)">☆</span><span onclick="setRating(3)">☆</span><span onclick="setRating(4)">☆</span><span onclick="setRating(5)">☆</span></div><p style="font-size:15px;color:#888" id="rating-label">Tap a star to rate</p></div>
 <button class="btn" onclick="submitFeedback()">📨 Submit Feedback</button></div>
 <div id="feedback-list"></div>
 </div>
@@ -973,6 +1044,18 @@ var QR = (function () {
 
 // ─── DATA ───
 var currentUser = null;
+var allNeighborhoods = [];
+var currentHoodId = '';
+var pulsePosts = [];
+var pulsePollOptions = {};   // postId -> [{id,label,sort_order}]
+var pulsePollVoteCounts = {}; // optionId -> count
+var pulsePollMyVote = {};     // postId -> optionId I voted for (or undefined)
+var pulseVoteCounts = {};    // postId -> upvote count
+var pulseMyVotes = {};       // postId -> true if I upvoted
+var pulseCommentCounts = {}; // postId -> count
+var pulseComments = {};      // postId -> [{author_id,body,created_at}] once loaded
+var pulseComposerType = 'text';
+var pulsePollInputCount = 2;
 var allGroups = [];
 var allEvents = [];
 var allRsvps = [];
@@ -1226,7 +1309,7 @@ function authErrorText(raw) {
         return 'That email and password combination did not work. Check both and try again.';
     }
     if (m.indexOf('email not confirmed') > -1) {
-        return 'Your account is not confirmed yet. Open the email from JoinIn and tap the link.';
+        return 'Your account is not confirmed yet. Open the email from Asheville Pulse and tap the link.';
     }
     if (m.indexOf('already registered') > -1 || m.indexOf('already been registered') > -1) {
         return 'An account with that email already exists. Try logging in instead.';
@@ -1283,7 +1366,7 @@ async function doAuth() {
                     .eq('id', su.data.user.id);
             } catch (ageErr) { /* non-blocking */ }
             await saveAttribution(su.data.user.id);
-            showNotif('Welcome to JoinIn, ' + name + '!', 'success');
+            showNotif('Welcome to Asheville Pulse, ' + name + '!', 'success');
         } else {
             authStatus('Logging in...');
             var li = await sb.auth.signInWithPassword({ email: email, password: pass });
@@ -1527,7 +1610,7 @@ function requireAccount(what) {
     document.getElementById('popup-title').textContent = 'Create a free account';
     document.getElementById('popup-text').innerHTML =
         'You need an account to ' + (what || 'do that') + '.<br><br>' +
-        'JoinIn is free to join and free to create groups, classes or events. ' +
+        'Asheville Pulse is free to join and free to create groups, classes or events. ' +
         'No credit card is required.';
     var btn = document.getElementById('popup-btn');
     btn.textContent = 'Create Free Account';
@@ -1556,6 +1639,10 @@ async function loadPublicData() {
             categoryIcons = {};
             cats.data.forEach(function(c) { if (c.icon) { categoryIcons[c.name] = c.icon; } });
         }
+
+        var hoods = await sb.from('neighborhoods').select('id,name,slug').order('name');
+        allNeighborhoods = hoods.data || [];
+        populateHoodSelect();
 
         var orgs = await sb.from('organizers_public').select('id,display_name');
         userProfiles = {};
@@ -1602,6 +1689,355 @@ async function loadPublicData() {
     } catch (e) {
         cloudReady = false;
     }
+}
+
+// ─── PULSE FEED ───
+
+function populateHoodSelect() {
+    var sel = document.getElementById('pulse-hood-select');
+    if (!sel) { return; }
+    var html = '<option value="">All Asheville</option>';
+    allNeighborhoods.forEach(function(h) {
+        html += '<option value="' + h.id + '"' + (h.id === currentHoodId ? ' selected' : '') + '>' + h.name + '</option>';
+    });
+    sel.innerHTML = html;
+}
+
+function onHoodChange() {
+    var sel = document.getElementById('pulse-hood-select');
+    currentHoodId = sel ? sel.value : '';
+    loadPulseFeed();
+}
+
+async function loadPulseFeed() {
+    var list = document.getElementById('pulse-feed-list');
+    if (!sb || !list) { return; }
+    try {
+        var q = sb.from('posts').select('*').order('created_at', { ascending: false }).limit(30);
+        if (currentHoodId) { q = q.eq('neighborhood_id', currentHoodId); }
+        var res = await q;
+        pulsePosts = res.data || [];
+        if (pulsePosts.length === 0) {
+            pulseVoteCounts = {}; pulseMyVotes = {}; pulseCommentCounts = {};
+            pulsePollOptions = {}; pulsePollVoteCounts = {}; pulsePollMyVote = {};
+            renderPulseFeed();
+            return;
+        }
+        var ids = pulsePosts.map(function(p) { return p.id; });
+
+        var votesRes = await sb.from('post_votes').select('post_id,user_id').in('post_id', ids);
+        pulseVoteCounts = {}; pulseMyVotes = {};
+        (votesRes.data || []).forEach(function(v) {
+            pulseVoteCounts[v.post_id] = (pulseVoteCounts[v.post_id] || 0) + 1;
+            if (currentUser && v.user_id === currentUser.id) { pulseMyVotes[v.post_id] = true; }
+        });
+
+        var commentsRes = await sb.from('comments').select('post_id').in('post_id', ids);
+        pulseCommentCounts = {};
+        (commentsRes.data || []).forEach(function(c) {
+            pulseCommentCounts[c.post_id] = (pulseCommentCounts[c.post_id] || 0) + 1;
+        });
+
+        var pollPostIds = pulsePosts.filter(function(p) { return p.type === 'poll'; }).map(function(p) { return p.id; });
+        pulsePollOptions = {}; pulsePollVoteCounts = {}; pulsePollMyVote = {};
+        if (pollPostIds.length) {
+            var optsRes = await sb.from('poll_options').select('*').in('post_id', pollPostIds).order('sort_order');
+            (optsRes.data || []).forEach(function(o) {
+                (pulsePollOptions[o.post_id] = pulsePollOptions[o.post_id] || []).push(o);
+            });
+            var pvRes = await sb.from('poll_votes').select('post_id,option_id,user_id').in('post_id', pollPostIds);
+            (pvRes.data || []).forEach(function(v) {
+                pulsePollVoteCounts[v.option_id] = (pulsePollVoteCounts[v.option_id] || 0) + 1;
+                if (currentUser && v.user_id === currentUser.id) { pulsePollMyVote[v.post_id] = v.option_id; }
+            });
+        }
+
+        renderPulseFeed();
+    } catch (e) {
+        list.innerHTML = '<div class="pulse-empty">Couldn\'t load the Pulse right now.</div>';
+    }
+}
+
+function pulseAuthorName(authorId) {
+    var p = userProfiles[authorId];
+    return (p && p.displayName) || 'A neighbor';
+}
+
+function pulseTagInfo(type) {
+    if (type === 'columnist') { return { cls: 'trend', label: 'Columnist' }; }
+    if (type === 'photo') { return { cls: 'talk', label: 'Photo' }; }
+    if (type === 'poll') { return { cls: 'talk', label: 'Poll' }; }
+    if (type === 'ask') { return { cls: 'talk', label: 'Ask Asheville' }; }
+    return { cls: 'talk', label: 'The Pulse' };
+}
+
+function pickTrendingEvent() {
+    var candidates = allGroups.filter(function(g) {
+        return g.kind === 'event' && g.status === 'approved';
+    }).map(function(g) {
+        return { g: g, when: nextOccurrence(g) };
+    }).filter(function(x) { return x.when && x.when >= new Date(); });
+    if (!candidates.length) { return null; }
+    candidates.sort(function(a, b) {
+        return a.when - b.when || (b.g.member_count || 0) - (a.g.member_count || 0);
+    });
+    return candidates[0];
+}
+
+function pickGroupUpdate() {
+    var candidates = allGroups.filter(function(g) {
+        return g.kind === 'group' && g.status === 'approved';
+    });
+    if (!candidates.length) { return null; }
+    candidates.sort(function(a, b) { return (b.member_count || 0) - (a.member_count || 0); });
+    return candidates[0];
+}
+
+function renderTrendingEventCard(pick) {
+    var g = pick.g;
+    var html = '<div class="pulse-post"><div class="blaze-bar event"></div><div class="pulse-body">';
+    html += '<div class="pulse-tag event">Trending event</div>';
+    html += '<h3 style="margin-top:6px">' + escapeHtml(g.name) + ' — ' + whenText(pick.when.toISOString()) + '</h3>';
+    html += '<p>Hosted by ' + escapeHtml(g.organizer_name || 'a local organizer') + (g.member_count ? ' · ' + g.member_count + ' going' : '') + '</p>';
+    html += '<button class="rsvp-btn" onclick="openGroupDetail(' + JSON.stringify(g.id) + ')">See details</button>';
+    html += '</div></div>';
+    return html;
+}
+
+function renderGroupUpdateCard(g) {
+    var when = nextOccurrence(g);
+    var html = '<div class="pulse-post"><div class="blaze-bar group"></div><div class="pulse-body">';
+    html += '<div class="pulse-tag group">Group update</div>';
+    html += '<div class="pulse-meta"><div class="pulse-avatar">👥</div>';
+    html += '<div class="pulse-who">' + escapeHtml(g.name) + ' <span>· ' + (g.member_count || 0) + ' members</span></div></div>';
+    html += '<h3>' + (when ? 'Next meetup: ' + whenText(when.toISOString()) : 'Ongoing group — check for the next meetup') + '</h3>';
+    html += '<div class="pulse-actions"><button class="pulse-act" style="margin-left:0;color:#3F9142;font-weight:600" onclick="openGroupDetail(' + JSON.stringify(g.id) + ')">View group ›</button></div>';
+    html += '</div></div>';
+    return html;
+}
+
+function renderPulseFeed() {
+    var list = document.getElementById('pulse-feed-list');
+    if (!list) { return; }
+    var cards = pulsePosts.map(function(p) {
+        var tag = pulseTagInfo(p.type);
+        var voted = !!pulseMyVotes[p.id];
+        var voteCount = pulseVoteCounts[p.id] || 0;
+        var commentCount = pulseCommentCounts[p.id] || 0;
+        var html = '<div class="pulse-post"><div class="blaze-bar ' + tag.cls + '"></div><div class="pulse-body">';
+        html += '<div class="pulse-tag ' + tag.cls + '">' + tag.label + (p.is_sponsored ? ' · Sponsored' : '') + '</div>';
+        html += '<div class="pulse-meta"><div class="pulse-avatar">' + pulseAuthorName(p.author_id).charAt(0).toUpperCase() + '</div>';
+        html += '<div class="pulse-who">' + pulseAuthorName(p.author_id) + ' <span>· ' + timeAgo(p.created_at) + '</span></div></div>';
+        html += '<h3>' + escapeHtml(p.title) + '</h3>';
+        if (p.body) { html += '<p>' + escapeHtml(p.body) + '</p>'; }
+        if (p.image_url) { html += '<img class="pulse-img" src="' + p.image_url + '" alt="">'; }
+        if (p.is_sponsored && p.sponsor_name) { html += '<div class="pulse-sponsor">Sponsored by ' + escapeHtml(p.sponsor_name) + '</div>'; }
+        if (p.type === 'poll') {
+            var opts = pulsePollOptions[p.id] || [];
+            var totalVotes = opts.reduce(function(sum, o) { return sum + (pulsePollVoteCounts[o.id] || 0); }, 0);
+            var myVote = pulsePollMyVote[p.id];
+            html += '<div style="margin-top:8px">';
+            opts.forEach(function(o) {
+                var c = pulsePollVoteCounts[o.id] || 0;
+                var pct = totalVotes ? Math.round((c / totalVotes) * 100) : 0;
+                html += '<button class="poll-opt" onclick="castPollVote(\'' + p.id + '\',\'' + o.id + '\')"' + (myVote ? ' disabled' : '') + '>';
+                if (myVote) { html += '<div class="fill" style="width:' + pct + '%"></div>'; }
+                html += '<div class="lbl"><span>' + escapeHtml(o.label) + (myVote === o.id ? ' ✓' : '') + '</span>' + (myVote ? '<span>' + pct + '%</span>' : '') + '</div></button>';
+            });
+            html += '</div><div style="font-size:12px;color:#888;margin-top:2px">' + totalVotes + ' vote' + (totalVotes !== 1 ? 's' : '') + '</div>';
+        }
+        html += '<div class="pulse-actions">';
+        html += '<button class="pulse-act' + (voted ? ' voted' : '') + '" onclick="togglePulseVote(\'' + p.id + '\')">▲ <b>' + voteCount + '</b></button>';
+        html += '<button class="pulse-act" onclick="togglePulseComments(\'' + p.id + '\')">💬 ' + commentCount + '</button>';
+        html += '</div>';
+        html += '<div class="pulse-comments" id="pulse-comments-' + p.id + '"></div>';
+        html += '</div></div>';
+        return html;
+    });
+
+    // Weave in a trending event and a group update pulled from real groups/events data.
+    var trendingEvent = pickTrendingEvent();
+    var groupUpdate = pickGroupUpdate();
+    if (trendingEvent) { cards.splice(Math.min(2, cards.length), 0, renderTrendingEventCard(trendingEvent)); }
+    if (groupUpdate) { cards.splice(Math.min(4, cards.length), 0, renderGroupUpdateCard(groupUpdate)); }
+
+    if (!cards.length) {
+        list.innerHTML = '<div class="pulse-empty">Nothing posted here yet. Be the first — tap "+ Post to the Pulse" above.</div>';
+        return;
+    }
+    list.innerHTML = cards.join('');
+}
+
+function timeAgo(iso) {
+    var d = new Date(iso), diff = Math.floor((Date.now() - d.getTime()) / 1000);
+    if (diff < 60) { return 'just now'; }
+    if (diff < 3600) { return Math.floor(diff / 60) + 'm ago'; }
+    if (diff < 86400) { return Math.floor(diff / 3600) + 'h ago'; }
+    return Math.floor(diff / 86400) + 'd ago';
+}
+
+function escapeHtml(s) {
+    return (s || '').replace(/[&<>"']/g, function(c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+}
+
+async function togglePulseVote(postId) {
+    if (!currentUser) { requireAccount('vote on the Pulse'); return; }
+    if (!sb) { return; }
+    try {
+        if (pulseMyVotes[postId]) {
+            await sb.from('post_votes').delete().eq('post_id', postId).eq('user_id', currentUser.id);
+        } else {
+            await sb.from('post_votes').insert({ post_id: postId, user_id: currentUser.id });
+        }
+        await loadPulseFeed();
+    } catch (e) { showNotif('Could not update your vote.', 'error'); }
+}
+
+async function castPollVote(postId, optionId) {
+    if (!currentUser) { requireAccount('vote in this poll'); return; }
+    if (pulsePollMyVote[postId]) { return; }
+    try {
+        await sb.from('poll_votes').insert({ post_id: postId, option_id: optionId, user_id: currentUser.id });
+        await loadPulseFeed();
+    } catch (e) { showNotif('Could not record your vote.', 'error'); }
+}
+
+async function togglePulseComments(postId) {
+    var el = document.getElementById('pulse-comments-' + postId);
+    if (!el) { return; }
+    if (el.style.display === 'block') { el.style.display = 'none'; return; }
+    el.style.display = 'block';
+    el.innerHTML = '<div style="font-size:12px;color:#888">Loading comments…</div>';
+    try {
+        var res = await sb.from('comments').select('*').eq('post_id', postId).order('created_at');
+        var comments = res.data || [];
+        var html = '';
+        comments.forEach(function(c) {
+            html += '<div class="pulse-comment"><b>' + pulseAuthorName(c.author_id) + '</b> ' + escapeHtml(c.body) + '</div>';
+        });
+        if (!comments.length) { html = '<div style="font-size:12px;color:#888;margin-bottom:6px">No comments yet.</div>'; }
+        html += '<div class="pulse-comment-form"><input type="text" id="pulse-comment-input-' + postId + '" placeholder="Add a comment…">';
+        html += '<button class="btn" style="background:#1B4B8F" onclick="submitPulseComment(\'' + postId + '\')">Post</button></div>';
+        el.innerHTML = html;
+    } catch (e) { el.innerHTML = '<div style="font-size:12px;color:#888">Couldn\'t load comments.</div>'; }
+}
+
+async function submitPulseComment(postId) {
+    if (!currentUser) { requireAccount('comment on the Pulse'); return; }
+    var input = document.getElementById('pulse-comment-input-' + postId);
+    var body = input ? input.value.trim() : '';
+    if (!body) { return; }
+    try {
+        await sb.from('comments').insert({ post_id: postId, author_id: currentUser.id, body: body });
+        document.getElementById('pulse-comments-' + postId).style.display = 'none';
+        await loadPulseFeed();
+        togglePulseComments(postId);
+    } catch (e) { showNotif('Could not post your comment.', 'error'); }
+}
+
+function openPulseComposer() {
+    if (!currentUser) { requireAccount('post to the Pulse'); return; }
+    pulseComposerType = 'text';
+    pulsePollInputCount = 2;
+    var card = document.getElementById('pulse-composer-card');
+    document.getElementById('pulse-composer-toggle').style.display = 'none';
+    card.style.display = 'block';
+    renderPulseComposer();
+}
+
+function closePulseComposer() {
+    document.getElementById('pulse-composer-card').style.display = 'none';
+    document.getElementById('pulse-composer-toggle').style.display = 'block';
+}
+
+function setPulseComposerType(type) {
+    pulseComposerType = type;
+    renderPulseComposer();
+}
+
+function addPollOptionInput() {
+    if (pulsePollInputCount >= 5) { return; }
+    pulsePollInputCount++;
+    renderPulseComposer(true);
+}
+
+function renderPulseComposer(preserve) {
+    var card = document.getElementById('pulse-composer-card');
+    var titleVal = preserve ? (document.getElementById('pulse-c-title') || {}).value || '' : '';
+    var bodyVal = preserve ? (document.getElementById('pulse-c-body') || {}).value || '' : '';
+    var types = [
+        { id: 'text', label: 'Talk' },
+        { id: 'photo', label: 'Photo' },
+        { id: 'poll', label: 'Poll' },
+        { id: 'ask', label: 'Ask Asheville' }
+    ];
+    var html = '<div class="pulse-type-row">';
+    types.forEach(function(t) {
+        html += '<button class="' + (pulseComposerType === t.id ? 'selected' : '') + '" onclick="setPulseComposerType(\'' + t.id + '\')">' + t.label + '</button>';
+    });
+    html += '</div>';
+    html += '<input type="text" id="pulse-c-title" placeholder="Title *" value="' + escapeHtml(titleVal) + '">';
+    html += '<textarea id="pulse-c-body" placeholder="Say more (optional)" rows="3">' + escapeHtml(bodyVal) + '</textarea>';
+    if (pulseComposerType === 'photo') {
+        html += '<input type="text" id="pulse-c-image" placeholder="Image URL">';
+    }
+    if (pulseComposerType === 'poll') {
+        html += '<div id="pulse-poll-opts">';
+        for (var i = 0; i < pulsePollInputCount; i++) {
+            html += '<div class="poll-opt-input"><input type="text" id="pulse-poll-opt-' + i + '" placeholder="Option ' + (i + 1) + '"></div>';
+        }
+        html += '</div>';
+        if (pulsePollInputCount < 5) { html += '<button class="btn-select" style="width:auto;padding:8px 14px;margin-bottom:10px" onclick="addPollOptionInput()">+ Add option</button>'; }
+    }
+    html += '<select id="pulse-c-hood"><option value="">All Asheville</option>';
+    allNeighborhoods.forEach(function(h) {
+        html += '<option value="' + h.id + '"' + (h.id === currentHoodId ? ' selected' : '') + '>' + h.name + '</option>';
+    });
+    html += '</select>';
+    html += '<button class="btn" style="background:#1B4B8F" onclick="submitPulsePost()">Post to the Pulse</button>';
+    html += '<button style="background:none;border:none;color:#888;font-size:13px;width:100%;padding:8px;cursor:pointer" onclick="closePulseComposer()">Cancel</button>';
+    card.innerHTML = html;
+}
+
+async function submitPulsePost() {
+    var title = (document.getElementById('pulse-c-title').value || '').trim();
+    var body = (document.getElementById('pulse-c-body').value || '').trim();
+    var hoodEl = document.getElementById('pulse-c-hood');
+    var hoodId = hoodEl ? hoodEl.value : '';
+    if (!title) { showNotif('Please enter a title.', 'error'); return; }
+    var imageEl = document.getElementById('pulse-c-image');
+    var imageUrl = imageEl ? imageEl.value.trim() : '';
+    if (pulseComposerType === 'photo' && !imageUrl) { showNotif('Please add an image URL.', 'error'); return; }
+    var optionLabels = [];
+    if (pulseComposerType === 'poll') {
+        for (var i = 0; i < pulsePollInputCount; i++) {
+            var v = (document.getElementById('pulse-poll-opt-' + i).value || '').trim();
+            if (v) { optionLabels.push(v); }
+        }
+        if (optionLabels.length < 2) { showNotif('A poll needs at least 2 options.', 'error'); return; }
+    }
+    try {
+        var ins = await sb.from('posts').insert({
+            author_id: currentUser.id,
+            neighborhood_id: hoodId || null,
+            type: pulseComposerType,
+            title: title,
+            body: body || null,
+            image_url: imageUrl || null
+        }).select().single();
+        if (ins.error) { throw ins.error; }
+        if (pulseComposerType === 'poll' && ins.data) {
+            var rows = optionLabels.map(function(label, idx) {
+                return { post_id: ins.data.id, label: label, sort_order: idx };
+            });
+            await sb.from('poll_options').insert(rows);
+        }
+        closePulseComposer();
+        showNotif('Posted to the Pulse! 📡', 'success');
+        await loadPulseFeed();
+    } catch (e) { showNotif('Could not post — please try again.', 'error'); }
 }
 
 // Swaps the signed-in header for an invitation to join.
@@ -1674,7 +2110,7 @@ function paintPageName(page) {
     if (!bar.querySelector('.bb-brand')) {
         var brand = document.createElement('span');
         brand.className = 'bb-brand';
-        brand.innerHTML = 'Join<span class="in">In</span>';
+        brand.innerHTML = 'Asheville <span class="in">Pulse</span>';
         bar.insertBefore(brand, bar.firstChild);
     }
     var span = bar.querySelector('.pg-name');
@@ -1688,7 +2124,7 @@ function paintPageName(page) {
 
 function showPage(page, fromHistory) {
     if (isGuest() && MEMBER_ONLY_PAGES.indexOf(page) > -1) {
-        requireAccount('use that part of JoinIn');
+        requireAccount('use that part of Asheville Pulse');
         return;
     }
     stopChatPoll();
@@ -1756,6 +2192,8 @@ function updateHome() {
     updateTicketCounter();
     renderMySchedule();
     updateUnreadButton();
+    populateHoodSelect();
+    loadPulseFeed();
 }
 
 function joinedOfKind(kind) {
@@ -2128,7 +2566,7 @@ function updateUnreadButton() {
         parts.push(hostMsgs === 1 ? '1 message from a host' : hostMsgs + ' messages from hosts');
     }
     if (updates) {
-        parts.push(updates === 1 ? '1 update from JoinIn' : updates + ' updates from JoinIn');
+        parts.push(updates === 1 ? '1 update from Asheville Pulse' : updates + ' updates from Asheville Pulse');
     }
 
     // Red only when something actually needs the person. A welcome note does not.
@@ -2167,7 +2605,7 @@ function renderMessages() {
     function noteCard(n) {
         var welcome = n.kind === 'welcome';
         var s = '<div class="msg-card' + (n.read ? ' read' : '') + '" style="border-left-color:' + (welcome ? '#1B4B8F' : '#5B8C5A') + '">';
-        s += '<div class="mm">' + (welcome ? '👋 From the JoinIn team' : '🔔 Notification') + '</div>';
+        s += '<div class="mm">' + (welcome ? '👋 From the Asheville Pulse team' : '🔔 Notification') + '</div>';
         s += '<div class="mt">' + escapeHTML(n.message).replace(/\n/g, '<br>') + '</div>';
         s += '<div class="mm">' + whenLong(n.created_at) + '</div>';
         s += '<div class="msg-actions">';
@@ -3251,7 +3689,7 @@ function invitedShareUrl(g) {
 }
 
 // Invitations go out from the person's own phone, through whichever app
-// they already use, from their own address. JoinIn sends nothing and never
+// they already use, from their own address. Asheville Pulse sends nothing and never
 // reads an address book.
 //
 // Hidden groups are left out on purpose: the database refuses to show one
@@ -3263,7 +3701,7 @@ function canInvite(g) {
 }
 
 function inviteWording(g) {
-    var line = 'Join me at ' + g.name + ' on JoinIn.';
+    var line = 'Join me at ' + g.name + ' on Asheville Pulse.';
     var when = groupMeetingText(g);
     if (when && when.indexOf('announced') === -1) { line += ' ' + when + '.'; }
     return line;
@@ -3805,7 +4243,7 @@ async function signMeUp(id) {
 
 function messageHostGate(id) {
     var g = allGroups.find(function(x) { return x.id === id; });
-    if (!isSignedIn()) { askToRegister('send messages through JoinIn'); return; }
+    if (!isSignedIn()) { askToRegister('send messages through Asheville Pulse'); return; }
     messageHostWrite(id);
 }
 
@@ -3857,12 +4295,12 @@ async function leaveGroup(id) {
 function emailMeDetails(id) {
     var g = allGroups.find(function(x) { return x.id === id; });
     if (!g) return;
-    var subject = 'JoinIn: ' + g.name;
+    var subject = 'Asheville Pulse: ' + g.name;
     var body = 'Welcome to ' + g.name + '!\n\n' +
         'When: ' + groupMeetingText(g) + '\n' +
         'Where: ' + (groupAddress(g) || 'To be announced') + '\n' +
         roleLabel(g) + ': ' + (g.organizer_name || 'Unknown') + '\n\n' +
-        (g.description || '') + '\n\n— JoinIn, Asheville NC';
+        (g.description || '') + '\n\n— Asheville Pulse, Asheville NC';
     window.location.href = 'mailto:' + (currentUser?.email || '') +
         '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 }
@@ -4195,7 +4633,7 @@ function renderEventItem(e) {
         ? '<span class="badge paid">\ud83c\udf9f\ufe0f Tickets' +
           (e.price > 0 ? ' from $' + e.price : '') + '</span>'
         : '<span class="badge free">\ud83c\udf81 Free</span>';
-    // Tickets are sold on the organizer's own site; JoinIn only points there.
+    // Tickets are sold on the organizer's own site; Asheville Pulse only points there.
     var ticketLink = ticketed
         ? '<a class="ticket-link" href="' + escapeHTML(e.registration_url) +
           '" target="_blank" rel="noopener noreferrer">\ud83c\udf9f\ufe0f Get Tickets</a>'
@@ -5515,7 +5953,7 @@ function showTicketQR(key) {
     });
     body.innerHTML = html;
     grp.items.forEach(function(t, i) {
-        var payload = 'JOININ TICKET\nEvent: ' + grp.name + '\nDate: ' + when + '\nWhere: ' + where + '\nCode: ' + (t.qrCode || 'NO-CODE');
+        var payload = 'ASHEVILLE PULSE TICKET\nEvent: ' + grp.name + '\nDate: ' + when + '\nWhere: ' + where + '\nCode: ' + (t.qrCode || 'NO-CODE');
         drawQR(document.getElementById('qr-' + i), payload);
     });
 }
@@ -5551,7 +5989,7 @@ function setRating(rating) {
 }
 
 var SHARE_URL = 'https://joinin.today';
-var SHARE_MSG = 'JoinIn — find your people in Asheville, NC. Free to join, free to create groups, classes or events. No credit card is required.';
+var SHARE_MSG = 'Asheville Pulse — find your people in Asheville, NC. Free to join, free to create groups, classes or events. No credit card is required.';
 
 function submitFeedback() {
     var most = document.getElementById('fb-most').value.trim();
@@ -5592,8 +6030,8 @@ function shareState(msg) {
     if (el) { el.textContent = msg || ''; }
 }
 
-async function shareJoinIn() {
-    var payload = { title: 'JoinIn', text: SHARE_MSG, url: SHARE_URL };
+async function shareApp() {
+    var payload = { title: 'Asheville Pulse', text: SHARE_MSG, url: SHARE_URL };
     if (navigator.share) {
         try { await navigator.share(payload); shareState('Thanks for spreading the word!'); return; }
         catch (e) { if (e && e.name === 'AbortError') { return; } }
@@ -6067,7 +6505,7 @@ var TEAM = [
       why: 'Text me if something in the app is broken, confusing, or missing.',
       bio: 'Bio coming soon.', phone: '' },
     { name: 'Team Member Two',
-      why: 'Text about listing your venue or business on JoinIn.',
+      why: 'Text about listing your venue or business on Asheville Pulse.',
       bio: 'Bio coming soon.', phone: '' },
     { name: 'Team Member Three',
       why: 'Text about starting a group or getting your first members.',
@@ -6091,7 +6529,7 @@ function renderTeam() {
     var cap = document.getElementById('team-caption');
     if (cap) {
         cap.textContent = TEAM.map(function(m) { return m.name; }).join(', ') +
-            ' \u2014 the people behind JoinIn.';
+            ' \u2014 the people behind Asheville Pulse.';
     }
     var list = document.getElementById('team-list');
     if (!list) return;
@@ -6444,7 +6882,7 @@ function closePopup() {
 function closePopupAndCreate() { closePopup(); showPage('create-group'); }
 
 // ─── APP ICON & INSTALL ───
-// The five-person ring from the JoinIn logo, drawn as a square app icon.
+// The five-person ring from the Asheville Pulse logo, drawn as a square app icon.
 function iconSVG(size) {
     var fig = '<circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/>';
     return '<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size + '" viewBox="0 0 512 512">' +
@@ -6485,8 +6923,8 @@ async function setupPWA() {
 
         var dir = window.location.pathname.replace(/[^/]*$/, '');
         var manifest = {
-            name: 'JoinIn — Asheville',
-            short_name: 'JoinIn',
+            name: 'Asheville Pulse',
+            short_name: 'Pulse',
             description: 'Find your people. Join the fun.',
             start_url: window.location.pathname,
             scope: dir || '/',
