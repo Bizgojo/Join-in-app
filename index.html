@@ -117,6 +117,14 @@
 /* ── PULSE FEED ── */
 .hood-row{display:flex;align-items:center;justify-content:space-between;margin:2px 0 12px}
 .hood-row select{width:auto;flex:0 0 auto;padding:8px 12px;margin:0;font-size:14px;font-weight:600;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#eaf2fb}
+.columnist-heading{font-size:14px;font-weight:700;color:#666;margin:2px 0 8px;display:flex;align-items:center;gap:6px}
+.columnist-heading .dot{width:7px;height:7px;border-radius:50%;background:#E4572E;display:inline-block}
+.columnist-bio-photo{width:100%;max-width:320px;aspect-ratio:1/1;margin:0 auto 16px;border-radius:18px;overflow:hidden;background:#eef3ee;border:1px solid #e8eee8}
+.columnist-bio-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.columnist-bio-name{font-size:22px;font-weight:800;text-align:center;color:#1a1a2e}
+.columnist-bio-hood{font-size:14px;font-weight:700;color:#1B4B8F;text-align:center;margin-top:2px;margin-bottom:16px}
+.columnist-bio-text{font-size:16px;line-height:1.65;color:#333}
+.columnist-bio-text p{margin-bottom:14px}
 .pulse-heading{font-size:19px;font-weight:700;color:#1B4B8F;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
 .pulse-heading .dot{width:8px;height:8px;border-radius:50%;background:#E4572E;flex:0 0 auto}
 .rail-wrap{margin-bottom:6px}
@@ -130,39 +138,53 @@
 .rail-card.cta{background:#1B4B8F;color:#fff}
 .rail-card.cta .t{color:#fff}
 .rail-card.cta .s{color:#cfe0f2}
-.pulse-post{background:#fff;border-radius:16px;margin-bottom:12px;overflow:hidden;border:1px solid #e8eee8;display:flex}
+.pulse-post{background:#fff;border-radius:16px;margin-bottom:10px;overflow:hidden;border:1px solid #e8eee8;display:flex}
 .blaze-bar{width:5px;flex-shrink:0}
 .blaze-bar.group{background:#3F9142}
 .blaze-bar.event{background:#7B1FA2}
 .blaze-bar.trend{background:#D9A441}
 .blaze-bar.talk{background:#8a948a}
-.pulse-body{padding:13px 14px 14px;flex:1;min-width:0}
-.pulse-tag{font-size:11px;letter-spacing:.04em;text-transform:uppercase;font-weight:700}
+.pulse-body{padding:10px 12px 11px;flex:1;min-width:0}
+.pulse-tag{font-size:10px;letter-spacing:.03em;text-transform:uppercase;font-weight:700}
 .pulse-tag.group{color:#3F9142}
 .pulse-tag.event{color:#7B1FA2}
-.pulse-tag.trend{color:#B9860E}
-.pulse-tag.talk{color:#8a948a}
-.pulse-meta{display:flex;align-items:center;gap:7px;margin-top:6px;margin-bottom:8px}
-.pulse-avatar{width:26px;height:26px;border-radius:50%;background:#1B4B8F;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.pulse-who{font-size:12.5px;font-weight:600;color:#333}
+.pulse-tag-chip{font-size:10px;letter-spacing:.03em;text-transform:uppercase;font-weight:700;flex-shrink:0}
+.pulse-tag-chip.group{color:#3F9142}
+.pulse-tag-chip.event{color:#7B1FA2}
+.pulse-tag-chip.trend{color:#B9860E}
+.pulse-tag-chip.talk{color:#8a948a}
+.pulse-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.pulse-avatar{width:20px;height:20px;border-radius:50%;background:#1B4B8F;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pulse-who{font-size:12px;font-weight:600;color:#333;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pulse-who span{font-weight:400;color:#888}
-.pulse-post h3{font-size:16.5px;font-weight:700;line-height:1.32;margin-bottom:5px;color:#1a1a2e}
-.pulse-post p{font-size:14.5px;color:#333;line-height:1.48}
-.pulse-sponsor{margin-top:8px;font-size:11.5px;color:#888}
-.pulse-img{width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-top:10px}
-.poll-opt{position:relative;background:#f4f6f4;border-radius:10px;padding:10px 12px;margin-bottom:6px;overflow:hidden;cursor:pointer;border:none;width:100%;text-align:left}
+.pulse-post h3{font-size:15.5px;font-weight:700;line-height:1.3;margin-bottom:3px;color:#1a1a2e}
+.pulse-post p{font-size:14px;color:#333;line-height:1.44;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pulse-post p.expanded{-webkit-line-clamp:unset;overflow:visible}
+.pulse-more{background:none;border:none;color:#1B4B8F;font-size:13px;font-weight:700;cursor:pointer;padding:2px 0;margin-top:1px;display:none}
+.pulse-sponsor{margin-top:6px;font-size:11px;color:#888}
+.pulse-img{width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-top:8px}
+.poll-opt{position:relative;background:#f4f6f4;border-radius:10px;padding:10px 12px;margin-bottom:6px;overflow:hidden;cursor:pointer;border:none;width:100%;text-align:left;transition:box-shadow .3s}
+.poll-opt.flash{box-shadow:0 0 0 3px #1B4B8F}
+@keyframes pollFlash{0%{box-shadow:0 0 0 3px #1B4B8F}100%{box-shadow:0 0 0 0 rgba(27,75,143,0)}}
 .poll-opt .fill{position:absolute;inset:0;background:#dceae1;z-index:0}
 .poll-opt .lbl{position:relative;z-index:1;font-size:14px;font-weight:600;display:flex;justify-content:space-between;color:#1a1a2e}
-.pulse-actions{display:flex;align-items:center;gap:16px;margin-top:11px;font-size:13px;color:#888}
+.pulse-actions{display:flex;align-items:center;gap:16px;margin-top:8px;font-size:13px;color:#888}
 .pulse-act{display:flex;align-items:center;gap:5px;cursor:pointer;background:none;border:none;color:#888;font-size:13px;padding:2px}
 .pulse-act.voted{color:#1B4B8F;font-weight:700}
 .pulse-act b{color:#1a1a2e}
 .pulse-comments{margin-top:10px;border-top:1px solid #f0f0f5;padding-top:10px;display:none}
-.pulse-comment{font-size:13.5px;margin-bottom:8px;line-height:1.4}
+.pulse-comment{font-size:13.5px;margin-bottom:4px;line-height:1.4}
 .pulse-comment b{color:#1B4B8F}
-.pulse-comment-form{display:flex;gap:8px;margin-top:6px}
-.pulse-comment-form input{margin:0;font-size:14px;padding:10px 12px}
-.pulse-comment-form button{width:auto;padding:10px 16px;margin:0}
+.pulse-comment-item{margin-bottom:10px}
+.pulse-comment-replies{margin-left:22px;border-left:2px solid #f0f0f5;padding-left:10px;margin-top:6px}
+.pulse-reply-toggle{background:none;border:none;color:#888;font-size:12px;font-weight:600;cursor:pointer;padding:2px 0;display:flex;align-items:center;gap:4px}
+.pulse-reply-toggle:hover{color:#1B4B8F}
+.pulse-comment-form{display:flex;gap:6px;margin-top:6px}
+.pulse-comment-form input{margin:0;font-size:14px;padding:10px 12px;flex:1;min-width:0}
+.pulse-comment-form button{width:auto;padding:10px 14px;margin:0;flex-shrink:0}
+.pulse-comment-form-wrap{margin-top:6px}
+.pulse-photo-btn{background:#f4f6f4;border:none;border-radius:10px;font-size:16px;cursor:pointer;padding:0 12px}
+.pulse-comment-img{max-width:160px;max-height:160px;border-radius:10px;margin-top:6px;display:block;object-fit:cover}
 .pulse-composer{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;border:1px solid #e8eee8}
 .pulse-type-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
 .pulse-type-row button{flex:1 1 auto;min-width:76px;padding:8px 10px;border:2px solid #dce4dc;border-radius:12px;font-size:13px;font-weight:600;background:#f4f6f4;color:#666;cursor:pointer}
@@ -218,9 +240,23 @@
 </div>
 </div>
 
+<!-- CREATE CHOICE POPUP -->
+<div id="create-choice-overlay" class="popup-overlay" onclick="if(event.target===this) closeCreateChoice()">
+<div class="popup">
+<button class="popup-close" onclick="closeCreateChoice()">✕</button>
+<div class="popup-icon">✨</div>
+<div class="popup-title">What are you creating?</div>
+<div class="popup-text">All free, always.</div>
+<button class="popup-btn" onclick="closeCreateChoice();startCreate('group')">🚀 Start a Group</button>
+<button class="popup-btn-secondary" onclick="closeCreateChoice();startCreate('class')">🧑‍🏫 Offer a Class</button>
+<button class="popup-btn-secondary" onclick="closeCreateChoice();showPage('create-event')">📢 Create an Event</button>
+<button class="popup-btn-secondary" onclick="closeCreateChoice()">Maybe Later</button>
+</div>
+</div>
+
 <!-- LOGIN -->
 <div id="page-login" class="page active">
-<div style="text-align:center;padding:24px 0 8px"><svg class="jilogo" style="max-width:380px" viewBox="100 40 490 200" role="img" aria-label="Asheville Pulse" xmlns="http://www.w3.org/2000/svg"><defs><path id="ji-arc-login" d="M 252 194 Q 382 150 512 194" fill="none"/></defs><g transform="translate(178,138) scale(0.74) translate(-340,-108)"><circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/><g fill="#1B4B8F"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(72 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#E4572E" transform="rotate(144 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#1B4B8F" transform="rotate(216 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(288 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g></g><text x="248" y="122" class="ji-w">Pulse</text><text class="ji-s"><textPath href="#ji-arc-login" startOffset="50%" text-anchor="middle">Asheville</textPath></text><path class="ji-b" d="M 240 214 C 294 197 338 187 384 186 C 440 185 486 194 526 209 C 484 202 438 196 386 199 C 336 202 292 209 240 214 Z"/><path class="ji-b" d="M 522 208 C 540 213 552 209 560 199 C 550 206 536 207 520 203 Z"/><path class="ji-b" opacity="0.55" d="M 300 213 C 340 204 372 199 410 199 C 372 203 336 208 300 213 Z"/></svg><p style="color:#888;font-size:15px;margin:2px 0 4px">Find your people. Join the fun.</p><p style="color:#1B4B8F;font-size:15px;font-weight:700;margin:0 0 12px">Built in Asheville, for Asheville. Free for everyone.</p><div class="liq" id="liq-login"></div><div style="height:10px"></div></div>
+<div style="text-align:center;padding:24px 0 8px"><svg class="jilogo" style="max-width:380px" viewBox="100 40 490 200" role="img" aria-label="Join In" xmlns="http://www.w3.org/2000/svg"><defs><path id="ji-arc-login" d="M 252 194 Q 382 150 512 194" fill="none"/></defs><g transform="translate(178,138) scale(0.74) translate(-340,-108)"><circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/><g fill="#1B4B8F"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(72 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#E4572E" transform="rotate(144 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#1B4B8F" transform="rotate(216 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(288 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g></g><text x="248" y="122" class="ji-w">Join</text><text class="ji-s"><textPath href="#ji-arc-login" startOffset="50%" text-anchor="middle">In</textPath></text><path class="ji-b" d="M 240 214 C 294 197 338 187 384 186 C 440 185 486 194 526 209 C 484 202 438 196 386 199 C 336 202 292 209 240 214 Z"/><path class="ji-b" d="M 522 208 C 540 213 552 209 560 199 C 550 206 536 207 520 203 Z"/><path class="ji-b" opacity="0.55" d="M 300 213 C 340 204 372 199 410 199 C 372 203 336 208 300 213 Z"/></svg><p style="color:#888;font-size:15px;margin:2px 0 4px">Find your people. Join the fun.</p><p style="color:#1B4B8F;font-size:15px;font-weight:700;margin:0 0 12px">Built in Asheville, for Asheville. Free for everyone.</p><div class="liq" id="liq-login"></div><div style="height:10px"></div></div>
 <div class="auth-tabs">
 <button id="auth-tab-login" class="on" onclick="setAuthMode('login')">Log In</button>
 <button id="auth-tab-signup" onclick="setAuthMode('signup')">Sign Up</button>
@@ -278,7 +314,7 @@
 
 <!-- HOME -->
 <div id="page-home" class="page">
-<div style="position:sticky;top:0;z-index:400;background:#f0f4f0;margin:-20px -20px 6px;padding:12px 20px 8px"><svg class="jilogo" style="max-width:310px" viewBox="100 40 490 200" role="img" aria-label="Asheville Pulse" xmlns="http://www.w3.org/2000/svg"><defs><path id="ji-arc-home" d="M 252 194 Q 382 150 512 194" fill="none"/></defs><g transform="translate(178,138) scale(0.74) translate(-340,-108)"><circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/><g fill="#1B4B8F"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(72 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#E4572E" transform="rotate(144 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#1B4B8F" transform="rotate(216 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(288 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g></g><text x="248" y="122" class="ji-w">Pulse</text><text class="ji-s"><textPath href="#ji-arc-home" startOffset="50%" text-anchor="middle">Asheville</textPath></text><path class="ji-b" d="M 240 214 C 294 197 338 187 384 186 C 440 185 486 194 526 209 C 484 202 438 196 386 199 C 336 202 292 209 240 214 Z"/><path class="ji-b" d="M 522 208 C 540 213 552 209 560 199 C 550 206 536 207 520 203 Z"/><path class="ji-b" opacity="0.55" d="M 300 213 C 340 204 372 199 410 199 C 372 203 336 208 300 213 Z"/></svg></div><div style="text-align:center;font-size:14px;color:#888;margin-bottom:8px">Find your people. Join the fun.</div><div class="liq" id="liq-home"></div><div class="buildstamp" id="build-stamp"></div>
+<div style="position:sticky;top:0;z-index:400;background:#f0f4f0;margin:-20px -20px 6px;padding:12px 20px 8px"><svg class="jilogo" style="max-width:310px" viewBox="100 40 490 200" role="img" aria-label="Join In" xmlns="http://www.w3.org/2000/svg"><defs><path id="ji-arc-home" d="M 252 194 Q 382 150 512 194" fill="none"/></defs><g transform="translate(178,138) scale(0.74) translate(-340,-108)"><circle cx="340" cy="108" r="34" fill="none" stroke="#2E7BC4" stroke-width="3" stroke-dasharray="6 9" stroke-linecap="round"/><g fill="#1B4B8F"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(72 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#E4572E" transform="rotate(144 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#1B4B8F" transform="rotate(216 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g><g fill="#2E7BC4" transform="rotate(288 340 108)"><circle cx="340" cy="42" r="14"/><path d="M321 86 Q321 61 340 61 Q359 61 359 86 Z"/></g></g><text x="248" y="122" class="ji-w">Join</text><text class="ji-s"><textPath href="#ji-arc-home" startOffset="50%" text-anchor="middle">In</textPath></text><path class="ji-b" d="M 240 214 C 294 197 338 187 384 186 C 440 185 486 194 526 209 C 484 202 438 196 386 199 C 336 202 292 209 240 214 Z"/><path class="ji-b" d="M 522 208 C 540 213 552 209 560 199 C 550 206 536 207 520 203 Z"/><path class="ji-b" opacity="0.55" d="M 300 213 C 340 204 372 199 410 199 C 372 203 336 208 300 213 Z"/></svg></div><div style="text-align:center;font-size:14px;color:#888;margin-bottom:8px">Find your people. Join the fun.</div><div class="liq" id="liq-home"></div><div class="buildstamp" id="build-stamp"></div>
 <div class="user-section" id="home-guest-row" style="display:none">
 <div class="user-avatar" style="background:#8a948a">•</div>
 <div class="user-info" style="flex:1">
@@ -328,30 +364,50 @@
 3. Tap <strong>Add</strong>.
 </div>
 </div>
-<div class="hood-row">
-<div style="font-size:13px;color:#888">📍 Neighborhood</div>
-<select id="pulse-hood-select" onchange="onHoodChange()"><option value="">All Asheville</option></select>
+<div class="pulse-heading"><span class="dot"></span>The Pulse</div>
+
+<div class="columnist-heading"><span class="dot"></span>Local Columnists</div>
+<div class="hood-row" style="margin-bottom:8px">
+<select id="columnist-select-community" onchange="onColumnistSelect('community')" style="width:100%;flex:1 1 auto;padding:14px;margin:0;font-size:16px;font-weight:600;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#eaf2fb"><option value="">Select your community columnist</option></select>
+</div>
+<div class="hood-row" style="margin-bottom:14px">
+<select id="columnist-select-topical" onchange="onColumnistSelect('topical')" style="width:100%;flex:1 1 auto;padding:14px;margin:0;font-size:16px;font-weight:600;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#eaf2fb"><option value="">Select your topic columnist</option></select>
 </div>
 
+<div class="card" id="topic-of-day-card">
+<div style="font-size:12px;font-weight:700;color:#E4572E;text-transform:uppercase;letter-spacing:.4px">🔥 Topic of the Day</div>
+<h3 id="totd-title" style="margin:6px 0 4px"></h3>
+<p id="totd-body" style="color:#444;font-size:15px;line-height:1.55;margin-bottom:2px"></p>
+<div style="font-size:12px;color:#999;margin-top:8px" id="totd-meta"></div>
+<div style="display:flex;gap:8px;margin-top:14px">
+<button class="btn-outline" style="flex:1" onclick="openTopicPanel(true)">💭 What do you think?</button>
+<button class="btn-outline" style="flex:1" onclick="openTopicPanel(false)">👀 See What Others Thought</button>
+</div>
+<div id="topic-comments-slot" style="margin-top:6px"></div>
+</div>
+
+<div id="pulse-composer-toggle"><button class="btn" style="background:#1B4B8F" onclick="openPulseComposer()">+ Post to the Pulse</button></div>
+<div id="pulse-composer-card" style="display:none"></div>
+
+<div id="pulse-feed-list"><div class="pulse-empty">Loading the Pulse…</div></div>
+
+<div class="card" id="community-poll-card" style="display:none"></div>
+
+<div class="pulse-heading" style="margin-top:20px"><span class="dot"></span>JoinIn</div>
 <div class="rail-wrap">
 <div class="rail">
 <div class="rail-card" onclick="showPage('groups')"><span class="ico">👥</span><div class="t">Join a Group</div><div class="s">Find your community</div></div>
 <div class="rail-card" onclick="showPage('classes')"><span class="ico">🎓</span><div class="t">Take a Class</div><div class="s">Learn locally</div></div>
 <div class="rail-card" onclick="showPage('events')"><span class="ico">🎟️</span><div class="t">Discover Events</div><div class="s">Music, sports & more</div></div>
-<div class="rail-card" onclick="startCreate('group')"><span class="ico">🚀</span><div class="t">Create a Group</div><div class="s">Always free</div></div>
-<div class="rail-card" onclick="startCreate('class')"><span class="ico">🧑‍🏫</span><div class="t">Offer a Class</div><div class="s">Share a skill</div></div>
-<div class="rail-card" onclick="showPage('create-event')"><span class="ico">📢</span><div class="t">Create an Event</div><div class="s">Sell tickets</div></div>
 </div>
+<button class="btn" style="background:#1B4B8F;margin-top:10px" onclick="showCreateChoice()">Create A Group, Class or Event - it's Free!</button>
 </div>
-
-<div class="pulse-heading"><span class="dot"></span>The Pulse</div>
-<div id="pulse-composer-toggle"><button class="btn" style="background:#1B4B8F" onclick="openPulseComposer()">+ Post to the Pulse</button></div>
-<div id="pulse-composer-card" style="display:none"></div>
-<div id="pulse-feed-list"><div class="pulse-empty">Loading the Pulse…</div></div>
 
 <div class="funnel" onclick="showPage('chat')"><span class="icon">💬</span><div class="text"><div class="title">Chat</div><div class="sub">Messages & conversations</div></div><span class="arrow">›</span></div>
-<div class="funnel" onclick="showPage('feedback')"><span class="icon">💬</span><div class="text"><div class="title">Feedback & Ratings</div><div class="sub">Share your thoughts</div></div><span class="arrow">›</span></div>
+<div class="funnel" onclick="showPage('advertise')"><span class="icon">📣</span><div class="text"><div class="title">Advertise</div><div class="sub">Reach real Asheville neighbors</div></div><span class="arrow">›</span></div>
+<div class="funnel" onclick="showPage('hiring')"><span class="icon">💼</span><div class="text"><div class="title">Now Hiring</div><div class="sub">Join the Asheville Pulse team</div></div><span class="arrow">›</span></div>
 <div class="funnel" onclick="showPage('about')"><span class="icon">ℹ️</span><div class="text"><div class="title">About Asheville Pulse</div><div class="sub">Our mission and who we are</div></div><span class="arrow">›</span></div>
+<div class="funnel" onclick="showPage('feedback')"><span class="icon">💬</span><div class="text"><div class="title">Feedback & Ratings</div><div class="sub">Share your thoughts</div></div><span class="arrow">›</span></div>
 <button class="admin-gear" onclick="showPage('admin')">⚙️</button>
 </div>
 
@@ -383,6 +439,64 @@
 <div id="team-list"></div>
 </div>
 <div id="team-detail" style="display:none"></div>
+</div>
+</div>
+
+<!-- COLUMNIST BIO -->
+<div id="page-columnist-bio" class="page">
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
+<div class="card" id="columnist-bio-content"></div>
+</div>
+
+<!-- PAST POLLS -->
+<div id="page-past-polls" class="page">
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
+<div style="font-size:19px;font-weight:700;color:#1B4B8F;margin:4px 0 12px">📁 Past Polls</div>
+<div id="past-polls-list"></div>
+</div>
+
+<!-- ADVERTISE -->
+<div id="page-advertise" class="page">
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
+<div class="card">
+<h3>📣 Advertise on Asheville Pulse</h3>
+<div id="advertise-view">
+<div id="advertise-media-kit-view" style="font-size:16px;line-height:1.6;color:#333;margin-top:10px;white-space:pre-wrap"></div>
+<div id="advertise-rate-card-view" style="font-size:16px;line-height:1.6;color:#333;margin-top:18px;white-space:pre-wrap"></div>
+</div>
+<button class="btn-outline" id="advertise-edit-btn" style="display:none;margin-top:14px" onclick="toggleAdvertiseEdit(true)">✏️ Edit This Page</button>
+<div id="advertise-edit" style="display:none;margin-top:10px">
+<label style="font-weight:700;font-size:14px;display:block;margin-bottom:4px">Media Kit</label>
+<textarea id="advertise-media-kit-edit" rows="8" style="font-size:15px"></textarea>
+<label style="font-weight:700;font-size:14px;display:block;margin-bottom:4px">Rate Card</label>
+<textarea id="advertise-rate-card-edit" rows="8" style="font-size:15px"></textarea>
+<div style="display:flex;gap:8px">
+<button class="btn" style="background:#1B4B8F" onclick="saveAdvertise()">💾 Save</button>
+<button class="btn-outline" onclick="toggleAdvertiseEdit(false)">Cancel</button>
+</div>
+<p id="advertise-save-state" style="font-size:13px;color:#8a948a;margin-top:8px;min-height:18px"></p>
+</div>
+</div>
+</div>
+
+<!-- NOW HIRING -->
+<div id="page-hiring" class="page">
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
+<div class="card">
+<h3>💼 Now Hiring</h3>
+<div id="hiring-view">
+<div id="hiring-job-view" style="font-size:16px;line-height:1.6;color:#333;margin-top:10px;white-space:pre-wrap"></div>
+</div>
+<button class="btn-outline" id="hiring-edit-btn" style="display:none;margin-top:14px" onclick="toggleHiringEdit(true)">✏️ Edit This Page</button>
+<div id="hiring-edit" style="display:none;margin-top:10px">
+<label style="font-weight:700;font-size:14px;display:block;margin-bottom:4px">Job Description</label>
+<textarea id="hiring-job-edit" rows="12" style="font-size:15px"></textarea>
+<div style="display:flex;gap:8px">
+<button class="btn" style="background:#1B4B8F" onclick="saveHiring()">💾 Save</button>
+<button class="btn-outline" onclick="toggleHiringEdit(false)">Cancel</button>
+</div>
+<p id="hiring-save-state" style="font-size:13px;color:#8a948a;margin-top:8px;min-height:18px"></p>
+</div>
 </div>
 </div>
 
@@ -685,6 +799,12 @@
 </div>
 <label style="font-weight:600;display:block;margin:10px 0 6px">Location</label>
 <input type="text" id="pf-location" placeholder="City, State">
+<div style="background:#f8faf8;border:1px solid #e8eee8;border-radius:14px;padding:14px;margin-bottom:14px">
+<label style="display:flex;align-items:flex-start;gap:10px;font-weight:600;cursor:pointer">
+<input type="checkbox" id="pf-show-full-name" style="width:auto;margin-top:3px">
+<span>Show my full name to others<br><span style="font-weight:400;color:#888;font-size:13px">By default, posts and comments show only your first name and last initial (e.g. "Marc P."). Turn this on to show your full name instead.</span></span>
+</label>
+</div>
 <button class="btn" onclick="saveProfile()">💾 Save Profile</button>
 </div>
 </div>
@@ -1045,6 +1165,86 @@ var QR = (function () {
 // ─── DATA ───
 var currentUser = null;
 var allNeighborhoods = [];
+var allColumnists = [
+{
+    id: "maya-reyes-booth",
+    name: "Maya Reyes-Booth",
+    kind: "community",
+    hood: "West Asheville",
+    photo: "https://picsum.photos/seed/mayacolumnist/400/400",
+    bio: "Maya Reyes-Booth has lived on the west side of the French Broad for eleven years, in three different apartments and one very stubborn duplex on Haywood Road that she swears she'll buy someday if the owner ever decides to sell. She moved to Asheville from Tampa with a folding table, a secondhand kayak, and a half-finished graduate degree in urban planning she never quite went back to finish, mostly because West Asheville kept giving her better things to study in real time.\n\nBefore she was a columnist, Maya spent six years managing the front counter at a bakery two blocks off Haywood, which she describes as the best possible training for local journalism, since a bakery counter is where a neighborhood tells you everything about itself without meaning to. Who's fighting with their landlord. Who just had a baby. Which mural got tagged and which one got fixed by sunrise because three strangers showed up with rollers at 6 a.m. She started writing things down on the backs of receipt paper, then on napkins, then finally on an actual laptop once her wife pointed out that the napkins were taking over a kitchen drawer.\n\nHer beat now is simple on paper and endless in practice: West Asheville, block by block, person by person. She covers the mural debates, the brewery openings, the community garden turf wars that get surprisingly heated over tomato plots, and the slow, ongoing argument about what West Asheville is allowed to become without stopping being West Asheville. She is fiercely, almost unreasonably loyal to Haywood Road specifically, and has a running bit in her column called 'Haywood Report,' where she tracks new storefronts the way some people track weather.\n\nWhat she's known for locally is not being afraid to ask the awkward question at a public meeting, and then being kind about the answer even when it's a bad one. She once got yelled at during a zoning meeting and responded by bringing the man who yelled at her a coffee the following week, not to make a point, but because that's genuinely just what she does. People trust her with things they wouldn't tell a stranger with a notebook, because she's been a familiar face behind a counter longer than she's been anything resembling press.\n\nMaya interviews her neighbors constantly, on porches, at the dog park behind the elementary school, in line at the farmers market on Saturdays. She keeps a small paper notebook of names and follow-up questions, because she believes the second conversation with someone is always better than the first. Her favorite thing to ask people is not what they do for a living but what they're hoping for this year, which she says gets her further into a real answer than any question about jobs or politics ever has.\n\nOutside of the column, Maya still kayaks the French Broad most weekends when the water's not too high, volunteers with a youth mentoring group two Tuesdays a month, and has an ongoing, deeply unserious feud with a neighbor's rooster that crows at 5:40 a.m. sharp. She says West Asheville is the only place she's ever lived that felt less like a neighborhood and more like an extended, occasionally dysfunctional family \u2014 which is exactly why she can't stop writing about it.",
+    columns: [
+        { date: "2026-08-24", title: "Haywood Report: Three New Storefronts, One Big Question", body: "Three storefronts changed hands on Haywood Road this month, and all three new owners told me some version of the same thing: they picked West Asheville because it still feels like people actually run into each other here. A ceramics studio is moving into the old shoe repair spot, a new coffee roaster is taking the corner unit that sat empty since spring, and a used bookstore is expanding into the space next door instead of opening across town. I asked each owner the same question \u2014 what happens if West Asheville stops feeling like this in five years? \u2014 and got three very different, very worried answers. More on that next week.\n\nWhat struck me most wasn't the businesses themselves, it was how much each owner already knew about their future neighbors before they'd even signed a lease. That's not something you get from a market study. That's a neighborhood talking to itself before you even arrive." },
+        { date: "2026-08-10", title: "The Great Community Garden Tomato Turf War, Explained", body: "I did not expect to spend three hours at a Tuesday evening meeting listening to grown adults argue about tomato plot boundaries, and yet here we are. The West Asheville Community Garden has twenty-two plots and, apparently, at least four competing theories about where plot 14 legally ends and plot 15 begins. I talked to both sides. Both sides make a reasonable point. Neither side is willing to say so out loud.\n\nWhat I actually think this is about isn't inches of dirt \u2014 it's that the garden waitlist is three years long now, and everyone holding a plot knows exactly how replaceable they are if they lose it. Scarcity turns neighbors into surveyors. I'll be back at next month's meeting with a tape measure and, God help me, a printed plot map." },
+        { date: "2026-07-27", title: "Meet the Muralists Who Fixed the Tag Overnight", body: "Someone tagged the new mural outside the laundromat on a Thursday night. By Friday morning it was gone, painted over so cleanly you'd never know, and nobody had organized it \u2014 three separate people just showed up with rollers before sunrise because they each, independently, couldn't stand to see it stay ugly for even one more day. I tracked down all three. None of them knew the other two were coming. One brought extra paint for the person she assumed would show up anyway.\n\nThat's the story I keep coming back to when people ask me why I still write about this neighborhood. Nobody had to be told to fix it. They just did." }
+    ]
+},
+{
+    id: "desmond-okafor",
+    name: "Desmond Okafor",
+    kind: "community",
+    hood: "River Arts District",
+    photo: "https://picsum.photos/seed/desmondcolumnist/400/400",
+    bio: "Desmond Okafor came to the River Arts District the way a lot of artists do \u2014 looking for cheap studio space \u2014 and stayed for reasons that had nothing to do with rent. He arrived from Durham nine years ago with a welding certificate, a truck full of scrap metal, and no real plan beyond finding somewhere he could make noise and mess without a landlord complaining. RAD, back when half the studios still had cracked concrete floors and no working heat in winter, was exactly that kind of place.\n\nHe's a metal sculptor by trade, though he'll tell you the column has slowly become just as much of a full-time job as the welding is. His studio sits a short walk from the river, in a converted warehouse he shares with a rotating cast of painters, potters, and one increasingly famous printmaker who Desmond claims he 'discovered,' though she insists she discovered herself and he just happened to be standing nearby with a coffee.\n\nDesmond's column tracks the district the way only someone inside it can \u2014 which studios are opening, which longtime tenants are getting priced out, which gallery walk nights actually draw a crowd versus which ones are quietly struggling. He's unusually direct about the tension at the center of RAD's whole story: the neighborhood's charm is what made it valuable, and its value is now the thing threatening to hollow it out. He doesn't pretend to have an answer. He just keeps asking the artists, gallery owners, and longtime residents what they think should happen next, and prints their answers even when they contradict each other, which they often do.\n\nHe's known around the district for showing up to every open studio night with a small recorder and a genuine, almost nosy curiosity about what people are working on and why. He says the best interviews happen when someone's hands are still busy \u2014 mid-throw at a pottery wheel, mid-weld, paintbrush still in hand \u2014 because people say truer things when they're not fully looking at you. He's collected dozens of these half-distracted conversations over the years, and readers have told him they look forward to the studio profiles more than almost anything else in the column.\n\nDesmond is blunt, occasionally to a fault, and has gotten into more than one heated but ultimately good-natured argument with property owners at neighborhood meetings about development plans. He balances that with an oddly tender habit of remembering small details about people \u2014 a sculptor's kid's name, a painter's upcoming show, whose dog just had surgery \u2014 that makes him feel less like a reporter and more like someone who's simply been paying close attention for a very long time, because he has.\n\nWhen he's not welding or writing, Desmond runs a free Saturday-morning metalworking demo for neighborhood kids, mostly so they'll stop trying to sneak into his studio to watch him work unsupervised. He says RAD raised him as much as he helped build it, and he intends to keep writing about it exactly as long as the district lets him stay.",
+    columns: [
+        { date: "2026-08-22", title: "Who's Actually Getting Priced Out of RAD This Year", body: "I sat down with four studio tenants whose leases are up for renewal this fall, and the numbers are not subtle \u2014 rent increases ranging from twenty to nearly forty percent depending on the building. Two of the four told me flatly they're looking at studio space in Swannanoa instead, which would have sounded absurd five years ago and now sounds like planning ahead.\n\nThe uncomfortable part of this story is that RAD's own success is the cause. Galleries and studios made this district worth visiting, which made the buildings worth more, which is now pricing out the people who did the making. I don't have a tidy ending for this one. I just have four honest conversations and a fall that's going to look different than this summer did." },
+        { date: "2026-08-08", title: "Studio Night Profiles: The Printmaker Who 'Discovered' Herself", body: "I've told the story before about 'discovering' a printmaker in a shared warehouse a few years back, and this month I finally asked her directly what she thought about that framing. She laughed at me for a solid ten seconds before answering. Her actual answer was better than my version \u2014 she'd been printing for six years before I ever wandered into her corner of the studio, teaching herself from library books because she couldn't afford classes.\n\nWe talked about what it's like to have your origin story told by someone else for years without correcting it. She said she let it slide because it was a good story and she was tired of correcting people. I told her I'd correct it now. She said not to bother, the version where I discover her gets her more studio visits." },
+        { date: "2026-07-25", title: "What Happens to a Warehouse When the Artists Leave", body: "One of the original converted warehouses near the river is being sold, and the dozen artists working out of it right now don't know yet what the new owner has planned. I walked through with three of them on a Sunday afternoon, half interview and half unofficial farewell tour, in case that's what this turns out to be.\n\nWhat nobody talks about enough is the specific kind of grief that comes with losing a studio that isn't even yours \u2014 you didn't build it, you just filled it with a decade of work, and now you're not sure where the next decade happens. I don't have news yet on the sale. I have twelve people's worry, which felt more important to write down first." }
+    ]
+},
+{
+    id: "grace-ellenwood",
+    name: "Grace Ellenwood",
+    kind: "community",
+    hood: "Downtown / Pack Square",
+    photo: "https://picsum.photos/seed/gracecolumnist/400/400",
+    bio: "Grace Ellenwood has covered downtown Asheville long enough to remember when half the storefronts on Lexington Avenue sat empty, and she still gets a small, private thrill every time a new one opens, even after watching it happen more times than she can count. She's a fourth-generation Ashevillian, born at Mission Hospital, raised in Kenilworth, and now living in a small apartment two blocks off Pack Square that she's occupied for going on fourteen years, which by downtown standards makes her something like a local elder.\n\nBefore writing, Grace spent a decade managing events for a downtown nonprofit, coordinating everything from street festivals to holiday markets to the occasional chaotic parade route. That job taught her two things she says shaped her entirely as a columnist: first, that almost nothing downtown happens without at least six people quietly making it happen behind the scenes, and second, that those six people almost never get asked what they think about anything. Her column exists largely to fix that second problem.\n\nHer beat is the historic core \u2014 Pack Square, Lexington Avenue, Wall Street, the courthouse steps where half the city's protests and celebrations both seem to happen. She covers small business openings and closings with equal seriousness, treats buskers and street performers as legitimate cultural fixtures worth profiling, and has a semi-regular feature called 'Who's Behind the Counter,' where she interviews whoever happens to be working when she walks into a shop, regardless of whether they're the owner or someone three weeks into the job.\n\nGrace is known for an old-fashioned, almost stubborn insistence on face-to-face conversation. She doesn't do phone interviews if she can help it and considers email exchanges a last resort. She'll tell you flatly that you learn nothing about a person's real opinion on downtown parking regulations by emailing them a question \u2014 you learn it by standing next to them on the sidewalk while they're actually annoyed about it. This has made her something of a fixture herself; regulars at downtown coffee shops know her well enough to wave her over when something's worth telling her about.\n\nShe's especially attentive to the parts of downtown's story that don't get much attention elsewhere \u2014 the maintenance workers who keep Pack Square running, the security guards who know every regular by name, the elderly residents in the senior housing near the square who've watched the neighborhood transform around them for decades. She says those are usually the best interviews she gets all year, and she means it.\n\nOutside the column, Grace volunteers at the downtown farmers market table most Saturdays, keeps an aggressively opinionated running list of the best public benches in the city for people-watching, and has a standing rule that she'll try any new restaurant within her first month of it opening, good review or not. She says downtown Asheville raised her, watched her grow up, and is now \u2014 slowly, messily, one storefront at a time \u2014 becoming something new in front of her, and she intends to keep writing every step of it down.",
+    columns: [
+        { date: "2026-08-26", title: "Who's Behind the Counter: Lexington Ave's Newest Owner", body: "This week's counter belongs to a woman who bought the record shop on Lexington after working there part-time for four years while finishing a nursing degree she has no intention of using now. I asked why she'd trade a stable nursing career for a business everyone keeps telling her is dying. She told me the record shop was the first place in Asheville that felt like it was actually hers to lose, and that mattered more to her than stability ever did.\n\nShe's already rearranged the entire vinyl section by mood instead of genre, which her regulars either love or deeply resent, with apparently no one in between." },
+        { date: "2026-08-12", title: "The Best Public Benches in Downtown, Ranked", body: "This is the column I get the most angry mail about every single year, and I regret nothing. Top spot goes, as always, to the bench outside the old courthouse \u2014 full shade by 2pm, a clean view of both Pack Square and whatever street performer has set up that day, and just far enough from foot traffic that you can eavesdrop without getting caught.\n\nHonorable mention to the newer bench near the fountain, which would rank higher if it weren't perpetually damp from the spray. I stand by my rankings. Write to me if you disagree, I read every letter and change nothing." },
+        { date: "2026-07-29", title: "What the Senior Housing Residents Remember About Pack Square", body: "I spent an afternoon at the senior housing building two blocks from the square, talking with residents who've watched this neighborhood change longer than I've been alive. One woman remembered when the courthouse steps were where every union meeting in the county happened. Another remembered a five-and-dime where the wine bar is now, and could still describe exactly where the candy counter stood.\n\nWhat struck me was how little bitterness was in any of it. Mostly just precise, fond memory, and a genuine curiosity about what the square would look like in another twenty years, long after they wouldn't be around to see it. I promised to come back and tell them." }
+    ]
+},
+{
+    id: "bella-ferro",
+    name: "Bella Ferro",
+    kind: "topical",
+    hood: "Beer Snobs",
+    photo: "https://picsum.photos/seed/bellacolumnist/400/400",
+    bio: "Bella Ferro moved to Asheville nine years ago for a marketing job she quit within eighteen months, and has stayed for reasons that have almost entirely to do with beer, though she'll insist there's more to it than that if you push her. She arrived from Chicago with zero intention of becoming a beer writer, and instead spent her first year here doing what she now calls 'accidental field research' \u2014 visiting every brewery within walking distance of her apartment because she didn't know anyone yet and taprooms were the easiest place to strike up a conversation with a stranger.\n\nBefore the column, Bella worked the floor at two different South Slope breweries, first as a server and later managing a taproom's event calendar. That job taught her the difference between a beer that photographs well and a beer that a regular orders three of in a night without thinking about it, which she says is the entire education a beer critic actually needs. She has a cicerone certification she earned largely out of stubbornness, after a distributor rep implied she didn't need one to have opinions.\n\nHer beat is simple to describe and famously hard to keep up with: every brewery operating in Asheville, from the long-established South Slope anchors to the newest one-barrel operation running out of a converted garage. She tracks new releases, seasonal rotations, and the occasional genuinely heated argument between breweries about whose sour program is more legitimate. Readers mostly know her for a running feature called 'Fresh Tap,' where she reviews whatever just went on tap that week before anyone else has had the chance to form an opinion.\n\nWhat Bella is known for locally is refusing to soften a bad review just because she likes the people who made the beer, which has cost her exactly one friendship and, by her own count, earned her about a dozen more from brewers who'd rather hear it straight. She interviews brewers mid-shift whenever she can manage it, mash paddle still in hand, because she's found people describe their own beer more honestly when they're not fully paying attention to being interviewed.\n\nShe keeps a running, deeply serious ranking of Asheville's best beer gardens for a summer afternoon, updated annually and defended fiercely against all objections. She's also become something of an unofficial concierge for beer tourists, fielding a steady stream of messages from visitors asking for a one-day brewery itinerary, which she now has pre-written and sends out like a form letter, updated every few months as the scene shifts.\n\nOutside the column, Bella homebrews badly and cheerfully, volunteers pouring at the annual beer festival's charity tent, and has an ongoing debate with her partner about whether a hazy IPA can ever really be called a classic style or if it's just a very good trend. She says Asheville earned the nickname Beer City honestly, one stubborn small operation at a time, and her job is just to keep an honest record of it as it keeps changing underneath her.",
+    columns: [
+        { date: "2026-08-23", title: "Fresh Hop Season Hits Asheville: Where to Drink It First", body: "Fresh hop beers only exist for about six weeks a year, brewed within days of the hop harvest instead of using dried pellets, and this year's crop is landing earlier than usual. I've tasted early releases from four breweries so far and the standout is an unfiltered pale ale that tastes almost grassy-green in a way dried-hop beers never quite manage.\n\nMy advice, as always: drink fresh hop beer fresh, meaning this month, not next month. It fades fast, and by the time everyone's talking about it the good stuff is usually already gone." },
+        { date: "2026-08-09", title: "The Sour Ale Debate: RAD Parallel vs. South Slope Loyalists", body: "There's a genuinely funny rivalry happening right now between River Arts District's newer sour program and the South Slope breweries who've been doing barrel-aged sours for years and feel, not unreasonably, a little proprietary about it. I tried to stay neutral. I failed within the first flight.\n\nThe RAD program is doing more experimental fruit combinations, the South Slope side is playing a longer, funkier barrel-aging game. Both are good. I'm not telling you which one won, mostly because I'd like to keep drinking free samples from both sides for as long as possible." },
+        { date: "2026-07-26", title: "A Beginner's Guide to Asheville's Brewery Crawl, No Hangover Required", body: "The question I get most from visitors is some version of 'where do I even start,' so here's my actual answer: three breweries, no more, spaced out with food in between, and always start with the smallest pour size on the menu no matter how confident you feel.\n\nI mapped a route that starts downtown, moves through South Slope, and ends with an early dinner instead of a fourth stop. It's boring advice. It also means you'll remember your trip instead of just the first two breweries." }
+    ]
+},
+{
+    id: "jonas-whitfield",
+    name: "Jonas Whitfield",
+    kind: "topical",
+    hood: "Trail & Ridge (Hiking)",
+    photo: "https://picsum.photos/seed/jonascolumnist/400/400",
+    bio: "Jonas Whitfield has hiked more of the trails around Asheville than almost anyone he knows, which is a fact he shares reluctantly, since he considers boasting about mileage to be a little embarrassing among people who actually love the woods for their own sake. He moved here from Vermont eight years ago after a seasonal trail maintenance job with the Forest Service turned into a permanent one, and he's spent every free weekend since exploring the ridgelines he was originally just paid to clear deadfall from.\n\nBefore writing, Jonas worked five years as a backcountry ranger, which meant spending entire days walking trails alone, checking conditions, and occasionally talking lost or underprepared hikers back down to the trailhead before dark. He says that job taught him more about how people actually experience the outdoors than any guidebook ever could \u2014 mostly that confidence and preparation are not the same thing, and the gap between them is where most trouble happens.\n\nHis beat covers the full range within reach of Asheville: the Blue Ridge Parkway overlooks everyone already knows, the quieter ridge trails almost nobody does, and the increasingly crowded popular loops that he covers honestly, crowds and all, rather than pretending they're still secret. He runs a recurring feature called 'Trailhead Truth,' where he rates hikes not just on scenery but on how badly the parking situation will ruin your morning if you arrive after eight a.m.\n\nJonas is known locally for an almost old-fashioned insistence on trail etiquette \u2014 yielding to uphill hikers, keeping dogs leashed near wildlife-dense sections, packing out every scrap of trash including things that technically biodegrade. He's gotten into more than one polite but firm conversation with hikers he's caught cutting switchbacks, and he writes about these encounters honestly, including the ones where he was clearly the annoying guy on the trail that day.\n\nHe interviews other hikers constantly, usually mid-trail, catching people at rest stops and overlooks where they're winded enough to be unguarded and honest about why they're really out there. He says the best interview he ever got was from a man in his seventies doing the same loop his late wife used to love, who talked for twenty minutes without Jonas asking a single follow-up question.\n\nOutside the column, Jonas volunteers with a regional trail maintenance crew most months, teaches a free backcountry navigation basics class twice a year, and has a running, mostly good-natured argument with a fellow hiker about whether trekking poles are essential gear or an unnecessary crutch. He says the mountains around Asheville taught him patience he didn't have before he moved here, and he intends to keep walking them, and writing about them, for as long as his knees allow.",
+    columns: [
+        { date: "2026-08-25", title: "Best Sunrise Hikes Before the Leaf-Peepers Arrive", body: "Fall crowds are still a few weeks out, which makes this the best window all year for a sunrise hike without fighting for a parking spot at 6am. My current favorite is a ridge overlook that gets brutal midday crowds in October but is nearly empty right now if you're on the trail by 6:15.\n\nBring a headlamp for the first fifteen minutes regardless of how confident you feel about the trail. I say this every year and someone always ignores it and always regrets it." },
+        { date: "2026-08-11", title: "Trail Etiquette: What Asheville Hikers Keep Getting Wrong", body: "I had to have the switchback conversation twice this month, which is twice more than I'd like. Cutting switchbacks feels like a shortcut and is actually just erosion you're personally responsible for, on a trail someone else has to maintain by hand.\n\nThe other repeat offender: unleashed dogs on sections marked wildlife-dense. I love dogs. I love bears staying away from dogs even more. Leash up on the marked sections, please, for both their sakes." },
+        { date: "2026-07-28", title: "A Beginner's Loop Near the Blue Ridge Parkway, Reviewed", body: "I took a first-time hiker friend out on what I consider the easiest genuinely rewarding loop near the Parkway, and watched her reaction closely to see if my recommendation actually held up for someone new to this. It did \u2014 moderate elevation, a real payoff view, and a turnaround point that's obvious even without a map.\n\nShe's since done it twice more on her own, which is the only review that actually matters to me." }
+    ]
+},
+{
+    id: "opal-kim",
+    name: "Opal Kim",
+    kind: "topical",
+    hood: "Thread & Batting (Quilting)",
+    photo: "https://picsum.photos/seed/opalcolumnist/400/400",
+    bio: "Opal Kim picked up a needle and thread at eleven years old, taught by a grandmother who considered television an acceptable backdrop for handwork but never worth watching on its own, and never really put the needle back down. She moved to Asheville six years ago from Portland, drawn partly by the mountains and largely, if she's honest, by how seriously this town takes its fiber arts community, which she says rivaled anywhere she'd lived before.\n\nBefore the column, Opal ran a small longarm quilting business out of her garage, finishing other people's quilt tops for a fee, which meant she spent years handling the most intimate, unfinished projects of dozens of strangers \u2014 baby quilts, memorial quilts stitched from a parent's old shirts, wedding quilts started and abandoned and finally, years later, brought back to be completed. She says that job taught her that a quilt is almost never really about the fabric.\n\nHer beat is the local fiber arts world in the broadest sense: quilting guilds, hand-embroidery circles, weaving groups, and the increasingly popular mending and visible-repair movement among younger crafters who found their way to needle and thread through sustainability rather than tradition. She writes a recurring feature called 'Scrap Bin,' profiling one maker's current project in progress, unfinished and a little messy, rather than waiting for the polished reveal.\n\nOpal is known locally for taking beginners seriously in a craft world that can sometimes be quietly gatekept by decades of expertise. She teaches a free monthly beginner circle at the community library, and has a standing rule that no question is too basic to ask there, a rule she enforces partly by asking the most basic questions herself, out loud, every single session, so newcomers never feel like the only one who doesn't know something.\n\nShe interviews makers with a project actually in their hands whenever possible, believing, like several of her fellow columnists, that people talk more honestly with something to do than face to face with nothing but a question between them. Her favorite interviews are with quilters working on memorial quilts, though she's careful never to push someone to talk about the loss behind the project unless they bring it up first.\n\nOutside the column, Opal co-organizes the twice-yearly scrap fabric swap, maintains a waitlist for her own longarm services that she's stopped apologizing for, and has an ongoing, mostly loving disagreement with her quilting guild about whether hand-quilting or machine-quilting produces the more honest finished piece. She says the fiber arts community raised her into a version of patience she didn't have in her twenties, and she intends to keep documenting it, one unfinished project at a time.",
+    columns: [
+        { date: "2026-08-21", title: "Inside the River Arts Quilt Guild's Fall Show Prep", body: "The guild's fall show is six weeks out and I spent an afternoon in the prep room watching thirty quilts in various states of finished get sorted, labeled, and argued over for hanging order. The politics of hanging order are more intense than you'd expect from a room full of extremely polite people.\n\nMy favorite piece so far is a wall hanging pieced entirely from a member's late husband's flannel shirts, still not entirely finished, and I suspect it'll be finished right up until the morning of the show." },
+        { date: "2026-08-07", title: "Scrap Fabric Swap Returns to West Asheville Library", body: "The twice-yearly scrap swap filled two folding tables with fabric by 10am, and by noon most of it had found a new home in someone's project bag. I watched one first-timer leave with an armful of batik scraps and a phone number for the beginner circle, which is exactly how this event is supposed to work.\n\nNext swap is already on the calendar for the winter. Bring anything, even the ugly stuff. Someone always wants the ugly stuff." },
+        { date: "2026-07-24", title: "Why Hand-Quilting Is Having a Quiet Comeback", body: "More of my interviews this year have mentioned switching back to hand-quilting after years on a machine, and when I asked why, almost everyone gave some version of the same answer: it's slower, and lately that's the entire point.\n\nOne quilter told me her hand-stitched pieces take four times as long and she's never felt less rushed doing anything in her life. I don't think this is nostalgia. I think it's a real, quiet rebellion against how fast everything else has gotten." }
+    ]
+}
+];
 var currentHoodId = '';
 var pulsePosts = [];
 var pulsePollOptions = {};   // postId -> [{id,label,sort_order}]
@@ -1056,6 +1256,7 @@ var pulseCommentCounts = {}; // postId -> count
 var pulseComments = {};      // postId -> [{author_id,body,created_at}] once loaded
 var pulseComposerType = 'text';
 var pulsePollInputCount = 2;
+var pulseComposerImageUrl = '';
 var allGroups = [];
 var allEvents = [];
 var allRsvps = [];
@@ -1425,7 +1626,7 @@ async function loadFromCloud() {
             userProfiles[p.id] = {
                 displayName: p.display_name, bio: p.bio, gender: p.gender,
                 avatar: p.avatar_url, location: p.location, interests: [],
-                referralCode: p.referral_code
+                referralCode: p.referral_code, showFullName: p.show_full_name
             };
             allUsers.push({ id: p.id, name: p.display_name, email: '', isAdmin: p.is_admin });
             if (p.id === currentUser.id) {
@@ -1644,11 +1845,11 @@ async function loadPublicData() {
         allNeighborhoods = hoods.data || [];
         populateHoodSelect();
 
-        var orgs = await sb.from('organizers_public').select('id,display_name');
+        var orgs = await sb.from('organizers_public').select('id,display_name,show_full_name');
         userProfiles = {};
         allUsers = [];
         (orgs.data || []).forEach(function(o) {
-            userProfiles[o.id] = { displayName: o.display_name, interests: [] };
+            userProfiles[o.id] = { displayName: o.display_name, interests: [], showFullName: o.show_full_name };
         });
 
         var grps = await sb.from('groups').select('*');
@@ -1721,6 +1922,7 @@ async function loadPulseFeed() {
             pulseVoteCounts = {}; pulseMyVotes = {}; pulseCommentCounts = {};
             pulsePollOptions = {}; pulsePollVoteCounts = {}; pulsePollMyVote = {};
             renderPulseFeed();
+            await loadCommunityPoll();
             return;
         }
         var ids = pulsePosts.map(function(p) { return p.id; });
@@ -1753,14 +1955,27 @@ async function loadPulseFeed() {
         }
 
         renderPulseFeed();
+        await loadCommunityPoll();
     } catch (e) {
         list.innerHTML = '<div class="pulse-empty">Couldn\'t load the Pulse right now.</div>';
     }
 }
 
+// Public display defaults to "First L." unless the person has opted in to
+// showing their full name (profiles.show_full_name). Applies everywhere
+// pulseAuthorName is used: post authors, comments, and replies.
+function formatDisplayName(name, showFull) {
+    if (!name) { return 'A neighbor'; }
+    if (showFull) { return name; }
+    var parts = name.trim().split(/\s+/);
+    if (parts.length === 1) { return parts[0]; }
+    return parts[0] + ' ' + parts[parts.length - 1].charAt(0).toUpperCase() + '.';
+}
+
 function pulseAuthorName(authorId) {
     var p = userProfiles[authorId];
-    return (p && p.displayName) || 'A neighbor';
+    if (!p || !p.displayName) { return 'A neighbor'; }
+    return formatDisplayName(p.displayName, p.showFullName);
 }
 
 function pulseTagInfo(type) {
@@ -1819,17 +2034,20 @@ function renderGroupUpdateCard(g) {
 function renderPulseFeed() {
     var list = document.getElementById('pulse-feed-list');
     if (!list) { return; }
-    var cards = pulsePosts.map(function(p) {
+    var cards = pulsePosts.filter(function(p) { return p.type !== 'poll' && p.id !== topicOfDayPostId; }).map(function(p) {
         var tag = pulseTagInfo(p.type);
         var voted = !!pulseMyVotes[p.id];
         var voteCount = pulseVoteCounts[p.id] || 0;
         var commentCount = pulseCommentCounts[p.id] || 0;
         var html = '<div class="pulse-post"><div class="blaze-bar ' + tag.cls + '"></div><div class="pulse-body">';
-        html += '<div class="pulse-tag ' + tag.cls + '">' + tag.label + (p.is_sponsored ? ' · Sponsored' : '') + '</div>';
-        html += '<div class="pulse-meta"><div class="pulse-avatar">' + pulseAuthorName(p.author_id).charAt(0).toUpperCase() + '</div>';
+        html += '<div class="pulse-meta"><span class="pulse-tag-chip ' + tag.cls + '">' + tag.label + (p.is_sponsored ? ' · Sponsored' : '') + '</span>';
+        html += '<div class="pulse-avatar">' + pulseAuthorName(p.author_id).charAt(0).toUpperCase() + '</div>';
         html += '<div class="pulse-who">' + pulseAuthorName(p.author_id) + ' <span>· ' + timeAgo(p.created_at) + '</span></div></div>';
         html += '<h3>' + escapeHtml(p.title) + '</h3>';
-        if (p.body) { html += '<p>' + escapeHtml(p.body) + '</p>'; }
+        if (p.body) {
+            html += '<p id="pulse-body-' + p.id + '">' + escapeHtml(p.body) + '</p>';
+            html += '<button class="pulse-more" id="pulse-more-' + p.id + '" onclick="togglePulseBody(\'' + p.id + '\')">more</button>';
+        }
         if (p.image_url) { html += '<img class="pulse-img" src="' + p.image_url + '" alt="">'; }
         if (p.is_sponsored && p.sponsor_name) { html += '<div class="pulse-sponsor">Sponsored by ' + escapeHtml(p.sponsor_name) + '</div>'; }
         if (p.type === 'poll') {
@@ -1866,6 +2084,27 @@ function renderPulseFeed() {
         return;
     }
     list.innerHTML = cards.join('');
+    revealTruncatedPulseBodies();
+}
+
+// Only show the "more" toggle on posts whose body text actually overflows
+// the 2-line clamp, so short posts don't get a pointless "more" link.
+function revealTruncatedPulseBodies() {
+    document.querySelectorAll('.pulse-body p[id^="pulse-body-"]').forEach(function(p) {
+        if (p.scrollHeight > p.clientHeight + 1) {
+            var id = p.id.replace('pulse-body-', '');
+            var btn = document.getElementById('pulse-more-' + id);
+            if (btn) { btn.style.display = 'block'; }
+        }
+    });
+}
+
+function togglePulseBody(postId) {
+    var p = document.getElementById('pulse-body-' + postId);
+    var btn = document.getElementById('pulse-more-' + postId);
+    if (!p || !btn) { return; }
+    var expanded = p.classList.toggle('expanded');
+    btn.textContent = expanded ? 'less' : 'more';
 }
 
 function timeAgo(iso) {
@@ -1904,34 +2143,423 @@ async function castPollVote(postId, optionId) {
     } catch (e) { showNotif('Could not record your vote.', 'error'); }
 }
 
+// ─── COMMUNITY POLL WIDGET ───
+// The newest poll post is the "active" poll — open for voting.
+// Every older poll post is "closed" and browsable read-only from the
+// Past Polls dropdown, sorted by date.
+var communityPolls = [];
+var communityPollOptions = {};
+var communityPollVoteCounts = {};
+var communityPollMyVote = {};
+
+async function loadCommunityPoll() {
+    var card = document.getElementById('community-poll-card');
+    if (!sb || !card) { return; }
+    try {
+        var q = sb.from('posts').select('*').eq('type', 'poll').order('created_at', { ascending: false }).limit(20);
+        if (currentHoodId) { q = q.eq('neighborhood_id', currentHoodId); }
+        var res = await q;
+        communityPolls = res.data || [];
+        if (communityPolls.length) {
+            var ids = communityPolls.map(function(p) { return p.id; });
+            var optsRes = await sb.from('poll_options').select('*').in('post_id', ids).order('sort_order');
+            communityPollOptions = {};
+            (optsRes.data || []).forEach(function(o) {
+                (communityPollOptions[o.post_id] = communityPollOptions[o.post_id] || []).push(o);
+            });
+            var pvRes = await sb.from('poll_votes').select('post_id,option_id,user_id').in('post_id', ids);
+            communityPollVoteCounts = {}; communityPollMyVote = {};
+            (pvRes.data || []).forEach(function(v) {
+                communityPollVoteCounts[v.option_id] = (communityPollVoteCounts[v.option_id] || 0) + 1;
+                if (currentUser && v.user_id === currentUser.id) { communityPollMyVote[v.post_id] = v.option_id; }
+            });
+        }
+        card.style.display = 'block';
+        renderCommunityPoll();
+    } catch (e) {
+        card.style.display = 'block';
+        renderCommunityPoll();
+    }
+}
+
+// Prototype-only: pads the displayed vote total up to a target so the poll
+// looks like it already has real community activity. Distributed across
+// options with a simple decreasing weight so percentages still look
+// plausible. Remove PROTOTYPE_POLL_VOTE_TARGET once real voting traffic
+// makes this unnecessary.
+var PROTOTYPE_POLL_VOTE_TARGET = 50;
+
+function getPaddedOptionVotes(opts) {
+    var real = opts.map(function(o) { return communityPollVoteCounts[o.id] || 0; });
+    var realTotal = real.reduce(function(a, b) { return a + b; }, 0);
+    var pad = Math.max(0, PROTOTYPE_POLL_VOTE_TARGET - realTotal);
+    if (!pad || !opts.length) { return { counts: real, total: realTotal }; }
+    var weights = opts.map(function(_, i) { return Math.pow(0.72, i); });
+    var wSum = weights.reduce(function(a, b) { return a + b; }, 0);
+    var padded = real.slice();
+    var assigned = 0;
+    weights.forEach(function(w, i) {
+        var share = Math.round(pad * (w / wSum));
+        padded[i] += share;
+        assigned += share;
+    });
+    padded[0] += (pad - assigned);
+    var total = padded.reduce(function(a, b) { return a + b; }, 0);
+    return { counts: padded, total: total };
+}
+
+function pollResultsHtml(post, opts, readOnly) {
+    var padded = readOnly ? null : getPaddedOptionVotes(opts);
+    var totalVotes = readOnly
+        ? opts.reduce(function(sum, o) { return sum + (communityPollVoteCounts[o.id] || 0); }, 0)
+        : padded.total;
+    var myVote = communityPollMyVote[post.id];
+    var showResults = readOnly || !!myVote || totalVotes > 0;
+    var scrollable = opts.length > 4;
+    var html = '<div style="margin-top:8px' + (scrollable ? ';max-height:206px;overflow-y:auto;-webkit-overflow-scrolling:touch' : '') + '" id="poll-options-' + post.id + '">';
+    opts.forEach(function(o, i) {
+        var c = readOnly ? (communityPollVoteCounts[o.id] || 0) : padded.counts[i];
+        var pct = totalVotes ? Math.round((c / totalVotes) * 100) : 0;
+        var disabled = readOnly || !!myVote;
+        html += '<button class="poll-opt"' + (disabled ? ' disabled' : '') + (!readOnly ? ' onclick="castCommunityPollVote(\'' + post.id + '\',\'' + o.id + '\')"' : '') + '>';
+        if (showResults) { html += '<div class="fill" style="width:' + pct + '%"></div>'; }
+        html += '<div class="lbl"><span>' + escapeHtml(o.label) + (myVote === o.id ? ' ✓' : '') + '</span>' + (showResults ? '<span>' + pct + '%</span>' : '') + '</div></button>';
+    });
+    html += '</div>';
+    if (scrollable) { html += '<div style="font-size:11px;color:#aaa;text-align:center;margin-top:2px">↕ scroll for more options</div>'; }
+    if (readOnly) { html += '<div style="font-size:12px;color:#888;margin-top:2px">' + totalVotes + ' vote' + (totalVotes !== 1 ? 's' : '') + ' · Poll closed</div>'; }
+    return html;
+}
+
+function renderCommunityPoll() {
+    var card = document.getElementById('community-poll-card');
+    if (!card) { return; }
+    var html = '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">';
+    html += '<div style="font-size:12px;font-weight:700;color:#E4572E;text-transform:uppercase;letter-spacing:.4px">📊 Community Poll</div>';
+    if (communityPolls.length) {
+        var active = communityPolls[0];
+        var opts = communityPollOptions[active.id] || [];
+        var totalVotes = getPaddedOptionVotes(opts).total;
+        var myVote = communityPollMyVote[active.id];
+        if (myVote) {
+            html += '<div style="font-size:13px;font-weight:700;color:#2d5a2d">✅ You Voted - Good Job</div>';
+        } else {
+            html += '<div style="display:flex;align-items:center;gap:8px">';
+            html += '<span style="font-size:13px;color:#888">' + totalVotes + ' vote' + (totalVotes !== 1 ? 's' : '') + '</span>';
+            html += '<button style="background:#1B4B8F;color:#fff;border:none;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer" onclick="focusPollVote(\'' + active.id + '\')">Vote Now</button>';
+            html += '</div>';
+        }
+    }
+    html += '</div>';
+    if (communityPolls.length) {
+        var active2 = communityPolls[0];
+        html += '<h3 style="margin:6px 0 2px">' + escapeHtml(active2.title) + '</h3>';
+        if (active2.body) { html += '<p style="color:#666;font-size:14px;margin-bottom:4px">' + escapeHtml(active2.body) + '</p>'; }
+        html += pollResultsHtml(active2, communityPollOptions[active2.id] || [], false);
+    } else {
+        html += '<h3 style="margin:6px 0 2px">No poll running right now</h3>';
+        html += '<p style="color:#666;font-size:14px;margin-bottom:4px">Check back soon, or browse what neighbors voted on before.</p>';
+    }
+    html += '<div style="display:flex;gap:8px;margin-top:14px">';
+    html += '<button class="btn-outline" style="flex:1" onclick="showPage(\'past-polls\')">📁 View Past Polls</button>';
+    html += '<button class="btn-outline" style="flex:1" onclick="openSuggestPollBox()">💡 Suggest a Poll</button>';
+    html += '</div>';
+    html += '<div id="suggest-poll-box" style="display:none;margin-top:12px"></div>';
+    card.innerHTML = html;
+}
+
+// Guests get the login prompt directly, since scrolling wouldn't let them
+// vote anyway. Logged-in users get a visible flash on the options so
+// clicking the button always produces a noticeable effect, even when the
+// options are already fully in view.
+function focusPollVote(postId) {
+    if (!currentUser) { requireAccount('vote in this poll'); return; }
+    var el = document.getElementById('poll-options-' + postId);
+    if (!el) { return; }
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    var opts = el.querySelectorAll('.poll-opt');
+    opts.forEach(function(btn) {
+        btn.classList.add('flash');
+        setTimeout(function() { btn.classList.remove('flash'); }, 700);
+    });
+}
+
+function openSuggestPollBox() {
+    if (!currentUser) { requireAccount('suggest a poll'); return; }
+    var box = document.getElementById('suggest-poll-box');
+    if (!box) { return; }
+    if (box.style.display === 'block') { box.style.display = 'none'; return; }
+    box.style.display = 'block';
+    box.innerHTML =
+        '<label style="font-size:13px;font-weight:700;color:#666;display:block;margin-bottom:4px">Poll question</label>' +
+        '<input type="text" id="suggest-poll-title" placeholder="e.g. Favorite spot for live music?">' +
+        '<label style="font-size:13px;font-weight:700;color:#666;display:block;margin-bottom:4px">Notes for the publisher (optional)</label>' +
+        '<textarea id="suggest-poll-notes" rows="3" placeholder="Any suggested answer options or context…"></textarea>' +
+        '<button class="btn" style="background:#1B4B8F" onclick="submitPollSuggestion()">Send to Publisher</button>';
+}
+
+async function submitPollSuggestion() {
+    if (!currentUser) { requireAccount('suggest a poll'); return; }
+    var titleInput = document.getElementById('suggest-poll-title');
+    var notesInput = document.getElementById('suggest-poll-notes');
+    var title = titleInput ? titleInput.value.trim() : '';
+    var notes = notesInput ? notesInput.value.trim() : '';
+    if (!title) { showNotif('Enter a poll question first.', 'error'); return; }
+    try {
+        await sb.from('poll_suggestions').insert({ suggested_by: currentUser.id, title: title, notes: notes || null });
+        document.getElementById('suggest-poll-box').style.display = 'none';
+        showNotif('Sent to the publisher for review! 💡', 'success');
+    } catch (e) { showNotif('Could not send your suggestion.', 'error'); }
+}
+
+async function castCommunityPollVote(postId, optionId) {
+    if (!currentUser) { requireAccount('vote in this poll'); return; }
+    if (communityPollMyVote[postId]) { return; }
+    try {
+        await sb.from('poll_votes').insert({ post_id: postId, option_id: optionId, user_id: currentUser.id });
+        await loadCommunityPoll();
+    } catch (e) { showNotif('Could not record your vote.', 'error'); }
+}
+
+// ─── PAST POLLS ARCHIVE ───
+// Combines real closed polls (every poll except the current active one) with
+// a set of example closed polls, so the archive has something to browse
+// even before real community polling activity builds up.
+var fakePastPolls = [
+{
+    date: '2026-08-17',
+    title: 'What should Asheville Pulse build next?',
+    body: 'We asked, you answered — here\u2019s what the community wants to see first.',
+    options: [
+        { label: '1:1 messaging between group members', votes: 142 },
+        { label: 'A neighborhood-only news digest', votes: 98 },
+        { label: 'Event ticket sales inside the app', votes: 61 },
+        { label: 'A classes marketplace', votes: 37 }
+    ]
+},
+{
+    date: '2026-08-03',
+    title: 'Best neighborhood for a Saturday morning coffee walk?',
+    body: null,
+    options: [
+        { label: 'West Asheville / Haywood Rd', votes: 210 },
+        { label: 'River Arts District', votes: 154 },
+        { label: 'Downtown / Pack Square', votes: 176 },
+        { label: 'Montford', votes: 88 }
+    ]
+},
+{
+    date: '2026-07-20',
+    title: 'How do you usually find out about local events?',
+    body: null,
+    options: [
+        { label: 'Word of mouth from friends', votes: 203 },
+        { label: 'Asheville Pulse feed', votes: 167 },
+        { label: 'Instagram or Facebook', votes: 145 },
+        { label: 'A local newsletter', votes: 74 }
+    ]
+},
+{
+    date: '2026-07-06',
+    title: 'Should local events be allowed to sell tickets in-app?',
+    body: 'A look back at one of our earliest community polls.',
+    options: [
+        { label: 'Yes — I\u2019d pay for the right event', votes: 118 },
+        { label: 'Only if organizers keep most of the revenue', votes: 201 },
+        { label: 'No — keep everything free', votes: 96 }
+    ]
+}
+];
+
+function renderPollBarsFromOptions(options) {
+    var total = options.reduce(function(sum, o) { return sum + (o.votes || 0); }, 0);
+    var html = '<div style="margin-top:8px">';
+    options.forEach(function(o) {
+        var pct = total ? Math.round((o.votes / total) * 100) : 0;
+        html += '<div class="poll-opt" style="cursor:default">';
+        html += '<div class="fill" style="width:' + pct + '%"></div>';
+        html += '<div class="lbl"><span>' + escapeHtml(o.label) + '</span><span>' + pct + '%</span></div>';
+        html += '</div>';
+    });
+    html += '</div><div style="font-size:12px;color:#888;margin-top:2px">' + total + ' vote' + (total !== 1 ? 's' : '') + ' · Poll closed</div>';
+    return html;
+}
+
+function getAllPastPolls() {
+    var real = communityPolls.slice(1).map(function(p) {
+        var opts = (communityPollOptions[p.id] || []).map(function(o) {
+            return { label: o.label, votes: communityPollVoteCounts[o.id] || 0 };
+        });
+        return { date: p.created_at ? p.created_at.slice(0, 10) : '', title: p.title, body: p.body, options: opts };
+    });
+    return real.concat(fakePastPolls).sort(function(a, b) { return b.date.localeCompare(a.date); });
+}
+
+function renderPastPollsPage() {
+    var box = document.getElementById('past-polls-list');
+    if (!box) { return; }
+    var polls = getAllPastPolls();
+    if (!polls.length) {
+        box.innerHTML = '<div class="pulse-empty">No past polls yet.</div>';
+        return;
+    }
+    var html = '';
+    polls.forEach(function(p) {
+        html += '<div class="card">';
+        html += '<div style="font-size:12px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.4px">' + formatColumnDate(p.date) + '</div>';
+        html += '<h3 style="margin:4px 0 4px">' + escapeHtml(p.title) + '</h3>';
+        if (p.body) { html += '<p style="color:#666;font-size:14px">' + escapeHtml(p.body) + '</p>'; }
+        html += renderPollBarsFromOptions(p.options);
+        html += '</div>';
+    });
+    box.innerHTML = html;
+}
+
 async function togglePulseComments(postId) {
     var el = document.getElementById('pulse-comments-' + postId);
     if (!el) { return; }
     if (el.style.display === 'block') { el.style.display = 'none'; return; }
     el.style.display = 'block';
+    await loadCommentsInto(postId, el);
+}
+
+async function loadCommentsInto(postId, el) {
     el.innerHTML = '<div style="font-size:12px;color:#888">Loading comments…</div>';
     try {
         var res = await sb.from('comments').select('*').eq('post_id', postId).order('created_at');
-        var comments = res.data || [];
-        var html = '';
-        comments.forEach(function(c) {
-            html += '<div class="pulse-comment"><b>' + pulseAuthorName(c.author_id) + '</b> ' + escapeHtml(c.body) + '</div>';
+        var all = res.data || [];
+        var topLevel = all.filter(function(c) { return !c.parent_comment_id; });
+        var repliesByParent = {};
+        all.forEach(function(c) {
+            if (c.parent_comment_id) {
+                (repliesByParent[c.parent_comment_id] = repliesByParent[c.parent_comment_id] || []).push(c);
+            }
         });
-        if (!comments.length) { html = '<div style="font-size:12px;color:#888;margin-bottom:6px">No comments yet.</div>'; }
-        html += '<div class="pulse-comment-form"><input type="text" id="pulse-comment-input-' + postId + '" placeholder="Add a comment…">';
-        html += '<button class="btn" style="background:#1B4B8F" onclick="submitPulseComment(\'' + postId + '\')">Post</button></div>';
+        var html = '';
+        if (!topLevel.length) {
+            html += '<div style="font-size:12px;color:#888;margin-bottom:6px">No comments yet.</div>';
+        } else {
+            topLevel.forEach(function(c) {
+                html += renderCommentItem(c, repliesByParent[c.id] || [], postId);
+            });
+        }
+        html += commentFormHtml(postId, postId, null);
         el.innerHTML = html;
     } catch (e) { el.innerHTML = '<div style="font-size:12px;color:#888">Couldn\'t load comments.</div>'; }
 }
 
-async function submitPulseComment(postId) {
-    if (!currentUser) { requireAccount('comment on the Pulse'); return; }
-    var input = document.getElementById('pulse-comment-input-' + postId);
-    var body = input ? input.value.trim() : '';
-    if (!body) { return; }
+function commentLineHtml(c) {
+    var html = '<div class="pulse-comment"><b>' + pulseAuthorName(c.author_id) + '</b> ' + escapeHtml(c.body) + '</div>';
+    if (c.image_url) { html += '<img class="pulse-comment-img" src="' + c.image_url + '" alt="">'; }
+    return html;
+}
+
+// Pending photo attachments for open comment/reply boxes, keyed by
+// "post" (the top-level box) or a comment id (a reply box), so multiple
+// forms on screen at once don't clash.
+var pendingCommentImages = {};
+
+function commentFormHtml(contextKey, postId, parentId) {
+    var img = pendingCommentImages[contextKey];
+    var html = '<div class="pulse-comment-form-wrap">';
+    if (img) {
+        html += '<div style="margin-bottom:6px"><img src="' + img + '" style="max-width:110px;max-height:110px;border-radius:10px;display:block;margin-bottom:4px"><button class="pulse-reply-toggle" onclick="removeCommentPhoto(\'' + contextKey + '\')">🗑️ Remove photo</button></div>';
+    }
+    html += '<div class="pulse-comment-form">';
+    html += '<input type="text" id="comment-input-' + contextKey + '" placeholder="' + (parentId ? 'Write a reply…' : 'Add a comment…') + '">';
+    html += '<button type="button" class="pulse-photo-btn" onclick="document.getElementById(\'comment-photo-input-' + contextKey + '\').click()" title="Add a photo">📷</button>';
+    html += '<button class="btn" style="background:#1B4B8F" onclick="submitPulseComment(\'' + postId + '\'' + (parentId ? ',\'' + parentId + '\'' : '') + ')">Post</button>';
+    html += '</div>';
+    html += '<input type="file" id="comment-photo-input-' + contextKey + '" accept="image/*" style="display:none" onchange="handleCommentPhotoUpload(event,\'' + contextKey + '\')">';
+    var status = document.getElementById('comment-photo-status-' + contextKey);
+    html += '<div id="comment-photo-status-' + contextKey + '" style="font-size:12px;color:#888;margin-top:2px"></div>';
+    html += '</div>';
+    return html;
+}
+
+async function handleCommentPhotoUpload(event, contextKey) {
+    var file = (event.target.files || [])[0];
+    event.target.value = '';
+    if (!file) { return; }
+    if (!currentUser) { requireAccount('add a photo'); return; }
+    if (!/^image\//.test(file.type)) { showNotif('That file is not a picture.', 'error'); return; }
+    var status = document.getElementById('comment-photo-status-' + contextKey);
+    if (status) { status.textContent = 'Uploading…'; }
     try {
-        await sb.from('comments').insert({ post_id: postId, author_id: currentUser.id, body: body });
-        document.getElementById('pulse-comments-' + postId).style.display = 'none';
+        var blob = await shrinkImage(file, 1000);
+        var path = currentUser.id + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.jpg';
+        var up = await sb.storage.from('pulse-photos').upload(path, blob, { contentType: 'image/jpeg', upsert: false });
+        if (up.error) { throw new Error(up.error.message); }
+        var pub = sb.storage.from('pulse-photos').getPublicUrl(path);
+        pendingCommentImages[contextKey] = (pub.data && pub.data.publicUrl) || '';
+        refreshCommentForm(contextKey);
+    } catch (err) {
+        showNotif('Could not upload that photo. ' + (err.message || ''), 'error');
+        if (status) { status.textContent = ''; }
+    }
+}
+
+function removeCommentPhoto(contextKey) {
+    delete pendingCommentImages[contextKey];
+    refreshCommentForm(contextKey);
+}
+
+// Re-renders just one comment form in place (top-level or a reply box)
+// after a photo is attached or removed, preserving whatever text was typed.
+function refreshCommentForm(contextKey) {
+    var input = document.getElementById('comment-input-' + contextKey);
+    var typed = input ? input.value : '';
+    var wrap = input ? input.closest('.pulse-comment-form-wrap') : null;
+    if (!wrap) { return; }
+    var isReply = !!document.getElementById('reply-box-' + contextKey);
+    var postId = wrap.closest('.pulse-comments') ? wrap.closest('.pulse-comments').id.replace('pulse-comments-', '') : contextKey;
+    wrap.outerHTML = commentFormHtml(contextKey, postId, isReply ? contextKey : null);
+    var newInput = document.getElementById('comment-input-' + contextKey);
+    if (newInput) { newInput.value = typed; }
+}
+
+function renderCommentItem(c, replies, postId) {
+    var html = '<div class="pulse-comment-item">';
+    html += commentLineHtml(c);
+    html += '<button class="pulse-reply-toggle" onclick="toggleReplyBox(\'' + c.id + '\')">💬 ' + (replies.length ? (replies.length + (replies.length === 1 ? ' reply' : ' replies')) : 'Reply') + '</button>';
+    html += '<div id="reply-box-' + c.id + '" style="display:none;margin-top:6px">';
+    html += commentFormHtml(c.id, postId, c.id);
+    html += '</div>';
+    if (replies.length) {
+        html += '<div class="pulse-comment-replies">';
+        replies.forEach(function(r) {
+            html += commentLineHtml(r);
+        });
+        html += '</div>';
+    }
+    html += '</div>';
+    return html;
+}
+
+function toggleReplyBox(commentId) {
+    if (!currentUser) { requireAccount('reply to a comment'); return; }
+    var box = document.getElementById('reply-box-' + commentId);
+    if (!box) { return; }
+    box.style.display = box.style.display === 'block' ? 'none' : 'block';
+}
+
+async function submitPulseComment(postId, parentId) {
+    if (!currentUser) { requireAccount('comment on the Pulse'); return; }
+    var contextKey = parentId || postId;
+    var input = document.getElementById('comment-input-' + contextKey);
+    var body = input ? input.value.trim() : '';
+    var imageUrl = pendingCommentImages[contextKey] || null;
+    if (!body && !imageUrl) { return; }
+    try {
+        var row = { post_id: postId, author_id: currentUser.id, body: body, image_url: imageUrl };
+        if (parentId) { row.parent_comment_id = parentId; }
+        await sb.from('comments').insert(row);
+        delete pendingCommentImages[contextKey];
+        if (postId === topicOfDayPostId) {
+            var el = document.getElementById('pulse-comments-' + postId);
+            if (el) { await loadCommentsInto(postId, el); }
+            return;
+        }
         await loadPulseFeed();
         togglePulseComments(postId);
     } catch (e) { showNotif('Could not post your comment.', 'error'); }
@@ -1941,6 +2569,7 @@ function openPulseComposer() {
     if (!currentUser) { requireAccount('post to the Pulse'); return; }
     pulseComposerType = 'text';
     pulsePollInputCount = 2;
+    pulseComposerImageUrl = '';
     var card = document.getElementById('pulse-composer-card');
     document.getElementById('pulse-composer-toggle').style.display = 'none';
     card.style.display = 'block';
@@ -1958,7 +2587,7 @@ function setPulseComposerType(type) {
 }
 
 function addPollOptionInput() {
-    if (pulsePollInputCount >= 5) { return; }
+    if (pulsePollInputCount >= 10) { return; }
     pulsePollInputCount++;
     renderPulseComposer(true);
 }
@@ -1981,7 +2610,16 @@ function renderPulseComposer(preserve) {
     html += '<input type="text" id="pulse-c-title" placeholder="Title *" value="' + escapeHtml(titleVal) + '">';
     html += '<textarea id="pulse-c-body" placeholder="Say more (optional)" rows="3">' + escapeHtml(bodyVal) + '</textarea>';
     if (pulseComposerType === 'photo') {
-        html += '<input type="text" id="pulse-c-image" placeholder="Image URL">';
+        html += '<div id="pulse-photo-upload-area">';
+        if (pulseComposerImageUrl) {
+            html += '<img src="' + pulseComposerImageUrl + '" style="width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-bottom:8px">';
+            html += '<button class="btn-outline" onclick="removePulseComposerPhoto()">🗑️ Remove Photo</button>';
+        } else {
+            html += '<button class="btn-outline" onclick="document.getElementById(\'pulse-photo-input\').click()">📷 Choose Photo</button>';
+            html += '<div id="pulse-photo-upload-status" style="font-size:13px;color:#888;margin-top:6px"></div>';
+        }
+        html += '<input type="file" id="pulse-photo-input" accept="image/*" style="display:none" onchange="handlePulsePhotoUpload(event)">';
+        html += '</div>';
     }
     if (pulseComposerType === 'poll') {
         html += '<div id="pulse-poll-opts">';
@@ -1989,7 +2627,7 @@ function renderPulseComposer(preserve) {
             html += '<div class="poll-opt-input"><input type="text" id="pulse-poll-opt-' + i + '" placeholder="Option ' + (i + 1) + '"></div>';
         }
         html += '</div>';
-        if (pulsePollInputCount < 5) { html += '<button class="btn-select" style="width:auto;padding:8px 14px;margin-bottom:10px" onclick="addPollOptionInput()">+ Add option</button>'; }
+        if (pulsePollInputCount < 10) { html += '<button class="btn-select" style="width:auto;padding:8px 14px;margin-bottom:10px" onclick="addPollOptionInput()">+ Add option</button>'; }
     }
     html += '<select id="pulse-c-hood"><option value="">All Asheville</option>';
     allNeighborhoods.forEach(function(h) {
@@ -2001,15 +2639,41 @@ function renderPulseComposer(preserve) {
     card.innerHTML = html;
 }
 
+async function handlePulsePhotoUpload(event) {
+    var file = (event.target.files || [])[0];
+    event.target.value = '';
+    if (!file) { return; }
+    if (!sb || !currentUser) { showNotif('You need to be logged in to add a photo.', 'error'); return; }
+    if (!/^image\//.test(file.type)) { showNotif('That file is not a picture.', 'error'); return; }
+    var status = document.getElementById('pulse-photo-upload-status');
+    if (status) { status.textContent = 'Uploading…'; }
+    try {
+        var blob = await shrinkImage(file, 1400);
+        var path = currentUser.id + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.jpg';
+        var up = await sb.storage.from('pulse-photos').upload(path, blob, { contentType: 'image/jpeg', upsert: false });
+        if (up.error) { throw new Error(up.error.message); }
+        var pub = sb.storage.from('pulse-photos').getPublicUrl(path);
+        pulseComposerImageUrl = (pub.data && pub.data.publicUrl) || '';
+        renderPulseComposer(true);
+    } catch (err) {
+        showNotif('Could not upload that photo. ' + (err.message || ''), 'error');
+        if (status) { status.textContent = ''; }
+    }
+}
+
+function removePulseComposerPhoto() {
+    pulseComposerImageUrl = '';
+    renderPulseComposer(true);
+}
+
 async function submitPulsePost() {
     var title = (document.getElementById('pulse-c-title').value || '').trim();
     var body = (document.getElementById('pulse-c-body').value || '').trim();
     var hoodEl = document.getElementById('pulse-c-hood');
     var hoodId = hoodEl ? hoodEl.value : '';
     if (!title) { showNotif('Please enter a title.', 'error'); return; }
-    var imageEl = document.getElementById('pulse-c-image');
-    var imageUrl = imageEl ? imageEl.value.trim() : '';
-    if (pulseComposerType === 'photo' && !imageUrl) { showNotif('Please add an image URL.', 'error'); return; }
+    var imageUrl = pulseComposerImageUrl;
+    if (pulseComposerType === 'photo' && !imageUrl) { showNotif('Please add a photo.', 'error'); return; }
     var optionLabels = [];
     if (pulseComposerType === 'poll') {
         for (var i = 0; i < pulsePollInputCount; i++) {
@@ -2034,6 +2698,7 @@ async function submitPulsePost() {
             });
             await sb.from('poll_options').insert(rows);
         }
+        pulseComposerImageUrl = '';
         closePulseComposer();
         showNotif('Posted to the Pulse! 📡', 'success');
         await loadPulseFeed();
@@ -2063,6 +2728,8 @@ function showApp() {
     renderCategories();
     renderGroups();
     renderEvents();
+    renderColumnists();
+    renderTopicOfDay();
     applyGuestChrome();
     if (isGuest()) {
         updateAdminVisibility();
@@ -2083,6 +2750,251 @@ function showApp() {
     updateUnreadButton();
     updateInstallCard();
     renderUpcoming();
+}
+
+// ─── TOPIC OF THE DAY ───
+// Placeholder for now — eventually generated by an AI job that scans what's
+// trending about Asheville on Facebook and Reddit and drafts a short summary.
+// Admin/publisher-editable via app_settings, same pattern as Advertise/Hiring.
+var DEFAULT_TOPIC_TITLE = "[PLACEHOLDER] The Montford Ave repaving is finally happening";
+var DEFAULT_TOPIC_BODY = "This is placeholder content. Once connected, this card will be generated by AI each day from what's actively trending about Asheville on Facebook and Reddit — road closures, big local threads, viral local news — and summarized here automatically.";
+
+function renderTopicOfDay() {
+    var titleEl = document.getElementById('totd-title');
+    var bodyEl = document.getElementById('totd-body');
+    var metaEl = document.getElementById('totd-meta');
+    if (!titleEl) { return; }
+    titleEl.textContent = appSettings.topic_of_day_title || DEFAULT_TOPIC_TITLE;
+    bodyEl.textContent = appSettings.topic_of_day_body || DEFAULT_TOPIC_BODY;
+    metaEl.textContent = 'Generated daily from Facebook & Reddit trends (placeholder — not yet connected)';
+    ensureTopicOfDayPost().then(function() {
+        var slot = document.getElementById('topic-comments-slot');
+        if (slot && topicOfDayPostId && !document.getElementById('pulse-comments-' + topicOfDayPostId)) {
+            slot.innerHTML = '<div class="pulse-comments" id="pulse-comments-' + topicOfDayPostId + '"></div>';
+        }
+    });
+}
+
+// A single ongoing post backs the discussion thread under Topic of the Day,
+// so its comments (and replies) run through the exact same threaded comment
+// system as every other post in the Pulse feed. Its id is cached in
+// app_settings so every visitor's device finds the same thread. Once the
+// topic is regenerated daily by a real job, this can be recreated per day.
+var topicOfDayPostId = null;
+
+async function ensureTopicOfDayPost() {
+    if (!sb) { return; }
+    if (appSettings.topic_of_day_post_id) {
+        topicOfDayPostId = appSettings.topic_of_day_post_id;
+        return;
+    }
+    if (!currentUser) { return; }
+    try {
+        var ins = await sb.from('posts').insert({
+            author_id: currentUser.id,
+            type: 'text',
+            title: appSettings.topic_of_day_title || DEFAULT_TOPIC_TITLE,
+            body: appSettings.topic_of_day_body || DEFAULT_TOPIC_BODY
+        }).select().single();
+        if (ins.error || !ins.data) { return; }
+        topicOfDayPostId = ins.data.id;
+        appSettings.topic_of_day_post_id = topicOfDayPostId;
+        await sb.from('app_settings').upsert([{ key: 'topic_of_day_post_id', value: topicOfDayPostId }]);
+    } catch (e) { /* comments just won't be available yet */ }
+}
+
+// Both Topic of Day buttons open the same threaded comments panel used by
+// every other post — "What do you think?" also focuses the input.
+async function openTopicPanel(focusInput) {
+    if (!currentUser) { requireAccount('share what you think'); return; }
+    await ensureTopicOfDayPost();
+    if (!topicOfDayPostId) { showNotif('Could not open the discussion — try again in a moment.', 'error'); return; }
+    var slot = document.getElementById('topic-comments-slot');
+    if (slot && !document.getElementById('pulse-comments-' + topicOfDayPostId)) {
+        slot.innerHTML = '<div class="pulse-comments" id="pulse-comments-' + topicOfDayPostId + '"></div>';
+    }
+    var el = document.getElementById('pulse-comments-' + topicOfDayPostId);
+    if (!el) { return; }
+    if (el.style.display !== 'block') {
+        el.style.display = 'block';
+        await loadCommentsInto(topicOfDayPostId, el);
+    }
+    if (focusInput) {
+        var input = document.getElementById('comment-input-' + topicOfDayPostId);
+        if (input) { input.focus(); }
+    }
+}
+
+function renderColumnists() {
+    var communitySelect = document.getElementById('columnist-select-community');
+    var topicalSelect = document.getElementById('columnist-select-topical');
+    if (communitySelect) {
+        var chtml = '<option value="">Select your community columnist</option>';
+        allColumnists.filter(function(c) { return c.kind === 'community'; }).forEach(function(c) {
+            chtml += '<option value="' + c.id + '">' + c.name + ' — ' + c.hood + '</option>';
+        });
+        communitySelect.innerHTML = chtml;
+        communitySelect.value = '';
+    }
+    if (topicalSelect) {
+        var thtml = '<option value="">Select your topic columnist</option>';
+        allColumnists.filter(function(c) { return c.kind === 'topical'; }).forEach(function(c) {
+            thtml += '<option value="' + c.id + '">' + c.name + ' — ' + c.hood + '</option>';
+        });
+        topicalSelect.innerHTML = thtml;
+        topicalSelect.value = '';
+    }
+}
+
+function onColumnistSelect(which) {
+    var selectId = which === 'topical' ? 'columnist-select-topical' : 'columnist-select-community';
+    var select = document.getElementById(selectId);
+    var id = select ? select.value : '';
+    if (!id) return;
+    showColumnistBio(id);
+}
+
+var currentColumnistId = null;
+var currentColumnDate = null;
+function showColumnistBio(id) {
+    currentColumnistId = id;
+    currentColumnDate = null;
+    showPage('columnist-bio');
+    var c1 = document.getElementById('columnist-select-community');
+    var c2 = document.getElementById('columnist-select-topical');
+    if (c1) { c1.value = ''; }
+    if (c2) { c2.value = ''; }
+}
+
+function renderColumnistBio() {
+    var box = document.getElementById('columnist-bio-content');
+    if (!box) return;
+    var c = allColumnists.find(function(x) { return x.id === currentColumnistId; });
+    if (!c) { box.innerHTML = '<p style="color:#888">Columnist not found.</p>'; return; }
+    var paragraphs = c.bio.split('\n\n').map(function(p) { return '<p>' + p + '</p>'; }).join('');
+    var cols = (c.columns || []).slice().sort(function(a, b) { return b.date.localeCompare(a.date); });
+    if (!currentColumnDate && cols.length) { currentColumnDate = cols[0].date; }
+    var current = cols.find(function(x) { return x.date === currentColumnDate; }) || cols[0];
+
+    var html =
+        '<div class="columnist-bio-photo"><img src="' + c.photo + '" alt="' + c.name + '"></div>' +
+        '<div class="columnist-bio-name">' + c.name + '</div>' +
+        '<div class="columnist-bio-hood">📍 ' + c.hood + ' Columnist</div>' +
+        '<div class="columnist-bio-text">' + paragraphs + '</div>';
+
+    if (cols.length) {
+        html += '<div style="border-top:1px solid #e8eee8;margin-top:22px;padding-top:16px">';
+        html += '<div style="font-size:17px;font-weight:700;color:#1B4B8F;margin-bottom:10px">📅 Columns by ' + c.name + '</div>';
+        html += '<label style="font-size:13px;color:#888;display:block;margin-bottom:4px">Browse past columns by date</label>';
+        html += '<select id="columnist-archive-select" onchange="onArchiveColumnSelect()" style="margin-bottom:14px">';
+        cols.forEach(function(col) {
+            html += '<option value="' + col.date + '"' + (col.date === currentColumnDate ? ' selected' : '') + '>' + formatColumnDate(col.date) + ' — ' + col.title + '</option>';
+        });
+        html += '</select>';
+        if (current) {
+            html += '<div style="background:#f8faf8;border:1px solid #e8eee8;border-radius:14px;padding:16px" id="columnist-archive-body">';
+            html += '<div style="font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.4px">' + formatColumnDate(current.date) + '</div>';
+            html += '<div style="font-size:18px;font-weight:700;margin:4px 0 10px">' + current.title + '</div>';
+            html += '<div style="font-size:15px;line-height:1.6;color:#333">' + current.body.split('\n\n').map(function(p) { return '<p style="margin-bottom:12px">' + p + '</p>'; }).join('') + '</div>';
+            html += '</div>';
+        }
+        html += '</div>';
+    }
+
+    box.innerHTML = html;
+}
+
+function onArchiveColumnSelect() {
+    var select = document.getElementById('columnist-archive-select');
+    if (!select) return;
+    currentColumnDate = select.value;
+    renderColumnistBio();
+}
+
+function formatColumnDate(iso) {
+    var d = new Date(iso + 'T12:00:00');
+    return d.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+// ─── ADVERTISE & NOW HIRING (admin/publisher-editable, stored in app_settings) ───
+var DEFAULT_MEDIA_KIT = "[PLACEHOLDER — Media Kit]\n\nAsheville Pulse reaches neighbors across [X] neighborhoods in Asheville, NC.\n\n• Monthly active users: [placeholder number]\n• Weekly Pulse feed views: [placeholder number]\n• Newsletter subscribers: [placeholder number]\n• Average session length: [placeholder]\n• Top audience neighborhoods: [placeholder]\n\nContact [placeholder email] for a full media kit PDF.";
+var DEFAULT_RATE_CARD = "[PLACEHOLDER — Rate Card]\n\nGeneral app ad placement: $[placeholder] / month\nColumn-sponsored ad placement: $[placeholder] / month\nFeatured Pulse feed post: $[placeholder] / week\nHome screen banner: $[placeholder] / month\n\nRates vary by neighborhood and placement. Contact [placeholder email] for current availability.";
+var DEFAULT_HIRING_JOB = "[PLACEHOLDER — Job Description]\n\nTitle: [Job Title]\nLocation: Asheville, NC\nType: [Full-time / Part-time / Contract]\n\nAbout the role:\n[Placeholder description of the role and responsibilities.]\n\nWhat we're looking for:\n[Placeholder list of qualifications.]\n\nHow to apply:\nSend a resume and a short note to [placeholder email].";
+
+function renderAdvertisePage() {
+    var mk = appSettings.advertise_media_kit || DEFAULT_MEDIA_KIT;
+    var rc = appSettings.advertise_rate_card || DEFAULT_RATE_CARD;
+    document.getElementById('advertise-media-kit-view').textContent = mk;
+    document.getElementById('advertise-rate-card-view').textContent = rc;
+    var editBtn = document.getElementById('advertise-edit-btn');
+    if (editBtn) { editBtn.style.display = (currentUser && currentUser.isAdmin) ? 'block' : 'none'; }
+    toggleAdvertiseEdit(false);
+}
+
+function toggleAdvertiseEdit(on) {
+    document.getElementById('advertise-view').style.display = on ? 'none' : 'block';
+    document.getElementById('advertise-edit').style.display = on ? 'block' : 'none';
+    document.getElementById('advertise-edit-btn').style.display = (!on && currentUser && currentUser.isAdmin) ? 'block' : 'none';
+    if (on) {
+        document.getElementById('advertise-media-kit-edit').value = appSettings.advertise_media_kit || DEFAULT_MEDIA_KIT;
+        document.getElementById('advertise-rate-card-edit').value = appSettings.advertise_rate_card || DEFAULT_RATE_CARD;
+        document.getElementById('advertise-save-state').textContent = '';
+    }
+}
+
+async function saveAdvertise() {
+    if (!sb || !currentUser || !currentUser.isAdmin) return;
+    var mk = document.getElementById('advertise-media-kit-edit').value;
+    var rc = document.getElementById('advertise-rate-card-edit').value;
+    var state = document.getElementById('advertise-save-state');
+    state.textContent = 'Saving\u2026';
+    try {
+        await sb.from('app_settings').upsert([
+            { key: 'advertise_media_kit', value: mk },
+            { key: 'advertise_rate_card', value: rc }
+        ]);
+        appSettings.advertise_media_kit = mk;
+        appSettings.advertise_rate_card = rc;
+        state.textContent = 'Saved';
+        toggleAdvertiseEdit(false);
+        renderAdvertisePage();
+    } catch (e) {
+        state.textContent = 'Could not save. Your edits are still here.';
+    }
+}
+
+function renderHiringPage() {
+    var job = appSettings.hiring_job_description || DEFAULT_HIRING_JOB;
+    document.getElementById('hiring-job-view').textContent = job;
+    var editBtn = document.getElementById('hiring-edit-btn');
+    if (editBtn) { editBtn.style.display = (currentUser && currentUser.isAdmin) ? 'block' : 'none'; }
+    toggleHiringEdit(false);
+}
+
+function toggleHiringEdit(on) {
+    document.getElementById('hiring-view').style.display = on ? 'none' : 'block';
+    document.getElementById('hiring-edit').style.display = on ? 'block' : 'none';
+    document.getElementById('hiring-edit-btn').style.display = (!on && currentUser && currentUser.isAdmin) ? 'block' : 'none';
+    if (on) {
+        document.getElementById('hiring-job-edit').value = appSettings.hiring_job_description || DEFAULT_HIRING_JOB;
+        document.getElementById('hiring-save-state').textContent = '';
+    }
+}
+
+async function saveHiring() {
+    if (!sb || !currentUser || !currentUser.isAdmin) return;
+    var job = document.getElementById('hiring-job-edit').value;
+    var state = document.getElementById('hiring-save-state');
+    state.textContent = 'Saving\u2026';
+    try {
+        await sb.from('app_settings').upsert([{ key: 'hiring_job_description', value: job }]);
+        appSettings.hiring_job_description = job;
+        state.textContent = 'Saved';
+        toggleHiringEdit(false);
+        renderHiringPage();
+    } catch (e) {
+        state.textContent = 'Could not save. Your edits are still here.';
+    }
 }
 
 var currentPage = null;
@@ -2138,6 +3050,10 @@ function showPage(page, fromHistory) {
     if (page === 'classes') { browseKind = 'class'; currentGroupCategory = null; renderClassList(); }
     if (page === 'events') { renderEvents(); }
     if (page === 'about') { showAboutTab('mission'); }
+    if (page === 'columnist-bio') { renderColumnistBio(); }
+    if (page === 'advertise') { renderAdvertisePage(); }
+    if (page === 'hiring') { renderHiringPage(); }
+    if (page === 'past-polls') { renderPastPollsPage(); }
     if (page === 'hosting') { renderHosting(); }
     if (page === 'chat') { renderChatRooms(); setChatTab('groups'); }
     if (page === 'tickets') { renderTickets(); }
@@ -2402,6 +3318,8 @@ function loadProfileForm() {
     document.getElementById('pf-name').value = p.displayName || currentUser.name || '';
     document.getElementById('pf-bio').value = p.bio || '';
     document.getElementById('pf-location').value = p.location || 'Asheville, NC';
+    var fullNameBox = document.getElementById('pf-show-full-name');
+    if (fullNameBox) { fullNameBox.checked = !!p.showFullName; }
     selectedGender = p.gender || null;
     setGender(selectedGender);
     renderAvatarPreview(p.avatar || null);
@@ -2463,14 +3381,18 @@ async function saveProfile() {
     var name = document.getElementById('pf-name').value.trim();
     if (!name) { showNotif('Please enter a display name.', 'error'); return; }
     var local = userProfiles[currentUser.id] || {};
+    var showFullNameBox = document.getElementById('pf-show-full-name');
+    var showFullName = showFullNameBox ? showFullNameBox.checked : false;
     var res = await sb.from('profiles').update({
         display_name: name,
         bio: document.getElementById('pf-bio').value.trim(),
         location: document.getElementById('pf-location').value.trim() || 'Asheville, NC',
         gender: selectedGender,
-        avatar_url: local.avatar || null
+        avatar_url: local.avatar || null,
+        show_full_name: showFullName
     }).eq('id', currentUser.id);
     if (res.error) { showNotif('Could not save: ' + res.error.message, 'error'); return; }
+    userProfiles[currentUser.id] = Object.assign({}, local, { displayName: name, showFullName: showFullName });
     showNotif('Profile saved!', 'success');
     await refreshGroups();
     updateHome();
@@ -6880,6 +7802,14 @@ function closePopup() {
     btn.onclick = closePopup;
 }
 function closePopupAndCreate() { closePopup(); showPage('create-group'); }
+
+function showCreateChoice() {
+    if (isGuest()) { requireAccount('create a group, class, or event'); return; }
+    document.getElementById('create-choice-overlay').classList.add('active');
+}
+function closeCreateChoice() {
+    document.getElementById('create-choice-overlay').classList.remove('active');
+}
 
 // ─── APP ICON & INSTALL ───
 // The five-person ring from the Asheville Pulse logo, drawn as a square app icon.
