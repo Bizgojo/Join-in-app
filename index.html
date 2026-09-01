@@ -56,6 +56,18 @@
 .team-text-btn{background:#2E7BC4;color:white;border:none;padding:12px 18px;border-radius:24px;font-size:16px;font-weight:700;cursor:pointer}
 .btn-select{background:#5B8C5A;color:white;border:none;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:12px}
 .btn-outline{background:white;color:#5B8C5A;border:2px solid #5B8C5A;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
+
+/* Marketplace — deliberately plain and text-first, Craigslist-style */
+.mkt-cats{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:10px;-webkit-overflow-scrolling:touch}
+.mkt-cats::-webkit-scrollbar{display:none}
+.mkt-cat-chip{flex:0 0 auto;background:#f4f6f4;border:2px solid #dce4dc;border-radius:20px;padding:8px 14px;font-size:13px;font-weight:700;color:#555;cursor:pointer;white-space:nowrap}
+.mkt-cat-chip.on{background:#1B4B8F;border-color:#1B4B8F;color:#fff}
+.mkt-row{display:block;padding:12px 4px;border-bottom:1px solid #e8eee8;text-decoration:none;color:inherit;cursor:pointer}
+.mkt-row:last-child{border-bottom:none}
+.mkt-row .mkt-title{font-size:15px;font-weight:600;color:#1a1a2e}
+.mkt-row .mkt-meta{font-size:12.5px;color:#888;margin-top:2px}
+.mkt-row .mkt-price{color:#2d5a2d;font-weight:700}
+.mkt-empty{text-align:center;color:#999;font-size:14px;padding:30px 10px}
 .btn-invite{background:#1B4B8F;color:white;border:none;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
 .btn-leave{background:white;color:#e74c3c;border:2px solid #e74c3c;padding:14px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
 .gsearch{position:relative;margin:4px 0 12px}.gsearch input{font-size:17px;padding:15px 46px 15px 44px;margin-bottom:0}.gsearch .mag{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none}.gsearch .wipe{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#e8eee8;color:#444;border:none;width:32px;height:32px;border-radius:50%;font-size:16px;font-weight:700;cursor:pointer;display:none}.gsearch .wipe.on{display:block}
@@ -128,23 +140,32 @@
 .pulse-heading{font-size:19px;font-weight:700;color:#1B4B8F;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
 .pulse-heading .dot{width:8px;height:8px;border-radius:50%;background:#E4572E;flex:0 0 auto}
 .rail-wrap{margin-bottom:6px}
-.rail{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
-.rail::-webkit-scrollbar{display:none}
-.rail-card{flex:0 0 auto;width:120px;background:#fff;border:1px solid #e8eee8;border-radius:16px;padding:12px 10px;text-align:left;cursor:pointer}
+.rail{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rail-card{background:#fff;border:1px solid #e8eee8;border-radius:16px;padding:12px 8px;text-align:left;cursor:pointer;min-width:0}
 .rail-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08)}
 .rail-card .ico{font-size:22px;display:block;margin-bottom:6px}
-.rail-card .t{font-size:13px;font-weight:700;line-height:1.25;color:#222}
-.rail-card .s{font-size:11px;color:#888;margin-top:2px}
+.rail-card .t{font-size:12.5px;font-weight:700;line-height:1.25;color:#222}
+.rail-card .s{font-size:10.5px;color:#888;margin-top:2px}
 .rail-card.cta{background:#1B4B8F;color:#fff}
 .rail-card.cta .t{color:#fff}
 .rail-card.cta .s{color:#cfe0f2}
-.pulse-post{background:#fff;border-radius:16px;margin-bottom:10px;overflow:hidden;border:1px solid #e8eee8;display:flex}
+.pulse-feed-card{background:#fff;border-radius:16px;border:1px solid #e8eee8;overflow:hidden;margin-bottom:12px;position:relative}
+.pulse-feed-card.collapsed{max-height:640px}
+.pulse-feed-card.collapsed::after{content:'';position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.98));pointer-events:none}
+.pulse-feed-card.expanded{position:fixed;inset:0;z-index:2000;border-radius:0;border:none;margin:0;max-height:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.pulse-feed-sticky{display:none;position:sticky;top:0;z-index:5;background:#1B4B8F;flex-direction:column;gap:10px;padding:14px 16px}
+.pulse-feed-card.expanded .pulse-feed-sticky{display:flex}
+.pulse-feed-sticky-row{display:flex;align-items:center;justify-content:space-between;color:#fff;font-weight:700;font-size:16px}
+.pulse-scroll-btn{background:#eaf2fb;color:#1B4B8F;border:2px solid #cfe0f2;border-radius:20px;padding:7px 16px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0}
+.pulse-scroll-btn.inverse{background:#fff;color:#1B4B8F;border-color:#fff}
+.pulse-post{background:#fff;overflow:hidden;display:flex;border-bottom:8px solid #f2f4f2}
+.pulse-post:last-child{border-bottom:none}
 .blaze-bar{width:5px;flex-shrink:0}
 .blaze-bar.group{background:#3F9142}
 .blaze-bar.event{background:#7B1FA2}
 .blaze-bar.trend{background:#D9A441}
 .blaze-bar.talk{background:#8a948a}
-.pulse-body{padding:10px 12px 11px;flex:1;min-width:0}
+.pulse-body{padding:13px 12px 14px;flex:1;min-width:0}
 .pulse-tag{font-size:10px;letter-spacing:.03em;text-transform:uppercase;font-weight:700}
 .pulse-tag.group{color:#3F9142}
 .pulse-tag.event{color:#7B1FA2}
@@ -168,10 +189,18 @@
 @keyframes pollFlash{0%{box-shadow:0 0 0 3px #1B4B8F}100%{box-shadow:0 0 0 0 rgba(27,75,143,0)}}
 .poll-opt .fill{position:absolute;inset:0;background:#dceae1;z-index:0}
 .poll-opt .lbl{position:relative;z-index:1;font-size:14px;font-weight:600;display:flex;justify-content:space-between;color:#1a1a2e}
-.pulse-actions{display:flex;align-items:center;gap:16px;margin-top:8px;font-size:13px;color:#888}
+.pulse-actions{display:flex;align-items:center;gap:16px;margin-top:8px;font-size:13px;color:#888;position:relative}
 .pulse-act{display:flex;align-items:center;gap:5px;cursor:pointer;background:none;border:none;color:#888;font-size:13px;padding:2px}
 .pulse-act.voted{color:#1B4B8F;font-weight:700}
 .pulse-act b{color:#1a1a2e}
+.pulse-act.comment-act .cmt-icon{font-size:22px;line-height:1}
+.react-btn{display:flex;align-items:center;gap:6px;cursor:pointer;background:none;border:none;color:#888;font-size:13px;padding:2px;user-select:none;-webkit-user-select:none}
+.react-btn .r-emoji{font-size:18px;line-height:1}
+.react-btn.on{color:#1B4B8F;font-weight:700}
+.react-picker{position:absolute;bottom:34px;left:0;background:#fff;border-radius:30px;box-shadow:0 6px 20px rgba(0,0,0,.18);padding:6px 8px;display:none;gap:4px;z-index:20;border:1px solid #eee}
+.react-picker.show{display:flex}
+.react-picker button{background:none;border:none;font-size:26px;cursor:pointer;padding:3px;line-height:1;transition:transform .12s}
+.react-picker button:hover,.react-picker button:active{transform:scale(1.35)}
 .pulse-comments{margin-top:10px;border-top:1px solid #f0f0f5;padding-top:10px;display:none}
 .pulse-comment{font-size:13.5px;margin-bottom:4px;line-height:1.4}
 .pulse-comment b{color:#1B4B8F}
@@ -366,12 +395,8 @@
 </div>
 <div class="pulse-heading"><span class="dot"></span>The Pulse</div>
 
-<div class="columnist-heading"><span class="dot"></span>Local Columnists</div>
-<div class="hood-row" style="margin-bottom:8px">
-<select id="columnist-select-community" onchange="onColumnistSelect('community')" style="width:100%;flex:1 1 auto;padding:14px;margin:0;font-size:16px;font-weight:600;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#eaf2fb"><option value="">Select your community columnist</option></select>
-</div>
 <div class="hood-row" style="margin-bottom:14px">
-<select id="columnist-select-topical" onchange="onColumnistSelect('topical')" style="width:100%;flex:1 1 auto;padding:14px;margin:0;font-size:16px;font-weight:600;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#eaf2fb"><option value="">Select your topic columnist</option></select>
+<select id="columnist-select-community" onchange="onColumnistSelect('community')" style="width:100%;flex:1 1 auto;padding:14px;margin:0;font-size:16px;font-weight:600;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#eaf2fb"><option value="">Community Gossip</option></select>
 </div>
 
 <div class="card" id="topic-of-day-card">
@@ -380,30 +405,59 @@
 <p id="totd-body" style="color:#444;font-size:15px;line-height:1.55;margin-bottom:2px"></p>
 <div style="font-size:12px;color:#999;margin-top:8px" id="totd-meta"></div>
 <div style="display:flex;gap:8px;margin-top:14px">
-<button class="btn-outline" style="flex:1" onclick="openTopicPanel(true)">💭 What do you think?</button>
-<button class="btn-outline" style="flex:1" onclick="openTopicPanel(false)">👀 See What Others Thought</button>
+<button style="flex:1;padding:9px 6px;font-size:12.5px;font-weight:700;color:#5B8C5A;background:#fff;border:2px solid #5B8C5A;border-radius:20px;cursor:pointer" onclick="openTopicPanel(true)">💭 What do you think?</button>
+<button style="flex:1;padding:9px 6px;font-size:12.5px;font-weight:700;color:#5B8C5A;background:#fff;border:2px solid #5B8C5A;border-radius:20px;cursor:pointer" onclick="openTopicPanel(false)">👀 See What Others Thought</button>
 </div>
 <div id="topic-comments-slot" style="margin-top:6px"></div>
+<button id="topic-collapse-btn" onclick="closeTopicPanel()" style="display:none;width:100%;margin-top:8px;padding:9px;font-size:12.5px;font-weight:700;color:#888;background:#fff;border:2px solid #e8eee8;border-radius:20px;cursor:pointer">🔼 Hide Discussion</button>
 </div>
 
-<div id="pulse-composer-toggle"><button class="btn" style="background:#1B4B8F" onclick="openPulseComposer()">+ Post to the Pulse</button></div>
 <div id="pulse-composer-card" style="display:none"></div>
 
-<div id="pulse-feed-list"><div class="pulse-empty">Loading the Pulse…</div></div>
+<div class="pulse-heading" id="pulse-feed-heading-outer" style="justify-content:space-between">
+<span style="display:flex;align-items:center;gap:8px"><span class="dot"></span>Pulse of Asheville <span id="pulse-week-count" style="font-size:12px;font-weight:600;color:#888"></span></span>
+<button class="pulse-scroll-btn" onclick="togglePulseFeedExpand()">Show All</button>
+</div>
+<div id="pulse-composer-toggle" style="margin-bottom:16px"><button style="width:100%;padding:16px;font-size:17px;font-weight:700;border-radius:30px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer" onclick="openPulseComposer()">+ Post to the Pulse</button></div>
+<div id="pulse-feed-list" class="pulse-feed-card collapsed">
+<div class="pulse-feed-sticky">
+<div class="pulse-feed-sticky-row">
+<span style="display:flex;align-items:center;gap:8px">🔴 Pulse of Asheville <span id="pulse-week-count-sticky" style="font-size:12px;font-weight:600;color:#cfe0f2"></span></span>
+<button class="pulse-scroll-btn inverse" onclick="togglePulseFeedExpand()">Show Less</button>
+</div>
+<button style="width:100%;padding:13px;font-size:15px;font-weight:700;border-radius:26px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer" onclick="openPulseComposerFromSticky()">+ Post to the Pulse</button>
+</div>
+<div id="pulse-feed-posts"><div class="pulse-empty">Loading the Pulse…</div></div>
+</div>
 
 <div class="card" id="community-poll-card" style="display:none"></div>
 
-<div class="pulse-heading" style="margin-top:20px"><span class="dot"></span>JoinIn</div>
-<div class="rail-wrap">
+<div class="card" style="padding:18px 16px">
+<div class="pulse-heading" style="margin:0 0 14px"><span class="dot"></span>JoinIn</div>
+
+<div style="display:flex;gap:8px;margin-bottom:14px">
+<select id="columnist-select-topical" onchange="onColumnistSelect('topical')" style="flex:1;padding:14px;margin:0;font-size:15px;font-weight:700;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#cfe0f2"><option value="">Topic Columnist</option></select>
+<button onclick="showPage('chat')" style="flex:1;padding:14px;font-size:15px;font-weight:700;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#cfe0f2;cursor:pointer">💬 Chat</button>
+</div>
+
+<div class="rail-wrap" style="margin-bottom:14px">
 <div class="rail">
 <div class="rail-card" onclick="showPage('groups')"><span class="ico">👥</span><div class="t">Join a Group</div><div class="s">Find your community</div></div>
 <div class="rail-card" onclick="showPage('classes')"><span class="ico">🎓</span><div class="t">Take a Class</div><div class="s">Learn locally</div></div>
 <div class="rail-card" onclick="showPage('events')"><span class="ico">🎟️</span><div class="t">Discover Events</div><div class="s">Music, sports & more</div></div>
 </div>
-<button class="btn" style="background:#1B4B8F;margin-top:10px" onclick="showCreateChoice()">Create A Group, Class or Event - it's Free!</button>
 </div>
 
-<div class="funnel" onclick="showPage('chat')"><span class="icon">💬</span><div class="text"><div class="title">Chat</div><div class="sub">Messages & conversations</div></div><span class="arrow">›</span></div>
+<button onclick="showCreateChoice()" style="width:100%;padding:13px 10px;font-size:14.5px;font-weight:700;border-radius:26px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer;white-space:nowrap">Create A Group, Class or Event - it's Free!</button>
+</div>
+
+<div class="card" style="text-align:center;padding:18px">
+<div style="font-size:28px;margin-bottom:4px">🏪</div>
+<div style="font-weight:800;font-size:17px;color:#1a1a2e;margin-bottom:2px">Marketplace</div>
+<div style="color:#888;font-size:13.5px;margin-bottom:12px">Free community classifieds — buy, sell, and give away locally</div>
+<button onclick="showPage('marketplace')" style="width:100%;padding:13px;font-size:14.5px;font-weight:700;border-radius:26px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer">Browse Marketplace</button>
+</div>
+
 <div class="funnel" onclick="showPage('advertise')"><span class="icon">📣</span><div class="text"><div class="title">Advertise</div><div class="sub">Reach real Asheville neighbors</div></div><span class="arrow">›</span></div>
 <div class="funnel" onclick="showPage('hiring')"><span class="icon">💼</span><div class="text"><div class="title">Now Hiring</div><div class="sub">Join the Asheville Pulse team</div></div><span class="arrow">›</span></div>
 <div class="funnel" onclick="showPage('about')"><span class="icon">ℹ️</span><div class="text"><div class="title">About Asheville Pulse</div><div class="sub">Our mission and who we are</div></div><span class="arrow">›</span></div>
@@ -455,6 +509,61 @@
 <div id="past-polls-list"></div>
 </div>
 
+<!-- MARKETPLACE -->
+<div id="page-marketplace" class="page">
+<button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+<h3 style="margin:0">🏪 Marketplace</h3>
+</div>
+<p style="color:#888;font-size:13.5px;margin-bottom:10px">Free community classifieds. No fees, no middleman — just neighbors.</p>
+<button class="btn" style="background:#1B4B8F" onclick="openPostAdForm()">+ Post an Ad — it's Free</button>
+<input type="text" id="mkt-search" placeholder="🔍 Search listings…" style="margin-top:12px" oninput="renderMarketplace()">
+<div class="mkt-cats" id="mkt-cats"></div>
+<div id="mkt-listings"></div>
+</div>
+
+<!-- MARKETPLACE LISTING DETAIL -->
+<div id="page-marketplace-detail" class="page">
+<button class="back-btn" onclick="showPage('marketplace')"><span class="chev">‹</span> Back to Marketplace</button>
+<div class="card" id="mkt-detail-content"></div>
+</div>
+
+<!-- POST AN AD -->
+<div id="page-post-ad" class="page">
+<button class="back-btn" onclick="showPage('marketplace')"><span class="chev">‹</span> Back to Marketplace</button>
+<h3 id="ad-form-title">📣 Post an Ad</h3>
+<p style="color:#888;font-size:13.5px;margin-bottom:12px">Free to post. Visible to everyone in the community.</p>
+<div id="ad-rejection-banner" style="display:none;background:#fbeae6;border:1px solid #e0b3a8;border-radius:12px;padding:14px;margin-bottom:12px;font-size:13.5px;color:#a3271b;line-height:1.5"></div>
+<div class="card">
+<label style="font-weight:700;font-size:14px;display:block;margin-bottom:6px">Category</label>
+<select id="ad-category" style="margin-bottom:14px">
+<option value="for_sale">For Sale</option>
+<option value="free">Free Stuff</option>
+<option value="housing">Housing</option>
+<option value="jobs">Jobs</option>
+<option value="services">Services</option>
+<option value="community">Community</option>
+</select>
+<input type="text" id="ad-title" placeholder="Headline *">
+<input type="text" id="ad-price" placeholder="Price (e.g. $50, Free, OBO — optional)">
+<input type="text" id="ad-location" placeholder="Neighborhood / area (optional)">
+<textarea id="ad-description" placeholder="Description *" rows="5"></textarea>
+<label style="font-weight:700;font-size:14px;display:block;margin-bottom:6px">Photos (up to 4)</label>
+<div id="ad-photo-gallery" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px"></div>
+<button class="btn-outline" id="ad-add-photo-btn" onclick="document.getElementById('ad-photo-input').click()">📷 Add a Photo</button>
+<div id="ad-photo-upload-status" style="font-size:13px;color:#888;margin-top:6px"></div>
+<input type="file" id="ad-photo-input" accept="image/*" style="display:none" onchange="handleAdPhotoUpload(event)">
+<label style="font-weight:700;font-size:14px;display:block;margin:14px 0 6px">Days to Run</label>
+<select id="ad-days">
+<option value="7">7 days</option>
+<option value="14">14 days</option>
+<option value="30" selected>30 days</option>
+<option value="60">60 days</option>
+</select>
+<button class="btn" id="ad-submit-btn" style="background:#1B4B8F;margin-top:10px" onclick="submitAd()">Post Ad</button>
+</div>
+</div>
+
 <!-- ADVERTISE -->
 <div id="page-advertise" class="page">
 <button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
@@ -476,6 +585,40 @@
 </div>
 <p id="advertise-save-state" style="font-size:13px;color:#8a948a;margin-top:8px;min-height:18px"></p>
 </div>
+</div>
+
+<div class="card" style="text-align:center">
+<div style="font-size:28px;margin-bottom:4px">📸</div>
+<h3 style="margin-bottom:4px">Create an Ad for Pulse of Asheville</h3>
+<p style="color:#888;font-size:13.5px;margin-bottom:12px">Runs right in the Pulse feed for 1–7 days.</p>
+<button class="btn" style="background:#1B4B8F" onclick="openCreateAdForm()">+ Create an Ad</button>
+</div>
+</div>
+
+<!-- CREATE AD -->
+<div id="page-create-ad" class="page">
+<button class="back-btn" onclick="showPage('advertise')"><span class="chev">‹</span> Back to Advertise</button>
+<h3>📸 Create an Ad</h3>
+<p style="color:#888;font-size:13.5px;margin-bottom:12px">Runs in the Pulse feed. Free for now while we build out real pricing.</p>
+<div class="card">
+<input type="text" id="pa-caption" placeholder="Caption / headline *">
+<textarea id="pa-body" placeholder="Body copy *" rows="4"></textarea>
+<label style="font-weight:700;font-size:14px;display:block;margin:4px 0 6px">Photo</label>
+<div id="pa-photo-upload-area"></div>
+<input type="file" id="pa-photo-input" accept="image/*" style="display:none" onchange="handleAdImageUpload(event)">
+<label style="font-weight:700;font-size:14px;display:block;margin:14px 0 6px">Address (optional)</label>
+<input type="text" id="pa-address" placeholder="Street address">
+<button class="map-btn" onclick="openMap(document.getElementById('pa-address').value)">🗺️ View on Map</button>
+<label style="font-weight:700;font-size:14px;display:block;margin:14px 0 6px">Website (optional)</label>
+<input type="text" id="pa-website" placeholder="https://yourbusiness.com">
+<label style="font-weight:700;font-size:14px;display:block;margin:14px 0 6px">Days to Run</label>
+<select id="pa-days">
+<option value="1">1 day</option>
+<option value="3" selected>3 days</option>
+<option value="5">5 days</option>
+<option value="7">7 days</option>
+</select>
+<button class="btn" id="pa-submit-btn" style="background:#1B4B8F;margin-top:10px" onclick="submitPulseAd()">Create Ad</button>
 </div>
 </div>
 
@@ -1250,8 +1393,9 @@ var pulsePosts = [];
 var pulsePollOptions = {};   // postId -> [{id,label,sort_order}]
 var pulsePollVoteCounts = {}; // optionId -> count
 var pulsePollMyVote = {};     // postId -> optionId I voted for (or undefined)
-var pulseVoteCounts = {};    // postId -> upvote count
-var pulseMyVotes = {};       // postId -> true if I upvoted
+var pulseVoteCounts = {};    // postId -> total reaction count
+var pulseMyVotes = {};       // postId -> my reaction emoji key, or undefined
+var pulseReactionBreakdown = {}; // postId -> { like: n, love: n, ... }
 var pulseCommentCounts = {}; // postId -> count
 var pulseComments = {};      // postId -> [{author_id,body,created_at}] once loaded
 var pulseComposerType = 'text';
@@ -1913,13 +2057,14 @@ function onHoodChange() {
 async function loadPulseFeed() {
     var list = document.getElementById('pulse-feed-list');
     if (!sb || !list) { return; }
+    await loadPulseAds();
     try {
         var q = sb.from('posts').select('*').order('created_at', { ascending: false }).limit(30);
         if (currentHoodId) { q = q.eq('neighborhood_id', currentHoodId); }
         var res = await q;
         pulsePosts = res.data || [];
         if (pulsePosts.length === 0) {
-            pulseVoteCounts = {}; pulseMyVotes = {}; pulseCommentCounts = {};
+            pulseVoteCounts = {}; pulseMyVotes = {}; pulseCommentCounts = {}; pulseReactionBreakdown = {};
             pulsePollOptions = {}; pulsePollVoteCounts = {}; pulsePollMyVote = {};
             renderPulseFeed();
             await loadCommunityPoll();
@@ -1927,11 +2072,14 @@ async function loadPulseFeed() {
         }
         var ids = pulsePosts.map(function(p) { return p.id; });
 
-        var votesRes = await sb.from('post_votes').select('post_id,user_id').in('post_id', ids);
-        pulseVoteCounts = {}; pulseMyVotes = {};
+        var votesRes = await sb.from('post_votes').select('post_id,user_id,reaction').in('post_id', ids);
+        pulseVoteCounts = {}; pulseMyVotes = {}; pulseReactionBreakdown = {};
         (votesRes.data || []).forEach(function(v) {
             pulseVoteCounts[v.post_id] = (pulseVoteCounts[v.post_id] || 0) + 1;
-            if (currentUser && v.user_id === currentUser.id) { pulseMyVotes[v.post_id] = true; }
+            var r = v.reaction || 'like';
+            pulseReactionBreakdown[v.post_id] = pulseReactionBreakdown[v.post_id] || {};
+            pulseReactionBreakdown[v.post_id][r] = (pulseReactionBreakdown[v.post_id][r] || 0) + 1;
+            if (currentUser && v.user_id === currentUser.id) { pulseMyVotes[v.post_id] = r; }
         });
 
         var commentsRes = await sb.from('comments').select('post_id').in('post_id', ids);
@@ -1983,7 +2131,7 @@ function pulseTagInfo(type) {
     if (type === 'photo') { return { cls: 'talk', label: 'Photo' }; }
     if (type === 'poll') { return { cls: 'talk', label: 'Poll' }; }
     if (type === 'ask') { return { cls: 'talk', label: 'Ask Asheville' }; }
-    return { cls: 'talk', label: 'The Pulse' };
+    return { cls: 'talk', label: 'Talk' };
 }
 
 function pickTrendingEvent() {
@@ -2031,12 +2179,27 @@ function renderGroupUpdateCard(g) {
     return html;
 }
 
+// Real count of posts from the last 7 days, shown next to the heading
+// in both the collapsed and expanded (sticky) states.
+function updatePulseWeekCount() {
+    var weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    var count = pulsePosts.filter(function(p) {
+        return p.type !== 'poll' && p.id !== topicOfDayPostId && new Date(p.created_at).getTime() >= weekAgo;
+    }).length;
+    var text = '(' + count + ' post' + (count !== 1 ? 's' : '') + ' this week)';
+    var outer = document.getElementById('pulse-week-count');
+    var sticky = document.getElementById('pulse-week-count-sticky');
+    if (outer) { outer.textContent = text; }
+    if (sticky) { sticky.textContent = text; }
+}
+
 function renderPulseFeed() {
-    var list = document.getElementById('pulse-feed-list');
+    var list = document.getElementById('pulse-feed-posts');
     if (!list) { return; }
+    updatePulseWeekCount();
     var cards = pulsePosts.filter(function(p) { return p.type !== 'poll' && p.id !== topicOfDayPostId; }).map(function(p) {
         var tag = pulseTagInfo(p.type);
-        var voted = !!pulseMyVotes[p.id];
+        var myReaction = pulseMyVotes[p.id];
         var voteCount = pulseVoteCounts[p.id] || 0;
         var commentCount = pulseCommentCounts[p.id] || 0;
         var html = '<div class="pulse-post"><div class="blaze-bar ' + tag.cls + '"></div><div class="pulse-body">';
@@ -2065,19 +2228,33 @@ function renderPulseFeed() {
             html += '</div><div style="font-size:12px;color:#888;margin-top:2px">' + totalVotes + ' vote' + (totalVotes !== 1 ? 's' : '') + '</div>';
         }
         html += '<div class="pulse-actions">';
-        html += '<button class="pulse-act' + (voted ? ' voted' : '') + '" onclick="togglePulseVote(\'' + p.id + '\')">▲ <b>' + voteCount + '</b></button>';
-        html += '<button class="pulse-act" onclick="togglePulseComments(\'' + p.id + '\')">💬 ' + commentCount + '</button>';
+        html += '<button class="react-btn' + (myReaction ? ' on' : '') + '" ';
+        html += 'onmousedown="startReactPress(\'' + p.id + '\',event)" onmouseup="cancelReactPress()" onmouseleave="cancelReactPress()" ';
+        html += 'ontouchstart="startReactPress(\'' + p.id + '\',event)" ontouchend="cancelReactPress()" ';
+        html += 'onclick="quickReact(\'' + p.id + '\')">';
+        html += '<span class="r-emoji">' + (myReaction ? pulseReactionEmoji(myReaction) : pulseTopReactionEmoji(p.id)) + '</span> <b>' + voteCount + '</b>';
+        html += '</button>';
+        html += '<div class="react-picker" id="react-picker-' + p.id + '">';
+        PULSE_REACTIONS.forEach(function(r) {
+            html += '<button onclick="event.stopPropagation();pickReaction(\'' + p.id + '\',\'' + r.key + '\')" title="' + r.key + '">' + r.emoji + '</button>';
+        });
+        html += '</div>';
+        html += '<button class="pulse-act comment-act" onclick="togglePulseComments(\'' + p.id + '\')"><span class="cmt-icon">💬</span> ' + commentCount + '</button>';
         html += '</div>';
         html += '<div class="pulse-comments" id="pulse-comments-' + p.id + '"></div>';
         html += '</div></div>';
         return html;
     });
 
-    // Weave in a trending event and a group update pulled from real groups/events data.
+    // Weave in a trending event, a group update, and one sponsored ad.
     var trendingEvent = pickTrendingEvent();
     var groupUpdate = pickGroupUpdate();
     if (trendingEvent) { cards.splice(Math.min(2, cards.length), 0, renderTrendingEventCard(trendingEvent)); }
     if (groupUpdate) { cards.splice(Math.min(4, cards.length), 0, renderGroupUpdateCard(groupUpdate)); }
+    if (pulseAds.length) {
+        var ad = pulseAds[Math.floor(Math.random() * pulseAds.length)];
+        cards.splice(Math.min(1, cards.length), 0, renderSponsoredAdCard(ad));
+    }
 
     if (!cards.length) {
         list.innerHTML = '<div class="pulse-empty">Nothing posted here yet. Be the first — tap "+ Post to the Pulse" above.</div>';
@@ -2085,6 +2262,31 @@ function renderPulseFeed() {
     }
     list.innerHTML = cards.join('');
     revealTruncatedPulseBodies();
+}
+
+// The Pulse feed defaults to a clipped preview (~4-5 posts tall, with a
+// fade at the bottom) so it doesn't turn the home page into an endless
+// scroll. Tapping "Scroll" expands it to take over the full screen with
+// its own scroll, so browsing the feed never fights with scrolling the
+// rest of the app; "Un-Scroll" (in the sticky bar) reverts it.
+var pulseFeedExpanded = false;
+function togglePulseFeedExpand() {
+    var card = document.getElementById('pulse-feed-list');
+    var outerHeading = document.getElementById('pulse-feed-heading-outer');
+    if (!card) { return; }
+    pulseFeedExpanded = !pulseFeedExpanded;
+    if (pulseFeedExpanded) {
+        card.classList.remove('collapsed');
+        card.classList.add('expanded');
+        if (outerHeading) { outerHeading.style.display = 'none'; }
+        document.body.style.overflow = 'hidden';
+        card.scrollTop = 0;
+    } else {
+        card.classList.remove('expanded');
+        card.classList.add('collapsed');
+        if (outerHeading) { outerHeading.style.display = 'flex'; }
+        document.body.style.overflow = '';
+    }
 }
 
 // Only show the "more" toggle on posts whose body text actually overflows
@@ -2121,17 +2323,90 @@ function escapeHtml(s) {
     });
 }
 
-async function togglePulseVote(postId) {
-    if (!currentUser) { requireAccount('vote on the Pulse'); return; }
-    if (!sb) { return; }
+var PULSE_REACTIONS = [
+    { key: 'like', emoji: '👍' },
+    { key: 'love', emoji: '❤️' },
+    { key: 'haha', emoji: '😂' },
+    { key: 'wow', emoji: '😮' },
+    { key: 'sad', emoji: '😢' },
+    { key: 'angry', emoji: '😡' }
+];
+function pulseReactionEmoji(key) {
+    var r = PULSE_REACTIONS.find(function(x) { return x.key === key; });
+    return r ? r.emoji : '👍';
+}
+// The button shows whichever reaction is currently most common on the post
+// (defaulting to a plain thumbs-up if nobody's reacted yet), Facebook-style.
+function pulseTopReactionEmoji(postId) {
+    var breakdown = pulseReactionBreakdown[postId];
+    if (!breakdown) { return '👍'; }
+    var topKey = null, topCount = 0;
+    Object.keys(breakdown).forEach(function(k) {
+        if (breakdown[k] > topCount) { topCount = breakdown[k]; topKey = k; }
+    });
+    return pulseReactionEmoji(topKey || 'like');
+}
+
+// Quick tap = toggle the default "like" reaction on/off (fast common case).
+async function quickReact(postId) {
+    if (reactLongPressFired) { reactLongPressFired = false; return; }
+    if (!currentUser) { requireAccount('react to this post'); return; }
+    if (pulseMyVotes[postId]) {
+        await removePulseReaction(postId);
+    } else {
+        await setPulseReaction(postId, 'like');
+    }
+}
+
+// Long-press reveals the full emoji row.
+var reactPressTimer = null;
+var reactLongPressFired = false;
+function startReactPress(postId, event) {
+    if (event) { event.preventDefault(); }
+    reactLongPressFired = false;
+    clearTimeout(reactPressTimer);
+    reactPressTimer = setTimeout(function() {
+        reactLongPressFired = true;
+        showReactPicker(postId);
+    }, 420);
+}
+function cancelReactPress() {
+    clearTimeout(reactPressTimer);
+}
+
+function showReactPicker(postId) {
+    document.querySelectorAll('.react-picker.show').forEach(function(p) { p.classList.remove('show'); });
+    var picker = document.getElementById('react-picker-' + postId);
+    if (picker) { picker.classList.add('show'); }
+    setTimeout(function() {
+        document.addEventListener('click', hideReactPickersOnce, { once: true });
+        document.addEventListener('touchend', hideReactPickersOnce, { once: true });
+    }, 50);
+}
+function hideReactPickersOnce() {
+    document.querySelectorAll('.react-picker.show').forEach(function(p) { p.classList.remove('show'); });
+}
+
+async function pickReaction(postId, key) {
+    hideReactPickersOnce();
+    if (!currentUser) { requireAccount('react to this post'); return; }
+    await setPulseReaction(postId, key);
+}
+
+async function setPulseReaction(postId, key) {
+    if (!sb || !currentUser) { return; }
     try {
-        if (pulseMyVotes[postId]) {
-            await sb.from('post_votes').delete().eq('post_id', postId).eq('user_id', currentUser.id);
-        } else {
-            await sb.from('post_votes').insert({ post_id: postId, user_id: currentUser.id });
-        }
+        await sb.from('post_votes').upsert({ post_id: postId, user_id: currentUser.id, reaction: key }, { onConflict: 'post_id,user_id' });
         await loadPulseFeed();
-    } catch (e) { showNotif('Could not update your vote.', 'error'); }
+    } catch (e) { showNotif('Could not update your reaction.', 'error'); }
+}
+
+async function removePulseReaction(postId) {
+    if (!sb || !currentUser) { return; }
+    try {
+        await sb.from('post_votes').delete().eq('post_id', postId).eq('user_id', currentUser.id);
+        await loadPulseFeed();
+    } catch (e) { showNotif('Could not update your reaction.', 'error'); }
 }
 
 async function castPollVote(postId, optionId) {
@@ -2208,6 +2483,8 @@ function getPaddedOptionVotes(opts) {
     return { counts: padded, total: total };
 }
 
+var pollExpanded = {};
+
 function pollResultsHtml(post, opts, readOnly) {
     var padded = readOnly ? null : getPaddedOptionVotes(opts);
     var totalVotes = readOnly
@@ -2215,9 +2492,12 @@ function pollResultsHtml(post, opts, readOnly) {
         : padded.total;
     var myVote = communityPollMyVote[post.id];
     var showResults = readOnly || !!myVote || totalVotes > 0;
-    var scrollable = opts.length > 4;
-    var html = '<div style="margin-top:8px' + (scrollable ? ';max-height:206px;overflow-y:auto;-webkit-overflow-scrolling:touch' : '') + '" id="poll-options-' + post.id + '">';
-    opts.forEach(function(o, i) {
+    var expanded = readOnly || !!pollExpanded[post.id];
+    var visibleOpts = expanded ? opts : opts.slice(0, 4);
+    var hiddenCount = opts.length - visibleOpts.length;
+    var html = '<div style="margin-top:8px" id="poll-options-' + post.id + '">';
+    visibleOpts.forEach(function(o) {
+        var i = opts.indexOf(o);
         var c = readOnly ? (communityPollVoteCounts[o.id] || 0) : padded.counts[i];
         var pct = totalVotes ? Math.round((c / totalVotes) * 100) : 0;
         var disabled = readOnly || !!myVote;
@@ -2226,9 +2506,23 @@ function pollResultsHtml(post, opts, readOnly) {
         html += '<div class="lbl"><span>' + escapeHtml(o.label) + (myVote === o.id ? ' ✓' : '') + '</span>' + (showResults ? '<span>' + pct + '%</span>' : '') + '</div></button>';
     });
     html += '</div>';
-    if (scrollable) { html += '<div style="font-size:11px;color:#aaa;text-align:center;margin-top:2px">↕ scroll for more options</div>'; }
+    if (hiddenCount > 0) {
+        html += '<button style="margin-top:6px;padding:8px;font-size:12.5px;font-weight:700;color:#5B8C5A;background:#fff;border:2px solid #5B8C5A;border-radius:20px;cursor:pointer;width:100%" onclick="expandPollOptions(\'' + post.id + '\')">Show ' + hiddenCount + ' more option' + (hiddenCount !== 1 ? 's' : '') + '</button>';
+    } else if (!readOnly && expanded && opts.length > 4) {
+        html += '<button class="btn-outline" style="margin-top:6px;padding:8px" onclick="collapsePollOptions(\'' + post.id + '\')">Show less</button>';
+    }
     if (readOnly) { html += '<div style="font-size:12px;color:#888;margin-top:2px">' + totalVotes + ' vote' + (totalVotes !== 1 ? 's' : '') + ' · Poll closed</div>'; }
     return html;
+}
+
+function expandPollOptions(postId) {
+    pollExpanded[postId] = true;
+    renderCommunityPoll();
+}
+
+function collapsePollOptions(postId) {
+    pollExpanded[postId] = false;
+    renderCommunityPoll();
 }
 
 function renderCommunityPoll() {
@@ -2261,8 +2555,8 @@ function renderCommunityPoll() {
         html += '<p style="color:#666;font-size:14px;margin-bottom:4px">Check back soon, or browse what neighbors voted on before.</p>';
     }
     html += '<div style="display:flex;gap:8px;margin-top:14px">';
-    html += '<button class="btn-outline" style="flex:1" onclick="showPage(\'past-polls\')">📁 View Past Polls</button>';
-    html += '<button class="btn-outline" style="flex:1" onclick="openSuggestPollBox()">💡 Suggest a Poll</button>';
+    html += '<button style="flex:1;padding:9px 6px;font-size:12.5px;font-weight:700;color:#5B8C5A;background:#fff;border:2px solid #5B8C5A;border-radius:20px;cursor:pointer" onclick="showPage(\'past-polls\')">📁 View Past Polls</button>';
+    html += '<button style="flex:1;padding:9px 6px;font-size:12.5px;font-weight:700;color:#5B8C5A;background:#fff;border:2px solid #5B8C5A;border-radius:20px;cursor:pointer" onclick="openSuggestPollBox()">💡 Suggest a Poll</button>';
     html += '</div>';
     html += '<div id="suggest-poll-box" style="display:none;margin-top:12px"></div>';
     card.innerHTML = html;
@@ -2576,6 +2870,15 @@ function openPulseComposer() {
     renderPulseComposer();
 }
 
+// The composer card lives outside the fullscreen feed overlay, so opening
+// it from the sticky bar has to collapse the feed first or the composer
+// would be hidden underneath it.
+function openPulseComposerFromSticky() {
+    if (pulseFeedExpanded) { togglePulseFeedExpand(); }
+    openPulseComposer();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function closePulseComposer() {
     document.getElementById('pulse-composer-card').style.display = 'none';
     document.getElementById('pulse-composer-toggle').style.display = 'block';
@@ -2596,44 +2899,20 @@ function renderPulseComposer(preserve) {
     var card = document.getElementById('pulse-composer-card');
     var titleVal = preserve ? (document.getElementById('pulse-c-title') || {}).value || '' : '';
     var bodyVal = preserve ? (document.getElementById('pulse-c-body') || {}).value || '' : '';
-    var types = [
-        { id: 'text', label: 'Talk' },
-        { id: 'photo', label: 'Photo' },
-        { id: 'poll', label: 'Poll' },
-        { id: 'ask', label: 'Ask Asheville' }
-    ];
-    var html = '<div class="pulse-type-row">';
-    types.forEach(function(t) {
-        html += '<button class="' + (pulseComposerType === t.id ? 'selected' : '') + '" onclick="setPulseComposerType(\'' + t.id + '\')">' + t.label + '</button>';
-    });
-    html += '</div>';
+    pulseComposerType = 'text';
+    var html = '';
     html += '<input type="text" id="pulse-c-title" placeholder="Title *" value="' + escapeHtml(titleVal) + '">';
-    html += '<textarea id="pulse-c-body" placeholder="Say more (optional)" rows="3">' + escapeHtml(bodyVal) + '</textarea>';
-    if (pulseComposerType === 'photo') {
-        html += '<div id="pulse-photo-upload-area">';
-        if (pulseComposerImageUrl) {
-            html += '<img src="' + pulseComposerImageUrl + '" style="width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-bottom:8px">';
-            html += '<button class="btn-outline" onclick="removePulseComposerPhoto()">🗑️ Remove Photo</button>';
-        } else {
-            html += '<button class="btn-outline" onclick="document.getElementById(\'pulse-photo-input\').click()">📷 Choose Photo</button>';
-            html += '<div id="pulse-photo-upload-status" style="font-size:13px;color:#888;margin-top:6px"></div>';
-        }
-        html += '<input type="file" id="pulse-photo-input" accept="image/*" style="display:none" onchange="handlePulsePhotoUpload(event)">';
-        html += '</div>';
+    html += '<textarea id="pulse-c-body" placeholder="Say more *" rows="3">' + escapeHtml(bodyVal) + '</textarea>';
+    html += '<div id="pulse-photo-upload-area">';
+    if (pulseComposerImageUrl) {
+        html += '<img src="' + pulseComposerImageUrl + '" style="width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-bottom:8px">';
+        html += '<button class="btn-outline" onclick="removePulseComposerPhoto()">🗑️ Remove Photo</button>';
+    } else {
+        html += '<button class="btn-outline" onclick="document.getElementById(\'pulse-photo-input\').click()">📷 Add a Photo (optional)</button>';
+        html += '<div id="pulse-photo-upload-status" style="font-size:13px;color:#888;margin-top:6px"></div>';
     }
-    if (pulseComposerType === 'poll') {
-        html += '<div id="pulse-poll-opts">';
-        for (var i = 0; i < pulsePollInputCount; i++) {
-            html += '<div class="poll-opt-input"><input type="text" id="pulse-poll-opt-' + i + '" placeholder="Option ' + (i + 1) + '"></div>';
-        }
-        html += '</div>';
-        if (pulsePollInputCount < 10) { html += '<button class="btn-select" style="width:auto;padding:8px 14px;margin-bottom:10px" onclick="addPollOptionInput()">+ Add option</button>'; }
-    }
-    html += '<select id="pulse-c-hood"><option value="">All Asheville</option>';
-    allNeighborhoods.forEach(function(h) {
-        html += '<option value="' + h.id + '"' + (h.id === currentHoodId ? ' selected' : '') + '>' + h.name + '</option>';
-    });
-    html += '</select>';
+    html += '<input type="file" id="pulse-photo-input" accept="image/*" style="display:none" onchange="handlePulsePhotoUpload(event)">';
+    html += '</div>';
     html += '<button class="btn" style="background:#1B4B8F" onclick="submitPulsePost()">Post to the Pulse</button>';
     html += '<button style="background:none;border:none;color:#888;font-size:13px;width:100%;padding:8px;cursor:pointer" onclick="closePulseComposer()">Cancel</button>';
     card.innerHTML = html;
@@ -2669,40 +2948,489 @@ function removePulseComposerPhoto() {
 async function submitPulsePost() {
     var title = (document.getElementById('pulse-c-title').value || '').trim();
     var body = (document.getElementById('pulse-c-body').value || '').trim();
-    var hoodEl = document.getElementById('pulse-c-hood');
-    var hoodId = hoodEl ? hoodEl.value : '';
     if (!title) { showNotif('Please enter a title.', 'error'); return; }
+    if (!body) { showNotif('Please say a bit more.', 'error'); return; }
     var imageUrl = pulseComposerImageUrl;
-    if (pulseComposerType === 'photo' && !imageUrl) { showNotif('Please add a photo.', 'error'); return; }
-    var optionLabels = [];
-    if (pulseComposerType === 'poll') {
-        for (var i = 0; i < pulsePollInputCount; i++) {
-            var v = (document.getElementById('pulse-poll-opt-' + i).value || '').trim();
-            if (v) { optionLabels.push(v); }
-        }
-        if (optionLabels.length < 2) { showNotif('A poll needs at least 2 options.', 'error'); return; }
-    }
     try {
         var ins = await sb.from('posts').insert({
             author_id: currentUser.id,
-            neighborhood_id: hoodId || null,
+            neighborhood_id: null,
             type: pulseComposerType,
             title: title,
             body: body || null,
             image_url: imageUrl || null
         }).select().single();
         if (ins.error) { throw ins.error; }
-        if (pulseComposerType === 'poll' && ins.data) {
-            var rows = optionLabels.map(function(label, idx) {
-                return { post_id: ins.data.id, label: label, sort_order: idx };
-            });
-            await sb.from('poll_options').insert(rows);
-        }
         pulseComposerImageUrl = '';
         closePulseComposer();
         showNotif('Posted to the Pulse! 📡', 'success');
         await loadPulseFeed();
     } catch (e) { showNotif('Could not post — please try again.', 'error'); }
+}
+
+// ─── MARKETPLACE (Craigslist-style: plain, text-first, free listings) ───
+var MKT_CATEGORIES = [
+    { id: 'for_sale', label: 'For Sale' },
+    { id: 'free', label: 'Free Stuff' },
+    { id: 'housing', label: 'Housing' },
+    { id: 'jobs', label: 'Jobs' },
+    { id: 'services', label: 'Services' },
+    { id: 'community', label: 'Community' }
+];
+var mktListings = [];
+var mktCurrentCategory = 'all';
+var mktCurrentListingId = null;
+var adPhotoUrls = [];
+var editingAdId = null;
+
+async function loadMarketplace() {
+    var box = document.getElementById('mkt-listings');
+    if (!sb || !box) { return; }
+    box.innerHTML = '<div class="mkt-empty">Loading listings…</div>';
+    try {
+        var nowIso = new Date().toISOString();
+        var res = await sb.from('marketplace_listings').select('*')
+            .eq('status', 'active')
+            .or('expires_at.is.null,expires_at.gt.' + nowIso)
+            .order('created_at', { ascending: false });
+        mktListings = res.data || [];
+    } catch (e) { mktListings = []; }
+    renderMarketplace();
+}
+
+function renderMarketplace() {
+    var catBox = document.getElementById('mkt-cats');
+    var listBox = document.getElementById('mkt-listings');
+    if (!catBox || !listBox) { return; }
+
+    var catHtml = '<div class="mkt-cat-chip' + (mktCurrentCategory === 'all' ? ' on' : '') + '" onclick="setMktCategory(\'all\')">All</div>';
+    MKT_CATEGORIES.forEach(function(c) {
+        catHtml += '<div class="mkt-cat-chip' + (mktCurrentCategory === c.id ? ' on' : '') + '" onclick="setMktCategory(\'' + c.id + '\')">' + c.label + '</div>';
+    });
+    catBox.innerHTML = catHtml;
+
+    var q = (document.getElementById('mkt-search').value || '').trim().toLowerCase();
+    var filtered = mktListings.filter(function(l) {
+        if (mktCurrentCategory !== 'all' && l.category !== mktCurrentCategory) { return false; }
+        if (q && l.title.toLowerCase().indexOf(q) === -1) { return false; }
+        return true;
+    });
+
+    if (!filtered.length) {
+        listBox.innerHTML = '<div class="mkt-empty">No listings here yet. Be the first — tap "+ Post an Ad" above.</div>';
+        return;
+    }
+    var html = '';
+    filtered.forEach(function(l) {
+        html += '<div class="mkt-row" onclick="openMarketplaceListing(\'' + l.id + '\')">';
+        html += '<div class="mkt-title">' + escapeHtml(l.title) + (l.price ? ' <span class="mkt-price">· ' + escapeHtml(l.price) + '</span>' : '') + '</div>';
+        html += '<div class="mkt-meta">' + mktCategoryLabel(l.category) + (l.location ? ' · ' + escapeHtml(l.location) : '') + ' · ' + timeAgo(l.created_at) + '</div>';
+        html += '</div>';
+    });
+    listBox.innerHTML = html;
+}
+
+function mktCategoryLabel(id) {
+    var m = MKT_CATEGORIES.find(function(c) { return c.id === id; });
+    return m ? m.label : id;
+}
+
+function setMktCategory(id) {
+    mktCurrentCategory = id;
+    renderMarketplace();
+}
+
+function openMarketplaceListing(id) {
+    mktCurrentListingId = id;
+    showPage('marketplace-detail');
+}
+
+function mktListingPhotos(l) {
+    var photos = (l.image_urls || []).slice();
+    if (l.image_url && photos.indexOf(l.image_url) === -1) { photos.unshift(l.image_url); }
+    return photos;
+}
+
+function mktExpiryText(l) {
+    if (!l.expires_at) { return ''; }
+    var d = new Date(l.expires_at);
+    var daysLeft = Math.ceil((d.getTime() - Date.now()) / (24 * 60 * 60 * 1000));
+    if (daysLeft <= 0) { return 'Expired'; }
+    return 'Expires ' + d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' (' + daysLeft + ' day' + (daysLeft !== 1 ? 's' : '') + ' left)';
+}
+
+function renderMarketplaceDetail() {
+    var box = document.getElementById('mkt-detail-content');
+    if (!box) { return; }
+    var l = mktListings.find(function(x) { return x.id === mktCurrentListingId; });
+    if (!l) { box.innerHTML = '<p style="color:#888">Listing not found — it may have been removed.</p>'; return; }
+    var html = '<span class="mkt-cat-chip on" style="cursor:default">' + mktCategoryLabel(l.category) + '</span>';
+    html += '<h2 style="margin:12px 0 2px">' + escapeHtml(l.title) + '</h2>';
+    if (l.price) { html += '<div class="mkt-price" style="font-size:18px;margin-bottom:8px">' + escapeHtml(l.price) + '</div>'; }
+    html += '<div style="font-size:13px;color:#888;margin-bottom:14px">' + (l.location ? escapeHtml(l.location) + ' · ' : '') + timeAgo(l.created_at) + ' · Posted by ' + pulseAuthorName(l.author_id) + '</div>';
+    var photos = mktListingPhotos(l);
+    if (photos.length) {
+        html += '<div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;-webkit-overflow-scrolling:touch">';
+        photos.forEach(function(url) {
+            html += '<img src="' + url + '" style="width:82%;flex:0 0 auto;max-height:280px;object-fit:cover;border-radius:14px">';
+        });
+        html += '</div>';
+    }
+    if (l.description) { html += '<p style="font-size:15px;line-height:1.6;color:#333;margin-bottom:16px">' + escapeHtml(l.description).replace(/\n/g, '<br>') + '</p>'; }
+    if (currentUser && l.author_id === currentUser.id) {
+        html += '<div style="font-size:13px;font-weight:700;color:' + (mktExpiryText(l) === 'Expired' ? '#c0392b' : '#888') + ';margin-bottom:10px">📅 ' + mktExpiryText(l) + '</div>';
+        html += '<div class="btn-row" style="display:flex;gap:8px">';
+        html += '<button class="btn-outline" style="flex:1;margin:0" onclick="openEditAdForm(\'' + l.id + '\')">✏️ Edit</button>';
+        html += '<button class="btn-outline" style="flex:1;margin:0;color:#c0392b;border-color:#c0392b" onclick="deleteAd(\'' + l.id + '\')">🗑️ Delete</button>';
+        html += '</div>';
+        html += '<button class="btn" style="background:#1B4B8F;margin-top:8px" onclick="extendAd(\'' + l.id + '\')">📅 Extend +30 Days</button>';
+    } else {
+        html += '<button class="btn" style="background:#1B4B8F" onclick="contactSeller(\'' + l.author_id + '\')">💬 Contact Seller</button>';
+    }
+    box.innerHTML = html;
+}
+
+function contactSeller(sellerId) {
+    if (!currentUser) { requireAccount('contact this seller'); return; }
+    showPage('chat');
+    openDM(sellerId);
+}
+
+async function deleteAd(id) {
+    if (!sb) { return; }
+    try {
+        await sb.from('marketplace_listings').update({ status: 'expired' }).eq('id', id);
+        showNotif('Listing removed.', 'success');
+        showPage('marketplace');
+        await loadMarketplace();
+    } catch (e) { showNotif('Could not remove listing.', 'error'); }
+}
+
+async function extendAd(id) {
+    if (!sb) { return; }
+    var l = mktListings.find(function(x) { return x.id === id; });
+    if (!l) { return; }
+    var base = (l.expires_at && new Date(l.expires_at).getTime() > Date.now()) ? new Date(l.expires_at) : new Date();
+    var newExpiry = new Date(base.getTime() + 30 * 24 * 60 * 60 * 1000);
+    try {
+        await sb.from('marketplace_listings').update({ expires_at: newExpiry.toISOString() }).eq('id', id);
+        showNotif('Extended 30 more days! 📅', 'success');
+        await loadMarketplace();
+        renderMarketplaceDetail();
+    } catch (e) { showNotif('Could not extend this listing.', 'error'); }
+}
+
+function openPostAdForm() {
+    if (!currentUser) { requireAccount('post an ad'); return; }
+    editingAdId = null;
+    document.getElementById('ad-form-title').textContent = '📣 Post an Ad';
+    document.getElementById('ad-submit-btn').textContent = 'Post Ad';
+    document.getElementById('ad-submit-btn').disabled = false;
+    document.getElementById('ad-rejection-banner').style.display = 'none';
+    document.getElementById('ad-category').value = 'for_sale';
+    document.getElementById('ad-title').value = '';
+    document.getElementById('ad-price').value = '';
+    document.getElementById('ad-location').value = '';
+    document.getElementById('ad-description').value = '';
+    document.getElementById('ad-days').value = '30';
+    document.getElementById('ad-photo-upload-status').textContent = '';
+    adPhotoUrls = [];
+    renderAdPhotoGallery();
+    showPage('post-ad');
+}
+
+function openEditAdForm(id) {
+    var l = mktListings.find(function(x) { return x.id === id; });
+    if (!l) { return; }
+    editingAdId = id;
+    document.getElementById('ad-form-title').textContent = '✏️ Edit Ad';
+    document.getElementById('ad-submit-btn').textContent = 'Save Changes';
+    document.getElementById('ad-submit-btn').disabled = false;
+    document.getElementById('ad-rejection-banner').style.display = 'none';
+    document.getElementById('ad-category').value = l.category;
+    document.getElementById('ad-title').value = l.title || '';
+    document.getElementById('ad-price').value = l.price || '';
+    document.getElementById('ad-location').value = l.location || '';
+    document.getElementById('ad-description').value = l.description || '';
+    document.getElementById('ad-photo-upload-status').textContent = '';
+    adPhotoUrls = mktListingPhotos(l);
+    renderAdPhotoGallery();
+    showPage('post-ad');
+}
+
+function renderAdPhotoGallery() {
+    var gallery = document.getElementById('ad-photo-gallery');
+    var addBtn = document.getElementById('ad-add-photo-btn');
+    if (!gallery) { return; }
+    var html = '';
+    adPhotoUrls.forEach(function(url, i) {
+        html += '<div style="position:relative;width:76px;height:76px"><img src="' + url + '" style="width:100%;height:100%;object-fit:cover;border-radius:10px">';
+        html += '<button onclick="removeAdPhoto(' + i + ')" style="position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:#c0392b;color:#fff;border:2px solid #fff;font-size:12px;cursor:pointer;line-height:1">✕</button></div>';
+    });
+    gallery.innerHTML = html;
+    if (addBtn) { addBtn.style.display = adPhotoUrls.length >= 4 ? 'none' : 'block'; }
+}
+
+function removeAdPhoto(index) {
+    adPhotoUrls.splice(index, 1);
+    renderAdPhotoGallery();
+}
+
+async function handleAdPhotoUpload(event) {
+    var file = (event.target.files || [])[0];
+    event.target.value = '';
+    if (!file) { return; }
+    if (!sb || !currentUser) { showNotif('You need to be logged in to add a photo.', 'error'); return; }
+    if (!/^image\//.test(file.type)) { showNotif('That file is not a picture.', 'error'); return; }
+    if (adPhotoUrls.length >= 4) { showNotif('You can add up to 4 photos.', 'error'); return; }
+    var status = document.getElementById('ad-photo-upload-status');
+    if (status) { status.textContent = 'Uploading…'; }
+    try {
+        var blob = await shrinkImage(file, 1400);
+        var path = currentUser.id + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.jpg';
+        var up = await sb.storage.from('marketplace-photos').upload(path, blob, { contentType: 'image/jpeg', upsert: false });
+        if (up.error) { throw new Error(up.error.message); }
+        var pub = sb.storage.from('marketplace-photos').getPublicUrl(path);
+        var url = (pub.data && pub.data.publicUrl) || '';
+        if (url) { adPhotoUrls.push(url); }
+        renderAdPhotoGallery();
+        if (status) { status.textContent = ''; }
+    } catch (err) {
+        showNotif('Could not upload that photo. ' + (err.message || ''), 'error');
+        if (status) { status.textContent = ''; }
+    }
+}
+
+// Basic keyword-based moderation for marketplace ads, catching the most
+// obvious cases without needing an external service. This only covers
+// common profanity and explicit illegal-activity terms — it's deliberately
+// NOT a hand-written slur list (that's a bad way to build a moderation
+// filter). Real slur/hate-speech detection, and anything worded to dodge
+// a simple word list, needs the AI-based check via a server-side Edge
+// Function — this keyword pass is a first line of defense, not a
+// replacement for that.
+var MKT_BLOCKED_TERMS = [
+    'fuck', 'shit', 'bitch', 'asshole', 'bastard',
+    'meth', 'methamphetamine', 'heroin', 'cocaine', 'crack rock', 'fentanyl', 'ecstasy pills', 'lsd for sale',
+    'unregistered firearm', 'ghost gun', 'sawed-off', 'stolen goods', 'stolen merchandise', 'counterfeit'
+];
+function checkAdContent(title, description) {
+    var text = (title + ' ' + description).toLowerCase();
+    for (var i = 0; i < MKT_BLOCKED_TERMS.length; i++) {
+        if (text.indexOf(MKT_BLOCKED_TERMS[i]) !== -1) {
+            return { flagged: true, reason: 'This ad contains language or content that isn\'t allowed on Asheville Pulse (offensive language or a reference to illegal activity). Please edit your ad and remove that before resubmitting.' };
+        }
+    }
+    return { flagged: false, reason: null };
+}
+
+// Placeholder for the real email step — needs a server-side Edge Function
+// with an email service (e.g. Resend) API key before this can actually
+// send anything. Left here so it's a one-line swap once that's wired up.
+async function sendAdRejectionEmail(userEmail, title, reason) {
+    console.log('[stub] Would email', userEmail, 'about rejected ad "' + title + '": ' + reason);
+}
+
+function showAdRejection(reason) {
+    var btn = document.getElementById('ad-submit-btn');
+    if (btn) { btn.disabled = false; btn.textContent = editingAdId ? 'Save Changes' : 'Post Ad'; }
+    var banner = document.getElementById('ad-rejection-banner');
+    if (banner) {
+        banner.style.display = 'block';
+        banner.innerHTML = '⚠️ <b>This ad wasn\'t posted.</b><br>' + escapeHtml(reason);
+        banner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+// ─── PULSE ADS (self-serve, appear in the Pulse feed) ───
+var pulseAds = [];
+var paPhotoUrl = '';
+
+function openCreateAdForm() {
+    if (!currentUser) { requireAccount('create an ad'); return; }
+    document.getElementById('pa-caption').value = '';
+    document.getElementById('pa-body').value = '';
+    document.getElementById('pa-address').value = '';
+    document.getElementById('pa-website').value = '';
+    document.getElementById('pa-days').value = '3';
+    paPhotoUrl = '';
+    renderAdPhotoUploadArea();
+    var btn = document.getElementById('pa-submit-btn');
+    btn.disabled = false;
+    btn.textContent = 'Create Ad';
+    showPage('create-ad');
+}
+
+function renderAdPhotoUploadArea() {
+    var area = document.getElementById('pa-photo-upload-area');
+    if (!area) { return; }
+    if (paPhotoUrl) {
+        area.innerHTML = '<img src="' + paPhotoUrl + '" style="width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-bottom:8px"><button class="btn-outline" onclick="removePulseAdPhoto()">🗑️ Remove Photo</button>';
+    } else {
+        area.innerHTML = '<button class="btn-outline" onclick="document.getElementById(\'pa-photo-input\').click()">📷 Add a Photo</button><div id="pa-photo-upload-status" style="font-size:13px;color:#888;margin-top:6px"></div>';
+    }
+}
+
+function removePulseAdPhoto() {
+    paPhotoUrl = '';
+    renderAdPhotoUploadArea();
+}
+
+async function handleAdImageUpload(event) {
+    var file = (event.target.files || [])[0];
+    event.target.value = '';
+    if (!file) { return; }
+    if (!sb || !currentUser) { showNotif('You need to be logged in to add a photo.', 'error'); return; }
+    if (!/^image\//.test(file.type)) { showNotif('That file is not a picture.', 'error'); return; }
+    var status = document.getElementById('pa-photo-upload-status');
+    if (status) { status.textContent = 'Uploading…'; }
+    try {
+        var blob = await shrinkImage(file, 1400);
+        var path = currentUser.id + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.jpg';
+        var up = await sb.storage.from('ad-photos').upload(path, blob, { contentType: 'image/jpeg', upsert: false });
+        if (up.error) { throw new Error(up.error.message); }
+        var pub = sb.storage.from('ad-photos').getPublicUrl(path);
+        paPhotoUrl = (pub.data && pub.data.publicUrl) || '';
+        renderAdPhotoUploadArea();
+    } catch (err) {
+        showNotif('Could not upload that photo. ' + (err.message || ''), 'error');
+        if (status) { status.textContent = ''; }
+    }
+}
+
+async function submitPulseAd() {
+    if (!currentUser) { requireAccount('create an ad'); return; }
+    var btn = document.getElementById('pa-submit-btn');
+    if (btn && btn.disabled) { return; }
+    var caption = (document.getElementById('pa-caption').value || '').trim();
+    var body = (document.getElementById('pa-body').value || '').trim();
+    var address = (document.getElementById('pa-address').value || '').trim();
+    var website = (document.getElementById('pa-website').value || '').trim();
+    var days = parseInt(document.getElementById('pa-days').value, 10) || 3;
+    if (!caption) { showNotif('Please add a caption.', 'error'); return; }
+    if (!body) { showNotif('Please add some body copy.', 'error'); return; }
+
+    var modResult = checkAdContent(caption, body);
+    if (modResult.flagged) {
+        showNotif(modResult.reason, 'error');
+        return;
+    }
+    if (website && !/^https?:\/\//i.test(website)) { website = 'https://' + website; }
+
+    if (btn) { btn.disabled = true; btn.textContent = 'Creating…'; }
+    try {
+        await sb.from('pulse_ads').insert({
+            author_id: currentUser.id,
+            caption: caption,
+            body_copy: body,
+            image_url: paPhotoUrl || null,
+            address: address || null,
+            website_url: website || null,
+            days_to_run: days,
+            expires_at: new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString()
+        });
+        showNotif('Ad created! It\'ll show in the Pulse feed for ' + days + ' day' + (days !== 1 ? 's' : '') + '. 📸', 'success');
+        paPhotoUrl = '';
+        showPage('advertise');
+        await loadPulseAds();
+    } catch (e) {
+        showNotif('Could not create your ad — please try again.', 'error');
+        if (btn) { btn.disabled = false; btn.textContent = 'Create Ad'; }
+    }
+}
+
+async function loadPulseAds() {
+    if (!sb) { return; }
+    try {
+        var nowIso = new Date().toISOString();
+        var res = await sb.from('pulse_ads').select('*').eq('status', 'active').gt('expires_at', nowIso).order('created_at', { ascending: false });
+        pulseAds = res.data || [];
+    } catch (e) { pulseAds = []; }
+}
+
+function renderSponsoredAdCard(ad) {
+    var html = '<div class="pulse-post"><div class="blaze-bar trend"></div><div class="pulse-body">';
+    html += '<div class="pulse-meta"><span class="pulse-tag-chip trend">Sponsored</span></div>';
+    html += '<h3>' + escapeHtml(ad.caption) + '</h3>';
+    html += '<p>' + escapeHtml(ad.body_copy) + '</p>';
+    if (ad.image_url) { html += '<img class="pulse-img" src="' + ad.image_url + '" alt="">'; }
+    if (ad.address || ad.website_url) {
+        html += '<div style="display:flex;gap:8px;margin-top:10px">';
+        if (ad.address) { html += '<button class="pulse-act" style="border:1px solid #e8eee8;border-radius:20px;padding:7px 12px" onclick="openMap(' + JSON.stringify(ad.address) + ')">🗺️ Map</button>'; }
+        if (ad.website_url) { html += '<a href="' + ad.website_url + '" target="_blank" rel="noopener" class="pulse-act" style="border:1px solid #e8eee8;border-radius:20px;padding:7px 12px;text-decoration:none">🔗 Website</a>'; }
+        html += '</div>';
+    }
+    html += '</div></div>';
+    return html;
+}
+
+async function submitAd() {
+    if (!currentUser) { requireAccount('post an ad'); return; }
+    var btn = document.getElementById('ad-submit-btn');
+    if (btn && btn.disabled) { return; }
+    var category = document.getElementById('ad-category').value;
+    var title = (document.getElementById('ad-title').value || '').trim();
+    var price = (document.getElementById('ad-price').value || '').trim();
+    var location = (document.getElementById('ad-location').value || '').trim();
+    var description = (document.getElementById('ad-description').value || '').trim();
+    var days = parseInt(document.getElementById('ad-days').value, 10) || 30;
+    if (!title) { showNotif('Please enter a headline.', 'error'); return; }
+    if (!description) { showNotif('Please add a description.', 'error'); return; }
+
+    // Catch accidental re-posts: if this isn't an edit and the same person
+    // already has a very similar active listing from the last 30 minutes,
+    // stop and point them to editing it instead of creating a duplicate.
+    if (!editingAdId) {
+        var recentCutoff = Date.now() - 30 * 60 * 1000;
+        var possibleDupe = mktListings.find(function(l) {
+            return l.author_id === currentUser.id &&
+                l.title.trim().toLowerCase() === title.toLowerCase() &&
+                new Date(l.created_at).getTime() >= recentCutoff;
+        });
+        if (possibleDupe) {
+            showNotif('You already posted "' + title + '" a few minutes ago — opening it for editing instead.', 'info');
+            openEditAdForm(possibleDupe.id);
+            return;
+        }
+    }
+
+    // Screen for offensive language / illegal-activity references before
+    // this ever reaches the public listings.
+    var modResult = checkAdContent(title, description);
+    if (modResult.flagged) {
+        showAdRejection(modResult.reason);
+        sendAdRejectionEmail(currentUser.email, title, modResult.reason);
+        return;
+    }
+
+    var payload = {
+        category: category,
+        title: title,
+        price: price || null,
+        location: location || null,
+        description: description,
+        image_urls: adPhotoUrls,
+        image_url: adPhotoUrls[0] || null
+    };
+    if (btn) { btn.disabled = true; btn.textContent = editingAdId ? 'Saving…' : 'Posting…'; }
+    try {
+        if (editingAdId) {
+            await sb.from('marketplace_listings').update(payload).eq('id', editingAdId);
+            showNotif('Ad updated! ✏️', 'success');
+        } else {
+            payload.author_id = currentUser.id;
+            payload.expires_at = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+            await sb.from('marketplace_listings').insert(payload);
+            showNotif('Ad posted! 🏪', 'success');
+        }
+        adPhotoUrls = [];
+        editingAdId = null;
+        showPage('marketplace');
+        await loadMarketplace();
+    } catch (e) {
+        showNotif('Could not save your ad — please try again.', 'error');
+        if (btn) { btn.disabled = false; btn.textContent = editingAdId ? 'Save Changes' : 'Post Ad'; }
+    }
 }
 
 // Swaps the signed-in header for an invitation to join.
@@ -2815,21 +3543,37 @@ async function openTopicPanel(focusInput) {
     }
     var el = document.getElementById('pulse-comments-' + topicOfDayPostId);
     if (!el) { return; }
+    if (el.style.display === 'block' && !focusInput) {
+        closeTopicPanel();
+        return;
+    }
     if (el.style.display !== 'block') {
         el.style.display = 'block';
         await loadCommentsInto(topicOfDayPostId, el);
     }
+    var collapseBtn = document.getElementById('topic-collapse-btn');
+    if (collapseBtn) { collapseBtn.style.display = 'block'; }
     if (focusInput) {
         var input = document.getElementById('comment-input-' + topicOfDayPostId);
         if (input) { input.focus(); }
     }
 }
 
+function closeTopicPanel() {
+    if (topicOfDayPostId) {
+        var el = document.getElementById('pulse-comments-' + topicOfDayPostId);
+        if (el) { el.style.display = 'none'; }
+    }
+    var collapseBtn = document.getElementById('topic-collapse-btn');
+    if (collapseBtn) { collapseBtn.style.display = 'none'; }
+    document.getElementById('topic-of-day-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 function renderColumnists() {
     var communitySelect = document.getElementById('columnist-select-community');
     var topicalSelect = document.getElementById('columnist-select-topical');
     if (communitySelect) {
-        var chtml = '<option value="">Select your community columnist</option>';
+        var chtml = '<option value="">Community Gossip</option>';
         allColumnists.filter(function(c) { return c.kind === 'community'; }).forEach(function(c) {
             chtml += '<option value="' + c.id + '">' + c.name + ' — ' + c.hood + '</option>';
         });
@@ -2837,7 +3581,7 @@ function renderColumnists() {
         communitySelect.value = '';
     }
     if (topicalSelect) {
-        var thtml = '<option value="">Select your topic columnist</option>';
+        var thtml = '<option value="">Topic Columnist</option>';
         allColumnists.filter(function(c) { return c.kind === 'topical'; }).forEach(function(c) {
             thtml += '<option value="' + c.id + '">' + c.name + ' — ' + c.hood + '</option>';
         });
@@ -3053,6 +3797,8 @@ function showPage(page, fromHistory) {
     if (page === 'columnist-bio') { renderColumnistBio(); }
     if (page === 'advertise') { renderAdvertisePage(); }
     if (page === 'hiring') { renderHiringPage(); }
+    if (page === 'marketplace') { loadMarketplace(); }
+    if (page === 'marketplace-detail') { renderMarketplaceDetail(); }
     if (page === 'past-polls') { renderPastPollsPage(); }
     if (page === 'hosting') { renderHosting(); }
     if (page === 'chat') { renderChatRooms(); setChatTab('groups'); }
