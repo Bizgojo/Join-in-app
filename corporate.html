@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JoinIn — Corporate Admin</title>
+<style>
+:root{--navy:#12294A;--navy2:#1B4B8F;--rail:#0F2340;--canvas:#F4F6F8;--card:#fff;--ink:#1a2230;--muted:#6b7684;--line:#E3E8EE;--accent:#E4572E;--pos:#2E7D46}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--canvas);color:var(--ink)}
+.lbl{font-size:12px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px}
+input,select,textarea{font-family:inherit;border:1.5px solid var(--line);border-radius:8px;padding:9px 11px;font-size:15px;width:100%}
+input:disabled{background:#eef1f5;color:#4b5563}
+button{font-family:inherit;cursor:pointer}
+.btn{background:var(--navy2);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-size:14px;font-weight:700}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn.accent{background:var(--accent)}
+.btn.green{background:var(--pos)}
+
+/* Login */
+#login{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+#login .box{background:#fff;border-radius:18px;padding:34px 32px;max-width:380px;width:100%;box-shadow:0 24px 70px rgba(0,0,0,.4)}
+#login .brand{font-size:28px;font-weight:800;color:var(--navy);text-align:center}
+#login .brand .in{color:var(--accent);font-style:italic}
+#login .role{text-align:center;color:var(--muted);font-weight:600;margin-bottom:22px}
+#login label{margin-top:12px}
+#login .btn{width:100%;margin-top:18px;padding:13px}
+#login .hint{font-size:12px;color:var(--muted);text-align:center;margin-top:12px}
+#login .err{color:#c0392b;font-size:13px;text-align:center;margin-top:10px;display:none}
+
+/* App shell */
+#app{display:none}
+.topbar{background:var(--rail);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;position:sticky;top:0;z-index:10}
+.topbar .brand{font-size:20px;font-weight:800}.topbar .brand .in{color:var(--accent);font-style:italic}
+.topbar .role{font-size:12px;color:#8fa3c4;margin-left:10px}
+.topbar .logout{background:rgba(255,255,255,.14);color:#fff;border:none;border-radius:10px;padding:9px 15px;font-size:14px;font-weight:700}
+.layout{display:grid;grid-template-columns:236px 1fr;min-height:calc(100vh - 56px)}
+.rail{background:var(--rail);padding:16px 14px;position:sticky;top:56px;height:calc(100vh - 56px)}
+.navitem{display:block;padding:11px 12px;border-radius:10px;color:#cdd9ec;font-size:14.5px;font-weight:600;cursor:pointer;margin-bottom:2px}
+.navitem:hover{background:rgba(255,255,255,.06);color:#fff}
+.navitem.on{background:var(--navy2);color:#fff}
+.main{padding:24px 26px 60px;max-width:1120px}
+.section{display:none}.section.on{display:block}
+.section h1{font-size:22px;color:var(--navy);margin-bottom:16px}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:20px}
+.panel h2{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.panel .sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11.5px;color:var(--muted);font-weight:700;padding:8px 6px;border-bottom:1px solid var(--line)}
+td{padding:9px 6px;border-bottom:1px solid #eef1f5}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
+.big{color:var(--accent);font-weight:800}
+.pill{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px}
+.p-live{background:#eaf6ee;color:#2E7D46}.p-onb{background:#fff3d6;color:#8a6a12}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 17px}
+.kpi .k{font-size:12px;color:var(--muted);font-weight:600}
+.kpi .v{font-size:26px;font-weight:800;color:var(--navy);margin-top:6px;line-height:1}
+.kpi .s{font-size:12px;color:var(--muted);margin-top:6px}
+.kpi.money .v{color:var(--accent)}
+.kpi{transition:box-shadow .12s}.kpi:hover{box-shadow:0 4px 14px rgba(0,0,0,.10)}
+.scopebar{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.scopebar .f{max-width:220px}
+.mini{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.mini h3{font-size:13px;color:var(--navy);margin-bottom:8px}
+.mini .row{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px solid #f0f3f6}
+.mini .row:last-child{border-bottom:none}
+.revhead{display:flex;align-items:center;gap:10px;margin:16px 0 0}.revhead select{width:auto}
+#marketbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#eef3fb;border:1px solid #d7e3f4;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:14px;color:var(--navy);font-weight:600}
+#marketbar select{width:auto}
+.sched{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff7f3;border:1px solid #f3c9bb;border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:14px;color:#8a3d22}
+.sched select{width:auto}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px}
+.guide{border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.guide h3{font-size:16px;color:var(--navy)}
+.guide .gsub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.guide label{margin-top:10px}.guide textarea{min-height:60px;resize:vertical}
+.guide .share{background:#f7f9fb;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.guide .share code{font-size:12.5px;color:var(--navy2);background:#fff;border:1px solid var(--line);border-radius:6px;padding:6px 8px;word-break:break-all}
+.guide .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.guide .ok{color:var(--pos);font-size:12.5px;font-weight:700;display:none;margin-top:6px}
+.stub{color:var(--muted);font-size:14px;background:#f7f9fb;border:1px dashed var(--line);border-radius:12px;padding:18px}
+.typebar{display:flex;gap:8px;flex-wrap:wrap}.tbtn{background:#eef1f5;color:var(--muted);border:none;border-radius:20px;padding:9px 15px;font-size:13.5px;font-weight:700;cursor:pointer}.tbtn.on{background:var(--navy);color:#fff}
+.mcard{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px}.mcard .mh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.mcard .mt{font-size:16px;font-weight:800;color:var(--navy)}.mcard .meta{font-size:13px;color:var(--muted);margin-top:6px}
+.cand{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px}.cand .av{width:44px;height:44px;border-radius:50%;background:var(--navy2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex:0 0 auto}.cand .cn{font-weight:800;color:var(--ink)}.cand .cl{font-size:13px;color:var(--muted);margin-top:3px}.cand .cc{font-size:12px;color:#b06a2c;margin-top:3px}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.step{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:#eef1f5;color:var(--muted)}.step.done{background:#eaf6ee;color:#2E7D46}.step.now{background:#fff3d6;color:#8a6a12}
+.cmodal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:60;align-items:center;justify-content:center;padding:20px}.cbox{background:#fff;border-radius:16px;padding:22px;max-width:620px;width:100%;position:relative}.cx{position:absolute;top:12px;right:14px;background:#eef1f5;border:none;border-radius:50%;width:34px;height:34px;font-size:16px;cursor:pointer}.cnote{font-size:12px;color:var(--muted);margin-top:10px;text-align:center}
+
+/* ── RECRUITING ── */
+.rec-modes{display:inline-flex;background:#eef1f5;border-radius:12px;padding:5px;margin-bottom:16px}
+.rec-modes button{border:none;background:transparent;font-family:inherit;font-size:14.5px;font-weight:700;color:var(--muted);padding:9px 18px;border-radius:9px;cursor:pointer}
+.rec-modes button.on{background:var(--navy2);color:#fff}
+.rec-fields{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
+.rec-fields .f{flex:1;min-width:180px}
+.rec-verify{margin-top:14px;font-size:13px;color:#14396e;background:#eaf2fb;border:1px solid #cfe0f2;border-radius:10px;padding:11px 13px}
+.rc{border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}.rc.sel{border-color:var(--pos);box-shadow:0 0 0 2px rgba(46,125,70,.18)}
+.rc .top{display:flex;gap:16px;align-items:center;padding:16px 18px}
+.rc .who{flex:1;min-width:0}
+.rc .nm{font-size:18px;font-weight:800;color:var(--ink)}
+.rc .rl{font-size:13.5px;color:var(--muted);margin-top:2px}
+.rc .snip{font-size:13.5px;color:#33404a;margin-top:7px;max-width:64ch}
+.rc .fit{flex:0 0 auto;text-align:center;background:#eaf6ee;border-radius:12px;padding:8px 12px}
+.rc .fit .fn{font-size:20px;font-weight:800;color:var(--pos);line-height:1}.rc .fit .fl{font-size:9.5px;font-weight:800;color:var(--muted)}
+.rc .acts{flex:0 0 auto;display:flex;flex-direction:column;gap:8px;min-width:150px}
+.tag{display:inline-block;font-size:11px;font-weight:800;padding:2px 9px;border-radius:20px;margin-left:8px;vertical-align:middle}
+.tag.pub{background:#eaf2fb;color:var(--navy2)}.tag.tp{background:#f6ecf8;color:#9C27B0}.tag.paid{background:#fff3d6;color:#8a6a12}
+.rc .detail{display:none;border-top:1px solid var(--line);background:#fbfcfd;padding:16px 18px}.rc.open .detail{display:block}
+.photorow{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.pimg{width:76px;height:76px;border-radius:12px;object-fit:cover;border:1px solid var(--line)}
+.pav{width:76px;height:76px;border-radius:12px;background:#eaf2fb;color:var(--navy2);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;border:1px solid #cfe0f2}
+.pcap{font-size:12px;color:var(--muted);max-width:44ch}.pcap a{color:var(--navy2);font-weight:600}
+.lblr{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.04em;margin:2px 0 6px}
+.why{font-size:14px;background:#eaf2fb;border-left:3px solid var(--navy2);border-radius:8px;padding:9px 12px;margin-bottom:12px;max-width:74ch}.why b{color:var(--navy2)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.mchip{font-size:12px;font-weight:700;color:var(--muted);background:#f4f6f8;border:1px solid var(--line);border-radius:8px;padding:4px 9px}.mchip.rec{background:#eaf6ee;border-color:#cfe3ce;color:var(--pos)}
+.srcs a{display:inline-block;font-size:12.5px;margin:0 8px 6px 0;color:var(--navy2);font-weight:600;text-decoration:none}
+.recnote{font-size:12px;color:#9a6a00;margin-top:8px}
+
+/* contact / thread */
+.selbar{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#eaf6ee;border:1px solid #cfe3ce;border-radius:12px;padding:12px 16px;margin-bottom:16px}
+.selbar .t{font-weight:700;color:#2d5a2d}.selbar .t b{color:var(--pos)}
+.pipe{display:flex;align-items:center;margin:6px 0 4px}
+.pstep{flex:1;text-align:center;position:relative}
+.pstep .dot{width:26px;height:26px;border-radius:50%;background:#e3e8ee;color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;position:relative;z-index:2}
+.pstep.done .dot{background:var(--navy2)}.pstep.cur .dot{background:var(--navy);box-shadow:0 0 0 4px #dbe7f6}
+.pstep .sl{font-size:12px;font-weight:700;color:var(--muted)}.pstep.done .sl,.pstep.cur .sl{color:var(--ink)}
+.pstep:not(:first-child)::before{content:'';position:absolute;top:13px;left:-50%;width:100%;height:3px;background:#e3e8ee;z-index:1}.pstep.done::before,.pstep.cur::before{background:var(--navy2)}
+.cgrid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;align-items:start}
+.msg{margin-bottom:14px;max-width:86%}.msg.out{margin-left:auto}
+.msg .bub{border-radius:14px;padding:12px 15px;font-size:14px;line-height:1.5;white-space:pre-wrap}
+.msg.out .bub{background:#eaf6ee;border:1px solid #d3e4d2}.msg.in .bub{background:#f4f6f8;border:1px solid #e2e8ee}
+.msg .mm{font-size:12px;color:var(--muted);margin-top:5px}.msg.out .mm{text-align:right}
+.tbox{width:100%;font-family:inherit;font-size:14px;line-height:1.5;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fafcfd;resize:vertical;min-height:150px}
+.rowbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.read .a{font-size:14px;font-weight:800;color:#9C27B0;margin-bottom:8px}
+.rr{margin-bottom:12px}.rr .rl2{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.04em;margin-bottom:3px}.rr .rv{font-size:14px;color:#33404a}.rr.warn .rv{color:#9a5a00}
+.attach{margin-top:12px;font-size:13px;font-weight:600;color:#33404a;background:#fff7f3;border:1px solid #f3c9bb;border-radius:10px;padding:9px 12px}.attach b{color:#8a3d22}.attach .an{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+
+@media(max-width:900px){.layout{grid-template-columns:1fr}.rail{position:static;height:auto}.kpis{grid-template-columns:1fr 1fr}.grid5{grid-template-columns:1fr 1fr}.cgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="box">
+    <div class="brand">Join<span class="in">In</span></div>
+    <div class="role">Corporate Admin</div>
+    <label class="lbl">Email</label>
+    <input type="email" id="lg-user" value="corporate@joinin.today">
+    <label class="lbl">Password</label>
+    <input type="password" id="lg-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')signIn()">
+    <button class="btn" onclick="signIn()">Sign in</button>
+    <div class="err" id="lg-err">Incorrect password.</div>
+    <div class="hint">Corporate access only.</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="topbar">
+    <div><span class="brand">Join<span class="in">In</span></span><span class="role">Corporate · all markets</span></div>
+    <button class="logout" onclick="signOut()">Log out</button>
+  </div>
+
+  <div class="layout">
+    <aside class="rail">
+      <div class="navitem on" onclick="showSection('overview',this)">Overview</div>
+      <div class="navitem" onclick="showSection('recruiting',this)">Recruiting</div>
+      <div class="navitem" onclick="showSection('ratecard',this)">Rate Card</div>
+      <div class="navitem" onclick="showSection('publishers',this)">Publishers</div>
+      <div class="navitem" onclick="showSection('guides',this)">Onboarding</div>
+      <div class="navitem" onclick="showSection('revenue',this)">Revenue &amp; Payouts</div>
+      <div class="navitem" onclick="showSection('comms',this)">Communications</div>
+    </aside>
+
+    <main class="main">
+
+      <!-- OVERVIEW -->
+      <section class="section on" id="sec-overview">
+        <h1>Overview</h1>
+        <div class="panel">
+          <div class="scopebar">
+            <div class="f"><label class="lbl">Market</label>
+              <select id="scope-market" onchange="onScopeMarket()">
+                <option value="all">All markets</option>
+                <option value="asheville">Asheville, NC</option>
+                <option value="greenville">Greenville, SC</option>
+              </select>
+            </div>
+            <div class="f" id="zone-wrap" style="display:none"><label class="lbl">Zone</label>
+              <select id="scope-zone" onchange="renderStats()"></select>
+            </div>
+            <div style="font-size:13px;color:var(--muted);padding-bottom:9px" id="scope-label"></div>
+          </div>
+          <div class="kpis" id="kpi-grid"></div>
+          <div class="revhead"><span class="lbl" style="margin:0">Revenue month</span>
+            <select id="rev-month" onchange="renderStats()">
+              <option value="mtd">This month (MTD)</option>
+              <option value="m1">Last month</option>
+              <option value="m2">2 months ago</option>
+              <option value="m3">3 months ago</option>
+            </select>
+          </div>
+          <div class="mini" id="scope-break" style="margin-top:16px"></div>
+        </div>
+      </section>
+
+      <!-- RECRUITING -->
+      <section class="section" id="sec-recruiting">
+        <h1>Recruiting</h1>
+
+        <!-- FIND VIEW -->
+        <div id="rec-find">
+          <div class="rec-modes">
+            <button id="rm-pub" class="on" onclick="recSetMode('publisher')">Find Publishers</button>
+            <button id="rm-col" onclick="recSetMode('columnist')">Find Columnists</button>
+          </div>
+          <div class="panel">
+            <h2 id="rec-panel-title">New territory</h2>
+            <div class="sub" id="rec-panel-hint"></div>
+            <div class="rec-fields">
+              <div class="f"><label class="lbl" id="rec-lab-a">CITY</label><input id="rec-in-a"></div>
+              <div class="f"><label class="lbl" id="rec-lab-b">STATE</label><input id="rec-in-b"></div>
+              <button class="btn green" style="white-space:nowrap;padding:12px 20px" onclick="recGenerate()">🔍 Generate candidates</button>
+            </div>
+            <div class="rec-verify"><b>How Generate works:</b> it runs a live web research pass and lists only people found in public sources — each shown with the sources used, so you can verify before you recruit. Nothing is invented. (Runs through a Claude research step until the in-app AI backend is wired.)</div>
+          </div>
+          <div id="rec-results"></div>
+        </div>
+
+        <!-- CONTACT VIEW -->
+        <div id="rec-contact" style="display:none">
+          <button class="btn ghost" style="margin-bottom:14px" onclick="recBack()">‹ Back to candidates</button>
+          <div class="panel" style="display:flex;align-items:center;gap:16px">
+            <div style="flex:1"><div class="rc" style="border:none;margin:0"><div class="nm" id="ct-name" style="font-size:22px"></div><div class="rl" id="ct-sub"></div></div></div>
+            <div class="fit" style="text-align:center;background:#eaf6ee;border-radius:12px;padding:10px 14px"><div style="font-size:22px;font-weight:800;color:var(--pos);line-height:1" id="ct-fit"></div><div style="font-size:9.5px;font-weight:800;color:var(--muted)">FIT /10</div></div>
+          </div>
+          <div class="panel">
+            <div class="lblr">PIPELINE</div>
+            <div class="pipe" id="ct-pipe"></div>
+          </div>
+          <div class="cgrid">
+            <div>
+              <div class="panel">
+                <h2>Conversation</h2>
+                <div id="ct-thread"></div>
+                <div style="border-top:1px dashed var(--line);padding-top:12px;margin-top:6px;font-size:12.5px;color:var(--muted)">＋ Add their reply — or connect email to capture replies automatically.</div>
+              </div>
+              <div class="panel">
+                <h2 style="display:flex;align-items:center;gap:8px">Proposed reply <span class="tag tp" style="margin:0">drafted by Claude</span></h2>
+                <div class="sub" id="ct-reply-sub"></div>
+                <textarea class="tbox" id="ct-reply"></textarea>
+                <div class="attach" id="ct-attach" style="display:none">📎 Attaching: <b>Publisher Info Deck (v1)</b><span class="an">the "should you do this" overview — not the training/onboarding deck</span></div>
+                <div class="rowbtns">
+                  <button class="btn ghost" onclick="recCopy('ct-reply',this)">Copy</button>
+                  <button class="btn" onclick="alert('Opens your email reply with this text.')">Open email</button>
+                  <button class="btn green" onclick="alert('Adds this to the thread as sent and advances the pipeline.')">Add to thread as sent</button>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h2 style="display:flex;align-items:center;gap:8px">Send the Info Deck <span class="tag pub" style="margin:0">personalized</span></h2>
+                <div class="sub">Personalizes the Publisher Info Deck for this candidate and market, then sends it with your reply. (Not the training deck — that comes after they say yes.)</div>
+                <label class="lbl">Opening line (auto-written — edit freely)</label>
+                <textarea class="tbox" id="dk-open" style="min-height:80px"></textarea>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
+                  <div style="flex:1;min-width:180px"><label class="lbl">Recipient email</label><input id="dk-email" placeholder="name@email.com"></div>
+                  <div style="flex:1;min-width:140px"><label class="lbl">Market (brands the deck)</label><input id="dk-market" value="Asheville"></div>
+                </div>
+                <div class="share" style="margin-top:12px"><span class="lbl" style="margin:0">Personalized deck link</span><code id="dk-link">joinin.today/deck/publisher/…</code></div>
+                <div class="rowbtns">
+                  <button class="btn ghost" onclick="dkPreview()">👁 Preview deck</button>
+                  <button class="btn ghost" onclick="recCopy2('dk-link',this)">Copy link</button>
+                  <button class="btn green" onclick="dkSend()">📤 Send deck + reply</button>
+                  <span class="ok" id="dk-ok" style="display:none;color:var(--pos);font-weight:700;font-size:13px"></span>
+                </div>
+                <div class="stub" style="margin-top:12px">Sending marks the pipeline <b>Deck sent</b>. You send it (or it goes through JoinIn once email is wired). The deck file must be deployed alongside this admin for Preview/link to open.</div>
+              </div>
+            </div>
+            <div>
+              <div class="panel read">
+                <div class="a" id="ct-read-title">The read</div>
+                <div class="rr"><div class="rl2">ARCHETYPE</div><div class="rv" id="ct-arch"></div></div>
+                <div class="rr"><div class="rl2">WHAT LIGHTS THEM UP</div><div class="rv" id="ct-lights"></div></div>
+                <div class="rr warn"><div class="rl2">WHAT TO AVOID</div><div class="rv" id="ct-avoid"></div></div>
+                <div class="rr"><div class="rl2">LEAD ANGLE</div><div class="why" id="ct-lead" style="margin:0"></div></div>
+              </div>
+              <div class="panel">
+                <h2>Notes &amp; log</h2>
+                <div class="sub">Track replies, dates, and next steps.</div>
+                <textarea class="tbox" id="ct-notes" style="min-height:110px"></textarea>
+              </div>
+              <div class="stub">Drafts are written by Claude from this person's public profile. You review, edit, and send them yourself — JoinIn never sends on your behalf.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RATE CARD -->
+      <section class="section" id="sec-ratecard">
+        <h1>Composite Rate Card</h1>
+        <div class="panel">
+          <h2>Ad performance by type</h2>
+          <div class="sub">Last 30 days, all markets. Select a type below to view and edit its rate.</div>
+          <table>
+            <thead><tr><th>Ad type</th><th class="n"># ads</th><th class="n">Revenue</th><th class="n">Avg $/ad</th></tr></thead>
+            <tbody>
+              <tr><td>Neighborhood columns</td><td class="n">31</td><td class="n">$1,240</td><td class="n">$40</td></tr>
+              <tr><td>Topic columns</td><td class="n">12</td><td class="n">$360</td><td class="n">$30</td></tr>
+              <tr><td>Pulse ads</td><td class="n">46</td><td class="n">$920</td><td class="n">$20</td></tr>
+              <tr><td>Classifieds</td><td class="n">84</td><td class="n">Free</td><td class="n">$0</td></tr>
+              <tr><td>Banner ads</td><td class="n">—</td><td class="n">—</td><td class="n">Not live</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h2>Set rate — by ad type</h2>
+          <div class="sub">Only Corporate can change prices. Choose global (all markets) or one market.</div>
+          <div class="typebar" id="typebar">
+            <button class="tbtn on" onclick="selType('neighborhood',this)">Neighborhood columns</button>
+            <button class="tbtn" onclick="selType('topic',this)">Topic columns</button>
+            <button class="tbtn" onclick="selType('pulse',this)">Pulse ads</button>
+            <button class="tbtn" onclick="selType('classified',this)">Classifieds</button>
+            <button class="tbtn" onclick="selType('banner',this)">Banner ads</button>
+          </div>
+          <div id="calc-scope" style="margin:14px 0 4px">
+            <div id="marketbar">Apply to:
+              <select id="rc-scope" onchange="loadType()">
+                <option value="all">All markets (global)</option>
+                <option value="asheville">Asheville, NC</option>
+                <option value="greenville">Greenville, SC</option>
+              </select>
+            </div>
+            <div class="sched">Price change takes effect in
+              <select id="sched-days"><option>7 days</option><option>14 days</option><option>30 days</option><option>Immediately</option></select>
+              — affected publishers auto-notified.
+              <button class="btn accent" onclick="applySched()">Apply changes</button>
+              <span id="sched-ok" style="color:var(--pos);font-weight:700;display:none"></span>
+            </div>
+          </div>
+          <div id="calc-box">
+            <div class="grid5">
+              <div><label class="lbl" id="lab-price">Price / unit</label><input type="number" id="rc-price" oninput="calcRate()"></div>
+              <div><label class="lbl" id="lab-N">Units</label><input type="number" id="rc-N" oninput="calcRate()"></div>
+              <div><label class="lbl">Discount stops after</label><input type="number" id="rc-cap" oninput="calcRate()"></div>
+              <div><label class="lbl">Per-unit at cap (%)</label><input type="number" id="rc-endpct" oninput="calcRate()"></div>
+              <div><label class="lbl">Columnist share (%)</label><input type="number" id="rc-share" oninput="calcRate()"></div>
+            </div>
+            <div style="max-width:240px;margin-bottom:14px"><label class="lbl">Publisher share of platform (%)</label><input type="number" id="rc-pubpct" oninput="calcRate()"></div>
+            <table><thead id="rc-head"></thead><tbody id="rc-rows"></tbody></table>
+            <div class="sub" id="rc-note" style="margin-top:10px"></div>
+          </div>
+          <div id="calc-free" class="stub" style="display:none">Classifieds are <strong>free</strong> to post right now. Pricing can be turned on later.</div>
+          <div id="calc-banner" class="stub" style="display:none">Banner ads are <strong>not available yet</strong>. When they launch, their rate control will appear here.</div>
+        </div>
+      </section>
+
+      <!-- PUBLISHERS -->
+      <section class="section" id="sec-publishers">
+        <h1>Publishers</h1>
+        <div class="panel">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+            <div><h2>Markets &amp; publishers</h2><div class="sub" style="margin:0">One publisher is onboarded per market at a time.</div></div>
+            <button class="btn accent" onclick="addTerritory()">+ Add territory</button>
+          </div>
+          <div id="pub-list" style="margin-top:16px"></div>
+        </div>
+      </section>
+
+      <!-- ONBOARDING -->
+      <section class="section" id="sec-guides">
+        <h1>Onboarding &amp; Training</h1>
+        <div class="panel">
+          <div class="sub">View the guide, or personalize it for a candidate and send an interactive link by email.</div>
+          <button class="btn ghost" style="margin-bottom:14px" onclick="alert('Opens the onboarding guide.')">👁 View onboarding guide</button>
+          <button class="btn ghost" style="margin-bottom:14px;margin-left:8px" onclick="alert('Opens the Publisher training course.')">📘 Publisher training course</button>
+          <div class="guide" style="max-width:560px">
+            <h3>Publisher onboarding guide</h3>
+            <div class="gsub">For a prospective market operator. Enter the market first — the deck uses that market's name and logo throughout.</div>
+            <label class="lbl">Market *</label><input type="text" id="pg-market" value="Asheville" oninput="mkLink('pg')">
+            <label class="lbl">Candidate name</label><input type="text" id="pg-name" placeholder="e.g. Jordan Ellis" oninput="mkLink('pg')">
+            <label class="lbl">Candidate email</label><input type="email" id="pg-email" placeholder="name@email.com">
+            <div class="share"><span class="lbl" style="margin:0">Interactive link</span><code id="pg-link">joinin.today/guide/publisher/…</code></div>
+            <div class="btns"><button class="btn ghost" onclick="copyEl('pg-link',this)">Copy link</button><button class="btn accent" onclick="sendGuide('pg')">Send via email</button></div>
+            <div class="ok" id="pg-ok"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REVENUE -->
+      <section class="section" id="sec-revenue">
+        <h1>Revenue &amp; Payouts</h1>
+        <div class="panel">
+          <h2>Disbursements this cycle</h2>
+          <div class="sub">One Stripe account collects all revenue, then pays out.</div>
+          <table>
+            <thead><tr><th>Recipient</th><th>Role</th><th>Basis</th><th class="n">Amount</th></tr></thead>
+            <tbody>
+              <tr><td>Marc Postlewaite</td><td>Publisher — Asheville</td><td>70% general + 50% column ads</td><td class="n">$2,198</td></tr>
+              <tr><td>Maya Reyes-Booth</td><td>Columnist</td><td>Zone-manager commission</td><td class="n">$180</td></tr>
+              <tr><td>JoinIn</td><td>Franchisor (retained)</td><td>30% of ad revenue</td><td class="n">$1,446</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- COMMS -->
+      <section class="section" id="sec-comms">
+        <h1>Communications</h1>
+        <div class="panel"><h2>Coming next</h2><div class="stub">Candidate replies inbox, publisher messages, and column posts/questions will live here.</div></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div id="chart-modal" class="cmodal" onclick="if(event.target===this)closeChart()"><div class="cbox"><button class="cx" onclick="closeChart()">✕</button><div id="chart-body"></div><div class="cnote">Monthly volume since this market opened (max 12 months). Mockup data.</div></div></div>
+
+<script>
+/* auth */
+function signIn(){ var p=document.getElementById('lg-pass').value.trim(); if(p.toLowerCase()!=='tritheim'){document.getElementById('lg-err').style.display='block';return;} document.getElementById('lg-err').style.display='none'; document.getElementById('login').style.display='none'; document.getElementById('app').style.display='block'; }
+function signOut(){ document.getElementById('app').style.display='none'; document.getElementById('login').style.display='flex'; document.getElementById('lg-pass').value=''; }
+
+/* nav */
+function showSection(id, el){
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('on'); });
+  document.getElementById('sec-'+id).classList.add('on');
+  document.querySelectorAll('.navitem').forEach(function(n){ n.classList.remove('on'); });
+  if(el) el.classList.add('on');
+  window.scrollTo(0,0);
+}
+
+/* ---- stats ---- */
+var STATS = {
+  all:{label:'All markets', members:'3,142', new7:'214', readers:'6,480', columnists:'7', campaigns:'12', pending:'5', events:'23', rev:{mtd:'$4,820',m1:'$6,110',m2:'$5,540',m3:'$3,900'}},
+  markets:{
+    asheville:{label:'Asheville, NC', members:'2,400', new7:'168', readers:'5,200', columnists:'5', campaigns:'9', pending:'3', events:'17', rev:{mtd:'$3,140',m1:'$4,020',m2:'$3,650',m3:'$2,510'},
+      zones:{ west:{label:'West Asheville', members:'620', new7:'41', readers:'1,120', columnists:'1', campaigns:'3', pending:'1', events:'4', rev:{mtd:'$780',m1:'$980',m2:'$900',m3:'$610'}},
+        rad:{label:'River Arts District', members:'480', new7:'33', readers:'980', columnists:'1', campaigns:'2', pending:'0', events:'3', rev:{mtd:'$610',m1:'$740',m2:'$690',m3:'$470'}},
+        downtown:{label:'Downtown / Pack Sq.', members:'560', new7:'27', readers:'1,040', columnists:'1', campaigns:'2', pending:'1', events:'5', rev:{mtd:'$720',m1:'$880',m2:'$800',m3:'$560'}} }},
+    greenville:{label:'Greenville, SC', members:'742', new7:'46', readers:'1,280', columnists:'2', campaigns:'3', pending:'2', events:'6', rev:{mtd:'$680',m1:'$910',m2:'$820',m3:'$540'},
+      zones:{ gvdt:{label:'Downtown Greenville', members:'420', new7:'28', readers:'760', columnists:'1', campaigns:'2', pending:'1', events:'3', rev:{mtd:'$400',m1:'$540',m2:'$480',m3:'$320'}},
+        gvwe:{label:'West End', members:'322', new7:'18', readers:'520', columnists:'1', campaigns:'1', pending:'1', events:'3', rev:{mtd:'$280',m1:'$370',m2:'$340',m3:'$220'}} }}
+  }
+};
+function onScopeMarket(){
+  var m=document.getElementById('scope-market').value;
+  var zw=document.getElementById('zone-wrap'), zs=document.getElementById('scope-zone');
+  if(m==='all'){ zw.style.display='none'; }
+  else { zw.style.display='block'; var zones=STATS.markets[m].zones, html='<option value="all">All zones</option>'; for(var k in zones){ html+='<option value="'+k+'">'+zones[k].label+'</option>'; } zs.innerHTML=html; }
+  renderStats();
+}
+function currentScope(){
+  var m=document.getElementById('scope-market').value;
+  if(m==='all') return {data:STATS.all, level:'all'};
+  var mk=STATS.markets[m]; var z=document.getElementById('scope-zone').value;
+  if(z && z!=='all' && mk.zones[z]) return {data:mk.zones[z], level:'zone'};
+  return {data:mk, level:'market'};
+}
+function renderStats(){
+  var sc=currentScope(), d=sc.data, mon=document.getElementById('rev-month').value;
+  document.getElementById('scope-label').textContent = 'Showing: ' + d.label;
+  var tiles=[['Total members',d.members,'in scope'],['New members · 7 days',d.new7,'this scope'],['Column readers · 7 days',d.readers,'unique'],['Revenue',(d.rev[mon]||d.rev.mtd),'money'],['Active columnists',d.columnists,''],['Live ad campaigns',d.campaigns,''],['Pending moderation',d.pending,''],['Live events · this week',d.events,'']];
+  var html=''; tiles.forEach(function(t){ var money=(t[2]==='money'); html+='<div class="kpi'+(money?' money':'')+'" style="cursor:pointer" onclick="openMetricChart(\''+t[0]+'\',\''+t[1]+'\','+money+')"><div class="k">'+t[0]+'</div><div class="v">'+t[1]+'</div><div class="s">'+(money?'':t[2])+'</div></div>'; });
+  document.getElementById('kpi-grid').innerHTML=html;
+  var b=document.getElementById('scope-break');
+  if(sc.level==='all'){ b.style.display='block'; b.innerHTML='<h3>New members · 7 days by market</h3><div class="row"><span>Asheville, NC</span><span>168</span></div><div class="row"><span>Greenville, SC</span><span>46</span></div>'; }
+  else if(sc.level==='market'){ b.style.display='block'; var zones=sc.data.zones, rows=''; for(var k in zones){ rows+='<div class="row"><span>'+zones[k].label+'</span><span>'+zones[k].new7+'</span></div>'; } b.innerHTML='<h3>New members · 7 days by zone</h3>'+rows; }
+  else { b.style.display='none'; }
+}
+function marketOpen(){ var m=document.getElementById('scope-market').value; if(m==='greenville') return {y:2026,mo:8}; return {y:2026,mo:6}; }
+function fmtV(v,isMoney){ return (isMoney?'$':'')+Math.round(v).toLocaleString(); }
+function openMetricChart(label, valStr, isMoney){
+  var cur={y:2026,mo:9}, op=marketOpen();
+  var n=(cur.y-op.y)*12+(cur.mo-op.mo)+1; if(n<1)n=1; if(n>12)n=12;
+  var MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var labels=[]; for(var i=n-1;i>=0;i--){ var mm=cur.mo-1-i, yy=cur.y; while(mm<0){mm+=12;yy--;} labels.push(MN[mm]); }
+  var target=parseFloat(String(valStr).replace(/[^0-9.]/g,''))||0;
+  var series=[]; for(var k=0;k<n;k++){ var f=(n===1)?1:(0.55+0.45*k/(n-1)); series.push(Math.round(target*f)); } series[n-1]=target;
+  var scopeLbl=document.getElementById('scope-label').textContent.replace('Showing: ','');
+  drawChart(label+' — '+scopeLbl, series, labels, isMoney);
+}
+function drawChart(title, series, labels, isMoney){
+  var W=580,H=300,padL=56,padR=18,padT=42,padB=42;
+  var max=Math.max.apply(null,series); if(max<=0)max=1;
+  var plotW=W-padL-padR, plotH=H-padT-padB, gap=plotW/series.length, bw=gap*0.58;
+  var s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:580px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">';
+  s+='<text x="'+padL+'" y="24" font-size="15" font-weight="800" fill="#12294A">'+title+'</text>';
+  [0,0.5,1].forEach(function(t){ var y=padT+plotH-plotH*t; s+='<line x1="'+padL+'" y1="'+y+'" x2="'+(W-padR)+'" y2="'+y+'" stroke="#e3e8ee"/>'; s+='<text x="'+(padL-8)+'" y="'+(y+4)+'" font-size="10" fill="#6b7684" text-anchor="end">'+fmtV(max*t,isMoney)+'</text>'; });
+  series.forEach(function(v,i){ var h=plotH*(v/max), x=padL+gap*i+(gap-bw)/2, y=padT+plotH-h; var col=(i===series.length-1)?'#E4572E':'#1B4B8F';
+    s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+h+'" rx="4" fill="'+col+'"/>';
+    s+='<text x="'+(x+bw/2)+'" y="'+(y-6)+'" font-size="10" font-weight="700" fill="#12294A" text-anchor="middle">'+fmtV(v,isMoney)+'</text>';
+    s+='<text x="'+(x+bw/2)+'" y="'+(H-padB+16)+'" font-size="10" fill="#6b7684" text-anchor="middle">'+labels[i]+'</text>'; });
+  s+='</svg>';
+  document.getElementById('chart-body').innerHTML=s; document.getElementById('chart-modal').style.display='flex';
+}
+function closeChart(){ document.getElementById('chart-modal').style.display='none'; }
+
+/* ---- rate card ---- */
+function money(n){ return '$' + (Math.round(n*100)/100).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2}); }
+function gv(id){ return parseFloat(document.getElementById(id).value); }
+function iv(id){ var e=document.getElementById(id); return e?e.value:''; }
+function sv(id,v){ var e=document.getElementById(id); if(e) e.value=v; }
+var UNIT={ neighborhood:'zone', topic:'zone', pulse:'day' };
+var CFG={
+  neighborhood:{ asheville:{price:'25',N:'10',cap:'5',endpct:'50',share:'50',pubpct:'70'}, greenville:{price:'20',N:'8',cap:'5',endpct:'55',share:'50',pubpct:'70'} },
+  topic:{ asheville:{price:'15',N:'1',cap:'1',endpct:'100',share:'0',pubpct:'70'}, greenville:{price:'12',N:'1',cap:'1',endpct:'100',share:'0',pubpct:'70'} },
+  pulse:{ asheville:{price:'20',N:'7',cap:'7',endpct:'80',share:'0',pubpct:'70'}, greenville:{price:'15',N:'7',cap:'7',endpct:'85',share:'0',pubpct:'70'} }
+};
+var curType='neighborhood';
+function selType(t, btn){
+  curType=t;
+  document.querySelectorAll('.tbtn').forEach(function(b){ b.classList.remove('on'); }); if(btn) btn.classList.add('on');
+  var isCalc=(t==='neighborhood'||t==='topic'||t==='pulse');
+  document.getElementById('calc-box').style.display=isCalc?'block':'none';
+  document.getElementById('calc-scope').style.display=isCalc?'block':'none';
+  document.getElementById('calc-free').style.display=(t==='classified')?'block':'none';
+  document.getElementById('calc-banner').style.display=(t==='banner')?'block':'none';
+  if(isCalc) loadType();
+}
+function scopeMarkets(){ var s=document.getElementById('rc-scope').value; return (s==='all')?['asheville','greenville']:[s]; }
+function loadType(){
+  var s=document.getElementById('rc-scope').value, mk=(s==='all')?'asheville':s, c=CFG[curType][mk];
+  sv('rc-price',c.price);sv('rc-N',c.N);sv('rc-cap',c.cap);sv('rc-endpct',c.endpct);sv('rc-share',c.share);sv('rc-pubpct',c.pubpct);
+  document.getElementById('lab-price').textContent=(UNIT[curType]==='day')?'Price / day':'Price / zone';
+  document.getElementById('lab-N').textContent=(UNIT[curType]==='day')?'Max run (days)':'Total zones';
+  calcRate();
+}
+function calcRate(){
+  var unit=UNIT[curType];
+  var d=gv('rc-price')||0,N=Math.max(1,Math.floor(gv('rc-N')||1)),cap=Math.max(1,Math.floor(gv('rc-cap')||1));
+  var endpct=Math.min(100,Math.max(5,gv('rc-endpct')||50))/100,s=(gv('rc-share')||0)/100,pubpct=(gv('rc-pubpct')||0)/100;
+  var vals={price:iv('rc-price'),N:iv('rc-N'),cap:iv('rc-cap'),endpct:iv('rc-endpct'),share:iv('rc-share'),pubpct:iv('rc-pubpct')};
+  scopeMarkets().forEach(function(mk){ CFG[curType][mk]=Object.assign({},vals); });
+  var a=(cap>1)?(1+Math.log(endpct)/Math.log(cap)):1, floorPrice=d*Math.pow(cap,a-1);
+  function pz(n){return (n<=cap)?d*Math.pow(n,a-1):floorPrice;} function tot(n){return n*pz(n);}
+  var ul=unit.charAt(0).toUpperCase()+unit.slice(1)+'s';
+  document.getElementById('rc-head').innerHTML='<tr><th>'+ul+'</th><th class="n">Per-'+unit+'</th><th class="n">Advertiser total</th><th class="n">Columnist pool</th><th class="n">Publisher</th><th class="n">Corporate</th></tr>';
+  var rows='';
+  for(var n=1;n<=N;n++){ var R=tot(n),pool=s*R,plat=R-pool,pubAmt=pubpct*plat,corpAmt=plat-pubAmt; var zc=(n===cap)?' (cap)':(n>cap?' (flat)':''); rows+='<tr class="'+(n===cap?'cap':'')+'"><td>'+n+zc+'</td><td class="n">'+money(pz(n))+'</td><td class="n">'+money(R)+'</td><td class="n big">'+money(pool)+'</td><td class="n">'+money(pubAmt)+'</td><td class="n">'+money(corpAmt)+'</td></tr>'; }
+  document.getElementById('rc-rows').innerHTML=rows;
+  var scopeTxt=(document.getElementById('rc-scope').value==='all')?'all markets':document.getElementById('rc-scope').value;
+  var note='Editing '+scopeTxt+'. One '+unit+' costs '+money(d)+'; slides to '+money(floorPrice)+' by '+unit+' '+cap+', then flat. ';
+  note+=(s>0)?('Columnists earn '+(s*100).toFixed(0)+'% (pool splits among zone managers). '):'No columnist share for this type. ';
+  note+='Platform splits '+(pubpct*100).toFixed(0)+'% Publisher / '+((1-pubpct)*100).toFixed(0)+'% Corporate.';
+  document.getElementById('rc-note').textContent=note;
+}
+function applySched(){ var d=document.getElementById('sched-days').value, ok=document.getElementById('sched-ok'); ok.textContent='✓ Scheduled ('+d+') — publishers notified.'; ok.style.display='inline'; setTimeout(function(){ok.style.display='none';},2500); }
+
+/* ---- publishers ---- */
+var PUBM=[
+  {name:'Asheville, NC', status:'live', publisher:'Marc Postlewaite', opened:'Jun 1, 2026', onboarded:'Jun 15, 2026'},
+  {name:'Greenville, SC', status:'onboarding', candidate:'Rosa Delgado', stage:'docs', opened:'Aug 20, 2026'},
+  {name:'Charlotte, NC', status:'seeking', opened:'Sep 2, 2026'}
+];
+var PSTAGES=['Interested','Interview','Docs','Approved','Live'];
+function renderPubs(){
+  var el=document.getElementById('pub-list'); if(!el) return; var html='';
+  PUBM.forEach(function(m){
+    var pill = m.status==='live' ? '<span class="pill p-live">Live</span>' : (m.status==='onboarding' ? '<span class="pill p-onb">Onboarding</span>' : '<span class="pill" style="background:#e7ecf3;color:#3a4a63">Seeking publisher</span>');
+    html+='<div class="mcard"><div class="mh"><span class="mt">'+m.name+'</span>'+pill+'</div>';
+    if(m.status==='live'){ html+='<div class="meta">Publisher: <strong>'+m.publisher+'</strong> · Market opened '+m.opened+' · Onboarded '+m.onboarded+'</div>'; }
+    else if(m.status==='onboarding'){ html+='<div class="meta">Candidate: <strong>'+m.candidate+'</strong> · Market opened '+m.opened+'</div>'; var cur=['interested','interview','docs','approved','live'].indexOf(m.stage||'interview'); var steps='<div class="steps">'; PSTAGES.forEach(function(s,i){ steps+='<span class="step '+(i<cur?'done':(i===cur?'now':''))+'">'+s+'</span>'; }); steps+='</div>'; html+=steps; }
+    else { html+='<div class="meta">Market opened '+m.opened+'. No candidate selected yet.</div><div style="margin-top:10px"><button class="btn" onclick="showSection(\'recruiting\',document.querySelectorAll(\'.navitem\')[1])">🔎 Find candidates in Recruiting</button></div>'; }
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+function addTerritory(){ var name=prompt('New market name (e.g., Knoxville, TN):'); if(!name) return; var today=new Date().toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); PUBM.push({name:name, status:'seeking', opened:today}); renderPubs(); }
+
+/* ---- onboarding ---- */
+function slug(s){ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,24)||'candidate'; }
+function mkLink(pfx){ var name=document.getElementById(pfx+'-name').value; document.getElementById(pfx+'-link').textContent='joinin.today/guide/publisher/'+slug(name)+'-'+Math.random().toString(36).slice(2,6); }
+function copyEl(id,btn){ var t=document.getElementById(id); try{navigator.clipboard.writeText(t.textContent);}catch(e){} var o=btn.textContent; btn.textContent='Copied!'; setTimeout(function(){btn.textContent=o;},1200); }
+function sendGuide(pfx){ var email=document.getElementById(pfx+'-email').value.trim(), ok=document.getElementById(pfx+'-ok'); if(!email){ok.style.color='#c0392b';ok.textContent='Add a recipient email first.';ok.style.display='block';return;} ok.style.color='var(--pos)';ok.textContent='✓ Personalized guide sent to '+email+' (mockup).';ok.style.display='block'; }
+
+/* ===== RECRUITING ===== */
+var REC_STAGES=['Researched','Contacted','Replied','Deck sent','Interview','Offered','Onboarded'];
+function recEsc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function recInitials(n){ var w=String(n||'').replace(/[—-]/g,' ').split(/\s+/).filter(function(x){return /[A-Za-z]/.test(x);}); return (((w[0]||'')[0]||'')+((w[1]||'')[0]||'')).toUpperCase(); }
+
+var REC={
+  publisher:{
+    labA:'CITY', labB:'STATE', inA:'Asheville', inB:'NC',
+    hint:'Enter the city and state you\u2019re opening. Generate researches public sources and returns real, verified candidates.',
+    cands:[
+      {nm:'Jason Sandford', role:'Local media operator — Ashevegas', loc:'Asheville, NC', tags:'<span class="tag pub">Publisher</span>', fit:9, stage:2,
+        snip:'Runs Ashevegas (~20 yrs) and the Ashevegas Hot Sheet, a Substack with 6,000+ subscribers.',
+        bio:'Jason Sandford is a reporter, writer, blogger and photographer focused on all things Asheville. He has run Ashevegas for roughly two decades; the Ashevegas Hot Sheet is a Substack newsletter with thousands of paying subscribers following Asheville growth and development.',
+        why:'Strongest Publisher profile found — decades of reach, deep local sourcing, and he already operates an independent local-media business.',
+        methods:[{m:'Site contact · ashvegas.com',rec:true},{m:'Substack (reply to Hot Sheet)'},{m:'X / Twitter'}],
+        sources:['ashevegashotsheet.substack.com','ashvegas.com','Mountain Xpress'],
+        note:'No raw email posted publicly — use the Ashevegas site contact or reply to a Hot Sheet issue.',
+        read:{arch:'Local media person — the established independent voice.',lights:'Bigger audience, being the voice, monetizing without selling out.',avoid:'Don\u2019t threaten his editorial control; don\u2019t open with money; signal clearly it\u2019s not a scam.',lead:'\u201cYou already are the voice — this makes it official and city-wide, on your terms.\u201d'},
+        first:'Hi Jason — I\u2019ve read the Hot Sheet for years, and the way you\u2019ve covered Asheville\u2019s growth without ever reading like an outsider is exactly the thing I\u2019m trying to build on. I\u2019m launching JoinIn, a local-first community app for Asheville, and I\u2019m looking for one rooted local person to run the whole Asheville side. Honestly, you were the first name that came to mind. Could I tell you a bit more — takes two minutes?',
+        reply:'Hey Marc — appreciate the kind words, they mean something coming from someone who actually reads the thing. I\u2019ll be honest, I\u2019m wary of \u201capp\u201d pitches. But I\u2019m curious enough to ask: what does \u201crun the Asheville side\u201d actually mean day to day, and what\u2019s the catch / what does it cost me?',
+        proposed:'Hi Jason — totally fair to be wary; I would be too. No catch, and nothing for you to pay, ever.\n\nShort version: \u201crunning the Asheville side\u201d means you\u2019re the Publisher — you keep full editorial control and your own voice, bring on a writer per neighborhood, and keep most of what local ads earn.\n\nRather than talk your ear off, let me send you the full picture in one place — a short deck covering the mission, how the app works, growth, the time it takes, how compensation works, and exactly what a Publisher is responsible for. Read it whenever you\u2019ve got ten quiet minutes.\n\nIf it still feels like a fit, we\u2019ll set up a proper sit-down — coffee\u2019s on me. Want me to send it over?\n\n— Marc', deck:true},
+      {nm:'Aisha Adams', role:'Media founder & community connector', loc:'Asheville, NC', tags:'<span class="tag pub">Publisher</span>', fit:8, stage:0,
+        snip:'Founder/CEO of Aisha Adams Media Group; hosts The Asheville View; runs the Nappy Thoughts blog.',
+        bio:'Aisha Adams is founder and CEO of the Aisha Adams Media Group and the equity initiative Equity Over Everything. She hosts The Asheville View talk show and writes Nappy Thoughts, a blog followed by thousands. Media production, business development, and civic engagement across Asheville.',
+        why:'Media plus business-development chops, and a network built for recruiting and managing columnists and talking to local advertisers.',
+        methods:[{m:'LinkedIn · /in/aishaadams',rec:true},{m:'Site contact · aishaadamsmedia.com'},{m:'Instagram DM'}],
+        sources:['aishaadamsmedia.com','exploreasheville.com','linkedin.com/in/aishaadams'],
+        note:'Business email is masked on her sites — LinkedIn or the site form are the clean routes.',
+        photo:'https://aishaadamsmedia.com/wp-content/uploads/2023/07/AAMG_About_Team_Aisha1.jpg',
+        photoSrc:'https://aishaadamsmedia.com/about',
+        read:{arch:'Community connector + media founder.',lights:'Impact, being the hub, recognition.',avoid:'Respect her mission; lead with impact, money second.',lead:'\u201cThe tools + a share so the work you already do finally scales.\u201d'}},
+      {nm:'Christine Frascarelli — Uncorked Asheville', role:'Runs a mini-JoinIn already', loc:'Asheville, NC', tags:'<span class="tag pub">Publisher</span>', fit:7, stage:0,
+        snip:'Owns The Uncorked Librarian LLC; writes content, runs socials + a Facebook group, sends newsletters, hires paid writers.',
+        bio:'Christine owns and manages The Uncorked Librarian LLC and its Asheville publication, Uncorked Asheville. She writes the content, manages all social channels, facilitates a Facebook community group, sends bi-weekly newsletters, and already hires paid, credited writers.',
+        why:'Already runs a small version of the JoinIn model end to end. Caveat: her angle leans tourist-facing — read her current pages before acting.',
+        methods:[{m:'Contact form · uncorkedasheville.com/contact-me',rec:true},{m:'Instagram · @uncorkedasheville'},{m:'Facebook · /uncorkedasheville'}],
+        sources:['uncorkedasheville.com','theuncorkedlibrarian.com','instagram.com/uncorkedasheville'],
+        note:'Her raw email is deliberately hidden (Cloudflare) — use the contact form or a DM.',
+        photo:'https://www.uncorkedasheville.com/wp-content/uploads/2024/08/Christine-Frascarelli-Uncorked-Asheville-Owner-1024x1024.jpg',
+        photoSrc:'https://www.uncorkedasheville.com/work-with-me/',
+        read:{arch:'Independent local publisher (tourist-leaning).',lights:'Growing her audience and turning her work into a business.',avoid:'Acknowledge she already runs one; don\u2019t talk down to her.',lead:'\u201cYou already do this — JoinIn gives you the platform and the city behind it.\u201d'}}
+    ]
+  },
+  columnist:{
+    labA:'CITY', labB:'NEIGHBORHOOD / ZONE', inA:'Asheville', inB:'West Asheville',
+    hint:'Enter your city and the neighborhood zone you want covered. Generate researches public sources and returns real, verified writers.',
+    cands:[
+      {nm:'Stu Helm', role:'Food beat — \u201CThe Food Fan\u201D', loc:'Asheville, NC', tags:'<span class="tag tp">Topic</span><span class="tag paid">Paid</span>', fit:9, stage:1,
+        snip:'Asheville artist/writer reviewing local restaurants, cafes and food trucks since 2013.',
+        bio:'Stu Helm is a well-known Asheville artist and writer who has reviewed local restaurants, cafes and food trucks since 2013, publishing as \u201CThe Food Fan.\u201D Big local following and an unmistakable, opinionated voice.',
+        why:'Cleanest fit for the food beat in town. A dedicated beat writer, not a would-be Publisher.',
+        methods:[{m:'Instagram · @stuhelmfoodfan',rec:true},{m:'Facebook message'}],
+        sources:['ashvegas.com','ashevillegrit.com','exploreasheville.com'],
+        read:{arch:'Beloved local food critic.',lights:'A bigger platform and being paid for what he already does.',avoid:'Don\u2019t sand down his voice; keep it fun.',lead:'\u201cYou\u2019re already the food voice — here\u2019s the byline, the audience, and a cut.\u201d'},
+        first:'Hi Stu — you\u2019ve been the food voice in Asheville since before it was cool. I\u2019m launching JoinIn, a local community app, and I want one writer per beat — food is obviously you. Could I tell you a bit more — takes two minutes?',
+        reply:'Ha, appreciate that. What\u2019s the deal — do I keep my voice, and does it pay?',
+        proposed:'Hi Stu — you keep your voice completely; that\u2019s the whole point. Short, regular food posts, exactly like you already do. It comes with a real byline, a bigger local audience, and a cut of any ads a business runs on your column. Want me to send the one-page rundown, or easier to just talk for 10 minutes?\n\n— Marc'},
+      {nm:'Bill Kopp', role:'Music beat — journalist/author', loc:'Asheville, NC', tags:'<span class="tag tp">Topic</span>', fit:8, stage:0,
+        snip:'500+ bylines in WNC publications; contributing editor at Goldmine, writer at GRAMMY.com.',
+        bio:'Bill Kopp is an Asheville-based music journalist and author with 500+ bylines across Western NC publications (Mountain Xpress, Bold Life, WNC Magazine). Contributing editor at Goldmine and contributing writer at GRAMMY.com.',
+        why:'Serious, credentialed music voice for a music town — an ideal topic columnist.',
+        methods:[{m:'Site contact · musoscribe.com',rec:true},{m:'X / Twitter'}],
+        sources:['musoscribe.com','Mountain Xpress','GRAMMY.com'],
+        read:{arch:'Credentialed music journalist.',lights:'A dedicated local platform for the music beat.',avoid:'Respect his credentials; this is a platform, not a favor.',lead:'\u201cThe definitive music column for a music town.\u201d'}},
+      {nm:'Miranda Peterson — Namaste in Nature', role:'Outdoors / hiking beat', loc:'Asheville, NC', tags:'<span class="tag tp">Topic</span>', fit:7, stage:0,
+        snip:'Runs an Asheville-area hiking guide built over 8 years of hiking and filming trail videos.',
+        bio:'Miranda Peterson runs Namaste in Nature, a regularly-updated Asheville-area hiking guide built over eight years of researching, hiking and filming trail videos, operated as a small local business.',
+        why:'Strong outdoors/hiking beat fit. Smaller footprint — verify current pages before acting.',
+        methods:[{m:'Email · booking@namasteinnature.com',rec:true},{m:'Instagram · @mirandaofthemountains'},{m:'Instagram · @namaste_in_nature'}],
+        sources:['namasteinnature.com','instagram.com/mirandaofthemountains'],
+        photo:'https://images.squarespace-cdn.com/content/v1/59297c2a5016e1bf418943af/333cf8bd-b192-43aa-ad72-a3922a1797e6/miranda-peterson-founder-namaste-in-nature-asheville-nc.jpg',
+        photoSrc:'https://www.namasteinnature.com/blog/mirandas-best-asheville-area-hiking-guide-ever',
+        read:{arch:'Outdoors creator / small-business owner.',lights:'Reach for her guides and supporting a local business.',avoid:'Keep it low-pressure; she\u2019s busy running her own thing.',lead:'\u201cThe outdoors voice for the area, with a real audience behind it.\u201d'}}
+    ]
+  }
+};
+
+var recMode='publisher', recSelected={publisher:null,columnist:null};
+
+function recSetMode(m){
+  recMode=m;
+  document.getElementById('rm-pub').classList.toggle('on',m==='publisher');
+  document.getElementById('rm-col').classList.toggle('on',m==='columnist');
+  var d=REC[m];
+  document.getElementById('rec-panel-title').textContent=(m==='publisher')?'New territory':'New column';
+  document.getElementById('rec-panel-hint').textContent=d.hint;
+  document.getElementById('rec-lab-a').textContent=d.labA;
+  document.getElementById('rec-lab-b').textContent=d.labB;
+  document.getElementById('rec-in-a').value=d.inA;
+  document.getElementById('rec-in-b').value=d.inB;
+  document.getElementById('rec-results').innerHTML='<div class="stub">Enter the '+(m==='publisher'?'city and state':'city and neighborhood zone')+' above, then hit Generate.</div>';
+}
+function recGenerate(){
+  var a=document.getElementById('rec-in-a').value.trim(); if(!a){ alert('Enter a city first.'); return; }
+  var res=document.getElementById('rec-results');
+  res.innerHTML='<div class="stub">Researching public sources for <b>'+recEsc(a)+'</b>…</div>';
+  setTimeout(recPaint,700);
+}
+function recMethodsHtml(c){ if(!c.methods||!c.methods.length) return ''; return '<div style="margin-top:8px"><div class="lblr">REACH VIA</div><div class="chips">'+c.methods.map(function(x){ return '<span class="mchip'+(x.rec?' rec':'')+'">'+(x.rec?'\u2713 ':'')+recEsc(x.m)+(x.rec?' \u00b7 use this':'')+'</span>'; }).join('')+'</div></div>'; }
+function recSourcesHtml(c){ if(!c.sources||!c.sources.length) return ''; return '<div style="margin-top:10px"><div class="lblr">SOURCES USED ('+c.sources.length+')</div><div class="srcs">'+c.sources.map(function(s){ return '<a href="#" onclick="return false">'+recEsc(s)+'</a>'; }).join('')+'</div></div>'; }
+function recPhotoHtml(c){ return c.photo ? '<img class="pimg" src="'+recEsc(c.photo)+'" alt="'+recEsc(c.nm)+'">' : '<div class="pav">'+recEsc(recInitials(c.nm))+'</div>'; }
+function recPaint(){
+  var d=REC[recMode], sel=recSelected[recMode];
+  var html='<div style="display:flex;justify-content:space-between;align-items:baseline;margin:18px 2px 12px"><div style="font-size:15px;font-weight:800;color:var(--navy)">'+(recMode==='publisher'?'Publisher':'Columnist')+' candidates</div><div style="font-size:12.5px;color:var(--muted)">'+d.cands.length+' verified · each with sources</div></div>';
+  d.cands.forEach(function(c,i){
+    var isSel=(sel===i);
+    html+='<div class="rc'+(isSel?' sel':'')+'" id="rc-'+recMode+'-'+i+'">'
+      +'<div class="top">'
+        +'<div class="who"><div class="nm">'+recEsc(c.nm)+c.tags+'</div><div class="rl">'+recEsc(c.role)+' · '+recEsc(c.loc)+'</div><div class="snip">'+recEsc(c.snip)+'</div></div>'
+        +'<div class="fit"><div class="fn">'+c.fit+'</div><div class="fl">FIT /10</div></div>'
+        +'<div class="acts"><button class="btn ghost" onclick="recToggle('+i+')" id="rx-'+recMode+'-'+i+'">Expand bio ▾</button><button class="btn green" onclick="recSelect('+i+')">'+(isSel?'✓ Selected':'Select to recruit')+'</button></div>'
+      +'</div>'
+      +'<div class="detail">'
+        +'<div class="lblr">PHOTO</div><div class="photorow">'+recPhotoHtml(c)+'<div class="pcap">'+(c.photo?('From <a href="#" onclick="return false">'+recEsc((c.photoSrc||'').replace(/^https?:\/\//,'').split('/')[0])+'</a> — their own page. Confirm at source.'):'Pulled from their own About page / verified profile at research time. Verify at source.')+'</div></div>'
+        +'<div class="lblr">FULL BIO</div><div style="font-size:14px;color:#33404a;margin-bottom:12px;max-width:78ch">'+recEsc(c.bio)+'</div>'
+        +'<div class="lblr">WHY THEY FIT</div><div class="why"><b>Recommendation:</b> '+recEsc(c.why)+'</div>'
+        +recMethodsHtml(c)+recSourcesHtml(c)
+        +(c.note?'<div class="recnote">⚠️ '+recEsc(c.note)+'</div>':'')
+      +'</div>'
+    +'</div>';
+  });
+  document.getElementById('rec-results').innerHTML=html;
+}
+function recToggle(i){ var card=document.getElementById('rc-'+recMode+'-'+i), btn=document.getElementById('rx-'+recMode+'-'+i); var open=card.classList.toggle('open'); btn.textContent=open?'Hide bio ▴':'Expand bio ▾'; }
+function recSelect(i){ recSelected[recMode]=i; recOpenContact(REC[recMode].cands[i]); }
+function recBack(){ document.getElementById('rec-contact').style.display='none'; document.getElementById('rec-find').style.display='block'; recPaint(); window.scrollTo(0,0); }
+
+function recPipe(stage){
+  return REC_STAGES.map(function(s,i){ var cls=i<stage?'done':(i===stage?'cur':''); var mark=i<stage?'✓':(i+1); return '<div class="pstep '+cls+'"><div class="dot">'+mark+'</div><div class="sl">'+s+'</div></div>'; }).join('');
+}
+function recOpenContact(c){
+  document.getElementById('rec-find').style.display='none';
+  document.getElementById('rec-contact').style.display='block';
+  document.getElementById('ct-name').innerHTML=recEsc(c.nm)+c.tags;
+  document.getElementById('ct-sub').textContent=c.loc+' · '+c.role+' · Fit '+c.fit+'/10';
+  document.getElementById('ct-fit').textContent=c.fit;
+  document.getElementById('ct-pipe').innerHTML=recPipe(c.stage||0);
+  // thread
+  var first=c.first||('Hi '+c.nm.split(' ')[0]+' — I\u2019m launching JoinIn, a local-first community app, and I\u2019m looking for '+(recMode==='publisher'?'one rooted local person to run the whole side':'a writer for this beat')+'. You came to mind. Could I tell you a bit more — takes two minutes?');
+  var thread='<div class="msg out"><div class="bub">'+recEsc(first)+'</div><div class="mm">Sent · Delivered</div></div>';
+  if(c.reply){ thread+='<div class="msg in"><div class="bub">'+recEsc(c.reply)+'</div><div class="mm">Reply received</div></div>'; }
+  else { thread+='<div class="stub">No reply yet — send the first message, then log their reply here.</div>'; }
+  document.getElementById('ct-thread').innerHTML=thread;
+  // proposed reply
+  var prop=c.proposed||('Hi '+c.nm.split(' ')[0]+' — great to hear from you. Let me send over a short overview of what this involves so you can decide if it fits. Want me to send it?\n\n— Marc');
+  document.getElementById('ct-reply').value=prop;
+  document.getElementById('ct-reply-sub').textContent=c.reply?'Answers their questions and moves things forward. Edit before sending.':'Your opening follow-up. Edit before sending.';
+  document.getElementById('ct-attach').style.display=c.deck?'block':'none';
+  // read
+  var r=c.read||{arch:'',lights:'',avoid:'',lead:''};
+  document.getElementById('ct-read-title').textContent='The read on '+c.nm.split(' ')[0];
+  document.getElementById('ct-arch').textContent=r.arch;
+  document.getElementById('ct-lights').textContent=r.lights;
+  document.getElementById('ct-avoid').textContent=r.avoid;
+  document.getElementById('ct-lead').innerHTML='<b>'+recEsc(r.lead)+'</b>';
+  document.getElementById('ct-notes').value='';
+  // send-deck panel
+  var first=c.nm.split(' ')[0];
+  var roleWord=(recMode==='publisher')?'Publisher':'Columnist';
+  document.getElementById('dk-open').value=first+', we did our homework and think you\u2019d be a strong fit as the JoinIn '+(REC[recMode].inA||'Asheville')+' '+roleWord+'. Here\u2019s the full picture — the mission, how the app works, the time it takes, how you get paid, and exactly what the role involves. Have a look whenever you\u2019ve got ten quiet minutes.';
+  var em=''; (c.methods||[]).forEach(function(x){ var mm=/@[\w.]+|[\w.-]+@[\w.-]+/.exec(x.m); if(!em && /email|@/i.test(x.m)){ var at=/[\w.-]+@[\w.-]+/.exec(x.m); if(at) em=at[0]; } });
+  document.getElementById('dk-email').value=em;
+  document.getElementById('dk-market').value=REC[recMode].inA||'Asheville';
+  document.getElementById('dk-ok').style.display='none';
+  dkLink();
+  window.scrollTo(0,0);
+}
+function dkSlug(s){ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,24)||'candidate'; }
+function dkLink(){
+  var i=recSelected[recMode], c=(i!=null)?REC[recMode].cands[i]:null; if(!c) return;
+  var mk=dkSlug(document.getElementById('dk-market').value);
+  document.getElementById('dk-link').textContent='joinin.today/deck/publisher/'+mk+'/'+dkSlug(c.nm)+'-'+Math.random().toString(36).slice(2,6);
+}
+function dkPreview(){
+  var mk=encodeURIComponent(document.getElementById('dk-market').value||'Asheville');
+  var i=recSelected[recMode], c=(i!=null)?REC[recMode].cands[i]:null;
+  var nm=c?encodeURIComponent(c.nm):'';
+  alert('Opens the Publisher Info Deck, branded to '+decodeURIComponent(mk)+(nm?(' and personalized for '+decodeURIComponent(nm)):'')+'.\n\n(Deck file must be deployed alongside this admin.)');
+}
+function recCopy2(id,btn){ var t=document.getElementById(id); try{navigator.clipboard.writeText(t.textContent);}catch(e){} var o=btn.textContent; btn.textContent='Copied!'; setTimeout(function(){btn.textContent=o;},1200); }
+function dkSend(){
+  var ok=document.getElementById('dk-ok'), email=document.getElementById('dk-email').value.trim();
+  if(!email){ ok.style.display='inline'; ok.style.color='#c0392b'; ok.textContent='Add a recipient email first.'; return; }
+  ok.style.display='inline'; ok.style.color='var(--pos)'; ok.textContent='✓ Deck + reply sent to '+email+' — pipeline set to Deck sent. (mockup)';
+  var i=recSelected[recMode]; if(i!=null){ REC[recMode].cands[i].stage=3; document.getElementById('ct-pipe').innerHTML=recPipe(3); }
+}
+function recCopy(id,btn){ var t=document.getElementById(id); try{navigator.clipboard.writeText(t.value);}catch(e){ t.select(); document.execCommand('copy'); } var o=btn.textContent; btn.textContent='Copied!'; setTimeout(function(){btn.textContent=o;},1200); }
+
+/* init */
+onScopeMarket();
+selType('neighborhood', document.querySelector('.tbtn'));
+renderPubs();
+mkLink('pg');
+recSetMode('publisher');
+</script>
+</body>
+</html>
