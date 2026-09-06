@@ -341,12 +341,21 @@ p{font-size:18px;line-height:1.6;color:#33404a;margin-bottom:14px;max-width:72ch
   </section>
 
   <!-- 5 HOW IT WORKS GRID -->
-  <section class="slide light" id="s-how" data-thumb="How it works">
+  <section class="slide light" id="s-how" data-thumb="Overview">
     <div class="hero inner">
       <div class="eyebrow">How JoinIn works</div>
-      <h1>Nine simple sections — your whole city, in one app</h1>
-      <div class="grid" id="how-grid"></div>
-      <div class="hint">Tap any section to jump to it.</div>
+      <h1>Built to bring people together</h1>
+      <p>Every part of JoinIn is designed around one idea: making it effortless to take part. The whole app leans toward <b style="color:var(--navy2)">participation and inclusion</b> — it’s free, it’s local, and it helps anyone find their people and actually show up. Here’s how the pieces fit, each flowing naturally into the next:</p>
+      <div class="rows">
+        <div class="row"><div class="num">1</div><div><div class="rt">See what’s going on</div><div class="rd">At a glance, everything happening in <span class="mk-name"></span> — today, this week, or a date range you choose. The front door to the whole city.</div></div></div>
+        <div class="row"><div class="num g">2</div><div><div class="rt">Community Columns</div><div class="rd">Local writers keep you up to date on the neighborhoods and communities you care about.</div></div></div>
+        <div class="row"><div class="num a">3</div><div><div class="rt">JoinIn &amp; Participate</div><div class="rd">The heart of it — a Meetup-style space where anyone can join a group, class, or event, or start one. Always free for hosts and guests alike, and built for a single purpose: bringing people together in person.</div></div></div>
+        <div class="row"><div class="num">4</div><div><div class="rt">Pulse of <span class="mk-name"></span></div><div class="rd">A Facebook-style feed where neighbors share what they’re into, ask questions, and jump into the conversation.</div></div></div>
+        <div class="row"><div class="num g">5</div><div><div class="rt">Today’s Topics</div><div class="rd">A topic of the day and an <span class="mk-name"></span> poll — so the whole city can weigh in on what matters.</div></div></div>
+        <div class="row"><div class="num a">6</div><div><div class="rt">Marketplace</div><div class="rd">A friendly local board to buy, sell, and give things away free — kept neighbor to neighbor.</div></div></div>
+        <div class="row"><div class="num">7</div><div><div class="rt">Advertise</div><div class="rd">Where local businesses promote themselves and their events, and groups can boost their gatherings to reach more people.</div></div></div>
+      </div>
+      <p style="margin-top:16px;font-style:italic;color:var(--pos);font-weight:700">See it → follow it → join it → talk about it. Every step gently moves people off the screen and into the same room.</p>
     </div>
   </section>
 
@@ -474,9 +483,7 @@ var SECS=[
  ['Feedback & Ratings','Feedback & Ratings','The community helps you steer. You hear what\u2019s working and what to fix \u2014 fast.','Members rate the app and send feedback in-app; it lands in your admin dashboard so you can act on it.']
 ];
 
-document.getElementById('how-grid').innerHTML=SECS.map(function(s,i){
-  return '<div class="gc" onclick="gotoSec('+i+')"><span class="gn">'+(i+1)+'</span><div class="gt">'+s[0]+'</div><div class="go">Open ›</div></div>';
-}).join('');
+SECS=SECS.slice(0,7);  /* seven feature sections; About & Feedback removed */
 
 var MOCKS={};
 MOCKS[0]="<div class=\"pf\"><div class=\"pf-screen\"><div class=\"pf-logo\">Join<span>In</span></div><div class=\"pf-h\"><span class=\"rd\"></span>See what\u2019s going on</div><div class=\"pf-pills\"><span class=\"pp p1\">Today</span><span class=\"pp p2\">Next 7 Days</span><span class=\"pp p3\">Pick Dates</span></div><div class=\"pf-list\"><div class=\"pf-track\"><div class=\"evc\"><div class=\"t\">Live Jazz</div><div class=\"m\">One World Brewing \u00b7 Tonight 8 PM</div></div><div class=\"evc\"><div class=\"t\">Sunrise Yoga</div><div class=\"m\">Carrier Park \u00b7 Sat 7 AM</div></div><div class=\"evc\"><div class=\"t\">Beginner Pottery</div><div class=\"m\">RAD \u00b7 Sun 2 PM</div></div><div class=\"evc\"><div class=\"t\">Trivia Night</div><div class=\"m\">The Wedge \u00b7 Thu 7 PM</div></div><div class=\"evc\"><div class=\"t\">Live Jazz</div><div class=\"m\">One World Brewing \u00b7 Tonight 8 PM</div></div><div class=\"evc\"><div class=\"t\">Sunrise Yoga</div><div class=\"m\">Carrier Park \u00b7 Sat 7 AM</div></div><div class=\"evc\"><div class=\"t\">Beginner Pottery</div><div class=\"m\">RAD \u00b7 Sun 2 PM</div></div><div class=\"evc\"><div class=\"t\">Trivia Night</div><div class=\"m\">The Wedge \u00b7 Thu 7 PM</div></div></div></div></div></div>";
