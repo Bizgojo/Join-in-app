@@ -217,6 +217,15 @@ p{font-size:18px;line-height:1.6;color:#33404a;margin-bottom:14px;max-width:72ch
 .mp-opt:hover{border-color:#1B4B8F}
 .mp-like{background:none;border:none;font-size:12px;font-weight:700;color:#555;cursor:pointer;padding:0}
 .mp-like.on{color:#E4572E}
+
+.letter{max-width:740px}
+.letter .greet{font-size:21px;font-weight:700;color:var(--ink);margin-bottom:14px}
+.letter p{font-size:18px;line-height:1.72;color:#33404a;margin-bottom:15px;max-width:68ch}
+.sign{margin-top:26px}
+.sign .closing{font-size:17px;color:#33404a;margin-bottom:0}
+.sign .sig{font-family:'Snell Roundhand','Snell Roundhand Black','Brush Script MT',cursive;font-size:42px;color:var(--navy);line-height:1.1;margin:4px 0 4px}
+.sign .signame{font-size:16px;font-weight:800;color:var(--ink)}
+.sign .signtitle{font-size:14px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -230,7 +239,28 @@ p{font-size:18px;line-height:1.6;color:#33404a;margin-bottom:14px;max-width:72ch
   <button class="arrowbtn next" id="next" onclick="go(1)">›</button>
 
   <!-- 1 WHAT IS JOININ -->
-  <section class="slide light on" data-thumb="What is JoinIn">
+  <!-- 0 COVER LETTER -->
+  <section class="slide light on" data-thumb="A note">
+    <div class="inner" style="max-width:860px">
+      <div class="eyebrow">A note from the founder</div>
+      <div class="letter">
+        <p class="greet">Hi <span id="lt-name">there</span>,</p>
+        <p>Thank you for taking a few minutes with this. I’ve put together a short overview of JoinIn — a local, human-first community app built for <span class="mk-name"></span> — and the Publisher role I’d genuinely like you to consider.</p>
+        <p>I reached out because you’re exactly the kind of person this depends on: someone who already knows this city and the people in it. In the pages ahead you’ll find the honest picture — what JoinIn is and the mission behind it, what a Publisher actually does, the time it takes, how you’re paid, and where it’s all headed.</p>
+        <p>There’s no pressure here, and nothing to buy. Have a look whenever you’ve got ten quiet minutes — and if it feels like a fit, I’d love to talk it through over coffee.</p>
+        <p>Thank you for considering it. I think we could build something good for <span class="mk-name"></span> together.</p>
+        <div class="sign">
+          <div class="closing">Warmly,</div>
+          <div class="sig">Marc Postlewaite</div>
+          <div class="signame">Marc Postlewaite</div>
+          <div class="signtitle">Founder · JoinIn <span class="mk-name"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1 WHAT IS JOININ -->
+  <section class="slide light" data-thumb="What is JoinIn">
     <div class="hero inner">
       <div style="display:flex;gap:48px;align-items:center;flex-wrap:wrap">
         <div style="flex:1;min-width:340px">
@@ -474,6 +504,7 @@ document.getElementById('role-steps').innerHTML=ROLE.map(function(r,i){
 function toggleStep(i){ document.getElementById('stp-'+i).classList.toggle('open'); }
 
 document.querySelectorAll('.mk-name').forEach(function(el){ el.textContent=MARKET; });
+var _ln=document.getElementById('lt-name'); if(_ln) _ln.textContent = first || 'there';
 if(NAME){ var _ov=document.getElementById('ov-label'); if(_ov) _ov.textContent='Prepared for '+NAME; }
 
 if(first){ document.getElementById('c-head').textContent='Let\u2019s talk, '+first; }
