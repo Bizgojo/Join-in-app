@@ -420,7 +420,7 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
 
 <script>
 /* auth */
-function signIn(){ var p=document.getElementById('lg-pass').value.trim(); if(p.toLowerCase()!=='tritheim'){document.getElementById('lg-err').style.display='block';return;} document.getElementById('lg-err').style.display='none'; document.getElementById('login').style.display='none'; document.getElementById('app').style.display='block'; }
+function signIn(){ var p=document.getElementById('lg-pass').value.trim(); if(p.toLowerCase()!=='tritheim'){document.getElementById('lg-err').style.display='block';return;} document.getElementById('lg-err').style.display='none'; document.getElementById('login').style.display='none'; document.getElementById('app').style.display='block'; try{localStorage.setItem('joininCorpAuth','1');}catch(e){} }
 function signOut(){ document.getElementById('app').style.display='none'; document.getElementById('login').style.display='flex'; document.getElementById('lg-pass').value=''; }
 
 /* nav */
@@ -771,6 +771,7 @@ selType('neighborhood', document.querySelector('.tbtn'));
 renderPubs();
 mkLink('pg');
 recSetMode('publisher');
+try{ if(localStorage.getItem('joininCorpAuth')==='1'){ document.getElementById('login').style.display='none'; document.getElementById('app').style.display='block'; showSection('overview', document.querySelector('.navitem')); } }catch(e){}
 </script>
 </body>
 </html>
