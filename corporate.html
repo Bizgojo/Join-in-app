@@ -398,9 +398,9 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
           <table>
             <thead><tr><th>Recipient</th><th>Role</th><th>Basis</th><th class="n">Amount</th></tr></thead>
             <tbody>
-              <tr><td>Marc Postlewaite</td><td>Publisher — Asheville</td><td>70% general + 50% column ads</td><td class="n">$2,198</td></tr>
-              <tr><td>Maya Reyes-Booth</td><td>Columnist</td><td>Zone-manager commission</td><td class="n">$180</td></tr>
-              <tr><td>JoinIn</td><td>Franchisor (retained)</td><td>30% of ad revenue</td><td class="n">$1,446</td></tr>
+              <tr><td>Marc Postlewaite</td><td>Publisher — Asheville</td><td>55% of local ad revenue</td><td class="n">$2,198</td></tr>
+              <tr><td>Maya Reyes-Booth</td><td>Community columnist</td><td>25% columnist share</td><td class="n">$180</td></tr>
+              <tr><td>JoinIn</td><td>Corporate (retained)</td><td>20% — platform, billing, ops, compliance, bots</td><td class="n">$1,446</td></tr>
             </tbody>
           </table>
         </div>
@@ -505,9 +505,9 @@ function iv(id){ var e=document.getElementById(id); return e?e.value:''; }
 function sv(id,v){ var e=document.getElementById(id); if(e) e.value=v; }
 var UNIT={ neighborhood:'zone', topic:'zone', pulse:'day' };
 var CFG={
-  neighborhood:{ asheville:{price:'25',N:'10',cap:'5',endpct:'50',share:'50',pubpct:'70'}, greenville:{price:'20',N:'8',cap:'5',endpct:'55',share:'50',pubpct:'70'} },
-  topic:{ asheville:{price:'15',N:'1',cap:'1',endpct:'100',share:'0',pubpct:'70'}, greenville:{price:'12',N:'1',cap:'1',endpct:'100',share:'0',pubpct:'70'} },
-  pulse:{ asheville:{price:'20',N:'7',cap:'7',endpct:'80',share:'0',pubpct:'70'}, greenville:{price:'15',N:'7',cap:'7',endpct:'85',share:'0',pubpct:'70'} }
+  neighborhood:{ asheville:{price:'25',N:'10',cap:'5',endpct:'50',share:'25',pubpct:'73.3'}, greenville:{price:'20',N:'8',cap:'5',endpct:'55',share:'25',pubpct:'73.3'} },
+  topic:{ asheville:{price:'15',N:'1',cap:'1',endpct:'100',share:'0',pubpct:'80'}, greenville:{price:'12',N:'1',cap:'1',endpct:'100',share:'0',pubpct:'80'} },
+  pulse:{ asheville:{price:'20',N:'7',cap:'7',endpct:'80',share:'0',pubpct:'80'}, greenville:{price:'15',N:'7',cap:'7',endpct:'85',share:'0',pubpct:'80'} }
 };
 var curType='neighborhood';
 function selType(t, btn){
@@ -754,7 +754,7 @@ function dkPreview(){
   var mk=encodeURIComponent(document.getElementById('dk-market').value||'Asheville');
   var i=recSelected[recMode], c=(i!=null)?REC[recMode].cands[i]:null;
   var nm=c?encodeURIComponent(c.nm):'';
-  window.open('JoinIn-Publisher-Info-Deck.html?city='+mk+'&name='+nm,'_blank');
+  window.open('JoinIn-Publisher-Info-Deck.html?city='+mk+'&name='+nm+'&admin=1','_blank');
 }
 function recCopy2(id,btn){ var t=document.getElementById(id); try{navigator.clipboard.writeText(t.textContent);}catch(e){} var o=btn.textContent; btn.textContent='Copied!'; setTimeout(function(){btn.textContent=o;},1200); }
 function dkSend(){
