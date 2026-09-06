@@ -234,6 +234,12 @@ p{font-size:18px;line-height:1.6;color:#33404a;margin-bottom:14px;max-width:72ch
 .sigimg{height:42px;display:block;margin:8px 0 2px}
 .admin-back{display:none;margin-top:12px;padding:11px;border-radius:9px;background:#E4572E;color:#fff;text-align:center;font-size:13px;font-weight:800;text-decoration:none;cursor:pointer}
 .admin-back:hover{filter:brightness(1.08)}
+
+.slide.s-ovr{padding:0}
+.ov-wrap{display:flex;height:100%;align-items:stretch}
+.ov-appimg{flex:0 0 auto;width:300px;max-width:36vw;height:100%;object-fit:cover;background:var(--paper);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9aa7ba;font-size:30px;text-align:center;gap:8px;padding:18px}
+.ov-copy{flex:1;min-width:0;overflow-y:auto;padding:40px 46px 40px 42px}
+@media(max-width:760px){.ov-wrap{flex-direction:column}.ov-appimg{width:100%;max-width:none;height:220px;border-right:none;border-bottom:1px solid var(--line)}.ov-copy{padding:24px 22px}}
 </style>
 </head>
 <body>
@@ -341,21 +347,23 @@ p{font-size:18px;line-height:1.6;color:#33404a;margin-bottom:14px;max-width:72ch
   </section>
 
   <!-- 5 HOW IT WORKS GRID -->
-  <section class="slide light" id="s-how" data-thumb="Overview">
-    <div class="hero inner">
-      <div class="eyebrow">How JoinIn works</div>
-      <h1>Built to bring people together</h1>
-      <p>Every part of JoinIn is designed around one idea: making it effortless to take part. The whole app leans toward <b style="color:var(--navy2)">participation and inclusion</b> — it’s free, it’s local, and it helps anyone find their people and actually show up. Here’s how the pieces fit, each flowing naturally into the next:</p>
-      <div class="rows">
-        <div class="row"><div class="num">1</div><div><div class="rt">See what’s going on</div><div class="rd">At a glance, everything happening in <span class="mk-name"></span> — today, this week, or a date range you choose. The front door to the whole city.</div></div></div>
-        <div class="row"><div class="num g">2</div><div><div class="rt">Community Columns</div><div class="rd">Local writers keep you up to date on the neighborhoods and communities you care about.</div></div></div>
-        <div class="row"><div class="num a">3</div><div><div class="rt">JoinIn &amp; Participate</div><div class="rd">The heart of it — a Meetup-style space where anyone can join a group, class, or event, or start one. Always free for hosts and guests alike, and built for a single purpose: bringing people together in person.</div></div></div>
-        <div class="row"><div class="num">4</div><div><div class="rt">Pulse of <span class="mk-name"></span></div><div class="rd">A Facebook-style feed where neighbors share what they’re into, ask questions, and jump into the conversation.</div></div></div>
-        <div class="row"><div class="num g">5</div><div><div class="rt">Today’s Topics</div><div class="rd">A topic of the day and an <span class="mk-name"></span> poll — so the whole city can weigh in on what matters.</div></div></div>
-        <div class="row"><div class="num a">6</div><div><div class="rt">Marketplace</div><div class="rd">A friendly local board to buy, sell, and give things away free — kept neighbor to neighbor.</div></div></div>
-        <div class="row"><div class="num">7</div><div><div class="rt">Advertise</div><div class="rd">Where local businesses promote themselves and their events, and groups can boost their gatherings to reach more people.</div></div></div>
+  <section class="slide light s-ovr" id="s-how" data-thumb="Overview">
+    <div class="ov-wrap">
+      <div class="ov-appimg">📱<div style="font-size:13px;font-weight:700">Long app screenshot</div><div style="font-size:11px;line-height:1.4">See what’s going on → Marketplace<br>(add your own)</div></div>
+      <div class="ov-copy">
+        <div class="eyebrow">How JoinIn works</div>
+        <h1>Built to bring people together</h1>
+        <p>Every part of JoinIn is designed around one idea: making it effortless to take part. The whole app leans toward <b style="color:var(--navy2)">participation and inclusion</b> — it’s free, it’s local, and it helps anyone find their people and actually show up. Here’s how the pieces fit, each flowing naturally into the next:</p>
+        <div class="rows">
+          <div class="row"><div class="num">1</div><div><div class="rt">See what’s going on</div><div class="rd">At a glance, everything happening in <span class="mk-name"></span> — today, this week, or a date range you choose. The front door to the whole city.</div></div></div>
+          <div class="row"><div class="num g">2</div><div><div class="rt">Community Columns</div><div class="rd">Local writers keep you up to date on the neighborhoods and communities you care about.</div></div></div>
+          <div class="row"><div class="num a">3</div><div><div class="rt">JoinIn &amp; Participate</div><div class="rd">The heart of it — a Meetup-style space where anyone can join a group, class, or event, or start one. Always free for hosts and guests alike, and built for a single purpose: bringing people together in person.</div></div></div>
+          <div class="row"><div class="num">4</div><div><div class="rt">Pulse of <span class="mk-name"></span></div><div class="rd">A Facebook-style feed where neighbors share what they’re into, ask questions, and jump into the conversation.</div></div></div>
+          <div class="row"><div class="num g">5</div><div><div class="rt">Today’s Topics</div><div class="rd">A topic of the day and an <span class="mk-name"></span> poll — so the whole city can weigh in on what matters.</div></div></div>
+          <div class="row"><div class="num a">6</div><div><div class="rt">Marketplace</div><div class="rd">A friendly local board to buy, sell, and give things away free — kept neighbor to neighbor.</div></div></div>
+        </div>
+        <p style="margin-top:14px;font-style:italic;color:var(--pos);font-weight:700">See it → follow it → join it → talk about it. Every step gently moves people off the screen and into the same room.</p>
       </div>
-      <p style="margin-top:16px;font-style:italic;color:var(--pos);font-weight:700">See it → follow it → join it → talk about it. Every step gently moves people off the screen and into the same room.</p>
     </div>
   </section>
 
