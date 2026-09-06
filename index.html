@@ -400,6 +400,7 @@
 <div style="display:flex;flex-direction:column;align-items:stretch;gap:6px">
 <button class="unread-btn" id="unread-btn" style="display:none;text-align:center" onclick="showPage('messages')">You have 0 unread messages</button>
 <button class="unread-btn" id="dm-request-btn" style="display:none;background:#1B4B8F;text-align:center" onclick="goToRequests()">0 message requests</button>
+<button id="home-admin-btn" onclick="showPage('admin')" style="display:none;align-self:flex-end;background:#1a1a2e;color:#fff;border:none;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer;padding:5px 12px;margin-bottom:3px">⚙️ Admin</button>
 <button onclick="logout()" style="align-self:flex-end;background:none;border:none;color:#e74c3c;font-size:13px;font-weight:600;cursor:pointer;padding:2px 4px">Logout</button>
 </div>
 </div>
@@ -498,7 +499,7 @@
 <div class="funnel" onclick="showPage('advertise')"><span class="icon">📣</span><div class="text"><div class="title">Advertise</div><div class="sub">Reach real Asheville neighbors</div></div><span class="arrow">›</span></div>
 <div class="funnel" onclick="showPage('about')"><span class="icon">ℹ️</span><div class="text"><div class="title">About Asheville Pulse</div><div class="sub">Our mission and who we are</div></div><span class="arrow">›</span></div>
 <div class="funnel" onclick="showPage('feedback')"><span class="icon">💬</span><div class="text"><div class="title">Feedback & Ratings</div><div class="sub">Share your thoughts</div></div><span class="arrow">›</span></div>
-<button class="admin-gear" onclick="showPage('admin')">⚙️</button>
+
 </div>
 
 <!-- ABOUT -->
@@ -1035,10 +1036,7 @@
 <!-- ADMIN -->
 <div id="page-admin" class="page">
 <button class="back-btn" onclick="showPage('home')"><span class="chev">‹</span> Back to App</button>
-<div style="display:flex;gap:8px;margin-bottom:12px">
-<button onclick="hideAdminGear()" style="flex:1;background:#eef3ee;color:#2d5a2d;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer">🙈 Hide ⚙️ Button</button>
-<button onclick="showAdminGear()" style="flex:1;background:#eef3ee;color:#2d5a2d;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer">👁️ Show ⚙️ Button</button>
-</div>
+<button onclick="window.open('corporate.html','_blank')" style="width:100%;background:#1B4B8F;color:#fff;border:none;border-radius:12px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:12px">🖥️ Open Desktop Admin →</button>
 <div class="card"><h4>⚙️ Admin Dashboard</h4>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:8px 0">
 <div style="background:#f8faf8;padding:16px;border-radius:12px;text-align:center"><div style="font-size:28px;font-weight:700;color:#5B8C5A" id="admin-total-users">0</div><div style="font-size:12px;color:#888">Users</div></div>
@@ -9242,8 +9240,8 @@ async function boot() {
 function updateAdminVisibility() {
     var isAdmin = !!(currentUser && currentUser.isAdmin);
     var hidden = localStorage.getItem('hideAdminGear') === '1';
-    var gear = document.querySelector('.admin-gear');
-    if (gear) { gear.style.display = (isAdmin && !hidden) ? 'flex' : 'none'; }
+    var hbtn = document.getElementById('home-admin-btn');
+    if (hbtn) { hbtn.style.display = isAdmin ? 'inline-block' : 'none'; }
     var pbtn = document.getElementById('profile-admin-btn');
     if (pbtn) { pbtn.style.display = isAdmin ? 'block' : 'none'; }
 }

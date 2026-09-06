@@ -161,7 +161,10 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
 <div id="app">
   <div class="topbar">
     <div><span class="brand">Join<span class="in">In</span></span><span class="role">Corporate · all markets</span></div>
-    <button class="logout" onclick="signOut()">Log out</button>
+    <div style="display:flex;gap:10px">
+      <button class="logout" onclick="window.location.href='https://joinin.today/'" style="background:#1B4B8F">‹ Back to App</button>
+      <button class="logout" onclick="signOut()">Log out</button>
+    </div>
   </div>
 
   <div class="layout">
@@ -746,14 +749,15 @@ function recOpenContact(c){
 function dkSlug(s){ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,24)||'candidate'; }
 function dkLink(){
   var i=recSelected[recMode], c=(i!=null)?REC[recMode].cands[i]:null; if(!c) return;
-  var mk=dkSlug(document.getElementById('dk-market').value);
-  document.getElementById('dk-link').textContent='joinin.today/deck/publisher/'+mk+'/'+dkSlug(c.nm)+'-'+Math.random().toString(36).slice(2,6);
+  var mk=encodeURIComponent(document.getElementById('dk-market').value||'Asheville');
+  var nm=encodeURIComponent(c.nm);
+  document.getElementById('dk-link').textContent='https://joinin.today/JoinIn-Publisher-Info-Deck.html?city='+mk+'&name='+nm;
 }
 function dkPreview(){
   var mk=encodeURIComponent(document.getElementById('dk-market').value||'Asheville');
   var i=recSelected[recMode], c=(i!=null)?REC[recMode].cands[i]:null;
   var nm=c?encodeURIComponent(c.nm):'';
-  alert('Opens the Publisher Info Deck, branded to '+decodeURIComponent(mk)+(nm?(' and personalized for '+decodeURIComponent(nm)):'')+'.\n\n(Deck file must be deployed alongside this admin.)');
+  window.open('JoinIn-Publisher-Info-Deck.html?city='+mk+'&name='+nm,'_blank');
 }
 function recCopy2(id,btn){ var t=document.getElementById(id); try{navigator.clipboard.writeText(t.textContent);}catch(e){} var o=btn.textContent; btn.textContent='Copied!'; setTimeout(function(){btn.textContent=o;},1200); }
 function dkSend(){
