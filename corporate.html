@@ -754,7 +754,7 @@ function dkPreview(){
   var mk=encodeURIComponent(document.getElementById('dk-market').value||'Asheville');
   var i=recSelected[recMode], c=(i!=null)?REC[recMode].cands[i]:null;
   var nm=c?encodeURIComponent(c.nm):'';
-  window.open('JoinIn-Publisher-Info-Deck.html?city='+mk+'&name='+nm+'&admin=1','_blank');
+  window.open('https://joinin.today/JoinIn-Publisher-Info-Deck.html?city='+mk+'&name='+nm+'&admin=1','_blank');
 }
 function recCopy2(id,btn){ var t=document.getElementById(id); try{navigator.clipboard.writeText(t.textContent);}catch(e){} var o=btn.textContent; btn.textContent='Copied!'; setTimeout(function(){btn.textContent=o;},1200); }
 function dkSend(){
