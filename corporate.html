@@ -276,16 +276,17 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
                 <h2 style="display:flex;align-items:center;gap:8px">Proposed reply <span class="tag tp" style="margin:0">drafted by Claude</span></h2>
                 <div class="sub" id="ct-reply-sub"></div>
                 <textarea class="tbox" id="ct-reply"></textarea>
-                <div class="attach" id="ct-attach" style="display:none">📎 Attaching: <b>Publisher Info Deck (v1)</b><span class="an">the "should you do this" overview — not the training/onboarding deck</span></div>
                 <div class="rowbtns">
                   <button class="btn ghost" onclick="recCopy('ct-reply',this)">Copy</button>
                   <button class="btn" onclick="alert('Opens your email reply with this text.')">Open email</button>
                   <button class="btn green" onclick="alert('Adds this to the thread as sent and advances the pipeline.')">Add to thread as sent</button>
+                  <button class="btn" style="background:#E4572E" onclick="recAttachDeck()">📎 Attach recruiting deck</button>
                 </div>
+                <div class="sub" style="margin-top:8px">Send as many emails as you need first. When you’re ready, tap <b>Attach recruiting deck</b> to add the personalized deck link.</div>
               </div>
 
-              <div class="panel">
-                <h2 style="display:flex;align-items:center;gap:8px">Send the Info Deck <span class="tag pub" style="margin:0">personalized</span></h2>
+              <div class="panel" id="deckpanel" style="display:none">
+                <h2 style="display:flex;align-items:center;gap:8px">Attach &amp; send the recruiting deck <span class="tag pub" style="margin:0">personalized</span></h2>
                 <div class="sub">Personalizes the Publisher Info Deck for this candidate and market, then sends it with your reply. (Not the training deck — that comes after they say yes.)</div>
                 <label class="lbl">Opening line (auto-written — edit freely)</label>
                 <textarea class="tbox" id="dk-open" style="min-height:80px"></textarea>
@@ -395,6 +396,7 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
 
       <!-- ONBOARDING -->
       <section class="section" id="sec-guides">
+        <button class="btn ghost" style="margin-bottom:12px" onclick="showSection('recruiting',document.querySelectorAll('.navitem')[1])">‹ Back to Recruiting &amp; Onboarding</button>
         <h1>Recruiting &amp; Onboarding Decks</h1>
         <div class="panel" style="max-width:660px">
           <div class="sub">Preview library. Pick a role and view its decks; add a city/candidate to see how a personalized version looks. <b>Sending to a candidate happens in that candidate’s workspace</b> under Recruiting &amp; Onboarding — not here.</div>
@@ -628,6 +630,7 @@ function sendGuide(pfx){ var email=document.getElementById(pfx+'-email').value.t
 /* ===== RECRUITING ===== */
 var REC_STAGES=['Found','Initial email','Follow-ups','Recruiting Deck','Interview','Onboarding','Monitoring'];
 function recSaveEmail(v){ var i=recSelected[recMode]; if(i!=null && REC[recMode] && REC[recMode].cands[i]) REC[recMode].cands[i].email=v; }
+function recAttachDeck(){ var d=document.getElementById('deckpanel'); if(d){ d.style.display='block'; d.scrollIntoView({behavior:'smooth',block:'start'}); } }
 function recEsc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function recInitials(n){ var w=String(n||'').replace(/[—-]/g,' ').split(/\s+/).filter(function(x){return /[A-Za-z]/.test(x);}); return (((w[0]||'')[0]||'')+((w[1]||'')[0]||'')).toUpperCase(); }
 
@@ -773,7 +776,7 @@ function recOpenContact(c){
   var prop=c.proposed||('Hi '+c.nm.split(' ')[0]+' — great to hear from you. Let me send over a short overview of what this involves so you can decide if it fits. Want me to send it?\n\n— Marc');
   document.getElementById('ct-reply').value=prop;
   document.getElementById('ct-reply-sub').textContent=c.reply?'Answers their questions and moves things forward. Edit before sending.':'Your opening follow-up. Edit before sending.';
-  document.getElementById('ct-attach').style.display=c.deck?'block':'none';
+  var _dp=document.getElementById('deckpanel'); if(_dp) _dp.style.display='none';
   // read
   var r=c.read||{arch:'',lights:'',avoid:'',lead:''};
   document.getElementById('ct-read-title').textContent='The read on '+c.nm.split(' ')[0];
