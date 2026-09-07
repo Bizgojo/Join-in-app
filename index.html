@@ -483,7 +483,7 @@ body{padding-bottom:84px}
 </div></div>
 
 <div class="hsec" id="hsec-topics">
-<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('topics')"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">🔥</span><span>Today's Hot Topics<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">A daily prompt and the Asheville poll</span></span></span><span class="hsec-chev">›</span></div>
+<div class="pulse-heading hsec-h" style="margin:0" onclick="openTopicsFull()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">🔥</span><span>Today's Hot Topics<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">A daily prompt and the Asheville poll</span></span></span><span class="hsec-chev">›</span></div>
 <div class="hsec-body">
 <div class="card" id="community-poll-card" style="display:none"></div>
 
@@ -501,14 +501,8 @@ body{padding-bottom:84px}
 </div></div></div>
 
 <div class="hsec" id="hsec-market">
-<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('market')"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">🛍️</span><span>AVL Marketplace<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Buy, sell &amp; give away, locally</span></span></span><span class="hsec-chev">›</span></div>
-<div class="hsec-body">
-<div class="card" style="text-align:center;padding:18px">
-<div style="font-size:28px;margin-bottom:4px">🏪</div>
-<div style="font-weight:800;font-size:17px;color:#1a1a2e;margin-bottom:2px">Buy and Sell for Free</div>
-<div style="color:#888;font-size:13.5px;margin-bottom:12px">Free community classifieds — buy, sell, and give away locally</div>
-<button onclick="showPage('marketplace')" style="width:100%;padding:13px;font-size:14.5px;font-weight:700;border-radius:26px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer">Browse Marketplace</button>
-</div></div></div>
+<div class="pulse-heading hsec-h" style="margin:0" onclick="marketGo()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">🛍️</span><span>AVL Marketplace<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Buy, sell &amp; give away, locally</span></span></span><span class="hsec-chev">›</span></div>
+</div>
 
 
 
@@ -4090,9 +4084,11 @@ function paintPageName(page) {
     span.textContent = title;
 }
 
-function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; var _pf=document.getElementById('participate-fs'); if(_pf) _pf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
+function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; var _pf=document.getElementById('participate-fs'); if(_pf) _pf.style.display='none'; var _tf=document.getElementById('topics-fs'); if(_tf) _tf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
 function openPulseFull(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var ps=document.getElementById('hsec-pulse'); if(ps) ps.classList.add('hsec-open'); if(!pulseFeedExpanded){ togglePulseFeedExpand(); } }
 function openColumnsFull(){ var src=document.getElementById('community-columns-scroll'), dst=document.getElementById('columns-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('columns-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
+function marketGo(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('marketplace'); }
+function openTopicsFull(){ var body=document.getElementById('topics-fs-body'); var poll=document.getElementById('community-poll-card'), tod=document.getElementById('topic-of-day-card'); if(body){ if(poll && poll.parentNode!==body) body.appendChild(poll); if(tod && tod.parentNode!==body) body.appendChild(tod); } var o=document.getElementById('topics-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function openParticipateFull(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var o=document.getElementById('participate-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function participateGo(pg){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showPage(pg); }
 function participateCreate(){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showCreateChoice(); }
@@ -9314,6 +9310,13 @@ if (document.readyState === 'loading') {
 <select id="columnist-select-topical" onchange="participateColumnist()" style="width:100%;padding:14px;font-size:15px;font-weight:700;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#cfe0f2"><option value="">Topic Columnist</option></select>
 </div>
 </div>
+</div>
+<div id="topics-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
+<div style="position:sticky;top:0;z-index:5;background:#1B4B8F;color:#fff;display:flex;align-items:center;gap:12px;padding:14px 16px;font-weight:700;font-size:16px">
+<button onclick="goHomeReset()" style="background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:12px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer">‹ Home</button>
+<span>🔥 Today’s Hot Topics</span>
+</div>
+<div id="topics-fs-body" style="padding:16px 16px 96px"></div>
 </div>
 </body>
 </html>
