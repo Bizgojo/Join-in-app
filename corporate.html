@@ -290,7 +290,7 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
                 <label class="lbl">Opening line (auto-written — edit freely)</label>
                 <textarea class="tbox" id="dk-open" style="min-height:80px"></textarea>
                 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
-                  <div style="flex:1;min-width:180px"><label class="lbl">Recipient email</label><input id="dk-email" placeholder="name@email.com"></div>
+                  <div style="flex:1;min-width:180px"><label class="lbl">Recipient email</label><input id="dk-email" placeholder="name@email.com" oninput="recSaveEmail(this.value)"></div>
                   <div style="flex:1;min-width:140px"><label class="lbl">Market (brands the deck)</label><input id="dk-market" value="Asheville"></div>
                 </div>
                 <div class="share" style="margin-top:12px"><span class="lbl" style="margin:0">Personalized deck link</span><code id="dk-link">joinin.today/deck/publisher/…</code></div>
@@ -397,7 +397,7 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
       <section class="section" id="sec-guides">
         <h1>Recruiting &amp; Onboarding Decks</h1>
         <div class="panel" style="max-width:660px">
-          <div class="sub">Pick a role, preview a deck, or personalize it for a candidate and send an interactive link. Each paid role has a <b>Recruiting</b> deck and an <b>Onboarding</b> deck (onboarding includes the training).</div>
+          <div class="sub">Preview library. Pick a role and view its decks; add a city/candidate to see how a personalized version looks. <b>Sending to a candidate happens in that candidate’s workspace</b> under Recruiting &amp; Onboarding — not here.</div>
           <label class="lbl">Role</label>
           <select id="dg-role" onchange="dgRole()" style="max-width:340px">
             <option value="publisher">Publisher</option>
@@ -406,15 +406,14 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
           </select>
           <div class="sub" id="dg-note" style="margin-bottom:16px"></div>
           <div class="guide">
-            <h3>Personalize &amp; send</h3>
-            <div class="gsub">Enter the market and candidate — the deck brands to that market and greets the candidate by name.</div>
+            <h3>Preview &amp; copy link</h3>
+            <div class="gsub">Optional — add a city and candidate to preview a personalized version. Copy the link to hand off, or send it from the candidate’s workspace.</div>
             <label class="lbl">City *</label><input type="text" id="pg-market" value="Asheville" oninput="dgUpdateLink()">
             <label class="lbl">State</label><input type="text" id="pg-state" placeholder="e.g. NC" style="max-width:160px" oninput="dgUpdateLink()">
             <label class="lbl">Candidate name</label><input type="text" id="pg-name" placeholder="e.g. Jordan Ellis" oninput="dgUpdateLink()">
-            <label class="lbl">Candidate email</label><input type="email" id="pg-email" placeholder="name@email.com">
             <div class="share"><span class="lbl" style="margin:0">Personalized recruiting-deck link</span><code id="pg-link">…</code></div>
             <div style="display:flex;gap:10px;margin:12px 0;flex-wrap:wrap"><button class="btn ghost" onclick="dgView('recruiting')">👁 View Recruiting Deck</button><button class="btn ghost" onclick="dgView('onboarding')">📘 View Onboarding Deck</button></div>
-            <div class="btns"><button class="btn ghost" onclick="copyEl('pg-link',this)">Copy link</button><button class="btn accent" onclick="sendGuide('pg')">Send via email</button></div>
+            <div class="btns"><button class="btn ghost" onclick="copyEl('pg-link',this)">Copy link</button></div>
             <div class="ok" id="pg-ok"></div>
           </div>
         </div>
@@ -627,7 +626,8 @@ function copyEl(id,btn){ var t=document.getElementById(id); try{navigator.clipbo
 function sendGuide(pfx){ var email=document.getElementById(pfx+'-email').value.trim(), ok=document.getElementById(pfx+'-ok'); if(!email){ok.style.color='#c0392b';ok.textContent='Add a recipient email first.';ok.style.display='block';return;} ok.style.color='var(--pos)';ok.textContent='✓ Personalized guide sent to '+email+' (mockup).';ok.style.display='block'; }
 
 /* ===== RECRUITING ===== */
-var REC_STAGES=['Researched','Contacted','Replied','Deck sent','Interview','Offered','Onboarded'];
+var REC_STAGES=['Found','Initial email','Follow-ups','Recruiting Deck','Interview','Onboarding','Monitoring'];
+function recSaveEmail(v){ var i=recSelected[recMode]; if(i!=null && REC[recMode] && REC[recMode].cands[i]) REC[recMode].cands[i].email=v; }
 function recEsc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function recInitials(n){ var w=String(n||'').replace(/[—-]/g,' ').split(/\s+/).filter(function(x){return /[A-Za-z]/.test(x);}); return (((w[0]||'')[0]||'')+((w[1]||'')[0]||'')).toUpperCase(); }
 
@@ -787,7 +787,7 @@ function recOpenContact(c){
   var roleWord=(recMode==='publisher')?'Publisher':'Columnist';
   document.getElementById('dk-open').value=first+', we did our homework and think you\u2019d be a strong fit as the JoinIn '+(REC[recMode].inA||'Asheville')+' '+roleWord+'. Here\u2019s the full picture — the mission, how the app works, the time it takes, how you get paid, and exactly what the role involves. Have a look whenever you\u2019ve got ten quiet minutes.';
   var em=''; (c.methods||[]).forEach(function(x){ var mm=/@[\w.]+|[\w.-]+@[\w.-]+/.exec(x.m); if(!em && /email|@/i.test(x.m)){ var at=/[\w.-]+@[\w.-]+/.exec(x.m); if(at) em=at[0]; } });
-  document.getElementById('dk-email').value=em;
+  document.getElementById('dk-email').value=(c.email||em);
   document.getElementById('dk-market').value=REC[recMode].inA||'Asheville';
   document.getElementById('dk-ok').style.display='none';
   dkLink();
