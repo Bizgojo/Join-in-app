@@ -504,7 +504,7 @@ p{font-size:18px;line-height:1.6;color:#33404a;margin-bottom:14px;max-width:72ch
 
 <script>
 function qp(k,d){ try{ var v=new URLSearchParams(location.search).get(k); return v?decodeURIComponent(v):d; }catch(e){ return d; } }
-var MARKET=qp('city','Asheville');
+var MARKET=(qp('city','Asheville')||'Asheville').split(',')[0].trim();
 var NAME=qp('name','');
 var first=(NAME||'').trim().split(/\s+/)[0]||'';
 
