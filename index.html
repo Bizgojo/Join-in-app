@@ -153,7 +153,7 @@
 .pulse-feed-card.collapsed{max-height:640px}
 .pulse-feed-card.collapsed::after{content:'';position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.98));pointer-events:none}
 .pulse-feed-card.expanded{position:fixed;inset:0;z-index:2000;border-radius:0;border:none;margin:0;max-height:none;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:84px}
-.pulse-feed-sticky{display:none;position:sticky;top:0;z-index:5;background:#1B4B8F;flex-direction:column;gap:10px;padding:14px 16px}
+.pulse-feed-sticky{display:none;position:sticky;top:0;z-index:5;background:#1B4B8F;flex-direction:column;gap:0;padding:0}
 .pulse-feed-card.expanded .pulse-feed-sticky{display:flex}
 .pulse-feed-sticky-row{display:flex;align-items:center;justify-content:space-between;color:#fff;font-weight:700;font-size:16px}
 .pulse-scroll-btn{background:#eaf2fb;color:#1B4B8F;border:2px solid #cfe0f2;border-radius:20px;padding:7px 16px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0}
@@ -277,6 +277,7 @@ body{padding-bottom:84px}
 .appbar .bar-btn:active{background:rgba(255,255,255,.30)}
 .appbar .logo-chip{background:#fff;border-radius:10px;padding:5px 11px;display:inline-flex;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.15);flex:0 1 auto;min-width:0}
 .appbar .logo-chip .jilogo-real{width:130px;height:33px;background-size:contain}
+.appbar.flush{margin:0}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -477,11 +478,8 @@ body{padding-bottom:84px}
 <div id="pulse-composer-toggle" style="margin-bottom:16px"><button style="width:100%;padding:16px;font-size:17px;font-weight:700;border-radius:30px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer" onclick="openPulseComposer()">+ Post to the Pulse</button></div>
 <div id="pulse-feed-list" class="pulse-feed-card">
 <div class="pulse-feed-sticky">
-<div class="pulse-feed-sticky-row">
-<span style="display:flex;align-items:center;gap:8px">🔴 Pulse of Asheville</span>
-<button class="pulse-scroll-btn inverse" onclick="goHomeReset()">‹ Home</button>
-</div>
-<button style="width:100%;padding:13px;font-size:15px;font-weight:700;border-radius:26px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer" onclick="openPulseComposerFromSticky()">+ Post to the Pulse</button>
+<div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div style="padding:10px 16px 14px"><button style="width:100%;padding:13px;font-size:15px;font-weight:700;border-radius:26px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer" onclick="openPulseComposerFromSticky()">+ Post to the Pulse</button></div>
 </div>
 <div id="pulse-feed-posts"><div class="pulse-empty">Loading the Pulse…</div></div>
 </div>
@@ -9289,18 +9287,12 @@ if (document.readyState === 'loading') {
 }
 </script>
 <div id="columns-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
-<div style="position:sticky;top:0;z-index:5;background:#1B4B8F;color:#fff;display:flex;align-items:center;gap:12px;padding:14px 16px;font-weight:700;font-size:16px">
-<button onclick="goHomeReset()" style="background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:12px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer">‹ Home</button>
-<span>📰 Community Columns</span>
-</div>
+<div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div id="columns-fs-body" style="padding:16px 16px 92px" onclick="var o=document.getElementById('columns-fs'); if(o)o.style.display='none'; document.body.style.overflow='';"></div>
 </div>
 <div class="home-tabbar" id="home-tabbar" style="display:none"><button onclick="goHomeReset()"><span class="ti">🏠</span>Home</button><button onclick="showPage('advertise')"><span class="ti">📣</span>Advertise/Boost</button><button onclick="showPage('about')"><span class="ti">ℹ️</span>About</button><button onclick="showPage('feedback')"><span class="ti">💬</span>Feedback</button></div>
 <div id="participate-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
-<div style="position:sticky;top:0;z-index:5;background:#1B4B8F;color:#fff;display:flex;align-items:center;gap:12px;padding:14px 16px;font-weight:700;font-size:16px">
-<button onclick="goHomeReset()" style="background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:12px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer">‹ Home</button>
-<span>🤝 JoinIn &amp; Participate</span>
-</div>
+<div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div style="padding:18px 16px 96px">
 <p style="font-size:14px;color:#555;line-height:1.5;margin-bottom:16px">Join something that already exists, or start your own — <b style="color:#5B8C5A">free for everyone</b>.</p>
 <div class="ph-grid">
@@ -9317,10 +9309,7 @@ if (document.readyState === 'loading') {
 </div>
 </div>
 <div id="topics-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
-<div style="position:sticky;top:0;z-index:5;background:#1B4B8F;color:#fff;display:flex;align-items:center;gap:12px;padding:14px 16px;font-weight:700;font-size:16px">
-<button onclick="goHomeReset()" style="background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:12px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer">‹ Home</button>
-<span>🔥 Today’s Hot Topics</span>
-</div>
+<div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div id="topics-fs-body" style="padding:16px 16px 96px"></div>
 </div>
 </body>
