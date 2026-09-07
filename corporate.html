@@ -395,18 +395,27 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
 
       <!-- ONBOARDING -->
       <section class="section" id="sec-guides">
-        <h1>Onboarding &amp; Training</h1>
-        <div class="panel">
-          <div class="sub">View the guide, or personalize it for a candidate and send an interactive link by email.</div>
-          <button class="btn ghost" style="margin-bottom:14px" onclick="alert('Opens the onboarding guide.')">👁 View onboarding guide</button>
-          <button class="btn ghost" style="margin-bottom:14px;margin-left:8px" onclick="alert('Opens the Publisher training course.')">📘 Publisher training course</button>
-          <div class="guide" style="max-width:560px">
-            <h3>Publisher onboarding guide</h3>
-            <div class="gsub">For a prospective market operator. Enter the market first — the deck uses that market's name and logo throughout.</div>
-            <label class="lbl">Market *</label><input type="text" id="pg-market" value="Asheville" oninput="mkLink('pg')">
-            <label class="lbl">Candidate name</label><input type="text" id="pg-name" placeholder="e.g. Jordan Ellis" oninput="mkLink('pg')">
+        <h1>Recruiting &amp; Onboarding Decks</h1>
+        <div class="panel" style="max-width:660px">
+          <div class="sub">Pick a role, preview a deck, or personalize it for a candidate and send an interactive link. Each paid role has a <b>Recruiting</b> deck and an <b>Onboarding</b> deck (onboarding includes the training).</div>
+          <label class="lbl">Role</label>
+          <select id="dg-role" onchange="dgRole()" style="max-width:340px">
+            <option value="publisher">Publisher</option>
+            <option value="paidcol">Paid Columnist</option>
+            <option value="unpaidcol">Non-paid (Topic) Columnist</option>
+          </select>
+          <div style="display:flex;gap:10px;margin:16px 0 6px;flex-wrap:wrap">
+            <button class="btn ghost" onclick="dgView('recruiting')">👁 View Recruiting Deck</button>
+            <button class="btn ghost" onclick="dgView('onboarding')">📘 View Onboarding Deck</button>
+          </div>
+          <div class="sub" id="dg-note" style="margin-bottom:16px"></div>
+          <div class="guide">
+            <h3>Personalize &amp; send</h3>
+            <div class="gsub">Enter the market and candidate — the deck brands to that market and greets the candidate by name.</div>
+            <label class="lbl">Market *</label><input type="text" id="pg-market" value="Asheville" oninput="dgUpdateLink()">
+            <label class="lbl">Candidate name</label><input type="text" id="pg-name" placeholder="e.g. Jordan Ellis" oninput="dgUpdateLink()">
             <label class="lbl">Candidate email</label><input type="email" id="pg-email" placeholder="name@email.com">
-            <div class="share"><span class="lbl" style="margin:0">Interactive link</span><code id="pg-link">joinin.today/guide/publisher/…</code></div>
+            <div class="share"><span class="lbl" style="margin:0">Personalized recruiting-deck link</span><code id="pg-link">…</code></div>
             <div class="btns"><button class="btn ghost" onclick="copyEl('pg-link',this)">Copy link</button><button class="btn accent" onclick="sendGuide('pg')">Send via email</button></div>
             <div class="ok" id="pg-ok"></div>
           </div>
@@ -809,6 +818,10 @@ function dkSend(){
 function recCopy(id,btn){ var t=document.getElementById(id); try{navigator.clipboard.writeText(t.value);}catch(e){ t.select(); document.execCommand('copy'); } var o=btn.textContent; btn.textContent='Copied!'; setTimeout(function(){btn.textContent=o;},1200); }
 
 /* init */
+function dgRoleName(r){ return r==='publisher'?'Publisher':(r==='paidcol'?'Paid Columnist':'Non-paid Columnist'); }
+function dgUpdateLink(){ var rs=document.getElementById('dg-role'); if(!rs) return; var role=rs.value; var mk=encodeURIComponent((document.getElementById('pg-market').value||'Asheville')); var nm=encodeURIComponent((document.getElementById('pg-name').value||'')); var el=document.getElementById('pg-link'); if(!el) return; if(role==='publisher'){ el.textContent='https://joinin.today/JoinIn-Publisher-Info-Deck.html?city='+mk+'&name='+nm; } else { el.textContent='(recruiting deck for this role \u2014 building next)'; } }
+function dgView(which){ var role=document.getElementById('dg-role').value; var mk=encodeURIComponent((document.getElementById('pg-market').value||'Asheville')); var nm=encodeURIComponent((document.getElementById('pg-name').value||'')); if(which==='recruiting'){ if(role==='publisher'){ window.open('https://joinin.today/JoinIn-Publisher-Info-Deck.html?city='+mk+'&name='+nm+'&admin=1','_blank'); } else { alert('The '+dgRoleName(role)+' recruiting deck is being built next.'); } } else { alert('The '+dgRoleName(role)+' onboarding deck (with training) is being built next.'); } }
+function dgRole(){ dgUpdateLink(); var n=document.getElementById('dg-note'); if(!n) return; var r=document.getElementById('dg-role').value; n.textContent = (r==='publisher') ? 'Publisher recruiting deck is live \u2014 View or Send it. Onboarding deck (incl. training) building next.' : ((r==='paidcol') ? 'Paid Columnist decks building next.' : 'Non-paid columnist: light recruiting touch \u2014 deck building next.'); }
 var AD_TYPES=['Boost','Banner','Community column display','Pulse of Asheville display','Classified marketplace','Other'];
 function arKey(pub){ return 'joininAdRates:'+pub; }
 function arLoad(){ var sel=document.getElementById('ar-pub'); if(!sel) return; var pub=sel.value; var saved={}; try{ saved=JSON.parse(localStorage.getItem(arKey(pub))||'{}'); }catch(e){} var rows=''; AD_TYPES.forEach(function(t,i){ var v=(saved[t]!=null)?saved[t]:55; rows+='<tr><td>'+t+'</td><td class="n"><input type="number" id="ar-'+i+'" value="'+v+'" min="0" max="100" style="width:88px;text-align:right;margin:0"> %</td></tr>'; }); document.getElementById('ar-rows').innerHTML=rows; var ok=document.getElementById('ar-ok'); if(ok) ok.style.display='none'; }
@@ -818,7 +831,7 @@ function arInit(){ var sel=document.getElementById('ar-pub'); if(!sel) return; s
 onScopeMarket();
 selType('neighborhood', document.querySelector('.tbtn'));
 renderPubs();
-mkLink('pg');
+dgRole();
 recSetMode('publisher');
 arInit();
 try{ if(localStorage.getItem('joininCorpAuth')==='1'){ document.getElementById('login').style.display='none'; document.getElementById('app').style.display='block'; showSection('overview', document.querySelector('.navitem')); } }catch(e){}
