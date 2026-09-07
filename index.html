@@ -263,6 +263,7 @@
 .home-tabbar button{flex:1;background:none;border:none;padding:9px 0 11px;font-size:11px;font-weight:700;color:#5B8C5A;cursor:pointer;font-family:inherit}
 .home-tabbar button .ti{display:block;font-size:20px;margin-bottom:2px}
 .hicon{font-size:20px;line-height:1;flex:0 0 auto}
+body{padding-bottom:84px}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -442,7 +443,7 @@
 </div>
 </div>
 <div class="hsec" id="hsec-columns">
-<div class="pulse-heading hsec-h" id="cc-heading" style="justify-content:space-between" onclick="hsec('columns')"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">📰</span><span>Community Columns<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Your neighborhoods, covered by local writers</span></span></span><span class="hsec-chev">›</span></div>
+<div class="pulse-heading hsec-h" id="cc-heading" style="justify-content:space-between" onclick="openColumnsFull()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">📰</span><span>Community Columns<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Your neighborhoods, covered by local writers</span></span></span><span class="hsec-chev">›</span></div>
 <div class="hsec-body">
 
 <div id="community-columns-scroll" style="margin:0 0 8px;padding:2px"></div>
@@ -471,7 +472,7 @@
 <div id="pulse-composer-card" class="pulse-compose-overlay"></div>
 
 <div class="hsec" id="hsec-pulse">
-<div class="pulse-heading hsec-h" id="pulse-feed-heading-outer" style="justify-content:space-between" onclick="hsec('pulse')">
+<div class="pulse-heading hsec-h" id="pulse-feed-heading-outer" style="justify-content:space-between" onclick="openPulseFull()">
 <span style="display:flex;flex-direction:column;gap:2px"><span style="display:flex;align-items:center;gap:8px"><span class="hicon">❤️</span>Pulse of Asheville</span><span style="font-size:12px;font-weight:600;color:#888;margin-left:16px">Asheville Community Forum</span></span>
 <span class="hsec-chev">›</span>
 </div>
@@ -481,7 +482,7 @@
 <div class="pulse-feed-sticky">
 <div class="pulse-feed-sticky-row">
 <span style="display:flex;align-items:center;gap:8px">🔴 Pulse of Asheville</span>
-<button class="pulse-scroll-btn inverse" onclick="togglePulseFeedExpand()">Show Less</button>
+<button class="pulse-scroll-btn inverse" onclick="goHomeReset()">‹ Home</button>
 </div>
 <button style="width:100%;padding:13px;font-size:15px;font-weight:700;border-radius:26px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer" onclick="openPulseComposerFromSticky()">+ Post to the Pulse</button>
 </div>
@@ -517,8 +518,7 @@
 <button onclick="showPage('marketplace')" style="width:100%;padding:13px;font-size:14.5px;font-weight:700;border-radius:26px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer">Browse Marketplace</button>
 </div></div></div>
 
-<div style="height:72px"></div>
-<div class="home-tabbar"><button onclick="goHomeReset()"><span class="ti">🏠</span>Home</button><button onclick="showPage('advertise')"><span class="ti">📣</span>Advertise</button><button onclick="showPage('about')"><span class="ti">ℹ️</span>About</button><button onclick="showPage('feedback')"><span class="ti">💬</span>Feedback</button></div>
+
 
 </div>
 
@@ -2008,6 +2008,7 @@ function showNotif(msg, type) {
 
 // ─── AUTH ───
 async function logout() {
+    var _tb=document.getElementById('home-tabbar'); if(_tb) _tb.style.display='none';
     if (sb) { await sb.auth.signOut(); }
     currentUser = null;
     allGroups = [];
@@ -3572,6 +3573,7 @@ async function enterAsGuest() {
 }
 
 function showApp() {
+    var _tb=document.getElementById('home-tabbar'); if(_tb) _tb.style.display='flex';
     populateCategoryDropdown();
     renderCategories();
     renderGroups();
@@ -4096,7 +4098,9 @@ function paintPageName(page) {
     span.textContent = title;
 }
 
-function goHomeReset(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
+function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
+function openPulseFull(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var ps=document.getElementById('hsec-pulse'); if(ps) ps.classList.add('hsec-open'); if(!pulseFeedExpanded){ togglePulseFeedExpand(); } }
+function openColumnsFull(){ var src=document.getElementById('community-columns-scroll'), dst=document.getElementById('columns-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('columns-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function hsec(id){ var el=document.getElementById('hsec-'+id); if(!el) return; var open=el.classList.contains('hsec-open'); document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); if(!open) el.classList.add('hsec-open'); }
 function showPage(page, fromHistory) {
     if (isGuest() && MEMBER_ONLY_PAGES.indexOf(page) > -1) {
@@ -9286,5 +9290,13 @@ if (document.readyState === 'loading') {
     boot();
 }
 </script>
+<div id="columns-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
+<div style="position:sticky;top:0;z-index:5;background:#1B4B8F;color:#fff;display:flex;align-items:center;gap:12px;padding:14px 16px;font-weight:700;font-size:16px">
+<button onclick="goHomeReset()" style="background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:12px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer">‹ Home</button>
+<span>📰 Community Columns</span>
+</div>
+<div id="columns-fs-body" style="padding:16px" onclick="var o=document.getElementById('columns-fs'); if(o)o.style.display='none'; document.body.style.overflow='';"></div>
+</div>
+<div class="home-tabbar" id="home-tabbar" style="display:none"><button onclick="goHomeReset()"><span class="ti">🏠</span>Home</button><button onclick="showPage('advertise')"><span class="ti">📣</span>Advertise</button><button onclick="showPage('about')"><span class="ti">ℹ️</span>About</button><button onclick="showPage('feedback')"><span class="ti">💬</span>Feedback</button></div>
 </body>
 </html>
