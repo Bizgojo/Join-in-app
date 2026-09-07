@@ -4259,12 +4259,13 @@ function renderMySchedule() {
         return;
     }
     var open = scheduleOpen();
+    var _fnEl=document.getElementById('home-username'); var _fn=_fnEl?(_fnEl.textContent||'').trim().split(' ')[0]:''; var titleTxt=(_fn?(_fn+', you'):'You')+' have '+items.length+' event'+(items.length===1?'':'s')+' scheduled';
     var html = '<div style="display:flex;align-items:center;justify-content:space-between;' +
         'gap:10px;margin:4px 0 10px">' +
-        '<div style="font-size:19px;font-weight:700;color:#1B4B8F">What you have coming up</div>' +
+        '<div style="font-size:18px;font-weight:700;color:#1B4B8F">' + titleTxt + '</div>' +
         '<button onclick="toggleSchedule()" style="flex:none;background:#e8eee8;color:#2d5a2d;' +
         'border:none;padding:8px 16px;border-radius:20px;font-size:15px;font-weight:700;' +
-        'cursor:pointer">' + (open ? 'Hide' : 'View (' + items.length + ')') + '</button></div>';
+        'cursor:pointer">' + (open ? 'Hide Schedule' : 'View Schedule') + '</button></div>';
     if (!open) {
         box.innerHTML = html;
         box.style.display = 'block';
