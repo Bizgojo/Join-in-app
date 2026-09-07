@@ -259,6 +259,9 @@
 .hsec.hsec-open .hsec-chev{transform:rotate(90deg)}
 .hsec-body{display:none;padding:0 16px 14px}
 .hsec.hsec-open .hsec-body{display:block}
+.home-tabbar{position:fixed;bottom:0;left:0;right:0;max-width:500px;margin:0 auto;background:#fff;border-top:1px solid #e8eee8;display:flex;z-index:500;box-shadow:0 -2px 12px rgba(0,0,0,.06)}
+.home-tabbar button{flex:1;background:none;border:none;padding:9px 0 11px;font-size:11px;font-weight:700;color:#5B8C5A;cursor:pointer;font-family:inherit}
+.home-tabbar button .ti{display:block;font-size:20px;margin-bottom:2px}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -412,7 +415,7 @@
 </div>
 <div id="my-schedule" style="display:none"></div>
 <div class="hsec" id="hsec-going">
-<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('going')"><span style="display:flex;align-items:center;gap:8px"><span class="dot"></span>See what's going on in Asheville</span><span class="hsec-chev">›</span></div>
+<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('going')"><span style="display:flex;align-items:center;gap:10px"><span class="dot"></span><span>See what's going on in Asheville<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Today, this week, or pick your dates</span></span></span><span class="hsec-chev">›</span></div>
 <div class="hsec-body">
 <div style="display:flex;gap:8px;margin-bottom:6px">
 <button onclick="showTimePeriod('today')" id="period-today" class="period-btn">Today</button>
@@ -438,14 +441,14 @@
 </div>
 </div>
 <div class="hsec" id="hsec-columns">
-<div class="pulse-heading hsec-h" id="cc-heading" style="justify-content:space-between" onclick="hsec('columns')"><span style="display:flex;align-items:center;gap:8px"><span class="dot"></span>Community Columns</span><span style="display:flex;align-items:center;gap:10px"><button class="pulse-scroll-btn" id="cc-showall" onclick="event.stopPropagation();toggleColumnsExpand()">Show All</button><span class="hsec-chev">›</span></span></div>
+<div class="pulse-heading hsec-h" id="cc-heading" style="justify-content:space-between" onclick="hsec('columns')"><span style="display:flex;align-items:center;gap:10px"><span class="dot"></span><span>Community Columns<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Your neighborhoods, covered by local writers</span></span></span><span class="hsec-chev">›</span></div>
 <div class="hsec-body">
 
-<div id="community-columns-scroll" style="max-height:340px;overflow-y:auto;-webkit-overflow-scrolling:touch;margin:0 0 8px;padding:2px"></div>
+<div id="community-columns-scroll" style="margin:0 0 8px;padding:2px"></div>
 <div id="cc-showless-wrap" style="display:none;text-align:right;margin:0 0 16px"><button class="pulse-scroll-btn inverse" onclick="toggleColumnsExpand()">Show Less</button></div></div></div>
 
 <div class="hsec" id="hsec-participate">
-<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('participate')"><span style="display:flex;align-items:center;gap:8px"><span class="dot"></span>JoinIn and participate</span><span class="hsec-chev">›</span></div>
+<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('participate')"><span style="display:flex;align-items:center;gap:10px"><span class="dot"></span><span>JoinIn and participate<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Join or start groups, classes &amp; events</span></span></span><span class="hsec-chev">›</span></div>
 <div class="hsec-body">
 <div class="card" style="padding:18px 16px">
 <div style="display:flex;gap:8px;margin-bottom:14px">
@@ -469,11 +472,11 @@
 <div class="hsec" id="hsec-pulse">
 <div class="pulse-heading hsec-h" id="pulse-feed-heading-outer" style="justify-content:space-between" onclick="hsec('pulse')">
 <span style="display:flex;flex-direction:column;gap:2px"><span style="display:flex;align-items:center;gap:8px"><span class="dot"></span>Pulse of Asheville</span><span style="font-size:12px;font-weight:600;color:#888;margin-left:16px">Asheville Community Forum</span></span>
-<span style="display:flex;align-items:center;gap:10px"><button class="pulse-scroll-btn" onclick="event.stopPropagation();togglePulseFeedExpand()">Show All</button><span class="hsec-chev">›</span></span>
+<span class="hsec-chev">›</span>
 </div>
 <div class="hsec-body">
 <div id="pulse-composer-toggle" style="margin-bottom:16px"><button style="width:100%;padding:16px;font-size:17px;font-weight:700;border-radius:30px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer" onclick="openPulseComposer()">+ Post to the Pulse</button></div>
-<div id="pulse-feed-list" class="pulse-feed-card collapsed">
+<div id="pulse-feed-list" class="pulse-feed-card">
 <div class="pulse-feed-sticky">
 <div class="pulse-feed-sticky-row">
 <span style="display:flex;align-items:center;gap:8px">🔴 Pulse of Asheville</span>
@@ -483,10 +486,10 @@
 </div>
 <div id="pulse-feed-posts"><div class="pulse-empty">Loading the Pulse…</div></div>
 </div>
-<button class="pulse-scroll-btn" onclick="togglePulseFeedExpand()" style="display:block;width:100%;margin:10px 0 16px">Show All</button></div></div>
+</div></div>
 
 <div class="hsec" id="hsec-topics">
-<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('topics')"><span style="display:flex;align-items:center;gap:8px"><span class="dot"></span>Today's Topics</span><span class="hsec-chev">›</span></div>
+<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('topics')"><span style="display:flex;align-items:center;gap:10px"><span class="dot"></span><span>Today's Topics<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">A daily prompt and the Asheville poll</span></span></span><span class="hsec-chev">›</span></div>
 <div class="hsec-body">
 <div class="card" id="community-poll-card" style="display:none"></div>
 
@@ -504,7 +507,7 @@
 </div></div></div>
 
 <div class="hsec" id="hsec-market">
-<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('market')"><span style="display:flex;align-items:center;gap:8px"><span class="dot"></span>AVL Marketplace</span><span class="hsec-chev">›</span></div>
+<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('market')"><span style="display:flex;align-items:center;gap:10px"><span class="dot"></span><span>AVL Marketplace<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Buy, sell &amp; give away, locally</span></span></span><span class="hsec-chev">›</span></div>
 <div class="hsec-body">
 <div class="card" style="text-align:center;padding:18px">
 <div style="font-size:28px;margin-bottom:4px">🏪</div>
@@ -513,9 +516,8 @@
 <button onclick="showPage('marketplace')" style="width:100%;padding:13px;font-size:14.5px;font-weight:700;border-radius:26px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer">Browse Marketplace</button>
 </div></div></div>
 
-<div class="funnel" onclick="showPage('advertise')"><span class="icon">📣</span><div class="text"><div class="title">Advertise</div><div class="sub">Reach real Asheville neighbors</div></div><span class="arrow">›</span></div>
-<div class="funnel" onclick="showPage('about')"><span class="icon">ℹ️</span><div class="text"><div class="title">About Asheville Pulse</div><div class="sub">Our mission and who we are</div></div><span class="arrow">›</span></div>
-<div class="funnel" onclick="showPage('feedback')"><span class="icon">💬</span><div class="text"><div class="title">Feedback & Ratings</div><div class="sub">Share your thoughts</div></div><span class="arrow">›</span></div>
+<div style="height:72px"></div>
+<div class="home-tabbar"><button onclick="showPage('advertise')"><span class="ti">📣</span>Advertise</button><button onclick="showPage('about')"><span class="ti">ℹ️</span>About</button><button onclick="showPage('feedback')"><span class="ti">💬</span>Feedback</button></div>
 
 </div>
 
