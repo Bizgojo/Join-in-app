@@ -264,6 +264,14 @@
 .home-tabbar button .ti{display:block;font-size:20px;margin-bottom:2px}
 .hicon{font-size:20px;line-height:1;flex:0 0 auto}
 body{padding-bottom:84px}
+.ph-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.ph-card{background:#fff;border:1px solid #e8eee8;border-radius:16px;padding:20px 14px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.ph-card:active{transform:scale(.98)}
+.ph-ic{font-size:32px;line-height:1}
+.ph-t{font-size:16px;font-weight:800;margin-top:10px;color:#1a1a2e}
+.ph-s{font-size:12.5px;color:#888;margin-top:3px}
+.ph-create{width:100%;padding:16px;font-size:16px;font-weight:800;border-radius:28px;border:none;color:#fff;background:#5B8C5A;cursor:pointer;margin-bottom:18px}
+.ph-col label{display:block;font-size:12px;font-weight:700;color:#888;margin-bottom:6px}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -450,24 +458,8 @@ body{padding-bottom:84px}
 <div id="cc-showless-wrap" style="display:none;text-align:right;margin:0 0 16px"><button class="pulse-scroll-btn inverse" onclick="toggleColumnsExpand()">Show Less</button></div></div></div>
 
 <div class="hsec" id="hsec-participate">
-<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('participate')"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">🤝</span><span>JoinIn and participate<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Join or start groups, classes &amp; events (it’s Free!)</span></span></span><span class="hsec-chev">›</span></div>
-<div class="hsec-body">
-<div class="card" style="padding:18px 16px">
-<div style="display:flex;gap:8px;margin-bottom:14px">
-<select id="columnist-select-topical" onchange="onColumnistSelect('topical')" style="flex:1;padding:14px;margin:0;font-size:15px;font-weight:700;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#cfe0f2"><option value="">Topic Columnist</option></select>
-<button onclick="showPage('chat')" style="flex:1;padding:14px;font-size:15px;font-weight:700;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#cfe0f2;cursor:pointer">💬 Chat</button>
+<div class="pulse-heading hsec-h" style="margin:0" onclick="openParticipateFull()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">🤝</span><span>JoinIn and participate<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Join or start groups, classes &amp; events (it’s Free!)</span></span></span><span class="hsec-chev">›</span></div>
 </div>
-
-<div class="rail-wrap" style="margin-bottom:14px">
-<div class="rail">
-<div class="rail-card" onclick="showPage('groups')"><span class="ico">👥</span><div class="t">Join a Group</div><div class="s">Find your community</div></div>
-<div class="rail-card" onclick="showPage('classes')"><span class="ico">🎓</span><div class="t">Take a Class</div><div class="s">Learn locally</div></div>
-<div class="rail-card" onclick="showPage('events')"><span class="ico">🎟️</span><div class="t">Discover Events</div><div class="s">Music, sports & more</div></div>
-</div>
-</div>
-
-<button onclick="showCreateChoice()" style="width:100%;padding:13px 10px;font-size:14.5px;font-weight:700;border-radius:26px;border:none;color:#1B4B8F;background:#cfe0f2;cursor:pointer;white-space:nowrap">Create A Group, Class or Event - it's Free!</button>
-</div></div></div>
 
 <div id="pulse-composer-card" class="pulse-compose-overlay"></div>
 
@@ -4098,9 +4090,13 @@ function paintPageName(page) {
     span.textContent = title;
 }
 
-function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
+function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; var _pf=document.getElementById('participate-fs'); if(_pf) _pf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
 function openPulseFull(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var ps=document.getElementById('hsec-pulse'); if(ps) ps.classList.add('hsec-open'); if(!pulseFeedExpanded){ togglePulseFeedExpand(); } }
 function openColumnsFull(){ var src=document.getElementById('community-columns-scroll'), dst=document.getElementById('columns-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('columns-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
+function openParticipateFull(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var o=document.getElementById('participate-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
+function participateGo(pg){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showPage(pg); }
+function participateCreate(){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showCreateChoice(); }
+function participateColumnist(){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; onColumnistSelect('topical'); }
 function hsec(id){ var el=document.getElementById('hsec-'+id); if(!el) return; var open=el.classList.contains('hsec-open'); document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); if(!open) el.classList.add('hsec-open'); }
 function showPage(page, fromHistory) {
     if (isGuest() && MEMBER_ONLY_PAGES.indexOf(page) > -1) {
@@ -9299,5 +9295,25 @@ if (document.readyState === 'loading') {
 <div id="columns-fs-body" style="padding:16px 16px 92px" onclick="var o=document.getElementById('columns-fs'); if(o)o.style.display='none'; document.body.style.overflow='';"></div>
 </div>
 <div class="home-tabbar" id="home-tabbar" style="display:none"><button onclick="goHomeReset()"><span class="ti">🏠</span>Home</button><button onclick="showPage('advertise')"><span class="ti">📣</span>Advertise/Boost</button><button onclick="showPage('about')"><span class="ti">ℹ️</span>About</button><button onclick="showPage('feedback')"><span class="ti">💬</span>Feedback</button></div>
+<div id="participate-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
+<div style="position:sticky;top:0;z-index:5;background:#1B4B8F;color:#fff;display:flex;align-items:center;gap:12px;padding:14px 16px;font-weight:700;font-size:16px">
+<button onclick="goHomeReset()" style="background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:12px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer">‹ Home</button>
+<span>🤝 JoinIn &amp; Participate</span>
+</div>
+<div style="padding:18px 16px 96px">
+<p style="font-size:14px;color:#555;line-height:1.5;margin-bottom:16px">Join something that already exists, or start your own — <b style="color:#5B8C5A">free for everyone</b>.</p>
+<div class="ph-grid">
+<div class="ph-card" onclick="participateGo('groups')"><div class="ph-ic">👥</div><div class="ph-t">Join a Group</div><div class="ph-s">Find your community</div></div>
+<div class="ph-card" onclick="participateGo('classes')"><div class="ph-ic">🎓</div><div class="ph-t">Take a Class</div><div class="ph-s">Learn locally</div></div>
+<div class="ph-card" onclick="participateGo('events')"><div class="ph-ic">🎟️</div><div class="ph-t">Discover Events</div><div class="ph-s">Music, sports &amp; more</div></div>
+<div class="ph-card" onclick="participateGo('chat')"><div class="ph-ic">💬</div><div class="ph-t">Chat</div><div class="ph-s">Message your groups</div></div>
+</div>
+<button class="ph-create" onclick="participateCreate()">🚀 Create a Group, Class or Event — it’s Free!</button>
+<div class="ph-col">
+<label>Read a neighborhood or topic columnist</label>
+<select id="columnist-select-topical" onchange="participateColumnist()" style="width:100%;padding:14px;font-size:15px;font-weight:700;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#cfe0f2"><option value="">Topic Columnist</option></select>
+</div>
+</div>
+</div>
 </body>
 </html>
