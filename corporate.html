@@ -404,10 +404,6 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
             <option value="paidcol">Paid Columnist</option>
             <option value="unpaidcol">Non-paid (Topic) Columnist</option>
           </select>
-          <div style="display:flex;gap:10px;margin:16px 0 6px;flex-wrap:wrap">
-            <button class="btn ghost" onclick="dgView('recruiting')">👁 View Recruiting Deck</button>
-            <button class="btn ghost" onclick="dgView('onboarding')">📘 View Onboarding Deck</button>
-          </div>
           <div class="sub" id="dg-note" style="margin-bottom:16px"></div>
           <div class="guide">
             <h3>Personalize &amp; send</h3>
@@ -416,6 +412,7 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
             <label class="lbl">Candidate name</label><input type="text" id="pg-name" placeholder="e.g. Jordan Ellis" oninput="dgUpdateLink()">
             <label class="lbl">Candidate email</label><input type="email" id="pg-email" placeholder="name@email.com">
             <div class="share"><span class="lbl" style="margin:0">Personalized recruiting-deck link</span><code id="pg-link">…</code></div>
+            <div style="display:flex;gap:10px;margin:12px 0;flex-wrap:wrap"><button class="btn ghost" onclick="dgView('recruiting')">👁 View Recruiting Deck</button><button class="btn ghost" onclick="dgView('onboarding')">📘 View Onboarding Deck</button></div>
             <div class="btns"><button class="btn ghost" onclick="copyEl('pg-link',this)">Copy link</button><button class="btn accent" onclick="sendGuide('pg')">Send via email</button></div>
             <div class="ok" id="pg-ok"></div>
           </div>
