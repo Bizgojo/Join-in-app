@@ -152,7 +152,7 @@
 .pulse-feed-card{background:#fff;border-radius:16px;border:1px solid #e8eee8;overflow:hidden;margin-bottom:12px;position:relative}
 .pulse-feed-card.collapsed{max-height:640px}
 .pulse-feed-card.collapsed::after{content:'';position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.98));pointer-events:none}
-.pulse-feed-card.expanded{position:fixed;inset:0;z-index:2000;border-radius:0;border:none;margin:0;max-height:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.pulse-feed-card.expanded{position:fixed;inset:0;z-index:2000;border-radius:0;border:none;margin:0;max-height:none;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:84px}
 .pulse-feed-sticky{display:none;position:sticky;top:0;z-index:5;background:#1B4B8F;flex-direction:column;gap:10px;padding:14px 16px}
 .pulse-feed-card.expanded .pulse-feed-sticky{display:flex}
 .pulse-feed-sticky-row{display:flex;align-items:center;justify-content:space-between;color:#fff;font-weight:700;font-size:16px}
@@ -259,7 +259,7 @@
 .hsec.hsec-open .hsec-chev{transform:rotate(90deg)}
 .hsec-body{display:none;padding:0 16px 14px}
 .hsec.hsec-open .hsec-body{display:block}
-.home-tabbar{position:fixed;bottom:0;left:0;right:0;max-width:500px;margin:0 auto;background:#fff;border-top:1px solid #e8eee8;display:flex;z-index:500;box-shadow:0 -2px 12px rgba(0,0,0,.06)}
+.home-tabbar{position:fixed;bottom:0;left:0;right:0;max-width:500px;margin:0 auto;background:#fff;border-top:1px solid #e8eee8;display:flex;z-index:2100;box-shadow:0 -2px 12px rgba(0,0,0,.06)}
 .home-tabbar button{flex:1;background:none;border:none;padding:9px 0 11px;font-size:11px;font-weight:700;color:#5B8C5A;cursor:pointer;font-family:inherit}
 .home-tabbar button .ti{display:block;font-size:20px;margin-bottom:2px}
 .hicon{font-size:20px;line-height:1;flex:0 0 auto}
@@ -9295,7 +9295,7 @@ if (document.readyState === 'loading') {
 <button onclick="goHomeReset()" style="background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:12px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer">‹ Home</button>
 <span>📰 Community Columns</span>
 </div>
-<div id="columns-fs-body" style="padding:16px" onclick="var o=document.getElementById('columns-fs'); if(o)o.style.display='none'; document.body.style.overflow='';"></div>
+<div id="columns-fs-body" style="padding:16px 16px 92px" onclick="var o=document.getElementById('columns-fs'); if(o)o.style.display='none'; document.body.style.overflow='';"></div>
 </div>
 <div class="home-tabbar" id="home-tabbar" style="display:none"><button onclick="goHomeReset()"><span class="ti">🏠</span>Home</button><button onclick="showPage('advertise')"><span class="ti">📣</span>Advertise/Boost</button><button onclick="showPage('about')"><span class="ti">ℹ️</span>About</button><button onclick="showPage('feedback')"><span class="ti">💬</span>Feedback</button></div>
 </body>
