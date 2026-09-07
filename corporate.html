@@ -167,11 +167,10 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
   <div class="layout">
     <aside class="rail">
       <div class="navitem on" onclick="showSection('overview',this)">Overview</div>
-      <div class="navitem" onclick="showSection('recruiting',this)">Recruiting</div>
+      <div class="navitem" onclick="showSection('recruiting',this)">Recruiting &amp; Onboarding</div>
       <div class="navitem" onclick="showSection('ratecard',this)">Rate Card</div>
       <div class="navitem" onclick="showSection('adrates',this)">Publisher Rates</div>
       <div class="navitem" onclick="showSection('publishers',this)">Publishers</div>
-      <div class="navitem" onclick="showSection('guides',this)">Onboarding</div>
       <div class="navitem" onclick="showSection('revenue',this)">Revenue &amp; Payouts</div>
       <div class="navitem" onclick="showSection('comms',this)">Communications</div>
     </aside>
@@ -210,7 +209,31 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
 
       <!-- RECRUITING -->
       <section class="section" id="sec-recruiting">
-        <h1>Recruiting</h1>
+        <h1>Recruiting &amp; Onboarding</h1>
+        <div class="panel">
+          <h2>Decks by role</h2>
+          <div class="sub">Each paid role has two decks — a <b>recruiting</b> deck to interest them, and an <b>onboarding</b> deck to set them up once they say yes. Unpaid topic columnists get a light recruiting touch only.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+            <div class="mini">
+              <h3>Publisher</h3>
+              <div style="margin-bottom:8px"><span class="pill p-live">Recruiting deck ready</span></div>
+              <button class="btn ghost" style="width:100%;margin-bottom:8px" onclick="window.open('https://joinin.today/JoinIn-Publisher-Info-Deck.html?city=Asheville&admin=1','_blank')">▸ Preview recruiting deck</button>
+              <button class="btn ghost" style="width:100%" onclick="showSection('guides')">▸ Onboarding materials</button>
+            </div>
+            <div class="mini">
+              <h3>Paid Columnist</h3>
+              <div style="margin-bottom:8px"><span class="pill p-onb">Both decks — building next</span></div>
+              <button class="btn ghost" style="width:100%;margin-bottom:8px;opacity:.55" disabled>Recruiting deck — coming</button>
+              <button class="btn ghost" style="width:100%;opacity:.55" disabled>Onboarding deck — coming</button>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:9px;line-height:1.45">Onboarding steps: sign agreement · payment / bank setup · Studio access · guidelines + mini-training · publish first column · training course · go live.</div>
+            </div>
+            <div class="mini">
+              <h3>Unpaid (Topic) Columnist</h3>
+              <div style="margin-bottom:8px"><span class="pill" style="background:#e7ecf3;color:#3a4a63">Light touch</span></div>
+              <div style="font-size:13px;color:var(--muted);line-height:1.5">A light recruiting touch only — no onboarding deck. Accept guidelines, get Studio access, publish.</div>
+            </div>
+          </div>
+        </div>
 
         <!-- FIND VIEW -->
         <div id="rec-find">
