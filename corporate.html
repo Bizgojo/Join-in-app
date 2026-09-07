@@ -277,12 +277,10 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
                 <div class="sub" id="ct-reply-sub"></div>
                 <textarea class="tbox" id="ct-reply"></textarea>
                 <div class="rowbtns">
-                  <button class="btn ghost" onclick="recCopy('ct-reply',this)">Copy</button>
-                  <button class="btn" onclick="alert('Opens your email reply with this text.')">Open email</button>
-                  <button class="btn green" onclick="alert('Adds this to the thread as sent and advances the pipeline.')">Add to thread as sent</button>
-                  <button class="btn" style="background:#E4572E" onclick="recAttachDeck()">📎 Attach recruiting deck</button>
+                  <button class="btn" onclick="recSend(false)">Send without deck</button>
+                  <button class="btn green" onclick="recSend(true)">📎 Send with deck</button>
                 </div>
-                <div class="sub" style="margin-top:8px">Send as many emails as you need first. When you’re ready, tap <b>Attach recruiting deck</b> to add the personalized deck link.</div>
+                <div class="sub" style="margin-top:8px"><b>Send with deck</b> auto-attaches this candidate’s personalized deck link — no extra step. Both add the message to the thread and advance the pipeline. (Opens your mail app pre-filled; automated sending comes with the backend.)</div>
               </div>
 
               <div class="panel" id="deckpanel" style="display:none">
@@ -631,6 +629,7 @@ function sendGuide(pfx){ var email=document.getElementById(pfx+'-email').value.t
 var REC_STAGES=['Found','Initial email','Follow-ups','Recruiting Deck','Interview','Onboarding','Monitoring'];
 function recSaveEmail(v){ var i=recSelected[recMode]; if(i!=null && REC[recMode] && REC[recMode].cands[i]) REC[recMode].cands[i].email=v; }
 function recAttachDeck(){ var d=document.getElementById('deckpanel'); if(d){ d.style.display='block'; d.scrollIntoView({behavior:'smooth',block:'start'}); } }
+function recSend(withDeck){ var i=recSelected[recMode]; if(i==null) return; var c=REC[recMode].cands[i]; var msg=document.getElementById('ct-reply').value; var city=((c.loc||'Asheville').split(',')[0]).trim(); var link='https://joinin.today/JoinIn-Publisher-Info-Deck.html?city='+encodeURIComponent(city)+'&name='+encodeURIComponent(c.nm); var body = withDeck ? (msg+'\n\nHere\u2019s the full overview: '+link) : msg; var thread=document.getElementById('ct-thread'); if(thread){ var d=document.createElement('div'); d.className='msg out'; d.innerHTML='<div class="bub">'+recEsc(body)+'</div><div class="mm">Sent'+(withDeck?' \u00b7 deck link included':'')+'</div>'; thread.appendChild(d); } c.stage = withDeck ? 3 : Math.max(c.stage||0,2); var pipe=document.getElementById('ct-pipe'); if(pipe) pipe.innerHTML=recPipe(c.stage); var to=c.email||''; var subj = withDeck ? ('JoinIn '+city+' \u2014 the overview') : ('JoinIn '+city); try{ window.location.href='mailto:'+encodeURIComponent(to)+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body); }catch(e){} }
 function recEsc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function recInitials(n){ var w=String(n||'').replace(/[—-]/g,' ').split(/\s+/).filter(function(x){return /[A-Za-z]/.test(x);}); return (((w[0]||'')[0]||'')+((w[1]||'')[0]||'')).toUpperCase(); }
 
