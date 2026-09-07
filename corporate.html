@@ -169,6 +169,7 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
       <div class="navitem on" onclick="showSection('overview',this)">Overview</div>
       <div class="navitem" onclick="showSection('recruiting',this)">Recruiting</div>
       <div class="navitem" onclick="showSection('ratecard',this)">Rate Card</div>
+      <div class="navitem" onclick="showSection('adrates',this)">Publisher Rates</div>
       <div class="navitem" onclick="showSection('publishers',this)">Publishers</div>
       <div class="navitem" onclick="showSection('guides',this)">Onboarding</div>
       <div class="navitem" onclick="showSection('revenue',this)">Revenue &amp; Payouts</div>
@@ -386,6 +387,25 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
             <div class="btns"><button class="btn ghost" onclick="copyEl('pg-link',this)">Copy link</button><button class="btn accent" onclick="sendGuide('pg')">Send via email</button></div>
             <div class="ok" id="pg-ok"></div>
           </div>
+        </div>
+      </section>
+
+      <section class="section" id="sec-adrates">
+        <h1>Publisher Ad Rates</h1>
+        <div class="panel">
+          <h2>Set Publisher share by ad type</h2>
+          <div class="sub">The Publisher’s percentage of ad revenue for each ad type — set per publisher. This is the source of truth for the Publisher’s pay slide.</div>
+          <div style="display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;margin-bottom:18px">
+            <div class="f" style="max-width:280px"><label class="lbl">Publisher / market</label><select id="ar-pub" onchange="arLoad()"></select></div>
+            <div class="f" style="max-width:190px"><label class="lbl">Set ALL ad types to (%)</label><input type="number" id="ar-all" placeholder="e.g. 55" min="0" max="100"></div>
+            <button class="btn" onclick="arSetAll()">Apply to all</button>
+          </div>
+          <table><thead><tr><th>Ad type</th><th class="n">Publisher %</th></tr></thead><tbody id="ar-rows"></tbody></table>
+          <div style="margin-top:16px;display:flex;gap:12px;align-items:center">
+            <button class="btn accent" onclick="arSave()">Save rates</button>
+            <span id="ar-ok" style="color:var(--pos);font-weight:700;display:none"></span>
+          </div>
+          <div class="sub" style="margin-top:12px">Saved per publisher (persists in this browser for the mockup). Once the app backend is connected, the recruiting deck’s pay slide reads these values automatically.</div>
         </div>
       </section>
 
@@ -766,11 +786,18 @@ function dkSend(){
 function recCopy(id,btn){ var t=document.getElementById(id); try{navigator.clipboard.writeText(t.value);}catch(e){ t.select(); document.execCommand('copy'); } var o=btn.textContent; btn.textContent='Copied!'; setTimeout(function(){btn.textContent=o;},1200); }
 
 /* init */
+var AD_TYPES=['Boost','Banner','Community column display','Pulse of Asheville display','Classified marketplace','Other'];
+function arKey(pub){ return 'joininAdRates:'+pub; }
+function arLoad(){ var sel=document.getElementById('ar-pub'); if(!sel) return; var pub=sel.value; var saved={}; try{ saved=JSON.parse(localStorage.getItem(arKey(pub))||'{}'); }catch(e){} var rows=''; AD_TYPES.forEach(function(t,i){ var v=(saved[t]!=null)?saved[t]:55; rows+='<tr><td>'+t+'</td><td class="n"><input type="number" id="ar-'+i+'" value="'+v+'" min="0" max="100" style="width:88px;text-align:right;margin:0"> %</td></tr>'; }); document.getElementById('ar-rows').innerHTML=rows; var ok=document.getElementById('ar-ok'); if(ok) ok.style.display='none'; }
+function arSetAll(){ var v=document.getElementById('ar-all').value; if(v==='') return; AD_TYPES.forEach(function(t,i){ var el=document.getElementById('ar-'+i); if(el) el.value=v; }); }
+function arSave(){ var pub=document.getElementById('ar-pub').value, obj={}; AD_TYPES.forEach(function(t,i){ obj[t]=parseFloat(document.getElementById('ar-'+i).value)||0; }); try{ localStorage.setItem(arKey(pub), JSON.stringify(obj)); }catch(e){} var ok=document.getElementById('ar-ok'); ok.textContent='\u2713 Saved for '+pub; ok.style.display='inline'; }
+function arInit(){ var sel=document.getElementById('ar-pub'); if(!sel) return; sel.innerHTML=PUBM.map(function(m){ return '<option>'+m.name+'</option>'; }).join(''); arLoad(); }
 onScopeMarket();
 selType('neighborhood', document.querySelector('.tbtn'));
 renderPubs();
 mkLink('pg');
 recSetMode('publisher');
+arInit();
 try{ if(localStorage.getItem('joininCorpAuth')==='1'){ document.getElementById('login').style.display='none'; document.getElementById('app').style.display='block'; showSection('overview', document.querySelector('.navitem')); } }catch(e){}
 </script>
 </body>
