@@ -666,7 +666,8 @@ var REC={
         read:{arch:'Local media person — the established independent voice.',lights:'Bigger audience, being the voice, monetizing without selling out.',avoid:'Don\u2019t threaten his editorial control; don\u2019t open with money; signal clearly it\u2019s not a scam.',lead:'\u201cYou already are the voice — this makes it official and city-wide, on your terms.\u201d'},
         first:'Hi Jason — I\u2019ve read the Hot Sheet for years, and the way you\u2019ve covered Asheville\u2019s growth without ever reading like an outsider is exactly the thing I\u2019m trying to build on. I\u2019m launching JoinIn, a local-first community app for Asheville, and I\u2019m looking for one rooted local person to run the whole Asheville side. Honestly, you were the first name that came to mind. Could I tell you a bit more — takes two minutes?',
         reply:'Hey Marc — appreciate the kind words, they mean something coming from someone who actually reads the thing. I\u2019ll be honest, I\u2019m wary of \u201capp\u201d pitches. But I\u2019m curious enough to ask: what does \u201crun the Asheville side\u201d actually mean day to day, and what\u2019s the catch / what does it cost me?',
-        proposed:'Hi Jason — totally fair to be wary; I would be too. No catch, and nothing for you to pay, ever.\n\nShort version: \u201crunning the Asheville side\u201d means you\u2019re the Publisher — you keep full editorial control and your own voice, bring on a writer per neighborhood, and keep most of what local ads earn.\n\nRather than talk your ear off, let me send you the full picture in one place — a short deck covering the mission, how the app works, growth, the time it takes, how compensation works, and exactly what a Publisher is responsible for. Read it whenever you\u2019ve got ten quiet minutes.\n\nIf it still feels like a fit, we\u2019ll set up a proper sit-down — coffee\u2019s on me. Want me to send it over?\n\n— Marc', deck:true},
+        replyOnly:'Hi Jason — totally fair to be wary; I would be too. No catch, and nothing for you to pay, ever.\n\n\u201cRunning the Asheville side\u201d means you\u2019re the Publisher: full editorial control, your own voice, a writer per neighborhood, and most of what local ads earn stays with you.\n\nHappy to get into any part of it — what would you most want to know first?\n\n— Marc',
+        proposed:'Hi Jason — totally fair to be wary; I would be too. No catch, and nothing for you to pay, ever.\n\nShort version: \u201crunning the Asheville side\u201d means you\u2019re the Publisher — you keep full editorial control and your own voice, bring on a writer per neighborhood, and keep most of what local ads earn.\n\nRather than talk your ear off, let me send you the full picture in one place — a short deck covering the mission, how the app works, growth, the time it takes, how compensation works, and exactly what a Publisher is responsible for. Take a look whenever you\u2019ve got ten quiet minutes; if it feels like a fit, coffee\u2019s on me.\n\n— Marc', deck:true},
       {nm:'Aisha Adams', role:'Media founder & community connector', loc:'Asheville, NC', tags:'<span class="tag pub">Publisher</span>', fit:8, stage:0,
         snip:'Founder/CEO of Aisha Adams Media Group; hosts The Asheville View; runs the Nappy Thoughts blog.',
         bio:'Aisha Adams is founder and CEO of the Aisha Adams Media Group and the equity initiative Equity Over Everything. She hosts The Asheville View talk show and writes Nappy Thoughts, a blog followed by thousands. Media production, business development, and civic engagement across Asheville.',
@@ -702,6 +703,7 @@ var REC={
         read:{arch:'Beloved local food critic.',lights:'A bigger platform and being paid for what he already does.',avoid:'Don\u2019t sand down his voice; keep it fun.',lead:'\u201cYou\u2019re already the food voice — here\u2019s the byline, the audience, and a cut.\u201d'},
         first:'Hi Stu — you\u2019ve been the food voice in Asheville since before it was cool. I\u2019m launching JoinIn, a local community app, and I want one writer per beat — food is obviously you. Could I tell you a bit more — takes two minutes?',
         reply:'Ha, appreciate that. What\u2019s the deal — do I keep my voice, and does it pay?',
+        replyOnly:'Hi Stu — you keep your voice completely; that\u2019s the whole point. Short, regular food posts, exactly like you already do — real byline, a bigger local audience, and a cut of any ad on your column. Anything you\u2019d want to know?\n\n— Marc',
         proposed:'Hi Stu — you keep your voice completely; that\u2019s the whole point. Short, regular food posts, exactly like you already do. It comes with a real byline, a bigger local audience, and a cut of any ads a business runs on your column. Want me to send the one-page rundown, or easier to just talk for 10 minutes?\n\n— Marc'},
       {nm:'Bill Kopp', role:'Music beat — journalist/author', loc:'Asheville, NC', tags:'<span class="tag tp">Topic</span>', fit:8, stage:0,
         snip:'500+ bylines in WNC publications; contributing editor at Goldmine, writer at GRAMMY.com.',
@@ -776,14 +778,14 @@ function recBack(){ document.getElementById('rec-contact').style.display='none';
 function recPipe(stage){
   return REC_STAGES.map(function(s,i){ var cls=i<stage?'done':(i===stage?'cur':''); var mark=i<stage?'✓':(i+1); return '<div class="pstep '+cls+'"><div class="dot">'+mark+'</div><div class="sl">'+s+'</div></div>'; }).join('');
 }
-var recBaseReply='', recDeckInclude=false;
+var recReplyOnlyText='', recDeckBase='', recDeckInclude=false;
 function recDeckChoice(inc){
   recDeckInclude=inc;
   var y=document.getElementById('dc-yes'), n=document.getElementById('dc-no');
   if(y) y.classList.toggle('on',inc); if(n) n.classList.toggle('on',!inc);
   var i=recSelected[recMode]; var c=(i!=null)?REC[recMode].cands[i]:null;
   var link=''; if(c){ var city=((c.loc||'Asheville').split(',')[0]).trim(); link='https://joinin.today/JoinIn-Publisher-Info-Deck.html?city='+encodeURIComponent(city)+'&name='+encodeURIComponent(c.nm); }
-  var t=document.getElementById('ct-reply'); if(t) t.value = recBaseReply + (inc && link ? ('\n\nHere\u2019s the full overview: '+link) : '');
+  var t=document.getElementById('ct-reply'), sub=document.getElementById('ct-reply-sub'); if(inc){ if(t) t.value = recDeckBase + (link ? ('\n\nHere\u2019s the full overview: '+link) : ''); if(sub) sub.textContent='Answers their questions and shares the deck. Edit before sending.'; } else { if(t) t.value = recReplyOnlyText; if(sub) sub.textContent='Answers their questions — no deck yet, for the early back-and-forth. Edit before sending.'; }
 }
 function recSend2(){
   var i=recSelected[recMode]; if(i==null) return; var c=REC[recMode].cands[i];
@@ -808,8 +810,7 @@ function recOpenContact(c){
   document.getElementById('ct-thread').innerHTML=thread;
   // proposed reply
   var prop=c.proposed||('Hi '+c.nm.split(' ')[0]+' — great to hear from you. Let me send over a short overview of what this involves so you can decide if it fits. Want me to send it?\n\n— Marc');
-  recBaseReply=prop; var _ct=document.getElementById('ct-to'); if(_ct)_ct.value=(c.email||''); recDeckChoice(false); var _ew=document.getElementById('ct-editwrap'); if(_ew)_ew.style.display='block'; var _w=document.getElementById('ct-waiting'); if(_w)_w.style.display='none';
-  document.getElementById('ct-reply-sub').textContent=c.reply?'Answers their questions and moves things forward. Edit before sending.':'Your opening follow-up. Edit before sending.';
+  recReplyOnlyText = c.replyOnly || ('Hi '+c.nm.split(' ')[0]+' — great to hear from you. Happy to answer anything — what would you most like to know?\n\n— Marc'); recDeckBase = prop; var _ct=document.getElementById('ct-to'); if(_ct)_ct.value=(c.email||''); recDeckChoice(false); var _ew=document.getElementById('ct-editwrap'); if(_ew)_ew.style.display='block'; var _w=document.getElementById('ct-waiting'); if(_w)_w.style.display='none';
   var _dp=document.getElementById('deckpanel'); if(_dp) _dp.style.display='none';
   // read
   var r=c.read||{arch:'',lights:'',avoid:'',lead:''};
