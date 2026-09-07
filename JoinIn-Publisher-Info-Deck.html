@@ -572,7 +572,7 @@ document.getElementById('role-steps').innerHTML=ROLE.map(function(r,i){
 function toggleStep(i){ document.getElementById('stp-'+i).classList.toggle('open'); }
 
 document.querySelectorAll('.mk-name').forEach(function(el){ el.textContent=MARKET; });
-if(qp('admin','') || (function(){try{return localStorage.getItem('joininCorpAuth')==='1';}catch(e){return false;}})()){ var _ab=document.getElementById('admin-back'); if(_ab) _ab.style.display='block'; }
+if(qp('admin','') || location.protocol==='file:' || (function(){try{return localStorage.getItem('joininCorpAuth')==='1';}catch(e){return false;}})()){ var _ab=document.getElementById('admin-back'); if(_ab) _ab.style.display='block'; }
 var _ln=document.getElementById('lt-name'); if(_ln) _ln.textContent = first || 'there';
 if(NAME){ var _ov=document.getElementById('ov-label'); if(_ov) _ov.textContent='Prepared for '+NAME; }
 
