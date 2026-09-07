@@ -143,6 +143,9 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
 .navarrows{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:8px}
 .navarrows button{background:rgba(255,255,255,.14);color:#fff;border:none;border-radius:9px;width:40px;height:34px;font-size:20px;line-height:1;cursor:pointer}
 .navarrows button:disabled{opacity:.3;cursor:default}
+.deckchoice{display:inline-flex;background:#eef1f5;border-radius:10px;padding:4px;margin:4px 0 10px}
+.deckchoice button{border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:var(--muted);padding:7px 15px;border-radius:7px;cursor:pointer}
+.deckchoice button.on{background:var(--navy2);color:#fff}
 </style>
 </head>
 <body>
@@ -279,13 +282,14 @@ tr:last-child td{border-bottom:none}tr.cap td{background:#eef6ee}
               <div class="panel">
                 <h2 style="display:flex;align-items:center;gap:8px">Proposed reply <span class="tag tp" style="margin:0">drafted by Claude</span></h2>
                 <div id="ct-editwrap">
+                <label class="lbl">To</label><input id="ct-to" placeholder="candidate@email.com" oninput="recSaveEmail(this.value)" style="margin-bottom:10px">
+                <div class="deckchoice"><button id="dc-no" class="on" onclick="recDeckChoice(false)">Reply only</button><button id="dc-yes" onclick="recDeckChoice(true)">Include deck</button></div>
                 <div class="sub" id="ct-reply-sub"></div>
                 <textarea class="tbox" id="ct-reply"></textarea>
                 <div class="rowbtns">
-                  <button class="btn" onclick="recSend(false)">Send without deck</button>
-                  <button class="btn green" onclick="recSend(true)">📎 Send with deck</button>
+                  <button class="btn green" onclick="recSend2()">✈️ Send</button>
                 </div>
-                <div class="sub" style="margin-top:8px"><b>Send with deck</b> auto-attaches this candidate’s personalized deck link — no extra step. Both add the message to the thread and advance the pipeline. (Opens your mail app pre-filled; automated sending comes with the backend.)</div>
+                <div class="sub" style="margin-top:8px">Pick <b>Reply only</b> or <b>Include deck</b> above — the draft updates — then Send. Sending logs the message to the thread and advances the pipeline, no mail-app popup. (Real one-click delivery switches on with the email backend.)</div>
                 </div>
                 <div id="ct-waiting" style="display:none;padding:18px;text-align:center;color:var(--muted)"><div style="font-size:30px">✉️</div><div style="font-weight:800;color:var(--pos);margin-top:6px">Sent — waiting for a reply from <span id="ct-waitname"></span></div><div style="font-size:13px;margin-top:4px">When they reply, add it to the thread and I’ll draft your next response.</div></div>
               </div>
@@ -772,6 +776,23 @@ function recBack(){ document.getElementById('rec-contact').style.display='none';
 function recPipe(stage){
   return REC_STAGES.map(function(s,i){ var cls=i<stage?'done':(i===stage?'cur':''); var mark=i<stage?'✓':(i+1); return '<div class="pstep '+cls+'"><div class="dot">'+mark+'</div><div class="sl">'+s+'</div></div>'; }).join('');
 }
+var recBaseReply='', recDeckInclude=false;
+function recDeckChoice(inc){
+  recDeckInclude=inc;
+  var y=document.getElementById('dc-yes'), n=document.getElementById('dc-no');
+  if(y) y.classList.toggle('on',inc); if(n) n.classList.toggle('on',!inc);
+  var i=recSelected[recMode]; var c=(i!=null)?REC[recMode].cands[i]:null;
+  var link=''; if(c){ var city=((c.loc||'Asheville').split(',')[0]).trim(); link='https://joinin.today/JoinIn-Publisher-Info-Deck.html?city='+encodeURIComponent(city)+'&name='+encodeURIComponent(c.nm); }
+  var t=document.getElementById('ct-reply'); if(t) t.value = recBaseReply + (inc && link ? ('\n\nHere\u2019s the full overview: '+link) : '');
+}
+function recSend2(){
+  var i=recSelected[recMode]; if(i==null) return; var c=REC[recMode].cands[i];
+  var msg=document.getElementById('ct-reply').value;
+  var thread=document.getElementById('ct-thread'); if(thread){ var d=document.createElement('div'); d.className='msg out'; d.innerHTML='<div class="bub">'+recEsc(msg)+'</div><div class="mm">Sent'+(recDeckInclude?' \u00b7 deck link included':'')+'</div>'; thread.appendChild(d); }
+  c.stage = recDeckInclude ? 3 : Math.max(c.stage||0,2);
+  var pipe=document.getElementById('ct-pipe'); if(pipe) pipe.innerHTML=recPipe(c.stage);
+  var ew=document.getElementById('ct-editwrap'),w=document.getElementById('ct-waiting'),wn=document.getElementById('ct-waitname'); if(ew)ew.style.display='none'; if(w)w.style.display='block'; if(wn)wn.textContent=c.nm.split(' ')[0];
+}
 function recOpenContact(c){
   document.getElementById('rec-find').style.display='none';
   document.getElementById('rec-contact').style.display='block';
@@ -787,7 +808,7 @@ function recOpenContact(c){
   document.getElementById('ct-thread').innerHTML=thread;
   // proposed reply
   var prop=c.proposed||('Hi '+c.nm.split(' ')[0]+' — great to hear from you. Let me send over a short overview of what this involves so you can decide if it fits. Want me to send it?\n\n— Marc');
-  document.getElementById('ct-reply').value=prop; var _ew=document.getElementById('ct-editwrap'); if(_ew)_ew.style.display='block'; var _w=document.getElementById('ct-waiting'); if(_w)_w.style.display='none';
+  recBaseReply=prop; var _ct=document.getElementById('ct-to'); if(_ct)_ct.value=(c.email||''); recDeckChoice(false); var _ew=document.getElementById('ct-editwrap'); if(_ew)_ew.style.display='block'; var _w=document.getElementById('ct-waiting'); if(_w)_w.style.display='none';
   document.getElementById('ct-reply-sub').textContent=c.reply?'Answers their questions and moves things forward. Edit before sending.':'Your opening follow-up. Edit before sending.';
   var _dp=document.getElementById('deckpanel'); if(_dp) _dp.style.display='none';
   // read
