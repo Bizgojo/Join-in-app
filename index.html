@@ -970,7 +970,7 @@ body{padding-bottom:84px}
 <p style="color:#888;font-size:14px;margin-bottom:12px;line-height:1.5">Message one-on-one with anyone you have shared a group with. Send a request; once they accept, you can chat.</p>
 <div id="people-list"></div></div>
 </div>
-<div id="chat-messages" style="display:none"><div class="card"><h4 id="chat-room-name">Chat</h4><div id="chat-message-list" style="max-height:300px;overflow-y:auto;margin-bottom:8px"></div><div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="chat-input" placeholder="Type a message..." style="flex:1;margin-bottom:0"><button class="btn" onclick="sendMessage()" style="width:auto;padding:14px 20px">Send</button></div></div></div>
+<div id="chat-messages" style="display:none"><div class="card"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h4 id="chat-room-name">Chat</h4><button id="chat-members-btn" onclick="toggleChatMembers()" style="flex:0 0 auto;background:#cfe0f2;color:#1B4B8F;border:none;border-radius:18px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer">👥 Members</button></div><div id="chat-members-panel" style="display:none;margin:8px 0;padding:10px 12px;background:#f4f7fb;border:1px solid #d9e4f2;border-radius:12px"></div><div id="chat-message-list" style="max-height:300px;overflow-y:auto;margin-bottom:8px"></div><div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="chat-input" placeholder="Type a message..." style="flex:1;margin-bottom:0"><button class="btn" onclick="sendMessage()" style="width:auto;padding:14px 20px">Send</button></div></div></div>
 <div id="dm-thread" style="display:none"><div class="card">
 <h4 id="dm-thread-name">Direct message</h4>
 <div id="dm-message-list" style="max-height:300px;overflow-y:auto;margin-bottom:8px"></div>
@@ -7695,9 +7695,40 @@ function chatBack() {
     openParticipateFull(); // leaving Chat returns to where it was opened from
 }
 
+function renderChatMembers() {
+    var panel = document.getElementById('chat-members-panel');
+    if (!panel) return;
+    var g = allGroups.find(function(x) { return x.id === currentChatRoom; });
+    var ids = (g && g.members) ? g.members : [];
+    if (!ids.length) { panel.innerHTML = '<p style="color:#888;font-size:13px;margin:0">No members to show yet.</p>'; return; }
+    var html = '<div style="font-size:13px;color:#666;margin:0 0 8px">Tap Message to start a one-on-one chat with someone here.</div>';
+    ids.forEach(function(uid) {
+        var isSelf = currentUser && uid === currentUser.id;
+        html += '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid #d9e4f2">' +
+            '<span style="font-weight:600">' + escapeHTML(memberName(uid)) + (isSelf ? ' (you)' : '') + '</span>' +
+            (isSelf ? '' : '<button onclick="messageMember(\'' + uid + '\')" style="flex:0 0 auto;background:#1B4B8F;color:#fff;border:none;border-radius:16px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer">Message</button>') +
+            '</div>';
+    });
+    panel.innerHTML = html;
+}
+
+function toggleChatMembers() {
+    var panel = document.getElementById('chat-members-panel');
+    if (!panel) return;
+    if (panel.style.display === 'none' || !panel.style.display) { renderChatMembers(); panel.style.display = 'block'; }
+    else { panel.style.display = 'none'; }
+}
+
+function messageMember(uid) {
+    stopChatPoll();
+    chatTab = 'people';
+    openDM(uid);
+}
+
 async function openChatRoom(roomId) {
     currentChatRoom = roomId;
     document.getElementById('chat-messages').style.display = 'block';
+    var _mp = document.getElementById('chat-members-panel'); if (_mp) { _mp.style.display = 'none'; }
     document.getElementById('chat-tab-groups-body').style.display = 'none';
     document.getElementById('chat-tab-people-body').style.display = 'none';
     document.getElementById('dm-thread').style.display = 'none';
