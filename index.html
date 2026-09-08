@@ -956,17 +956,18 @@ body{padding-bottom:84px}
 
 <!-- CHAT -->
 <div id="page-chat" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="chatBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card"><h3>💬 Messages</h3>
+<p style="color:#555;font-size:14px;margin:6px 0 4px;line-height:1.5">Chat connects you with people from the groups you have joined. <b>Groups</b> are shared conversations for everyone in a group. <b>People</b> lets you message someone one-on-one.</p>
 <div style="display:flex;gap:8px;margin:10px 0">
 <button id="chat-tab-groups" class="period-btn active" onclick="setChatTab('groups')">👥 Groups</button>
 <button id="chat-tab-people" class="period-btn" onclick="setChatTab('people')">🙋 People</button>
 </div>
 <div id="chat-tab-groups-body">
-<p style="color:#888;font-size:14px;margin-bottom:12px">Chat with members of your groups.</p>
+<p style="color:#888;font-size:14px;margin-bottom:12px;line-height:1.5">Each group you are in has its own chat — say hi, ask questions, and plan your next meetup. Only current members can read it.</p>
 <div id="chat-list"></div></div>
 <div id="chat-tab-people-body" style="display:none">
-<p style="color:#888;font-size:14px;margin-bottom:12px">People you have shared a group with.</p>
+<p style="color:#888;font-size:14px;margin-bottom:12px;line-height:1.5">Message one-on-one with anyone you have shared a group with. Send a request; once they accept, you can chat.</p>
 <div id="people-list"></div></div>
 </div>
 <div id="chat-messages" style="display:none"><div class="card"><h4 id="chat-room-name">Chat</h4><div id="chat-message-list" style="max-height:300px;overflow-y:auto;margin-bottom:8px"></div><div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="chat-input" placeholder="Type a message..." style="flex:1;margin-bottom:0"><button class="btn" onclick="sendMessage()" style="width:auto;padding:14px 20px">Send</button></div></div></div>
@@ -7656,15 +7657,24 @@ function renderHosting() {
 function renderChatRooms() {
     var container = document.getElementById('chat-list');
     if (!container) return;
-    var groups = allGroups.filter(function(g) { return g.members && g.members.indexOf(currentUser?.id) > -1 && g.status === 'approved'; });
+    // Only groups you're in, that are approved, and that actually have a scheduled meeting.
+    var groups = allGroups.filter(function(g) {
+        return g.members && g.members.indexOf(currentUser?.id) > -1 && g.status === 'approved' && nextOccurrence(g);
+    });
     if (groups.length === 0) {
-        container.innerHTML = '<div class="card" style="text-align:center;color:#888">No groups to chat with. Join a group first!</div>';
+        container.innerHTML = '<div class="card" style="text-align:center;color:#888">You are not in any active groups with upcoming meetings yet. Join a group to start chatting.</div>';
         return;
     }
     var html = '';
     for (var i = 0; i < groups.length; i++) {
         var g = groups[i];
-        html += '<div class="group-item" onclick="openChatRoom(\'' + g.id + '\')"><h3>💬 ' + g.name + '</h3><div style="font-size:13px;color:#888">' + (g.member_count || 0) + ' members</div></div>';
+        var desc = g.description ? String(g.description).replace(/\s+/g, ' ').trim() : '';
+        if (desc.length > 90) { desc = desc.slice(0, 88).trim() + '\u2026'; }
+        var mc = g.member_count || (g.members ? g.members.length : 0);
+        html += '<div class="group-item" onclick="openChatRoom(\'' + g.id + '\')">' +
+            '<h3>\ud83d\udcac ' + escapeHTML(g.name) + '</h3>' +
+            (desc ? '<div style="font-size:13px;color:#555;margin:4px 0 6px;line-height:1.4">' + escapeHTML(desc) + '</div>' : '') +
+            '<div style="font-size:13px;color:#888">\ud83d\udc65 ' + mc + ' member' + (mc === 1 ? '' : 's') + '</div></div>';
     }
     container.innerHTML = html;
 }
@@ -7673,6 +7683,16 @@ var chatPoll = null;
 
 function stopChatPoll() {
     if (chatPoll) { clearInterval(chatPoll); chatPoll = null; }
+}
+
+function chatBack() {
+    var room = document.getElementById('chat-messages');
+    var dm = document.getElementById('dm-thread');
+    if ((room && room.style.display === 'block') || (dm && dm.style.display === 'block')) {
+        setChatTab(chatTab); // close the open conversation, return to the list
+        return;
+    }
+    openParticipateFull(); // leaving Chat returns to where it was opened from
 }
 
 async function openChatRoom(roomId) {
