@@ -2694,6 +2694,13 @@ function pollResultsBarsHtml(post, opts) {
     return html;
 }
 
+function activeCommunityPoll() {
+    for (var i = 0; i < communityPolls.length; i++) {
+        if (!pollIsClosed(communityPolls[i])) { return communityPolls[i]; }
+    }
+    return null;
+}
+
 function renderCommunityPoll() {
     var card = document.getElementById('community-poll-card');
     if (!card) { return; }
@@ -2701,11 +2708,12 @@ function renderCommunityPoll() {
     html += '<div style="font-size:12px;font-weight:700;color:#E4572E;text-transform:uppercase;letter-spacing:.4px">\ud83d\udcca Community Poll</div>';
     html += '<button onclick="openTopicRules()" style="flex:0 0 auto;background:#eef2f7;color:#1B4B8F;border:1px solid #d9e4f2;border-radius:16px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer">\ud83d\udccb Rules</button>';
     html += '</div>';
-    if (!communityPolls.length) {
+    var active = activeCommunityPoll();
+    if (!active) {
         html += '<h3 style="margin:8px 0 2px">No poll running right now</h3>';
-        html += '<p style="color:#666;font-size:14px;margin-bottom:4px">Check back soon, or browse what neighbors voted on before.</p>';
+        html += '<p style="color:#666;font-size:14px;margin-bottom:4px">A fresh poll will appear here soon. In the meantime, browse what neighbors voted on before.</p>';
     } else {
-        var poll = communityPolls[0];
+        var poll = active;
         var opts = communityPollOptions[poll.id] || [];
         var voted = !!communityPollMyVote[poll.id];
         var closed = pollIsClosed(poll);
@@ -2723,14 +2731,10 @@ function renderCommunityPoll() {
             html += pollVotingFormHtml(poll, opts);
         }
     }
-    html += '<div style="display:flex;gap:8px;margin-top:14px">';
-    html += '<button style="flex:1;padding:9px 6px;font-size:12.5px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="showPage(\'past-polls\')">\ud83d\udcc1 View Past Polls</button>';
-    html += '<button style="flex:1;padding:9px 6px;font-size:12.5px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="openSuggestPollBox()">\ud83d\udca1 Suggest a Poll</button>';
-    html += '</div>';
     html += '<div id="suggest-poll-box" style="display:none;margin-top:12px"></div>';
     card.innerHTML = html;
-    if (communityPolls.length) {
-        var p = communityPolls[0];
+    if (active) {
+        var p = active;
         if (communityPollMyVote[p.id] || pollIsClosed(p)) {
             var cel = document.getElementById('pulse-comments-' + p.id);
             if (cel) { loadCommentsInto(p.id, cel); }
@@ -2864,7 +2868,7 @@ function renderPollBarsFromOptions(options) {
 }
 
 function getAllPastPolls() {
-    var real = communityPolls.slice(1).map(function(p) {
+    var _act = activeCommunityPoll(); var real = communityPolls.filter(function(pp) { return !_act || pp.id !== _act.id; }).map(function(p) {
         var opts = (communityPollOptions[p.id] || []).map(function(o) {
             return { label: o.label, votes: communityPollVoteCounts[o.id] || 0 };
         });
@@ -9719,6 +9723,7 @@ if (document.readyState === 'loading') {
 <div id="polls-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
 <div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div id="polls-fs-body" style="padding:16px 16px 96px"></div>
+<div style="position:sticky;bottom:0;background:#fff;border-top:1px solid #e8eee8;padding:10px 16px;display:flex;gap:8px;box-shadow:0 -4px 8px -6px rgba(0,0,0,.15)"><button style="flex:1;padding:11px 6px;font-size:13px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="showPage('past-polls')">📁 View Past Polls</button><button style="flex:1;padding:11px 6px;font-size:13px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="openSuggestPollBox()">💡 Suggest a Poll</button></div>
 </div>
 <div id="going-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
 <div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
