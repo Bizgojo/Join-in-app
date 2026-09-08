@@ -2806,9 +2806,23 @@ async function castCommunityPollVote(postId, optionId) {
     if (!currentUser) { requireAccount('vote in this poll', 'polls'); return; }
     if (communityPollMyVote[postId]) { return; }
     try {
-        await sb.from('poll_votes').insert({ post_id: postId, option_id: optionId, user_id: currentUser.id });
+        var res = await sb.from('poll_votes').insert({ post_id: postId, option_id: optionId, user_id: currentUser.id });
+        if (res && res.error) {
+            var msg = (res.error.message || '') + '';
+            if (/duplicate|unique|already/i.test(msg)) {
+                communityPollMyVote[postId] = optionId;
+                await loadCommunityPoll();
+                return;
+            }
+            showNotif('Vote not recorded: ' + (msg || 'permission denied'), 'error');
+            return;
+        }
+        communityPollMyVote[postId] = optionId;
         await loadCommunityPoll();
-    } catch (e) { showNotif('Could not record your vote.', 'error'); }
+        renderCommunityPoll();
+    } catch (e) {
+        showNotif('Vote error: ' + (e && e.message ? e.message : 'unknown'), 'error');
+    }
 }
 
 // ─── PAST POLLS ARCHIVE ───
