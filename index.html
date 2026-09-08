@@ -970,12 +970,12 @@ body{padding-bottom:84px}
 <p style="color:#888;font-size:14px;margin-bottom:12px;line-height:1.5">Message one-on-one with anyone you have shared a group with. Send a request; once they accept, you can chat.</p>
 <div id="people-list"></div></div>
 </div>
-<div id="chat-messages" style="display:none"><div class="card"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h4 id="chat-room-name">Chat</h4><button id="chat-members-btn" onclick="toggleChatMembers()" style="flex:0 0 auto;background:#cfe0f2;color:#1B4B8F;border:none;border-radius:18px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer">👥 Members</button></div><div id="chat-members-panel" style="display:none;margin:8px 0;padding:10px 12px;background:#f4f7fb;border:1px solid #d9e4f2;border-radius:12px"></div><div id="chat-message-list" style="max-height:300px;overflow-y:auto;margin-bottom:8px"></div><div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="chat-input" placeholder="Type a message..." style="flex:1;margin-bottom:0"><button class="btn" onclick="sendMessage()" style="width:auto;padding:14px 20px">Send</button></div></div></div>
+<div id="chat-messages" style="display:none"><div class="card"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h4 id="chat-room-name">Chat</h4><button id="chat-members-btn" onclick="toggleChatMembers()" style="flex:0 0 auto;background:#cfe0f2;color:#1B4B8F;border:none;border-radius:18px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer">👥 Members</button></div><div id="chat-members-panel" style="display:none;margin:8px 0;padding:10px 12px;background:#f4f7fb;border:1px solid #d9e4f2;border-radius:12px"></div><div id="chat-message-list" style="max-height:300px;overflow-y:auto;margin-bottom:8px"></div><div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="chat-input" placeholder="Type a message..." style="flex:1;margin-bottom:0" onkeydown="if(event.key==='Enter'){event.preventDefault();sendMessage();}"><button class="btn" onclick="sendMessage()" style="width:auto;padding:14px 20px">Send</button></div></div></div>
 <div id="dm-thread" style="display:none"><div class="card">
 <h4 id="dm-thread-name">Direct message</h4>
 <div id="dm-message-list" style="max-height:300px;overflow-y:auto;margin-bottom:8px"></div>
 <div style="display:flex;gap:8px;margin-top:8px">
-<input type="text" id="dm-input" placeholder="Type a message..." style="flex:1;margin-bottom:0">
+<input type="text" id="dm-input" placeholder="Type a message..." style="flex:1;margin-bottom:0" onkeydown="if(event.key==='Enter'){event.preventDefault();sendDM();}">
 <button class="btn" onclick="sendDM()" style="width:auto;padding:14px 20px">Send</button></div>
 <div style="margin-top:14px;text-align:right">
 <button class="link-btn" style="color:#a3271b" onclick="blockCurrentDM()">Block this person</button></div>
@@ -4219,7 +4219,7 @@ function openTopicalFull(){ var src=document.getElementById('topical-columns-scr
 function marketGo(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('marketplace'); }
 function openTopicsFull(){ var body=document.getElementById('topics-fs-body'); var tod=document.getElementById('topic-of-day-card'); if(body){ if(tod && tod.parentNode!==body) body.appendChild(tod); } var o=document.getElementById('topics-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function openPolls(){ var body=document.getElementById('polls-fs-body'); var poll=document.getElementById('community-poll-card'); if(body){ if(poll && poll.parentNode!==body) body.appendChild(poll); } var o=document.getElementById('polls-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
-function openParticipateFull(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var o=document.getElementById('participate-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
+function openParticipateFull(){ refreshChatUnread(); document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var o=document.getElementById('participate-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function participateGo(pg){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showPage(pg); }
 function participateCreate(){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showCreateChoice(); }
 function participateColumnist(){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; onColumnistSelect('topical'); }
@@ -4247,7 +4247,7 @@ function showPage(page, fromHistory) {
     if (page === 'marketplace-detail') { renderMarketplaceDetail(); }
     if (page === 'past-polls') { renderPastPollsPage(); }
     if (page === 'hosting') { renderHosting(); }
-    if (page === 'chat') { renderChatRooms(); setChatTab('groups'); }
+    if (page === 'chat') { renderChatRooms(); setChatTab('groups'); refreshChatUnread(); }
     if (page === 'tickets') { renderTickets(); }
     if (page === 'feedback') { renderFeedback(); }
     if (page === 'admin') { renderAdminDashboard(); }
@@ -4285,7 +4285,7 @@ window.addEventListener('popstate', function(e) {
 });
 
 function updateHome() {
-    refreshDMRequests();
+    refreshChatUnread();
     var profile = userProfiles[currentUser?.id];
     var nameEl = document.getElementById('home-username');
     var avatarEl = document.getElementById('home-avatar');
@@ -4597,6 +4597,44 @@ function unreadCount() {
 }
 
 var dmRequestCount = 0;
+var groupUnread = {};
+function chatReadMap() { try { return JSON.parse(localStorage.getItem('joinin_group_read') || '{}'); } catch (e) { return {}; } }
+function markGroupRead(gid) { var m = chatReadMap(); m[gid] = new Date().toISOString(); try { localStorage.setItem('joinin_group_read', JSON.stringify(m)); } catch (e) {} if (groupUnread[gid]) { delete groupUnread[gid]; } }
+async function refreshGroupUnread() {
+    groupUnread = {};
+    if (!sb || !currentUser) return;
+    var ids = allGroups.filter(function(g) { return g.members && g.members.indexOf(currentUser.id) > -1 && g.status === 'approved' && nextOccurrence(g); }).map(function(g) { return g.id; });
+    if (!ids.length) return;
+    var res = await sb.from('group_messages').select('group_id,sender_id,created_at').in('group_id', ids).order('created_at', { ascending: false }).limit(500);
+    if (res.error || !res.data) return;
+    var readAt = chatReadMap(); var seen = {};
+    res.data.forEach(function(m) {
+        if (seen[m.group_id]) return;
+        seen[m.group_id] = true;
+        if (m.sender_id === currentUser.id) return;
+        var last = readAt[m.group_id] ? new Date(readAt[m.group_id]).getTime() : 0;
+        if (new Date(m.created_at).getTime() > last) { groupUnread[m.group_id] = true; }
+    });
+}
+function chatBadgeHTML(n) { return ' <span style="background:#e4572e;color:#fff;border-radius:10px;padding:1px 7px;font-size:12px;vertical-align:middle">' + n + '</span>'; }
+function updateChatBadges() {
+    var gCount = Object.keys(groupUnread).length;
+    var pCount = dmUnreadThreads.length + (dmRequestCount || 0);
+    var gb = document.getElementById('chat-tab-groups');
+    var pb = document.getElementById('chat-tab-people');
+    if (gb) { gb.innerHTML = '\uD83D\uDC65 Groups' + (gCount ? chatBadgeHTML(gCount) : ''); }
+    if (pb) { pb.innerHTML = '\uD83D\uDE4B People' + (pCount ? chatBadgeHTML(pCount) : ''); }
+    var tile = document.getElementById('chat-tile-badge');
+    if (tile) { var total = gCount + pCount; if (total) { tile.textContent = total; tile.style.display = 'inline-block'; } else { tile.style.display = 'none'; } }
+}
+async function refreshChatUnread() {
+    await refreshGroupUnread();
+    await refreshDMRequests();
+    updateChatBadges();
+    var cp = document.getElementById('page-chat');
+    if (cp && cp.classList.contains('active')) { renderChatRooms(); }
+}
+
 var dmUnreadThreads = [];
 
 // Both of these live in Supabase, so this is a fetch, not a local count.
@@ -4623,17 +4661,20 @@ function updateDMRequestButton() {
     if (!btn) return;
     var reqs = dmRequestCount;
     var news = dmUnreadThreads.length;
-    if (!reqs && !news) { btn.style.display = 'none'; return; }
+    var grp = Object.keys(groupUnread).length;
+    if (!reqs && !news && !grp) { btn.style.display = 'none'; return; }
     var parts = [];
+    if (grp) { parts.push(grp === 1 ? '1 group has new messages' : grp + ' groups have new messages'); }
     if (reqs) { parts.push(reqs === 1 ? '1 chat request' : reqs + ' chat requests'); }
-    if (news) { parts.push(news === 1 ? '1 new chat message' : news + ' new chat messages'); }
+    if (news) { parts.push(news === 1 ? '1 new direct message' : news + ' new direct messages'); }
     btn.style.display = 'block';
     btn.textContent = parts.join(' \u00b7 ');
 }
 
 function goToRequests() {
     showPage('chat');
-    setChatTab('people');
+    var grp = Object.keys(groupUnread).length;
+    setChatTab((grp && !dmUnreadThreads.length && !(dmRequestCount || 0)) ? 'groups' : 'people');
 }
 
 // The badge names what is actually waiting, most urgent first.
@@ -7672,7 +7713,7 @@ function renderChatRooms() {
         if (desc.length > 90) { desc = desc.slice(0, 88).trim() + '\u2026'; }
         var mc = g.member_count || (g.members ? g.members.length : 0);
         html += '<div class="group-item" onclick="openChatRoom(\'' + g.id + '\')">' +
-            '<h3>\ud83d\udcac ' + escapeHTML(g.name) + '</h3>' +
+            '<h3>\ud83d\udcac ' + escapeHTML(g.name) + (groupUnread[g.id] ? ' <span style="background:#e4572e;color:#fff;border-radius:10px;padding:1px 8px;font-size:12px;vertical-align:middle">new</span>' : '') + '</h3>' +
             (desc ? '<div style="font-size:13px;color:#555;margin:4px 0 6px;line-height:1.4">' + escapeHTML(desc) + '</div>' : '') +
             '<div style="font-size:13px;color:#888">\ud83d\udc65 ' + mc + ' member' + (mc === 1 ? '' : 's') + '</div></div>';
     }
@@ -7727,6 +7768,7 @@ function messageMember(uid) {
 
 async function openChatRoom(roomId) {
     currentChatRoom = roomId;
+    markGroupRead(roomId); updateChatBadges();
     document.getElementById('chat-messages').style.display = 'block';
     var _mp = document.getElementById('chat-members-panel'); if (_mp) { _mp.style.display = 'none'; }
     document.getElementById('chat-tab-groups-body').style.display = 'none';
@@ -9493,7 +9535,7 @@ if (document.readyState === 'loading') {
 <div class="ph-card" onclick="participateGo('groups')"><div class="ph-ic">👥</div><div class="ph-t">Join a Group</div><div class="ph-s">Meet neighbors who share what you love</div></div>
 <div class="ph-card" onclick="participateGo('classes')"><div class="ph-ic">🎓</div><div class="ph-t">Take a Class</div><div class="ph-s">Pick up a new skill, taught by locals</div></div>
 <div class="ph-card" onclick="participateGo('events')"><div class="ph-ic">🎟️</div><div class="ph-t">Discover Events</div><div class="ph-s">Live music, sports, food &amp; more nearby</div></div>
-<div class="ph-card" onclick="participateGo('chat')"><div class="ph-ic">💬</div><div class="ph-t">Chat</div><div class="ph-s">Stay in touch and plan your next meetup</div></div>
+<div class="ph-card" onclick="participateGo('chat')"><div class="ph-ic">💬</div><div class="ph-t">Chat<span id="chat-tile-badge" style="display:none;background:#e4572e;color:#fff;border-radius:10px;padding:1px 8px;font-size:12px;margin-left:6px;vertical-align:middle"></span></div><div class="ph-s">Stay in touch and plan your next meetup</div></div>
 </div>
 <button class="ph-create" onclick="participateCreate()">🚀 Create a Group, Class or Event — it’s Free!</button>
 </div>
