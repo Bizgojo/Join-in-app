@@ -271,7 +271,7 @@ body{padding-bottom:84px}
 .ph-ic{font-size:32px;line-height:1}
 .ph-t{font-size:16px;font-weight:800;margin-top:10px;color:#1a1a2e}
 .ph-s{font-size:12.5px;color:#888;margin-top:3px}
-.ph-create{width:100%;padding:16px;font-size:16px;font-weight:800;border-radius:28px;border:none;color:#fff;background:#5B8C5A;cursor:pointer;margin-bottom:18px}
+.ph-create{width:100%;padding:16px;font-size:16px;font-weight:800;border-radius:28px;border:none;color:#fff;background:#2E7BC4;cursor:pointer;margin-bottom:18px}
 .ph-col label{display:block;font-size:12px;font-weight:700;color:#888;margin-bottom:6px}
 .appbar{position:sticky;top:0;z-index:500;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-20px -20px 14px -20px;padding:11px 12px;background:#1B4B8F;box-shadow:0 2px 8px rgba(0,0,0,.12)}
 .appbar .bar-btn{background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:12px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;line-height:1;flex:0 0 auto}
@@ -441,7 +441,7 @@ body{padding-bottom:84px}
 </div>
 <div id="my-schedule" style="display:none"></div>
 <div class="hsec" id="hsec-going">
-<div class="pulse-heading hsec-h" style="margin:0" onclick="hsec('going')"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">📅</span><span>See what's going on in Asheville<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Today, this week, or pick your dates</span></span></span><span class="hsec-chev">›</span></div>
+<div class="pulse-heading hsec-h" style="margin:0" onclick="openGoingFS()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">📅</span><span>See what's going on in Asheville<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Today, this week, or pick your dates</span></span></span><span class="hsec-chev">›</span></div>
 <div class="hsec-body">
 <div style="display:flex;gap:8px;margin-bottom:6px">
 <button onclick="showTimePeriod('today')" id="period-today" class="period-btn">Today</button>
@@ -472,6 +472,12 @@ body{padding-bottom:84px}
 
 <div id="community-columns-scroll" style="margin:0 0 8px;padding:2px"></div>
 <div id="cc-showless-wrap" style="display:none;text-align:right;margin:0 0 16px"><button class="pulse-scroll-btn inverse" onclick="toggleColumnsExpand()">Show Less</button></div></div></div>
+
+<div class="hsec" id="hsec-topical">
+<div class="pulse-heading hsec-h" style="margin:0" onclick="openTopicalFull()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">✍️</span><span>Topic Columnists<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Local writers on the topics you care about</span></span></span><span class="hsec-chev">›</span></div>
+<div class="hsec-body">
+<div id="topical-columns-scroll" style="margin:0 0 8px;padding:2px"></div>
+</div></div>
 
 <div class="hsec" id="hsec-participate">
 <div class="pulse-heading hsec-h" style="margin:0" onclick="openParticipateFull()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">👥</span><span><span style="color:#2E7BC4">Join</span><span style="color:#E4572E">In</span> and Participate<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Join or start groups, classes &amp; events (it’s Free!)</span></span></span><span class="hsec-chev">›</span></div>
@@ -3741,8 +3747,33 @@ function renderCommunityColumns() {
     box.innerHTML = html;
 }
 
+function renderTopicalColumns() {
+    var box = document.getElementById('topical-columns-scroll');
+    if (!box) return;
+    var esc = function(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+    var cols = allColumnists.filter(function(c) { return c.kind === 'topical'; });
+    if (!cols.length) { box.innerHTML = '<div style="text-align:center;color:#888;padding:20px">No topic columnists yet.</div>'; return; }
+    var html = '';
+    cols.forEach(function(c) {
+        var latest = (c.columns && c.columns.length) ? c.columns[0] : null;
+        var hook = latest ? latest.title : (c.hood + ' — new column coming soon');
+        html += '<div onclick="openColumnStory(\'' + c.id + '\')" style="background:#fff;border:1px solid #e7e1d3;border-radius:14px;padding:14px;margin-bottom:12px;cursor:pointer">' +
+            '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px">' +
+                '<span style="font-size:14px;font-weight:700;color:#1B4B8F;letter-spacing:.2px">' + esc(c.hood) + '</span>' +
+                '<span style="font-size:13px;color:#8A8378;white-space:nowrap">By ' + esc(c.name) + '</span>' +
+            '</div>' +
+            '<div style="display:flex;gap:12px;align-items:stretch">' +
+                '<p style="flex:2;margin:0;font-size:18px;font-weight:700;line-height:1.3;color:#17202A;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">' + esc(hook) + '</p>' +
+                '<div style="flex:1;align-self:stretch;min-height:0;border-radius:8px;background:#E9E2D2 url(\'' + c.photo + '\') center/cover no-repeat"></div>' +
+            '</div>' +
+        '</div>';
+    });
+    box.innerHTML = html;
+}
+
 function renderColumnists() {
     renderCommunityColumns();
+    renderTopicalColumns();
     var communitySelect = document.getElementById('columnist-select-community');
     var topicalSelect = document.getElementById('columnist-select-topical');
     if (communitySelect) {
@@ -4182,9 +4213,10 @@ function closeSchedFS() {
     document.body.style.overflow = '';
 }
 function showFormErrors(boxId, pageId){ var box=document.getElementById(boxId); if(!box) return; var msgs=[]; var pg=document.getElementById(pageId); if(pg){ pg.querySelectorAll('.error-text.show').forEach(function(e){ var t=(e.textContent||'').trim(); if(t && msgs.indexOf(t)<0) msgs.push(t); }); } box.innerHTML = msgs.length ? ('<b>Please fix the following:</b><br>\u2022 '+msgs.join('<br>\u2022 ')) : 'Please complete the required fields marked in red above.'; box.style.display='block'; box.scrollIntoView({behavior:'smooth',block:'center'}); }
-function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; var _pf=document.getElementById('participate-fs'); if(_pf) _pf.style.display='none'; var _tf=document.getElementById('topics-fs'); if(_tf) _tf.style.display='none'; var _plf=document.getElementById('polls-fs'); if(_plf) _plf.style.display='none'; var _gf=document.getElementById('going-fs'); if(_gf) _gf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
+function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; var _tcf=document.getElementById('topical-fs'); if(_tcf) _tcf.style.display='none'; var _pf=document.getElementById('participate-fs'); if(_pf) _pf.style.display='none'; var _tf=document.getElementById('topics-fs'); if(_tf) _tf.style.display='none'; var _plf=document.getElementById('polls-fs'); if(_plf) _plf.style.display='none'; var _gf=document.getElementById('going-fs'); if(_gf) _gf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
 function openPulseFull(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var ps=document.getElementById('hsec-pulse'); if(ps) ps.classList.add('hsec-open'); if(!pulseFeedExpanded){ togglePulseFeedExpand(); } }
 function openColumnsFull(){ var src=document.getElementById('community-columns-scroll'), dst=document.getElementById('columns-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('columns-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
+function openTopicalFull(){ var src=document.getElementById('topical-columns-scroll'), dst=document.getElementById('topical-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('topical-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function marketGo(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('marketplace'); }
 function openTopicsFull(){ var body=document.getElementById('topics-fs-body'); var tod=document.getElementById('topic-of-day-card'); if(body){ if(tod && tod.parentNode!==body) body.appendChild(tod); } var o=document.getElementById('topics-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function openPolls(){ var body=document.getElementById('polls-fs-body'); var poll=document.getElementById('community-poll-card'); if(body){ if(poll && poll.parentNode!==body) body.appendChild(poll); } var o=document.getElementById('polls-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
@@ -9402,11 +9434,15 @@ if (document.readyState === 'loading') {
 <div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div id="columns-fs-body" style="padding:16px 16px 92px" onclick="var o=document.getElementById('columns-fs'); if(o)o.style.display='none'; document.body.style.overflow='';"></div>
 </div>
+<div id="topical-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
+<div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div id="topical-fs-body" style="padding:16px 16px 92px" onclick="var o=document.getElementById('topical-fs'); if(o)o.style.display='none'; document.body.style.overflow='';"></div>
+</div>
 <div class="home-tabbar" id="home-tabbar" style="display:none"><button onclick="goHomeReset()"><span class="ti">🏠</span>Home</button><button onclick="showPage('advertise')"><span class="ti">📣</span>Advertise/Boost</button><button onclick="showPage('about')"><span class="ti">ℹ️</span>About</button><button onclick="showPage('feedback')"><span class="ti">💬</span>Feedback</button></div>
 <div id="participate-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
 <div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div style="padding:18px 16px 96px">
-<p style="font-size:14px;color:#555;line-height:1.5;margin-bottom:16px">Join something that already exists, or start your own — <b style="color:#5B8C5A">free for everyone</b>.</p>
+<p style="font-size:14px;color:#555;line-height:1.5;margin-bottom:16px">Join something that already exists, or start your own — <b style="color:#E4572E">free for everyone</b>.</p>
 <div class="ph-grid">
 <div class="ph-card" onclick="participateGo('groups')"><div class="ph-ic">👥</div><div class="ph-t">Join a Group</div><div class="ph-s">Find your community</div></div>
 <div class="ph-card" onclick="participateGo('classes')"><div class="ph-ic">🎓</div><div class="ph-t">Take a Class</div><div class="ph-s">Learn locally</div></div>
@@ -9414,10 +9450,6 @@ if (document.readyState === 'loading') {
 <div class="ph-card" onclick="participateGo('chat')"><div class="ph-ic">💬</div><div class="ph-t">Chat</div><div class="ph-s">Message your groups</div></div>
 </div>
 <button class="ph-create" onclick="participateCreate()">🚀 Create a Group, Class or Event — it’s Free!</button>
-<div class="ph-col">
-<label>Read a neighborhood or topic columnist</label>
-<select id="columnist-select-topical" onchange="participateColumnist()" style="width:100%;padding:14px;font-size:15px;font-weight:700;border-radius:14px;border:2px solid #cfe0f2;color:#1B4B8F;background:#cfe0f2"><option value="">Topic Columnist</option></select>
-</div>
 </div>
 </div>
 <div id="topics-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
