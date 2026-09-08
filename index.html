@@ -5994,7 +5994,10 @@ function galleryScroll(el) {
 }
 
 // ─── EXPANDED GROUP CARD ───
+var groupDetailReturnPage = null;
 function openGroupDetail(id) {
+    var cur = document.querySelector('.page.active');
+    groupDetailReturnPage = (cur && cur.id) ? cur.id.replace('page-', '') : null;
     currentDetailGroup = id;
     showPage('group-detail');
     renderGroupDetail();
@@ -6111,6 +6114,7 @@ function backToCategory() {
         showGroupsByCategory(currentGroupCategory, true);
         return;
     }
+    if (groupDetailReturnPage && groupDetailReturnPage !== 'group-detail') { showPage(groupDetailReturnPage); return; }
     currentGroupCategory = null;
     showPage('home');
 }
@@ -6181,10 +6185,7 @@ function renderGroupDetail() {
     var joined = isMemberOf(g);
     var isHost = currentUser && g.organizer_id === currentUser.id;
     var locked = visibilityOf(g) === 'hidden' && !joined && !isHost;
-    document.getElementById('group-detail-back').innerHTML =
-        '<span class="chev">‹</span> Back to ' +
-        (g.kind === 'event' ? 'Events'
-            : (categoryCount(currentGroupCategory) > 1 ? currentGroupCategory : 'Home'));
+    document.getElementById('group-detail-back').innerHTML = '<span class="chev">‹</span> Back'
 
     var html = '<div class="card">';
     var pics = photosFor(g);
@@ -9737,7 +9738,7 @@ if (document.readyState === 'loading') {
 <p style="color:#888;font-size:13px;margin:0 0 14px">Posts that break these rules may be removed.</p>
 <button class="btn" style="background:#1B4B8F;margin:0" onclick="closeTopicRules()">Got it</button>
 </div></div>
-<div class="home-tabbar" id="home-tabbar" style="display:none"><button onclick="goHomeReset()"><span class="ti">🏠</span>Home</button><button onclick="showPage('advertise')"><span class="ti">📣</span>Advertise/Boost</button><button onclick="showPage('about')"><span class="ti">ℹ️</span>About</button><button onclick="showPage('feedback')"><span class="ti">💬</span>Feedback</button></div>
+<div class="home-tabbar" id="home-tabbar" style="display:none"><button onclick="showPage('advertise')"><span class="ti">📣</span>Advertise/Boost</button><button onclick="showPage('about')"><span class="ti">ℹ️</span>About</button><button onclick="showPage('feedback')"><span class="ti">💬</span>Feedback</button></div>
 <div id="participate-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
 <div class="appbar flush"><button class="bar-btn" onclick="closeParticipate()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div style="padding:18px 16px 96px">
