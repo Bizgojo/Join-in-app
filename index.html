@@ -503,7 +503,7 @@ body{padding-bottom:84px}
 <div class="pulse-heading hsec-h" style="margin:0" onclick="openTopicsFull()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">🔥</span><span>Today's Hot Topics<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">A daily prompt to spark conversation</span></span></span><span class="hsec-chev">›</span></div>
 <div class="hsec-body">
 <div class="card" id="topic-of-day-card">
-<div id="totd-sticky" style="position:sticky;top:0;background:#fff;z-index:3;padding:2px 0 10px;border-bottom:1px solid #f0ece5">
+<div id="totd-sticky" style="position:sticky;top:56px;background:#fff;z-index:3;padding:10px 0;border-bottom:1px solid #f0ece5;box-shadow:0 8px 8px -8px rgba(0,0,0,.18)">
 <div style="font-size:12px;font-weight:700;color:#E4572E;text-transform:uppercase;letter-spacing:.4px">🔥 Topic of the Day</div>
 <h3 id="totd-title" style="margin:6px 0 4px"></h3>
 <p id="totd-body" style="color:#444;font-size:15px;line-height:1.55;margin-bottom:2px"></p>
@@ -3648,19 +3648,20 @@ function renderTopicOfDay() {
     renderTopicThread();
 }
 
-// Prototype discussion for Topic of the Day. These comments are front-end mock
-// data so the prototype shows a real-looking conversation; anything added here
-// is in-memory only (not shared or saved yet). Swap to the shared comment
-// system once there is real traffic.
+// Prototype discussion for Topic of the Day. Front-end mock data (in-memory
+// only, not shared or saved yet) so the prototype shows a real-looking, fully
+// nested conversation. Swap to the shared comment system once there is traffic.
 var HR = 3600 * 1000;
+var topicNodeSeq = 0;
+function tnode(name, ts, text, replies) { return { id: ++topicNodeSeq, name: name, ts: ts, text: text, replies: replies || [] }; }
 var topicMockComments = [
-    { name: 'Dana R.', ts: Date.now() - 2 * HR, text: 'C\u00farate for the vibe, then a nightcap at Antidote. Peak first-night-in-Asheville energy.', replies: [
-        { name: 'Marcus T.', ts: Date.now() - 1 * HR, text: 'Seconding C\u00farate \u2014 get the jam\u00f3n. It sets the tone.' }
-    ] },
-    { name: 'Priya S.', ts: Date.now() - 3 * HR, text: 'Take them to the River Arts District. Bull and Beggar or 12 Bones feels like the real Asheville.', replies: [] },
-    { name: 'Ty W.', ts: Date.now() - 5 * HR, text: 'Honestly? A porch, a Burial beer, and a sunset over the mountains. Food can wait.', replies: [
-        { name: 'Dana R.', ts: Date.now() - 4 * HR, text: 'This is the correct answer.' }
-    ] }
+    tnode('Dana R.', Date.now() - 2 * HR, 'C\u00farate for the vibe, then a nightcap at Antidote. Peak first-night-in-Asheville energy.', [
+        tnode('Marcus T.', Date.now() - 1 * HR, 'Seconding C\u00farate \u2014 get the jam\u00f3n. It sets the tone.')
+    ]),
+    tnode('Priya S.', Date.now() - 3 * HR, 'Take them to the River Arts District. Bull and Beggar or 12 Bones feels like the real Asheville.'),
+    tnode('Ty W.', Date.now() - 5 * HR, 'Honestly? A porch, a Burial beer, and a sunset over the mountains. Food can wait.', [
+        tnode('Dana R.', Date.now() - 4 * HR, 'This is the correct answer.')
+    ])
 ];
 
 function topicStamp(ts) {
@@ -3670,54 +3671,70 @@ function topicStamp(ts) {
 
 function topicAvatar(name) {
     var i = (name || '?').charAt(0).toUpperCase();
-    return '<div style="flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1B4B8F;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">' + i + '</div>';
+    return '<div style="flex:0 0 auto;width:32px;height:32px;border-radius:50%;background:#1B4B8F;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">' + i + '</div>';
 }
 
 function topicMeName() {
     return (currentUser && ((userProfiles[currentUser.id] && userProfiles[currentUser.id].displayName) || currentUser.name)) || 'You';
 }
 
+function topicCountAll(list) {
+    var n = 0;
+    (list || []).forEach(function(c) { n++; if (c.replies) { n += topicCountAll(c.replies); } });
+    return n;
+}
+
+function findTopicNode(id, list) {
+    list = list || topicMockComments;
+    for (var i = 0; i < list.length; i++) {
+        if (list[i].id === id) { return list[i]; }
+        var f = findTopicNode(id, list[i].replies || []);
+        if (f) { return f; }
+    }
+    return null;
+}
+
 function renderTopicThread() {
     var slot = document.getElementById('topic-comments-slot');
     if (!slot) return;
-    var n = topicMockComments.length;
+    var n = topicCountAll(topicMockComments);
     var html = '<div style="font-size:13px;font-weight:700;color:#1B4B8F;margin:0 0 6px">\uD83D\uDCAC Comment on this topic</div>' +
         '<div style="display:flex;gap:8px;margin-bottom:14px">' +
         '<input id="totd-comment-input" placeholder="Share your thoughts on today\u2019s topic\u2026" style="flex:1;margin-bottom:0" onkeydown="if(event.key===\'Enter\'){event.preventDefault();topicAddComment();}">' +
         '<button class="btn" style="width:auto;padding:12px 18px;margin:0;background:#1B4B8F" onclick="topicAddComment()">Post</button></div>';
     html += '<div style="font-size:13px;color:#888;font-weight:700;margin:0 0 10px">' + n + ' comment' + (n === 1 ? '' : 's') + ' on this topic</div>';
-    topicMockComments.forEach(function(c, i) { html += topicCommentHTML(c, i); });
+    topicMockComments.forEach(function(c) { html += topicNodeHTML(c, 0); });
     slot.innerHTML = html;
 }
 
-function topicCommentHTML(c, i) {
-    var h = '<div style="display:flex;gap:10px;margin-bottom:12px">' + topicAvatar(c.name) +
+// Renders a comment and all of its nested replies, to any depth.
+function topicNodeHTML(c, depth) {
+    var indent = Math.min(depth, 6) * 16;
+    var bg = depth === 0 ? '#f4f6f9' : '#eef2f7';
+    var h = '<div style="margin-left:' + indent + 'px">';
+    h += '<div style="display:flex;gap:8px;margin-bottom:2px">' + topicAvatar(c.name) +
         '<div style="flex:1;min-width:0">' +
-        '<div style="background:#f4f6f9;border-radius:14px;padding:10px 12px">' +
+        '<div style="background:' + bg + ';border-radius:14px;padding:9px 12px">' +
         '<div style="font-weight:700;font-size:14px">' + escapeHTML(c.name) + ' <span style="color:#999;font-weight:400;font-size:12px">\u00b7 ' + topicStamp(c.ts) + '</span></div>' +
         '<div style="font-size:14px;line-height:1.45;margin-top:2px">' + escapeHTML(c.text) + '</div></div>' +
-        '<button onclick="topicToggleReply(' + i + ')" style="background:none;border:none;color:#1B4B8F;font-weight:700;font-size:12px;cursor:pointer;padding:6px 4px">\u21a9 Reply to ' + escapeHTML(c.name) + '</button>';
-    (c.replies || []).forEach(function(r) {
-        h += '<div style="display:flex;gap:8px;margin:2px 0 6px 6px">' + topicAvatar(r.name) +
-            '<div style="flex:1;min-width:0"><div style="background:#eef2f7;border-radius:14px;padding:8px 12px">' +
-            '<div style="font-weight:700;font-size:13px">' + escapeHTML(r.name) + ' <span style="color:#999;font-weight:400;font-size:12px">\u00b7 ' + topicStamp(r.ts) + '</span></div>' +
-            '<div style="font-size:13px;line-height:1.4;margin-top:2px">' + escapeHTML(r.text) + '</div></div></div></div>';
-    });
-    h += '<div id="totd-reply-' + i + '" style="display:none;margin:2px 0 8px 6px">' +
+        '<button onclick="topicToggleReply(' + c.id + ')" style="background:none;border:none;color:#1B4B8F;font-weight:700;font-size:12px;cursor:pointer;padding:6px 4px">\u21a9 Reply to ' + escapeHTML(c.name) + '</button>' +
+        '<div id="totd-reply-' + c.id + '" style="display:none;margin:2px 0 6px">' +
         '<div style="font-size:12px;color:#666;margin:0 0 5px">Replying to <b>' + escapeHTML(c.name) + '</b></div>' +
         '<div style="display:flex;gap:8px">' +
-        '<input id="totd-reply-input-' + i + '" placeholder="Write a reply\u2026" style="flex:1;margin-bottom:0" onkeydown="if(event.key===\'Enter\'){event.preventDefault();topicAddReply(' + i + ');}">' +
-        '<button class="btn" style="width:auto;padding:10px 14px;margin:0;background:#1B4B8F" onclick="topicAddReply(' + i + ')">Reply</button></div></div>';
-    h += '</div></div>';
+        '<input id="totd-reply-input-' + c.id + '" placeholder="Write a reply\u2026" style="flex:1;margin-bottom:0" onkeydown="if(event.key===\'Enter\'){event.preventDefault();topicAddReply(' + c.id + ');}">' +
+        '<button class="btn" style="width:auto;padding:10px 14px;margin:0;background:#1B4B8F" onclick="topicAddReply(' + c.id + ')">Reply</button></div></div>' +
+        '</div></div>';
+    h += '</div>';
+    (c.replies || []).forEach(function(r) { h += topicNodeHTML(r, depth + 1); });
     return h;
 }
 
-function topicToggleReply(i) {
-    var el = document.getElementById('totd-reply-' + i);
+function topicToggleReply(id) {
+    var el = document.getElementById('totd-reply-' + id);
     if (!el) return;
     var open = el.style.display === 'block';
     el.style.display = open ? 'none' : 'block';
-    if (!open) { var inp = document.getElementById('totd-reply-input-' + i); if (inp) inp.focus(); }
+    if (!open) { var inp = document.getElementById('totd-reply-input-' + id); if (inp) inp.focus(); }
 }
 
 function topicAddComment() {
@@ -3725,17 +3742,19 @@ function topicAddComment() {
     if (!inp) return;
     var t = inp.value.trim();
     if (!t) return;
-    topicMockComments.unshift({ name: topicMeName(), ts: Date.now(), text: t, replies: [] });
+    topicMockComments.unshift(tnode(topicMeName(), Date.now(), t));
     renderTopicThread();
 }
 
-function topicAddReply(i) {
-    var inp = document.getElementById('totd-reply-input-' + i);
+function topicAddReply(id) {
+    var inp = document.getElementById('totd-reply-input-' + id);
     if (!inp) return;
     var t = inp.value.trim();
     if (!t) return;
-    if (!topicMockComments[i].replies) topicMockComments[i].replies = [];
-    topicMockComments[i].replies.push({ name: topicMeName(), ts: Date.now(), text: t });
+    var node = findTopicNode(id);
+    if (!node) return;
+    if (!node.replies) node.replies = [];
+    node.replies.push(tnode(topicMeName(), Date.now(), t));
     renderTopicThread();
 }
 
@@ -4300,7 +4319,7 @@ function openPulseFull(){ document.querySelectorAll('.hsec').forEach(function(a)
 function openColumnsFull(){ var src=document.getElementById('community-columns-scroll'), dst=document.getElementById('columns-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('columns-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function openTopicalFull(){ var src=document.getElementById('topical-columns-scroll'), dst=document.getElementById('topical-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('topical-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function marketGo(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('marketplace'); }
-function openTopicsFull(){ var body=document.getElementById('topics-fs-body'); var tod=document.getElementById('topic-of-day-card'); if(body){ if(tod && tod.parentNode!==body) body.appendChild(tod); } var o=document.getElementById('topics-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
+function openTopicsFull(){ var body=document.getElementById('topics-fs-body'); var tod=document.getElementById('topic-of-day-card'); if(body){ if(tod && tod.parentNode!==body) body.appendChild(tod); } var o=document.getElementById('topics-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); var _bar=document.querySelector('#topics-fs .appbar'); var _st=document.getElementById('totd-sticky'); if(_bar && _st){ _st.style.top=_bar.offsetHeight+'px'; } }
 function openPolls(){ var body=document.getElementById('polls-fs-body'); var poll=document.getElementById('community-poll-card'); if(body){ if(poll && poll.parentNode!==body) body.appendChild(poll); } var o=document.getElementById('polls-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function openParticipateFull(){ refreshChatUnread(); document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var o=document.getElementById('participate-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function participateGo(pg){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showPage(pg); }
