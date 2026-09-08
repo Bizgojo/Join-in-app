@@ -504,7 +504,7 @@ body{padding-bottom:84px}
 <div class="hsec-body">
 <div class="card" id="topic-of-day-card">
 <div id="totd-sticky" style="position:sticky;top:56px;background:#fff;z-index:3;padding:10px 0;border-bottom:1px solid #f0ece5;box-shadow:0 8px 8px -8px rgba(0,0,0,.18)">
-<div style="font-size:12px;font-weight:700;color:#E4572E;text-transform:uppercase;letter-spacing:.4px">🔥 Topic of the Day</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="font-size:12px;font-weight:700;color:#E4572E;text-transform:uppercase;letter-spacing:.4px">🔥 Topic of the Day</div><button onclick="openTopicRules()" style="flex:0 0 auto;background:#eef2f7;color:#1B4B8F;border:1px solid #d9e4f2;border-radius:16px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer">📋 Rules</button></div>
 <h3 id="totd-title" style="margin:6px 0 4px"></h3>
 <p id="totd-body" style="color:#444;font-size:15px;line-height:1.55;margin-bottom:2px"></p>
 <div style="font-size:12px;color:#999;margin-top:8px" id="totd-meta"></div>
@@ -3636,6 +3636,9 @@ function showApp() {
 // Admin/publisher-editable via app_settings, same pattern as Advertise/Hiring.
 var DEFAULT_TOPIC_TITLE = "Where should a newcomer eat their first night in Asheville?";
 var DEFAULT_TOPIC_BODY = "A family just moved to West Asheville and asked where locals would send them for their first dinner in town — somewhere that feels like Asheville. Where would you send them, and why?";
+
+function openTopicRules() { var o = document.getElementById('topic-rules-overlay'); if (o) { o.style.display = 'flex'; } }
+function closeTopicRules() { var o = document.getElementById('topic-rules-overlay'); if (o) { o.style.display = 'none'; } }
 
 function renderTopicOfDay() {
     var titleEl = document.getElementById('totd-title');
@@ -9628,6 +9631,20 @@ if (document.readyState === 'loading') {
 <div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div id="topical-fs-body" style="padding:16px 16px 92px" onclick="var o=document.getElementById('topical-fs'); if(o)o.style.display='none'; document.body.style.overflow='';"></div>
 </div>
+<div id="topic-rules-overlay" style="display:none;position:fixed;inset:0;z-index:4000;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:20px" onclick="if(event.target===this)closeTopicRules()">
+<div style="background:#fff;border-radius:18px;max-width:430px;width:100%;max-height:85vh;overflow-y:auto;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><h3 style="margin:0;color:#1B4B8F">🤝 Community Rules</h3><button onclick="closeTopicRules()" style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;line-height:1">✕</button></div>
+<p style="color:#555;font-size:14px;margin:0 0 12px;line-height:1.5">This is a space for neighbors to talk. Keep it a good one:</p>
+<ul style="margin:0 0 14px;padding-left:20px;font-size:15px;line-height:1.6;color:#333">
+<li><b>Show good manners.</b> Talk to people the way you would face-to-face.</li>
+<li><b>Be polite.</b> A little kindness goes a long way.</li>
+<li><b>Respect others.</b> You can disagree with someone's opinion or choices without being rude about it.</li>
+<li><b>Keep it clean.</b> No cursing or crude language.</li>
+<li><b>No hate.</b> No racist remarks, and no attacking people for being different from you. Everyone is welcome here.</li>
+</ul>
+<p style="color:#888;font-size:13px;margin:0 0 14px">Posts that break these rules may be removed.</p>
+<button class="btn" style="background:#1B4B8F;margin:0" onclick="closeTopicRules()">Got it</button>
+</div></div>
 <div class="home-tabbar" id="home-tabbar" style="display:none"><button onclick="goHomeReset()"><span class="ti">🏠</span>Home</button><button onclick="showPage('advertise')"><span class="ti">📣</span>Advertise/Boost</button><button onclick="showPage('about')"><span class="ti">ℹ️</span>About</button><button onclick="showPage('feedback')"><span class="ti">💬</span>Feedback</button></div>
 <div id="participate-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
 <div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
