@@ -2734,7 +2734,7 @@ function renderCommunityPoll() {
             else { html += '<div style="font-size:13px;color:#888;margin-top:6px">This poll is closed.</div>'; }
             html += '<div style="border-top:1px solid #eef1ee;margin-top:14px;padding-top:12px">' +
                 '<div style="font-size:13px;font-weight:700;color:#1B4B8F;margin-bottom:6px">\ud83d\udcac Discuss this poll</div>' +
-                '<div class="pulse-comments" id="pulse-comments-' + poll.id + '"></div></div>';
+                '<div class="pulse-comments" id="pulse-comments-' + poll.id + '" style="display:block"></div></div>';
         } else {
             html += pollVotingFormHtml(poll, opts);
         }
@@ -3057,16 +3057,20 @@ async function submitPulseComment(postId, parentId) {
     try {
         var row = { post_id: postId, author_id: currentUser.id, body: body, image_url: imageUrl };
         if (parentId) { row.parent_comment_id = parentId; }
-        await sb.from('comments').insert(row);
+        var ins = await sb.from('comments').insert(row);
+        if (ins && ins.error) { showNotif('Could not post: ' + (ins.error.message || 'permission denied'), 'error'); return; }
         delete pendingCommentImages[contextKey];
-        if (postId === topicOfDayPostId) {
-            var el = document.getElementById('pulse-comments-' + postId);
-            if (el) { await loadCommentsInto(postId, el); }
+        // If this thread is shown in place (a poll card or the topic of day),
+        // reload that thread directly instead of the Pulse feed.
+        var activePid = (activeCommunityPoll() && activeCommunityPoll().id) || null;
+        var directEl = document.getElementById('pulse-comments-' + postId);
+        if (directEl && (postId === topicOfDayPostId || postId === activePid)) {
+            await loadCommentsInto(postId, directEl);
             return;
         }
         await loadPulseFeed();
         togglePulseComments(postId);
-    } catch (e) { showNotif('Could not post your comment.', 'error'); }
+    } catch (e) { showNotif('Could not post your comment: ' + (e && e.message ? e.message : 'unknown'), 'error'); }
 }
 
 function openPulseComposer() {
@@ -4402,7 +4406,7 @@ function openColumnsFull(){ var src=document.getElementById('community-columns-s
 function openTopicalFull(){ var src=document.getElementById('topical-columns-scroll'), dst=document.getElementById('topical-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('topical-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function marketGo(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('marketplace'); }
 function openTopicsFull(){ var body=document.getElementById('topics-fs-body'); var tod=document.getElementById('topic-of-day-card'); if(body){ if(tod && tod.parentNode!==body) body.appendChild(tod); } var o=document.getElementById('topics-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); var _bar=document.querySelector('#topics-fs .appbar'); var _st=document.getElementById('totd-sticky'); if(_bar && _st){ _st.style.top=_bar.offsetHeight+'px'; } }
-function openPolls(){ var body=document.getElementById('polls-fs-body'); var poll=document.getElementById('community-poll-card'); if(body){ if(poll && poll.parentNode!==body) body.appendChild(poll); } var o=document.getElementById('polls-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
+function openPolls(){ var body=document.getElementById('polls-fs-body'); var poll=document.getElementById('community-poll-card'); if(body){ if(poll && poll.parentNode!==body) body.appendChild(poll); } var o=document.getElementById('polls-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); var _tb=document.getElementById('home-tabbar'); var _ft=document.getElementById('polls-footer'); if(_ft){ _ft.style.bottom=((_tb && _tb.offsetHeight)?_tb.offsetHeight:0)+'px'; } }
 function openParticipateFull(){ refreshChatUnread(); document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var o=document.getElementById('participate-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function participateGo(pg){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showPage(pg); }
 function participateCreate(){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showCreateChoice(); }
@@ -9744,8 +9748,8 @@ if (document.readyState === 'loading') {
 </div>
 <div id="polls-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
 <div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
-<div id="polls-fs-body" style="padding:16px 16px 96px"></div>
-<div style="position:sticky;bottom:0;background:#fff;border-top:1px solid #e8eee8;padding:10px 16px;display:flex;gap:8px;box-shadow:0 -4px 8px -6px rgba(0,0,0,.15)"><button style="flex:1;padding:11px 6px;font-size:13px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="showPage('past-polls')">📁 View Past Polls</button><button style="flex:1;padding:11px 6px;font-size:13px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="openSuggestPollBox()">💡 Suggest a Poll</button></div>
+<div id="polls-fs-body" style="padding:16px 16px 150px"></div>
+<div id="polls-footer" style="position:fixed;left:0;right:0;bottom:0;max-width:500px;margin:0 auto;background:#fff;border-top:1px solid #e8eee8;padding:10px 16px;display:flex;gap:8px;box-shadow:0 -4px 8px -6px rgba(0,0,0,.15);z-index:2101"><button style="flex:1;padding:11px 6px;font-size:13px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="showPage('past-polls')">📁 View Past Polls</button><button style="flex:1;padding:11px 6px;font-size:13px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="openSuggestPollBox()">💡 Suggest a Poll</button></div>
 </div>
 <div id="going-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
 <div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
