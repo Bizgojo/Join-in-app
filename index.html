@@ -5375,11 +5375,42 @@ function browseIds() {
             header: 'category-header', list: 'groups-list' };
 }
 
+function isCanceled(g) { return !!(g && g.status === 'canceled'); }
+function isStale(g) {
+    if (!g) { return false; }
+    var d = nextOccurrence(g);
+    if (!d) { return false; }
+    var startOfToday = new Date(); startOfToday.setHours(0, 0, 0, 0);
+    return d.getTime() < startOfToday.getTime();
+}
+async function cancelThisGroup(id) {
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g || !currentUser || !sb) { return; }
+    if (g.organizer_id !== currentUser.id) { showNotif('Only the host can cancel this.', 'error'); return; }
+    var noun = g.kind === 'event' ? 'event' : (g.kind === 'class' ? 'class' : 'group');
+    if (!confirm('Cancel this ' + noun + '? It will be removed from all listings.')) { return; }
+    var res = await sb.from('groups').update({ status: 'canceled' }).eq('id', id);
+    if (res.error) { showNotif('Could not cancel: ' + res.error.message, 'error'); return; }
+    showNotif('Canceled \u2014 it is no longer listed.', 'info');
+    await refreshGroups();
+    renderGroupDetail();
+}
+async function reinstateGroup(id) {
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g || !currentUser || !sb) { return; }
+    if (g.organizer_id !== currentUser.id) { showNotif('Only the host can do this.', 'error'); return; }
+    var res = await sb.from('groups').update({ status: 'approved' }).eq('id', id);
+    if (res.error) { showNotif('Could not reinstate: ' + res.error.message, 'error'); return; }
+    showNotif('Reinstated \u2014 it is listed again.', 'success');
+    await refreshGroups();
+    renderGroupDetail();
+}
+
 function itemsOfKind() {
     var out = [];
     for (var i = 0; i < allGroups.length; i++) {
         var k = allGroups[i].kind || 'group';
-        if (k === browseKind) { out.push(allGroups[i]); }
+        if (k === browseKind && !isStale(allGroups[i]) && !isCanceled(allGroups[i])) { out.push(allGroups[i]); }
     }
     return out;
 }
@@ -6220,6 +6251,18 @@ function renderGroupDetail() {
             escapeHTML(g.instructor_bio) + '</p>';
     }
 
+    if (isCanceled(g)) {
+        var cnoun = g.kind === 'event' ? 'event' : (g.kind === 'class' ? 'class' : 'group');
+        html += '<div style="background:#fdecea;border:1px solid #f5c6cb;padding:14px;border-radius:12px;margin-top:14px;font-size:15px;color:#8a2620;font-weight:700">\ud83d\udeab This ' + cnoun + ' has been canceled.</div>';
+        if (isHost) {
+            html += '<button class="btn-select" onclick="reinstateGroup(\'' + g.id + '\')">\u21a9\ufe0f Reinstate this ' + cnoun + '</button>';
+        }
+        html += '<button class="btn-outline" onclick="backToCategory()"><span class="chev">\u2039</span> Back</button>';
+        html += '</div>';
+        body.innerHTML = html;
+        return;
+    }
+
     // A private group shows only the description, the host, and one way in.
     if (locked) {
         html += '<div style="background:#fef9e7;border:1px solid #f9e79f;padding:14px;border-radius:12px;margin-top:14px;font-size:15px;color:#7a5c10">' +
@@ -6299,6 +6342,7 @@ function renderGroupDetail() {
         html += '<button class="btn-select" onclick="signMeUp(\'' + g.id + '\')">\u270b Join this group' + (g.is_paid ? ' \u2014 $' + g.price : '') + '</button>';
     }
     html += '<button class="btn-outline" onclick="messageHostGate(\'' + g.id + '\')">\ud83d\udcac Message the ' + roleLabel(g) + '</button>';
+    if (isHost) { html += '<button class="btn-leave" onclick="cancelThisGroup(\'' + g.id + '\')">\ud83d\udeab Cancel this ' + (g.kind === 'event' ? 'event' : (g.kind === 'class' ? 'class' : 'group')) + '</button>'; }
     html += '</div></div>';
     body.innerHTML = html;
 }
@@ -7023,7 +7067,7 @@ function eventSeries() {
 // other code clears and rebuilds, and the page went blank whenever we
 // happened to draw it while that copy was empty.
 function eventRows() {
-    return allGroups.filter(function(g) { return g && g.kind === 'event'; });
+    return allGroups.filter(function(g) { return g && g.kind === 'event' && !isStale(g) && !isCanceled(g); });
 }
 
 // Same act, same room, different nights. Events entered one at a time
