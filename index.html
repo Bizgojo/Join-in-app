@@ -2620,78 +2620,122 @@ function getPaddedOptionVotes(opts) {
     return { counts: padded, total: total };
 }
 
-var pollExpanded = {};
+var POLL_WINDOW_DAYS = 7;
+var pollSelected = {}; // pollId -> chosen option id (before the vote is logged)
 
-function pollResultsHtml(post, opts, readOnly) {
-    var padded = readOnly ? null : getPaddedOptionVotes(opts);
-    var totalVotes = readOnly
-        ? opts.reduce(function(sum, o) { return sum + (communityPollVoteCounts[o.id] || 0); }, 0)
-        : padded.total;
-    var myVote = communityPollMyVote[post.id];
-    var showResults = readOnly || !!myVote || totalVotes > 0;
-    var expanded = readOnly || !!pollExpanded[post.id];
-    var visibleOpts = opts; // always show every option
-    var hiddenCount = opts.length - visibleOpts.length;
-    var html = '<div style="margin-top:8px" id="poll-options-' + post.id + '">';
-    visibleOpts.forEach(function(o) {
-        var i = opts.indexOf(o);
-        var c = readOnly ? (communityPollVoteCounts[o.id] || 0) : padded.counts[i];
-        var pct = totalVotes ? Math.round((c / totalVotes) * 100) : 0;
-        var disabled = readOnly || !!myVote;
-        html += '<button class="poll-opt"' + (disabled ? ' disabled' : '') + (!readOnly ? ' onclick="castCommunityPollVote(\'' + post.id + '\',\'' + o.id + '\')"' : '') + '>';
-        if (showResults) { html += '<div class="fill" style="width:' + pct + '%"></div>'; }
-        html += '<div class="lbl"><span>' + escapeHtml(o.label) + (myVote === o.id ? ' ✓' : '') + '</span>' + (showResults ? '<span>' + pct + '%</span>' : '') + '</div></button>';
+function pollCloseTime(post) {
+    var created = post.created_at ? new Date(post.created_at).getTime() : Date.now();
+    return created + POLL_WINDOW_DAYS * 86400000;
+}
+function pollIsClosed(post) { return Date.now() >= pollCloseTime(post); }
+
+function pollFmtDur(ms) {
+    if (ms <= 0) { return 'moments'; }
+    var mins = Math.floor(ms / 60000);
+    var d = Math.floor(mins / 1440); mins -= d * 1440;
+    var h = Math.floor(mins / 60); mins -= h * 60;
+    var parts = [];
+    if (d) { parts.push(d + ' day' + (d !== 1 ? 's' : '')); }
+    if (h) { parts.push(h + ' hour' + (h !== 1 ? 's' : '')); }
+    if (!parts.length) { parts.push((mins || 1) + ' minute' + ((mins || 1) !== 1 ? 's' : '')); }
+    return parts.slice(0, 2).join(' ');
+}
+
+function pollCountdownHtml(post) {
+    var created = post.created_at ? new Date(post.created_at).getTime() : Date.now();
+    var closeMs = pollCloseTime(post) - Date.now();
+    if (closeMs <= 0) {
+        return '<div style="font-size:12px;color:#a3371b;font-weight:700;margin-top:4px">\u23f1\ufe0f Voting closed</div>';
+    }
+    return '<div style="font-size:12px;color:#666;margin-top:4px">\u23f1\ufe0f Open ' + pollFmtDur(Date.now() - created) + ' \u00b7 Voting closes in ' + pollFmtDur(closeMs) + '</div>';
+}
+
+function pollVotingFormHtml(post, opts) {
+    var html = '<div style="margin-top:12px">';
+    opts.forEach(function(o) {
+        html += '<label style="display:flex;align-items:center;gap:10px;background:#f7f9fb;border:1px solid #e3e9f0;border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer">' +
+            '<input type="checkbox" class="poll-check-' + post.id + '" value="' + o.id + '" onclick="pollPick(\'' + post.id + '\',\'' + o.id + '\',this)" style="width:20px;height:20px;flex:0 0 auto;margin:0">' +
+            '<span style="font-size:15px;font-weight:600">' + escapeHtml(o.label) + '</span></label>';
     });
+    html += '<button class="btn" style="background:#1B4B8F;margin-top:2px" onclick="logMyVote(\'' + post.id + '\')">\ud83d\uddf3\ufe0f Log My Vote</button>';
+    html += '<div style="font-size:12px;color:#888;text-align:center;margin-top:6px">Results show after you vote \u00b7 one vote per member</div>';
     html += '</div>';
-    if (readOnly) { html += '<div style="font-size:12px;color:#888;margin-top:2px">' + totalVotes + ' vote' + (totalVotes !== 1 ? 's' : '') + ' · Poll closed</div>'; }
     return html;
 }
 
-function expandPollOptions(postId) {
-    pollExpanded[postId] = true;
-    renderCommunityPoll();
+function pollPick(pollId, optId, el) {
+    document.querySelectorAll('.poll-check-' + pollId).forEach(function(cb) { if (cb !== el) { cb.checked = false; } });
+    pollSelected[pollId] = el.checked ? optId : null;
 }
 
-function collapsePollOptions(postId) {
-    pollExpanded[postId] = false;
-    renderCommunityPoll();
+function logMyVote(pollId) {
+    if (!currentUser) { requireAccount('vote in this poll', 'polls'); return; }
+    if (communityPollMyVote[pollId]) { return; }
+    var sel = pollSelected[pollId];
+    if (!sel) { showNotif('Check the box next to your choice first.', 'error'); return; }
+    castCommunityPollVote(pollId, sel);
+}
+
+function pollResultsBarsHtml(post, opts) {
+    var total = 0;
+    opts.forEach(function(o) { total += (communityPollVoteCounts[o.id] || 0); });
+    var myVote = communityPollMyVote[post.id];
+    var html = '<div style="margin-top:12px">';
+    opts.forEach(function(o) {
+        var c = communityPollVoteCounts[o.id] || 0;
+        var pct = total ? Math.round((c / total) * 100) : 0;
+        var mine = myVote === o.id;
+        html += '<div class="poll-opt" style="pointer-events:none">' +
+            '<div class="fill" style="width:' + pct + '%"></div>' +
+            '<div class="lbl"><span>' + escapeHtml(o.label) + (mine ? ' \u2713' : '') + '</span><span>' + pct + '%</span></div></div>';
+    });
+    html += '</div>';
+    html += '<div style="font-size:13px;color:#666;font-weight:700;margin-top:6px">\ud83d\udc65 ' + total + ' ' + (total === 1 ? 'person has' : 'people have') + ' voted</div>';
+    return html;
 }
 
 function renderCommunityPoll() {
     var card = document.getElementById('community-poll-card');
     if (!card) { return; }
-    var html = '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">';
-    html += '<div style="font-size:12px;font-weight:700;color:#E4572E;text-transform:uppercase;letter-spacing:.4px">📊 Community Poll</div>';
-    if (communityPolls.length) {
-        var active = communityPolls[0];
-        var opts = communityPollOptions[active.id] || [];
-        var totalVotes = getPaddedOptionVotes(opts).total;
-        var myVote = communityPollMyVote[active.id];
-        if (myVote) {
-            html += '<div style="font-size:13px;font-weight:700;color:#a3371b">✅ You Voted - Good Job</div>';
+    var html = '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px">';
+    html += '<div style="font-size:12px;font-weight:700;color:#E4572E;text-transform:uppercase;letter-spacing:.4px">\ud83d\udcca Community Poll</div>';
+    html += '<button onclick="openTopicRules()" style="flex:0 0 auto;background:#eef2f7;color:#1B4B8F;border:1px solid #d9e4f2;border-radius:16px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer">\ud83d\udccb Rules</button>';
+    html += '</div>';
+    if (!communityPolls.length) {
+        html += '<h3 style="margin:8px 0 2px">No poll running right now</h3>';
+        html += '<p style="color:#666;font-size:14px;margin-bottom:4px">Check back soon, or browse what neighbors voted on before.</p>';
+    } else {
+        var poll = communityPolls[0];
+        var opts = communityPollOptions[poll.id] || [];
+        var voted = !!communityPollMyVote[poll.id];
+        var closed = pollIsClosed(poll);
+        html += '<h3 style="margin:8px 0 2px">' + escapeHtml(poll.title) + '</h3>';
+        if (poll.body) { html += '<p style="color:#666;font-size:14px;margin-bottom:2px">' + escapeHtml(poll.body) + '</p>'; }
+        html += pollCountdownHtml(poll);
+        if (voted || closed) {
+            html += pollResultsBarsHtml(poll, opts);
+            if (voted) { html += '<div style="font-size:13px;font-weight:700;color:#a3371b;margin-top:6px">\u2705 Thanks for voting!</div>'; }
+            else { html += '<div style="font-size:13px;color:#888;margin-top:6px">This poll is closed.</div>'; }
+            html += '<div style="border-top:1px solid #eef1ee;margin-top:14px;padding-top:12px">' +
+                '<div style="font-size:13px;font-weight:700;color:#1B4B8F;margin-bottom:6px">\ud83d\udcac Discuss this poll</div>' +
+                '<div class="pulse-comments" id="pulse-comments-' + poll.id + '"></div></div>';
         } else {
-            html += '<div style="display:flex;align-items:center;gap:8px">';
-            html += '<span style="font-size:13px;color:#888">' + totalVotes + ' vote' + (totalVotes !== 1 ? 's' : '') + '</span>';
-            html += '<button style="background:#1B4B8F;color:#fff;border:none;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer" onclick="focusPollVote(\'' + active.id + '\')">Vote Now</button>';
-            html += '</div>';
+            html += pollVotingFormHtml(poll, opts);
         }
     }
-    html += '</div>';
-    if (communityPolls.length) {
-        var active2 = communityPolls[0];
-        html += '<h3 style="margin:6px 0 2px">' + escapeHtml(active2.title) + '</h3>';
-        if (active2.body) { html += '<p style="color:#666;font-size:14px;margin-bottom:4px">' + escapeHtml(active2.body) + '</p>'; }
-        html += pollResultsHtml(active2, communityPollOptions[active2.id] || [], false);
-    } else {
-        html += '<h3 style="margin:6px 0 2px">No poll running right now</h3>';
-        html += '<p style="color:#666;font-size:14px;margin-bottom:4px">Check back soon, or browse what neighbors voted on before.</p>';
-    }
     html += '<div style="display:flex;gap:8px;margin-top:14px">';
-    html += '<button style="flex:1;padding:9px 6px;font-size:12.5px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="showPage(\'past-polls\')">📁 View Past Polls</button>';
-    html += '<button style="flex:1;padding:9px 6px;font-size:12.5px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="openSuggestPollBox()">💡 Suggest a Poll</button>';
+    html += '<button style="flex:1;padding:9px 6px;font-size:12.5px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="showPage(\'past-polls\')">\ud83d\udcc1 View Past Polls</button>';
+    html += '<button style="flex:1;padding:9px 6px;font-size:12.5px;font-weight:700;color:#e4572e;background:#fff;border:2px solid #e4572e;border-radius:20px;cursor:pointer" onclick="openSuggestPollBox()">\ud83d\udca1 Suggest a Poll</button>';
     html += '</div>';
     html += '<div id="suggest-poll-box" style="display:none;margin-top:12px"></div>';
     card.innerHTML = html;
+    if (communityPolls.length) {
+        var p = communityPolls[0];
+        if (communityPollMyVote[p.id] || pollIsClosed(p)) {
+            var cel = document.getElementById('pulse-comments-' + p.id);
+            if (cel) { loadCommentsInto(p.id, cel); }
+        }
+    }
 }
 
 // Guests get the login prompt directly, since scrolling wouldn't let them
