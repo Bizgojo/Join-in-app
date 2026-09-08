@@ -3133,10 +3133,16 @@ function renderMarketplace() {
     var listBox = document.getElementById('mkt-listings');
     if (!catBox || !listBox) { return; }
 
-    var catHtml = '<div class="mkt-cat-chip' + (mktCurrentCategory === 'all' ? ' on' : '') + '" onclick="setMktCategory(\'all\')">All</div>';
+    var present = {};
+    mktListings.forEach(function(l) { if (l && l.category) { present[l.category] = true; } });
+    if (mktCurrentCategory !== 'all' && !present[mktCurrentCategory]) { mktCurrentCategory = 'all'; }
+    var catHtml = '<select id="mkt-cat-select" onchange="setMktCategory(this.value)" style="width:100%">' +
+        '<option value="all"' + (mktCurrentCategory === 'all' ? ' selected' : '') + '>All</option>';
     MKT_CATEGORIES.forEach(function(c) {
-        catHtml += '<div class="mkt-cat-chip' + (mktCurrentCategory === c.id ? ' on' : '') + '" onclick="setMktCategory(\'' + c.id + '\')">' + c.label + '</div>';
+        if (!present[c.id]) { return; }
+        catHtml += '<option value="' + c.id + '"' + (mktCurrentCategory === c.id ? ' selected' : '') + '>' + c.label + '</option>';
     });
+    catHtml += '</select>';
     catBox.innerHTML = catHtml;
 
     var q = (document.getElementById('mkt-search').value || '').trim().toLowerCase();
