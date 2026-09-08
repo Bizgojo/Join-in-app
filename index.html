@@ -2654,26 +2654,34 @@ function pollVotingFormHtml(post, opts) {
     var html = '<div style="margin-top:12px">';
     opts.forEach(function(o) {
         html += '<label style="display:flex;align-items:center;gap:10px;background:#f7f9fb;border:1px solid #e3e9f0;border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer">' +
-            '<input type="checkbox" class="poll-check-' + post.id + '" value="' + o.id + '" onclick="pollPick(\'' + post.id + '\',\'' + o.id + '\',this)" style="width:20px;height:20px;flex:0 0 auto;margin:0">' +
+            '<input type="checkbox" class="poll-check-' + post.id + '" value="' + o.id + '" onchange="pollPick(\'' + post.id + '\',this)" style="width:20px;height:20px;flex:0 0 auto;margin:0">' +
             '<span style="font-size:15px;font-weight:600">' + escapeHtml(o.label) + '</span></label>';
     });
-    html += '<button class="btn" style="background:#1B4B8F;margin-top:2px" onclick="logMyVote(\'' + post.id + '\')">\ud83d\uddf3\ufe0f Log My Vote</button>';
+    html += '<button class="btn" id="poll-vote-btn-' + post.id + '" disabled onclick="logMyVote(\'' + post.id + '\')" style="background:#c7cdd4;color:#fff;cursor:not-allowed;margin-top:2px">\ud83d\uddf3\ufe0f Log My Vote</button>';
     html += '<div style="font-size:13px;color:#555;text-align:center;margin-top:8px;font-weight:600">You\u2019ll see everyone\u2019s results as soon as you vote \u00b7 one vote per member</div>';
     html += '</div>';
     return html;
 }
 
-function pollPick(pollId, optId, el) {
-    document.querySelectorAll('.poll-check-' + pollId).forEach(function(cb) { if (cb !== el) { cb.checked = false; } });
-    pollSelected[pollId] = el.checked ? optId : null;
+function pollPick(pollId, el) {
+    if (el.checked) {
+        document.querySelectorAll('.poll-check-' + pollId).forEach(function(cb) { if (cb !== el) { cb.checked = false; } });
+    }
+    var any = !!document.querySelector('.poll-check-' + pollId + ':checked');
+    var btn = document.getElementById('poll-vote-btn-' + pollId);
+    if (btn) {
+        btn.disabled = !any;
+        btn.style.background = any ? '#1B4B8F' : '#c7cdd4';
+        btn.style.cursor = any ? 'pointer' : 'not-allowed';
+    }
 }
 
 function logMyVote(pollId) {
     if (!currentUser) { requireAccount('vote in this poll', 'polls'); return; }
     if (communityPollMyVote[pollId]) { return; }
-    var sel = pollSelected[pollId];
-    if (!sel) { showNotif('Check the box next to your choice first.', 'error'); return; }
-    castCommunityPollVote(pollId, sel);
+    var checked = document.querySelector('.poll-check-' + pollId + ':checked');
+    if (!checked) { showNotif('Check the box next to your choice first.', 'error'); return; }
+    castCommunityPollVote(pollId, checked.value);
 }
 
 function pollResultsBarsHtml(post, opts) {
