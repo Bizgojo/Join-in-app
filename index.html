@@ -6247,57 +6247,57 @@ function renderGroupDetail() {
 
     html += rsvpSection(g, joined);
 
-    html += '<div class="sec-title">Signed up (' + (g.members ? g.members.length : 0) +
-        (g.max_members ? ' of ' + g.max_members : '') + ')</div>';
+    var goingIds = goingTo(g).map(function(r) { return r.user_id; });
+    html += '<div class="sec-title">Members (' + (g.members ? g.members.length : 0) + ')</div>';
     if (g.max_members) {
         var left = spotsLeft(g);
-        html += '<div class="info-line" style="font-weight:700;color:' + (left === 0 ? '#e74c3c' : '#a3371b') + '">' +
-            (left === 0 ? '🚫 This group is full' : '✅ ' + left + ' spot' + (left !== 1 ? 's' : '') + ' left of ' + g.max_members) +
+        html += '<div class="info-line" style="color:' + (left === 0 ? '#e74c3c' : '#5a675a') + '">' +
+            (left === 0 ? '\ud83d\udeab Full \u2014 all ' + g.max_members + ' seats taken'
+                : '\ud83e\ude91 ' + (g.member_count || (g.members ? g.members.length : 0)) + ' of ' + g.max_members + ' seats filled \u00b7 ' + left + ' left') +
             '</div>';
     }
     if (g.members && g.members.length && canSeePeople(g)) {
         var names = '';
         for (var i = 0; i < g.members.length; i++) {
-            names += '<span class="person">' + avatarHTML(g.members[i], 'sm') +
-                '<span class="nm">' + memberName(g.members[i]) + '</span></span>';
+            var uid = g.members[i];
+            var coming = goingIds.indexOf(uid) > -1;
+            names += '<span class="person">' + avatarHTML(uid, 'sm') +
+                '<span class="nm">' + memberName(uid) + (coming ? ' <span style="color:#2ecc71;font-weight:700">\u2713</span>' : '') + '</span></span>';
         }
         html += '<div>' + names + '</div>';
+        html += '<div class="info-line" style="color:#8a948a;font-size:13px">\u2713 = coming to the next meeting</div>';
     } else if (g.members && g.members.length) {
         html += '<p style="color:#666;font-size:15px">' + g.members.length + ' ' +
-            (g.members.length === 1 ? 'person has' : 'people have') +
-            ' signed up. Sign up yourself to see who they are.</p>';
+            (g.members.length === 1 ? 'person is' : 'people are') +
+            ' in this group. Join to see who they are.</p>';
     } else {
-        html += '<p style="color:#888;font-size:14px">Nobody signed up yet. Be the first!</p>';
+        html += '<p style="color:#888;font-size:14px">No members yet \u2014 be the first to join!</p>';
     }
-
     html += '<div style="margin-top:18px">';
     if (joined) {
-        html += '<div class="btn-done">✅ You are already signed up</div>';
+        html += '<div class="btn-done">\u2705 You\'re a member</div>';
     }
     if (canInvite(g)) {
-        html += '<button class="btn-invite" onclick="inviteToGroup(\'' + g.id + '\')">\uD83D\uDCE3 Invite Friends to Join</button>';
+        if (isFull(g)) {
+            html += '<button class="btn-invite" disabled style="opacity:.5;cursor:not-allowed;background:#c7cdd4">\ud83d\udeab Group full</button>';
+        } else {
+            html += '<button class="btn-invite" onclick="inviteToGroup(\'' + g.id + '\')">\ud83d\udce3 Invite a friend</button>';
+        }
     }
     if (joined) {
-        html += '<button class="btn-leave" onclick="leaveGroup(\'' + g.id + '\')">Remove My Name</button>';
+        html += '<button class="btn-leave" onclick="leaveGroup(\'' + g.id + '\')">Leave group</button>';
     } else if (isFull(g)) {
         if (onWaitlist(g)) {
-            html += '<div style="background:#fdf1eb;border:1px solid #f2dccf;padding:14px;border-radius:12px;font-size:15px;color:#a3371b;margin-bottom:8px">' +
-                '🔔 You\'re on the waiting list. We\'ll notify you here if a spot opens.</div>';
+            html += '<div style="background:#fdf1eb;border:1px solid #f2dccf;padding:14px;border-radius:12px;font-size:15px;color:#a3371b;margin-bottom:8px">\ud83d\udd14 You\'re on the waiting list. We\'ll notify you here if a spot opens.</div>';
             html += '<button class="btn-leave" onclick="leaveWaitlist(\'' + g.id + '\')">Take Me Off the List</button>';
         } else {
-            html += '<div style="background:#fdecea;border:1px solid #f5c6cb;padding:14px;border-radius:12px;font-size:15px;color:#8a2620;margin-bottom:8px">' +
-                '🚫 This group is full — all ' + g.max_members + ' spots are taken.</div>';
-            html += '<button class="btn-select" onclick="joinWaitlist(\'' + g.id + '\')">🔔 Notify Me If a Spot Opens</button>';
+            html += '<div style="background:#fdecea;border:1px solid #f5c6cb;padding:14px;border-radius:12px;font-size:15px;color:#8a2620;margin-bottom:8px">\ud83d\udeab This group is full \u2014 all ' + g.max_members + ' spots are taken.</div>';
+            html += '<button class="btn-select" onclick="joinWaitlist(\'' + g.id + '\')">\ud83d\udd14 Notify Me If a Spot Opens</button>';
         }
-    } else {
-        html += '<button class="btn-select" onclick="signMeUp(\'' + g.id + '\')">✋ Sign Me Up' +
-            (g.is_paid ? ' — $' + g.price : '') + '</button>';
+    } else if (!nextOccursISO(g)) {
+        html += '<button class="btn-select" onclick="signMeUp(\'' + g.id + '\')">\u270b Join this group' + (g.is_paid ? ' \u2014 $' + g.price : '') + '</button>';
     }
-    html += '<button class="btn-outline" onclick="messageHostGate(\'' + g.id + '\')">💬 Message the ' + roleLabel(g) + '</button>';
-    if (g.slug) {
-        html += '<button class="btn-outline" onclick="copyGroupLink(\'' + g.id + '\')">\ud83d\udd17 Copy Link to This ' +
-            (g.kind === 'class' ? 'Class' : 'Group') + '</button>';
-    }
+    html += '<button class="btn-outline" onclick="messageHostGate(\'' + g.id + '\')">\ud83d\udcac Message the ' + roleLabel(g) + '</button>';
     html += '</div></div>';
     body.innerHTML = html;
 }
@@ -6309,21 +6309,9 @@ function rsvpSection(g, joined) {
     if (!when) { return ''; }
     var going = goingTo(g);
     var mine = myRsvpStatus(g);
-    var html = '<div class="sec-title">Who\'s coming \u2014 ' + shortDate(when) + '</div>';
+    var html = '<div class="sec-title">Coming to the next meeting \u2014 ' + shortDate(when) + '</div>';
     html += '<div class="info-line" style="font-weight:700;color:#a3371b">\u2705 ' +
-        going.length + ' ' + (going.length === 1 ? 'person is' : 'people are') + ' coming</div>';
-
-    if (going.length && canSeePeople(g)) {
-        var faces = '';
-        going.forEach(function(r) {
-            faces += '<span class="person">' + avatarHTML(r.user_id, 'sm') +
-                '<span class="nm">' + memberName(r.user_id) + '</span></span>';
-        });
-        html += '<div>' + faces + '</div>';
-    } else if (going.length) {
-        html += '<p style="color:#666;font-size:15px">Sign up to see who is coming.</p>';
-    }
-
+        going.length + ' ' + (going.length === 1 ? 'member is' : 'members are') + ' coming</div>';
     if (joined) {
         html += '<div class="rsvp-row">' +
             '<button class="rsvp-btn' + (mine === 'going' ? ' on' : '') +
@@ -6334,8 +6322,23 @@ function rsvpSection(g, joined) {
         if (mine === 'going') {
             html += '<div class="info-line" style="color:#a3371b">You are on the list for this one.</div>';
         }
+    } else if (!isFull(g)) {
+        html += '<button class="btn-select" onclick="joinAndComing(\'' + g.id + '\')">\u2705 Join &amp; I\'m coming</button>';
+        html += '<div class="info-line" style="color:#8a948a;font-size:13px">One tap joins the group and marks you coming.</div>';
+    } else {
+        html += '<div class="info-line" style="color:#8a2620;font-weight:700">\ud83d\udeab Group full \u2014 no more spots</div>';
     }
     return html;
+}
+
+async function joinAndComing(id) {
+    var g = allGroups.find(function(x) { return x.id === id; });
+    if (!g) { return; }
+    if (!requireAccount('join this group and RSVP')) { return; }
+    if (isFull(g)) { showNotif('This group is full.', 'error'); return; }
+    await joinGroup(id);
+    var g2 = allGroups.find(function(x) { return x.id === id; });
+    if (g2 && isMemberOf(g2)) { await setRsvp(id, true); }
 }
 
 // ─── DATE PICKER ───
