@@ -278,6 +278,14 @@ body{padding-bottom:84px}
 .appbar .logo-chip{background:#fff;border-radius:10px;padding:5px 11px;display:inline-flex;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.15);flex:0 1 auto;min-width:0}
 .appbar .logo-chip .jilogo-real{width:130px;height:33px;background-size:contain}
 .appbar.flush{margin:0}
+.wo-card{display:flex;background:#fff;border:1px solid #e8eee8;border-radius:16px;overflow:hidden;margin-bottom:12px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.wo-img{width:100px;flex:0 0 auto;background-size:cover;background-position:center;min-height:112px}
+.wo-img.wo-ph{display:flex;align-items:center;justify-content:center;font-size:34px;background:linear-gradient(135deg,#cfe0f2,#eef4ee)}
+.wo-body{flex:1;min-width:0;padding:12px 14px}
+.wo-t{font-size:16px;font-weight:800;color:#1a1a2e;line-height:1.25}
+.wo-row{font-size:13.5px;margin-top:5px}
+.wo-when{color:#2d5a2d;font-weight:600}.wo-loc{color:#888}.wo-dist{color:#1B4B8F;font-weight:600}
+.wo-sub{font-size:13px;color:#888;margin-top:5px;font-weight:600}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -4087,7 +4095,16 @@ function paintPageName(page) {
     span.textContent = title;
 }
 
-function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; var _pf=document.getElementById('participate-fs'); if(_pf) _pf.style.display='none'; var _tf=document.getElementById('topics-fs'); if(_tf) _tf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
+function goLoc(a,b){ a=(a||'').trim(); b=(b||'').trim(); if(a&&b) return a+', '+b; return a||b||''; }
+function renderGoingFull(){ var box=document.getElementById('going-fs-list'); if(!box) return; if(!timePeriod){ box.innerHTML=''; return; } var now=periodStart(timePeriod), end=periodEnd(timePeriod); var items=[]; allGroups.forEach(function(g){ if(g.status!=='approved') return; var d=nextOccurrence(g); if(d&&d>=now&&d<=end){ items.push({kind:'group',id:g.id,name:g.name,when:d,category:g.category,sub:capacityText(g),loc:goLoc(g.street_address,g.location),img:g.cover_image||null}); } }); allEvents.forEach(function(e){ if(e.status!=='approved') return; var d=e.datetime?new Date(e.datetime):null; if(d&&!isNaN(d.getTime())&&d>=now&&d<=end){ items.push({kind:'event',id:e.id,name:e.name,when:d,sub:e.is_paid?('$'+e.price):'Free',loc:goLoc(e.street_address,e.venue),img:e.cover_image||null}); } }); items.sort(function(a,b){return a.when-b.when;}); var label = timePeriod==='today'?'today':(timePeriod==='week'?'in the next 7 days':'in your selected dates'); var head='<div class="up-head"><span class="cnt">'+(items.length===0?('Nothing scheduled '+label):(items.length+(items.length===1?' thing ':' things ')+label))+'</span><button class="up-dismiss" onclick="goingDismiss()">\u2715 Dismiss</button></div>'; if(items.length===0){ box.innerHTML=head+'<div style="background:#fff;border:1px solid #e8eee8;border-radius:14px;padding:20px;text-align:center;color:#888">Nothing scheduled '+label+'.</div>'; return; } var html=head; items.forEach(function(it){ var tap = it.kind==='group' ? ("goingOpenGroup('"+it.id+"','"+String(it.category).replace(/'/g,"\\'")+"')") : "goingGo('events')"; var img = it.img ? ('<div class="wo-img" style="background-image:url(\''+it.img+'\')"></div>') : ('<div class="wo-img wo-ph">'+(it.kind==='group'?'\ud83d\udc65':'\ud83c\udf9f\ufe0f')+'</div>'); html += '<div class="wo-card" onclick="'+tap+'">'+img+'<div class="wo-body"><div class="wo-t">'+it.name+'</div><div class="wo-row wo-when">\ud83d\uddd3\ufe0f '+whenLabel(it.when)+'</div>'+(it.loc?('<div class="wo-row wo-loc">\ud83d\udccd '+it.loc+'</div>'):'')+'<div class="wo-row wo-dist" style="display:none">\ud83d\udccf <span></span> away</div><div class="wo-sub">'+it.sub+'</div></div></div>'; }); box.innerHTML=html; }
+function syncGoingPills(){ ['today','week','range'].forEach(function(k){ var b=document.getElementById('gfs-'+k); if(b) b.classList.toggle('active', timePeriod===k); }); }
+function openGoingFS(){ renderGoingFull(); syncGoingPills(); var o=document.getElementById('going-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
+function closeGoingFS(){ var o=document.getElementById('going-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; }
+function setGoingPeriod(period){ timePeriod=period; paintPeriodButtons(); renderUpcoming(); openGoingFS(); }
+function goingGo(pg){ closeGoingFS(); showPage(pg); }
+function goingOpenGroup(id,cat){ closeGoingFS(); openUpcomingGroup(id,cat); }
+function goingDismiss(){ timePeriod=null; paintPeriodButtons(); goHomeReset(); }
+function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; var _pf=document.getElementById('participate-fs'); if(_pf) _pf.style.display='none'; var _tf=document.getElementById('topics-fs'); if(_tf) _tf.style.display='none'; var _gf=document.getElementById('going-fs'); if(_gf) _gf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
 function openPulseFull(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var ps=document.getElementById('hsec-pulse'); if(ps) ps.classList.add('hsec-open'); if(!pulseFeedExpanded){ togglePulseFeedExpand(); } }
 function openColumnsFull(){ var src=document.getElementById('community-columns-scroll'), dst=document.getElementById('columns-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('columns-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function marketGo(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('marketplace'); }
@@ -9000,6 +9017,7 @@ function rangeApprove() {
     timePeriod = 'range';
     paintPeriodButtons();
     renderUpcoming();
+    openGoingFS();
 }
 
 function rangeButtonLabel() {
@@ -9033,6 +9051,7 @@ function showTimePeriod(period) {
     timePeriod = (timePeriod === period) ? null : period;
     paintPeriodButtons();
     renderUpcoming();
+    if(timePeriod){ openGoingFS(); } else { closeGoingFS(); }
 }
 
 function closePopup() {
@@ -9311,6 +9330,17 @@ if (document.readyState === 'loading') {
 <div id="topics-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
 <div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div id="topics-fs-body" style="padding:16px 16px 96px"></div>
+</div>
+<div id="going-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
+<div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div style="padding:14px 16px 96px">
+<div style="display:flex;gap:8px;margin-bottom:14px">
+<button class="period-btn" id="gfs-today" onclick="setGoingPeriod('today')">Today</button>
+<button class="period-btn" id="gfs-week" onclick="setGoingPeriod('week')">Next 7 Days</button>
+<button class="period-btn" id="gfs-range" onclick="openRange()">Pick Dates</button>
+</div>
+<div id="going-fs-list"></div>
+</div>
 </div>
 </body>
 </html>
