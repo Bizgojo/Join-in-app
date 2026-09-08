@@ -496,10 +496,8 @@ body{padding-bottom:84px}
 </div></div>
 
 <div class="hsec" id="hsec-topics">
-<div class="pulse-heading hsec-h" style="margin:0" onclick="openTopicsFull()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">🔥</span><span>Today's Hot Topics<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">A daily prompt and the Asheville poll</span></span></span><span class="hsec-chev">›</span></div>
+<div class="pulse-heading hsec-h" style="margin:0" onclick="openTopicsFull()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">🔥</span><span>Today's Hot Topics<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">A daily prompt to spark conversation</span></span></span><span class="hsec-chev">›</span></div>
 <div class="hsec-body">
-<div class="card" id="community-poll-card" style="display:none"></div>
-
 <div class="card" id="topic-of-day-card">
 <div style="font-size:12px;font-weight:700;color:#E4572E;text-transform:uppercase;letter-spacing:.4px">🔥 Topic of the Day</div>
 <h3 id="totd-title" style="margin:6px 0 4px"></h3>
@@ -512,6 +510,12 @@ body{padding-bottom:84px}
 <div id="topic-comments-slot" style="margin-top:6px"></div>
 <button id="topic-collapse-btn" onclick="closeTopicPanel()" style="display:none;width:100%;margin-top:8px;padding:9px;font-size:12.5px;font-weight:700;color:#888;background:#fff;border:2px solid #e8eee8;border-radius:20px;cursor:pointer">🔼 Hide Discussion</button>
 </div></div></div>
+
+<div class="hsec" id="hsec-polls">
+<div class="pulse-heading hsec-h" style="margin:0" onclick="openPolls()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">🗳️</span><span>Asheville Polls<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">How Ashevillians feel about fun and important topics</span></span></span><span class="hsec-chev">›</span></div>
+<div class="hsec-body">
+<div class="card" id="community-poll-card" style="display:none"></div>
+</div></div>
 
 <div class="hsec" id="hsec-market">
 <div class="pulse-heading hsec-h" style="margin:0" onclick="marketGo()"><span style="display:flex;align-items:center;gap:10px"><span class="hicon">🛍️</span><span>AVL Marketplace<span style="display:block;font-size:12px;font-weight:600;color:#888;margin-top:2px">Buy, sell &amp; give away, locally</span></span></span><span class="hsec-chev">›</span></div>
@@ -1843,7 +1847,19 @@ async function enterApp() {
     currentPage = 'home';
     history.replaceState({ page: 'home' }, '', '#home');
     showApp();
+    await honorAfterAuth();
     return true;
+}
+
+async function honorAfterAuth() {
+    var target;
+    try { target = localStorage.getItem('joinin_after_auth'); } catch (e) { target = null; }
+    if (!target) { return; }
+    try { localStorage.removeItem('joinin_after_auth'); } catch (e) {}
+    if (target === 'polls') {
+        try { await loadCommunityPoll(); } catch (e) {}
+        if (typeof openPolls === 'function') { openPolls(); }
+    }
 }
 
 // Pulls the shared data every device sees.
@@ -2046,7 +2062,7 @@ function goToLogin() {
 
 // Returns true when there is an account behind the tap. When there is not,
 // it explains what is missing and offers to fix it.
-function requireAccount(what) {
+function requireAccount(what, returnTo) {
     if (currentUser) { return true; }
     document.getElementById('popup-icon').textContent = '\uD83D\uDC4B';
     document.getElementById('popup-title').textContent = 'Create a free account';
@@ -2056,7 +2072,7 @@ function requireAccount(what) {
         'No credit card is required.';
     var btn = document.getElementById('popup-btn');
     btn.textContent = 'Create Free Account';
-    btn.onclick = function() { closePopup(); goToSignUp(); };
+    btn.onclick = function() { closePopup(); if (returnTo) { try { localStorage.setItem('joinin_after_auth', returnTo); } catch (e) {} } goToSignUp(); };
     var sec = document.querySelector('.popup-btn-secondary');
     if (sec) {
         sec.style.display = 'block';
@@ -2581,7 +2597,7 @@ async function loadCommunityPoll() {
 // options with a simple decreasing weight so percentages still look
 // plausible. Remove PROTOTYPE_POLL_VOTE_TARGET once real voting traffic
 // makes this unnecessary.
-var PROTOTYPE_POLL_VOTE_TARGET = 50;
+var PROTOTYPE_POLL_VOTE_TARGET = 0; // padding OFF — community polls now show REAL vote counts only
 
 function getPaddedOptionVotes(opts) {
     var real = opts.map(function(o) { return communityPollVoteCounts[o.id] || 0; });
@@ -2612,7 +2628,7 @@ function pollResultsHtml(post, opts, readOnly) {
     var myVote = communityPollMyVote[post.id];
     var showResults = readOnly || !!myVote || totalVotes > 0;
     var expanded = readOnly || !!pollExpanded[post.id];
-    var visibleOpts = expanded ? opts : opts.slice(0, 4);
+    var visibleOpts = opts; // always show every option
     var hiddenCount = opts.length - visibleOpts.length;
     var html = '<div style="margin-top:8px" id="poll-options-' + post.id + '">';
     visibleOpts.forEach(function(o) {
@@ -2625,11 +2641,6 @@ function pollResultsHtml(post, opts, readOnly) {
         html += '<div class="lbl"><span>' + escapeHtml(o.label) + (myVote === o.id ? ' ✓' : '') + '</span>' + (showResults ? '<span>' + pct + '%</span>' : '') + '</div></button>';
     });
     html += '</div>';
-    if (hiddenCount > 0) {
-        html += '<button style="margin-top:6px;padding:8px;font-size:12.5px;font-weight:700;color:#5B8C5A;background:#fff;border:2px solid #5B8C5A;border-radius:20px;cursor:pointer;width:100%" onclick="expandPollOptions(\'' + post.id + '\')">Show ' + hiddenCount + ' more option' + (hiddenCount !== 1 ? 's' : '') + '</button>';
-    } else if (!readOnly && expanded && opts.length > 4) {
-        html += '<button class="btn-outline" style="margin-top:6px;padding:8px" onclick="collapsePollOptions(\'' + post.id + '\')">Show less</button>';
-    }
     if (readOnly) { html += '<div style="font-size:12px;color:#888;margin-top:2px">' + totalVotes + ' vote' + (totalVotes !== 1 ? 's' : '') + ' · Poll closed</div>'; }
     return html;
 }
@@ -2686,7 +2697,7 @@ function renderCommunityPoll() {
 // clicking the button always produces a noticeable effect, even when the
 // options are already fully in view.
 function focusPollVote(postId) {
-    if (!currentUser) { requireAccount('vote in this poll'); return; }
+    if (!currentUser) { requireAccount('vote in this poll', 'polls'); return; }
     var el = document.getElementById('poll-options-' + postId);
     if (!el) { return; }
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -2734,7 +2745,7 @@ async function submitPollSuggestion() {
 }
 
 async function castCommunityPollVote(postId, optionId) {
-    if (!currentUser) { requireAccount('vote in this poll'); return; }
+    if (!currentUser) { requireAccount('vote in this poll', 'polls'); return; }
     if (communityPollMyVote[postId]) { return; }
     try {
         await sb.from('poll_votes').insert({ post_id: postId, option_id: optionId, user_id: currentUser.id });
@@ -4171,11 +4182,12 @@ function closeSchedFS() {
     document.body.style.overflow = '';
 }
 function showFormErrors(boxId, pageId){ var box=document.getElementById(boxId); if(!box) return; var msgs=[]; var pg=document.getElementById(pageId); if(pg){ pg.querySelectorAll('.error-text.show').forEach(function(e){ var t=(e.textContent||'').trim(); if(t && msgs.indexOf(t)<0) msgs.push(t); }); } box.innerHTML = msgs.length ? ('<b>Please fix the following:</b><br>\u2022 '+msgs.join('<br>\u2022 ')) : 'Please complete the required fields marked in red above.'; box.style.display='block'; box.scrollIntoView({behavior:'smooth',block:'center'}); }
-function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; var _pf=document.getElementById('participate-fs'); if(_pf) _pf.style.display='none'; var _tf=document.getElementById('topics-fs'); if(_tf) _tf.style.display='none'; var _gf=document.getElementById('going-fs'); if(_gf) _gf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
+function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; var _pf=document.getElementById('participate-fs'); if(_pf) _pf.style.display='none'; var _tf=document.getElementById('topics-fs'); if(_tf) _tf.style.display='none'; var _plf=document.getElementById('polls-fs'); if(_plf) _plf.style.display='none'; var _gf=document.getElementById('going-fs'); if(_gf) _gf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
 function openPulseFull(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var ps=document.getElementById('hsec-pulse'); if(ps) ps.classList.add('hsec-open'); if(!pulseFeedExpanded){ togglePulseFeedExpand(); } }
 function openColumnsFull(){ var src=document.getElementById('community-columns-scroll'), dst=document.getElementById('columns-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('columns-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function marketGo(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('marketplace'); }
-function openTopicsFull(){ var body=document.getElementById('topics-fs-body'); var poll=document.getElementById('community-poll-card'), tod=document.getElementById('topic-of-day-card'); if(body){ if(poll && poll.parentNode!==body) body.appendChild(poll); if(tod && tod.parentNode!==body) body.appendChild(tod); } var o=document.getElementById('topics-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
+function openTopicsFull(){ var body=document.getElementById('topics-fs-body'); var tod=document.getElementById('topic-of-day-card'); if(body){ if(tod && tod.parentNode!==body) body.appendChild(tod); } var o=document.getElementById('topics-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
+function openPolls(){ var body=document.getElementById('polls-fs-body'); var poll=document.getElementById('community-poll-card'); if(body){ if(poll && poll.parentNode!==body) body.appendChild(poll); } var o=document.getElementById('polls-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function openParticipateFull(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var o=document.getElementById('participate-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function participateGo(pg){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showPage(pg); }
 function participateCreate(){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showCreateChoice(); }
@@ -9411,6 +9423,10 @@ if (document.readyState === 'loading') {
 <div id="topics-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
 <div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div id="topics-fs-body" style="padding:16px 16px 96px"></div>
+</div>
+<div id="polls-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
+<div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div id="polls-fs-body" style="padding:16px 16px 96px"></div>
 </div>
 <div id="going-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
 <div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
