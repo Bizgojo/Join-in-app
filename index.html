@@ -271,7 +271,7 @@ body{padding-bottom:84px}
 .ph-ic{font-size:32px;line-height:1}
 .ph-t{font-size:16px;font-weight:800;margin-top:10px;color:#1a1a2e}
 .ph-s{font-size:12.5px;color:#888;margin-top:3px}
-.ph-create{width:100%;padding:16px;font-size:16px;font-weight:800;border-radius:28px;border:none;color:#fff;background:#2E7BC4;cursor:pointer;margin-bottom:18px}
+.ph-create{width:100%;padding:14px 8px;font-size:14px;font-weight:800;border-radius:28px;border:none;color:#fff;background:#2E7BC4;cursor:pointer;margin-bottom:18px;white-space:nowrap}
 .ph-col label{display:block;font-size:12px;font-weight:700;color:#888;margin-bottom:6px}
 .appbar{position:sticky;top:0;z-index:500;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-20px -20px 14px -20px;padding:11px 12px;background:#1B4B8F;box-shadow:0 2px 8px rgba(0,0,0,.12)}
 .appbar .bar-btn{background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:12px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;line-height:1;flex:0 0 auto}
@@ -912,7 +912,7 @@ body{padding-bottom:84px}
 <div style="margin:14px 0 8px 0"><label style="font-weight:600;display:block;margin-bottom:6px" id="cover-label">9. Cover image</label><div class="image-upload-area" onclick="document.getElementById('image-upload').click()"><span style="font-size:32px;display:block">&#128444;&#65039;</span><div style="color:#888;font-size:14px;margin-top:4px" id="upload-hint">Tap to add photos</div></div><input type="file" id="image-upload" accept="image/*" multiple style="display:none" onchange="handleImageUpload(event)"><div class="shots" id="shots"></div><div id="image-preview-container"></div></div>
 
 <!-- 10. AI cover -->
-<div style="margin:8px 0" id="ai-cover-box"><label style="font-weight:600;display:block;margin-bottom:6px" id="ai-label">10. No photo of your own?</label><button class="btn" style="background:#D4A373" onclick="generateAIImage()">&#127912; AI Generate Cover</button></div>
+
 
 <button class="btn" id="submit-group-btn" onclick="handleCreateGroup()">🚀 Submit for Approval</button>
 <div class="form-error" id="group-form-error" style="display:none"></div>
@@ -938,7 +938,7 @@ body{padding-bottom:84px}
 <div style="margin:8px 0"><label style="font-weight:600;display:block;margin-bottom:6px">Ticketing:</label><div class="toggle-group"><button onclick="setEventPaid('free')" class="selected" id="ev-paid-free">&#127873; Free to attend</button><button onclick="setEventPaid('paid')" id="ev-paid-paid">&#127903;&#65039; Tickets sold elsewhere</button></div><div id="ev-paid-price-container" style="display:none"><input autocomplete="off" type="url" id="ev-ticket-url" placeholder="https://... where tickets are sold"><div class="error-text" id="ev-ticket-url-error">Please give the https address where tickets are sold</div><input autocomplete="off" type="number" id="ev-price" placeholder="Starting price ($) &mdash; optional" min="0" step="0.01"><input autocomplete="off" type="number" id="ev-max-tickets" placeholder="Capacity &mdash; optional" min="1"><div class="info-note">&#127903;&#65039; <strong>Asheville Pulse never handles the money.</strong> People buy from your own ticket seller or box office. This just sends them there.</div></div><div id="ev-paid-description">&#127873; <strong>Free:</strong> No charge to attend.</div></div>
 <div class="image-upload-area" onclick="document.getElementById('event-image-upload').click()"><span style="font-size:32px;display:block">🖼️</span><div style="color:#888;font-size:14px;margin-top:4px">Tap to upload a flyer image</div></div>
 <input autocomplete="off" type="file" id="event-image-upload" accept="image/*" style="display:none" onchange="handleEventImageUpload(event)"><div id="event-image-preview"></div>
-<button class="btn" style="background:#D4A373" onclick="generateEventFlyer()" style="margin-top:4px">🎨 AI Generate Flyer</button>
+
 <button class="btn" id="submit-event-btn" onclick="handleCreateEvent()" style="padding:18px;font-size:18px">📢 Submit for Approval</button>
 <div class="form-error" id="event-form-error" style="display:none"></div>
 <p style="font-size:12px;color:#888;text-align:center;margin-top:8px">Your event will be reviewed and approved shortly.</p>
@@ -4411,6 +4411,8 @@ function openTopicalFull(){ var src=document.getElementById('topical-columns-scr
 function marketGo(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('marketplace'); }
 function openTopicsFull(){ var body=document.getElementById('topics-fs-body'); var tod=document.getElementById('topic-of-day-card'); if(body){ if(tod && tod.parentNode!==body) body.appendChild(tod); } var o=document.getElementById('topics-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); var _bar=document.querySelector('#topics-fs .appbar'); var _st=document.getElementById('totd-sticky'); if(_bar && _st){ _st.style.top=_bar.offsetHeight+'px'; } }
 function openPolls(){ var body=document.getElementById('polls-fs-body'); var poll=document.getElementById('community-poll-card'); if(body){ if(poll && poll.parentNode!==body) body.appendChild(poll); } var o=document.getElementById('polls-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); var _tb=document.getElementById('home-tabbar'); var _ft=document.getElementById('polls-footer'); if(_ft){ _ft.style.bottom=((_tb && _tb.offsetHeight)?_tb.offsetHeight:0)+'px'; } }
+function closeParticipate(){ var o=document.getElementById('participate-fs'); if(o){ o.style.display='none'; } document.body.style.overflow=''; window.scrollTo(0,0); }
+
 function openParticipateFull(){ refreshChatUnread(); document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var o=document.getElementById('participate-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function participateGo(pg){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showPage(pg); }
 function participateCreate(){ var o=document.getElementById('participate-fs'); if(o) o.style.display='none'; document.body.style.overflow=''; showCreateChoice(); }
@@ -9734,7 +9736,7 @@ if (document.readyState === 'loading') {
 </div></div>
 <div class="home-tabbar" id="home-tabbar" style="display:none"><button onclick="goHomeReset()"><span class="ti">🏠</span>Home</button><button onclick="showPage('advertise')"><span class="ti">📣</span>Advertise/Boost</button><button onclick="showPage('about')"><span class="ti">ℹ️</span>About</button><button onclick="showPage('feedback')"><span class="ti">💬</span>Feedback</button></div>
 <div id="participate-fs" style="display:none;position:fixed;inset:0;z-index:2000;background:#f0f4f0;overflow-y:auto;-webkit-overflow-scrolling:touch">
-<div class="appbar flush"><button class="bar-btn" onclick="goHomeReset()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar flush"><button class="bar-btn" onclick="closeParticipate()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div style="padding:18px 16px 96px">
 <p style="font-size:14px;color:#555;line-height:1.5;margin-bottom:16px">Join something that already exists, or start your own — <b style="color:#E4572E">free for everyone</b>.</p>
 <div class="ph-grid">
