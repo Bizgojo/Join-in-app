@@ -3668,8 +3668,17 @@ var topicMockComments = [
 ];
 
 function topicStamp(ts) {
+    var diff = Date.now() - ts;
+    var m = Math.floor(diff / 60000);
+    var rel;
+    if (m < 1) { rel = 'just now'; }
+    else if (m < 60) { rel = m + 'm ago'; }
+    else if (m < 1440) { rel = Math.floor(m / 60) + 'h ago'; }
+    else { rel = Math.floor(m / 1440) + 'd ago'; }
     var d = new Date(ts);
-    return d.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' \u00b7 ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    var date = d.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    var time = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    return rel + ' \u00b7 ' + date + ' \u00b7 ' + time;
 }
 
 function topicAvatar(name) {
