@@ -544,7 +544,7 @@ body{padding-bottom:84px}
 
 <!-- ABOUT -->
 <div id="page-about" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div style="display:flex;gap:8px;margin-bottom:12px">
 <button id="about-tab-mission" onclick="showAboutTab('mission')" class="about-tab on">Our Mission</button>
 <button id="about-tab-team" onclick="showAboutTab('team')" class="about-tab">Who Are We</button>
@@ -576,7 +576,7 @@ body{padding-bottom:84px}
 <!-- COLUMNIST BIO -->
 <div id="page-columnist-bio" class="page">
 <div class="cbio-bar">
-<button class="cbio-back" onclick="showPage('home')"><span class="chev">‹</span> Back</button>
+<button class="cbio-back" onclick="goBack()"><span class="chev">‹</span> Back</button>
 <button class="cbio-toggle" id="columnist-mode-toggle" onclick="toggleColumnistMode()">👤 Columnist Bio</button>
 </div>
 <div class="card" id="columnist-bio-content"></div>
@@ -584,14 +584,14 @@ body{padding-bottom:84px}
 
 <!-- PAST POLLS -->
 <div id="page-past-polls" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div style="font-size:19px;font-weight:700;color:#1B4B8F;margin:4px 0 12px">📁 Past Polls</div>
 <div id="past-polls-list"></div>
 </div>
 
 <!-- MARKETPLACE -->
 <div id="page-marketplace" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
 <h3 style="margin:0">🏪 Marketplace</h3>
 </div>
@@ -604,13 +604,13 @@ body{padding-bottom:84px}
 
 <!-- MARKETPLACE LISTING DETAIL -->
 <div id="page-marketplace-detail" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('marketplace')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card" id="mkt-detail-content"></div>
 </div>
 
 <!-- POST AN AD -->
 <div id="page-post-ad" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('marketplace')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <h3 id="ad-form-title">📣 Post an Ad</h3>
 <p style="color:#888;font-size:13.5px;margin-bottom:12px">Free to post. Visible to everyone in the community.</p>
 <div id="ad-rejection-banner" style="display:none;background:#fbeae6;border:1px solid #e0b3a8;border-radius:12px;padding:14px;margin-bottom:12px;font-size:13.5px;color:#a3271b;line-height:1.5"></div>
@@ -697,7 +697,7 @@ body{padding-bottom:84px}
 
 <!-- CREATE AD -->
 <div id="page-create-ad" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('advertise')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <h3>📸 Create an Ad</h3>
 <p style="color:#888;font-size:13.5px;margin-bottom:12px">Runs in the Pulse feed. Free for now while we build out real pricing.</p>
 <div class="card">
@@ -724,7 +724,7 @@ body{padding-bottom:84px}
 
 <!-- NOW HIRING -->
 <div id="page-hiring" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card">
 <h3>💼 Now Hiring</h3>
 <div id="hiring-view">
@@ -745,7 +745,7 @@ body{padding-bottom:84px}
 
 <!-- GROUPS -->
 <div id="page-groups" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card" id="groups-category-card"><h3>👥 Groups</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Find your community. Join ongoing groups.</p>
 <div class="gsearch"><span class="mag">🔍</span><input type="search" id="group-search" placeholder="Search groups by keyword" autocomplete="off" oninput="onGroupSearch()"><button class="wipe" id="group-search-wipe" onclick="clearGroupSearch()" aria-label="Clear search">✕</button></div>
 <div id="category-grid" style="display:grid;grid-template-columns:1fr;gap:10px;margin:8px 0"></div>
@@ -760,7 +760,7 @@ body{padding-bottom:84px}
 
 <!-- EVENTS -->
 <div id="page-classes" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card" id="classes-category-card"><h3>🎓 Classes</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Learn a skill from someone local. Classes are paid, in cash, at the class.</p>
 <div id="class-category-grid" style="display:grid;grid-template-columns:1fr;gap:10px;margin:8px 0"></div>
 </div>
@@ -769,7 +769,7 @@ body{padding-bottom:84px}
 </div>
 
 <div id="page-events" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card"><h3>🎟️ Events</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Discover concerts, sports, workshops, and more.</p>
 </div>
 <div id="events-list"></div>
@@ -830,7 +830,7 @@ body{padding-bottom:84px}
 
 <!-- CREATE GROUP -->
 <div id="page-create-group" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card"><h3 id="create-title">🚀 Create a Group</h3>
 <p style="color:#888;font-size:13px;margin-bottom:12px"><span id="create-blurb">Groups are ongoing communities, always free to join.</span></p>
 <div id="group-form">
@@ -938,7 +938,7 @@ body{padding-bottom:84px}
 
 <!-- CREATE EVENT -->
 <div id="page-create-event" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card"><h3 id="event-create-title">📢 Create an Event</h3>
 <p style="color:#888;font-size:13px;margin-bottom:12px">Events are one-time or recurring gatherings. Sell tickets and attract attendees.</p>
 <div id="event-form">
@@ -963,7 +963,7 @@ body{padding-bottom:84px}
 
 <!-- HOSTING -->
 <div id="page-hosting" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card"><h3>👑 My Hosting</h3><p style="color:#888;font-size:14px;margin-bottom:12px">Manage your groups and events.</p><div id="hosting-list"></div></div>
 </div>
 
@@ -997,13 +997,13 @@ body{padding-bottom:84px}
 
 <!-- TICKETS -->
 <div id="page-tickets" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card"><h3>🎟️ My Tickets</h3><p style="color:#888;font-size:14px;margin-bottom:12px">When you purchase tickets on the app, your QR codes will appear here.</p><div id="ticket-list"></div></div>
 </div>
 
 <!-- FEEDBACK -->
 <div id="page-feedback" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card"><h3>💬 Feedback & Ratings</h3>
 <div class="mission">In this age of AI, Asheville Pulse’s goal is to further <strong>human</strong> interaction — a platform where humans join with other humans, for social sanity.</div>
 <div class="fb-q"><span class="num">1</span>What do you like most about Asheville Pulse?</div>
@@ -1019,14 +1019,14 @@ body{padding-bottom:84px}
 
 <!-- GROUP DETAIL -->
 <div id="page-group-detail" class="page">
-<div class="appbar"><button class="bar-btn" id="group-detail-back" onclick="backToCategory()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" id="group-detail-back" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div id="group-detail-body"></div>
 <input autocomplete="off" type="file" id="group-photo-upload" accept="image/*" style="display:none" onchange="addGroupPhoto(event)">
 </div>
 
 <!-- EDIT PROFILE -->
 <div id="page-edit-profile" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card"><h3>✏️ My Profile</h3>
 <div style="text-align:center;margin:12px 0">
 <div id="edit-avatar-preview"></div>
@@ -1057,14 +1057,14 @@ body{padding-bottom:84px}
 
 <!-- MESSAGES -->
 <div id="page-messages" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div class="card"><h3>📬 My Messages</h3><p style="color:#888;font-size:14px" id="messages-sub">Your messages.</p></div>
 <div id="messages-list"></div>
 </div>
 
 <!-- TICKET QR -->
 <div id="page-ticket-qr" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <div id="ticket-qr-body"></div>
 </div>
 
@@ -1078,7 +1078,7 @@ body{padding-bottom:84px}
 
 <!-- ADMIN -->
 <div id="page-admin" class="page">
-<div class="appbar"><button class="bar-btn" onclick="showPage('home')">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
+<div class="appbar"><button class="bar-btn" onclick="goBack()">‹ Back</button><span class="logo-chip"><span class="jilogo-real" style="width:130px;height:33px;margin:0"></span></span><button class="bar-btn" onclick="goHomeReset()">🏠 Home</button></div>
 <button onclick="window.open('corporate.html','_blank')" style="width:100%;background:#1B4B8F;color:#fff;border:none;border-radius:12px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:12px">🖥️ Open Desktop Admin →</button>
 <div class="card"><h4>⚙️ Admin Dashboard</h4>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:8px 0">
@@ -1863,7 +1863,7 @@ async function enterApp() {
     document.getElementById('page-login').classList.remove('active');
     document.getElementById('page-home').classList.add('active');
     currentPage = 'home';
-    history.replaceState({ page: 'home' }, '', '#home');
+    history.replaceState({ page: 'home', root: true }, '', '#home');
     showApp();
     await honorAfterAuth();
     return true;
@@ -1877,7 +1877,14 @@ async function honorAfterAuth() {
     if (target.indexOf('group:') === 0) {
         var gid = target.slice(6);
         var gg = allGroups.find(function(x) { return String(x.id) === String(gid); });
-        if (gg) { currentGroupCategory = gg.category || null; if (gg.kind !== 'event') { browseKind = (gg.kind === 'class') ? 'class' : 'group'; } }
+        if (gg && gg.kind !== 'event') {
+            currentGroupCategory = gg.category || null;
+            browseKind = (gg.kind === 'class') ? 'class' : 'group';
+            if (currentGroupCategory) {
+                var _pg = (browseKind === 'class') ? 'classes' : 'groups';
+                try { history.pushState({ page: _pg, group: null, category: currentGroupCategory }, '', '#' + _pg); } catch (e) {}
+            }
+        }
         if (typeof openGroupDetail === 'function') { openGroupDetail(gid); }
         return;
     }
@@ -3697,7 +3704,7 @@ async function enterAsGuest() {
     document.getElementById('page-login').classList.remove('active');
     document.getElementById('page-home').classList.add('active');
     currentPage = 'home';
-    history.replaceState({ page: 'home' }, '', '#home');
+    history.replaceState({ page: 'home', root: true }, '', '#home');
     showApp();
 }
 
@@ -4428,6 +4435,7 @@ function closeSchedFS() {
 }
 function showFormErrors(boxId, pageId){ var box=document.getElementById(boxId); if(!box) return; var msgs=[]; var pg=document.getElementById(pageId); if(pg){ pg.querySelectorAll('.error-text.show').forEach(function(e){ var t=(e.textContent||'').trim(); if(t && msgs.indexOf(t)<0) msgs.push(t); }); } box.innerHTML = msgs.length ? ('<b>Please fix the following:</b><br>\u2022 '+msgs.join('<br>\u2022 ')) : 'Please complete the required fields marked in red above.'; box.style.display='block'; box.scrollIntoView({behavior:'smooth',block:'center'}); }
 function goHomeReset(){ if(typeof pulseFeedExpanded!=='undefined' && pulseFeedExpanded){ togglePulseFeedExpand(); } var _cf=document.getElementById('columns-fs'); if(_cf) _cf.style.display='none'; var _tcf=document.getElementById('topical-fs'); if(_tcf) _tcf.style.display='none'; var _pf=document.getElementById('participate-fs'); if(_pf) _pf.style.display='none'; var _tf=document.getElementById('topics-fs'); if(_tf) _tf.style.display='none'; var _plf=document.getElementById('polls-fs'); if(_plf) _plf.style.display='none'; var _gf=document.getElementById('going-fs'); if(_gf) _gf.style.display='none'; document.body.style.overflow=''; document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); showPage('home'); window.scrollTo(0,0); }
+function goBack(){ var st = history.state; if (!st || st.root) { goHomeReset(); return; } history.back(); }
 function openPulseFull(){ document.querySelectorAll('.hsec').forEach(function(a){ a.classList.remove('hsec-open'); }); var ps=document.getElementById('hsec-pulse'); if(ps) ps.classList.add('hsec-open'); if(!pulseFeedExpanded){ togglePulseFeedExpand(); } }
 function openColumnsFull(){ var src=document.getElementById('community-columns-scroll'), dst=document.getElementById('columns-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('columns-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
 function openTopicalFull(){ var src=document.getElementById('topical-columns-scroll'), dst=document.getElementById('topical-fs-body'); if(src&&dst){ dst.innerHTML=src.innerHTML; } var o=document.getElementById('topical-fs'); if(o) o.style.display='block'; document.body.style.overflow='hidden'; window.scrollTo(0,0); }
