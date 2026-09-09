@@ -875,6 +875,24 @@ body{padding-bottom:84px}
 <div style="margin:12px 0 8px 0"><label style="font-weight:600;display:block;margin-bottom:6px" id="sched-label">4. Meeting schedule</label><div class="schedule-options"><button onclick="setSchedule('once')" class="selected" id="sch-once">One time</button><button onclick="setSchedule('weekly')" id="sch-weekly">Weekly</button><button onclick="setSchedule('monthly')" id="sch-monthly">Monthly</button></div></div>
 <div id="schedule-detail" style="margin-top:8px;padding:12px;background:#f8faf8;border-radius:12px"><div id="schedule-once"><input autocomplete="off" type="hidden" id="group-datetime"><button class="btn" style="background:#2E7BC4" onclick="openCalendar()">&#128197; Pick Date &amp; Time</button><div class="picked-line" id="group-datetime-shown" style="display:none"></div><div class="error-text" id="group-datetime-error">Please pick a date that hasn't passed</div></div><div id="schedule-weekly" style="display:none"><select id="group-weekly-day"><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday" selected>Saturday</option><option value="Sunday">Sunday</option></select><input autocomplete="off" type="time" id="group-weekly-time" value="18:30"></div><div id="schedule-monthly" style="display:none"><select id="group-monthly-week"><option value="First">First</option><option value="Second" selected>Second</option><option value="Third">Third</option><option value="Fourth">Fourth</option><option value="Last">Last</option></select><select id="group-monthly-day"><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday" selected>Saturday</option><option value="Sunday">Sunday</option></select><input autocomplete="off" type="time" id="group-monthly-time" value="18:30"><p style="font-size:12px;color:#888;margin-top:4px">e.g., Second Saturday of each month</p></div></div>
 
+<!-- Class sessions & enrollment (classes only) -->
+<div id="sessions-block" style="display:none;margin:12px 0 8px 0">
+<label style="font-weight:600;display:block;margin-bottom:6px">How many sessions?</label>
+<div class="schedule-options"><button type="button" onclick="setSessions('ongoing')" class="selected" id="ses-ongoing">Ongoing</button><button type="button" onclick="setSessions('set')" id="ses-set">Set number</button></div>
+<div id="session-count-detail" style="display:none;margin-top:8px;padding:12px;background:#f8faf8;border-radius:12px">
+<input autocomplete="off" type="number" id="session-count" min="1" max="52" placeholder="Number of classes (e.g. 5)">
+<div class="error-text" id="session-count-error">Please enter how many classes</div>
+<p style="font-size:12px;color:#888;margin-top:6px">The class runs this many times from the first date, then stops showing.</p>
+</div>
+<label style="font-weight:600;display:block;margin:14px 0 6px">Who can join?</label>
+<div class="schedule-options"><button type="button" onclick="setJoinPolicy('open')" class="selected" id="jp-open">Open — join anytime</button><button type="button" onclick="setJoinPolicy('first')" id="jp-first">Closes after first class</button></div>
+<div id="start-date-detail" style="display:none;margin-top:8px;padding:12px;background:#f8faf8;border-radius:12px">
+<label style="font-weight:600;display:block;margin-bottom:6px">First class date</label>
+<input autocomplete="off" type="date" id="series-start">
+<div class="error-text" id="series-start-error">Please pick the first class date</div>
+</div>
+</div>
+
 <!-- 5. Where -->
 <div style="margin:14px 0 8px 0"><label style="font-weight:600;display:block;margin-bottom:6px" id="where-label">5. Where does it meet? *</label>
 <div class="form-group"><input autocomplete="off" type="text" id="group-venue-name" class="required-field" placeholder="Outdoor space, Building Name, or Business Name *"><div class="error-text" id="group-venue-name-error">Please name the place it meets</div></div>
@@ -1544,6 +1562,8 @@ var allTowns = [];
 var appSettings = {};
 var idCounter = 1;
 var selectedSchedule = 'once';
+var selectedSessions = 'ongoing';
+var selectedJoinPolicy = 'open';
 var selectedPrivacy = 'public';
 var uploadedImage = null;
 var uploadedEventImage = null;
@@ -1963,6 +1983,7 @@ async function loadFromCloud() {
                 recurring: g.recurring, meeting_datetime: g.meeting_datetime,
                 weekly_day: g.weekly_day, weekly_time: g.weekly_time,
                 monthly_week: g.monthly_week, monthly_day: g.monthly_day, monthly_time: g.monthly_time,
+                session_count: g.session_count, series_start: g.series_start, closes_after_first: g.closes_after_first,
                 max_members: g.max_members,
                 member_count: g.member_count, members: byGroup[g.id] || [],
                 photos: photosBy[g.id] || [], status: g.status, denial_reason: g.denial_reason,
@@ -2187,6 +2208,7 @@ async function loadPublicData() {
                 weekly_day: g.weekly_day, weekly_time: g.weekly_time,
                 monthly_week: g.monthly_week, monthly_day: g.monthly_day,
                 monthly_time: g.monthly_time,
+                session_count: g.session_count, series_start: g.series_start, closes_after_first: g.closes_after_first,
                 max_members: g.max_members,
                 member_count: g.member_count, members: [],
                 photos: photosBy[g.id] || [], status: g.status,
@@ -5233,6 +5255,11 @@ function startEditGroup(id) {
     setVal('group-max', g.max_members);
     setVal('group-cost-note', g.cost_note);
     setVal('group-price', g.price);
+    setVal('session-count', g.session_count || '');
+    setVal('series-start', g.series_start || '');
+    setSessions(g.session_count ? 'set' : 'ongoing');
+    setJoinPolicy(g.closes_after_first ? 'first' : 'open');
+    updateSessionsVisibility();
     setVal('registration-url', g.registration_url);
     setVal('class-instructor', g.instructor);
     setVal('class-bio', g.instructor_bio);
@@ -5331,6 +5358,9 @@ async function saveGroupEdits() {
         row.instructor = document.getElementById('class-instructor').value.trim() || null;
         row.instructor_bio = document.getElementById('class-bio').value.trim() || null;
         row.host_org = document.getElementById('class-org').value.trim() || null;
+        row.session_count = ((selectedSchedule === 'weekly' || selectedSchedule === 'monthly') && selectedSessions === 'set') ? (parseInt(document.getElementById('session-count').value, 10) || null) : null;
+        row.series_start = ((selectedSchedule === 'weekly' || selectedSchedule === 'monthly') && (selectedSessions === 'set' || selectedJoinPolicy === 'first')) ? (document.getElementById('series-start').value || null) : null;
+        row.closes_after_first = (selectedJoinPolicy === 'first');
         row.payment_mode = selectedPayMode;
         row.registration_url = selectedPayMode === 'external'
             ? document.getElementById('registration-url').value.trim() : null;
@@ -5440,6 +5470,7 @@ function applyCreateKind() {
     if (submit) { submit.textContent = isCls ? '\u{1F9D1}\u200D\u{1F3EB} Submit Class for Approval' : '\u{1F680} Submit for Approval'; }
 
     numberFields();
+    if (typeof updateSessionsVisibility === 'function') { updateSessionsVisibility(); }
 }
 
 // ─── BROWSE ───
@@ -5454,6 +5485,8 @@ function browseIds() {
 function isCanceled(g) { return !!(g && g.status === 'canceled'); }
 function isStale(g) {
     if (!g) { return false; }
+    var _ss = seriesSessions(g);
+    if (_ss) { var _last = _ss[_ss.length - 1]; var _t0 = new Date(); _t0.setHours(0, 0, 0, 0); return _last.getTime() < _t0.getTime(); }
     var d = nextOccurrence(g);
     if (!d) { return false; }
     var startOfToday = new Date(); startOfToday.setHours(0, 0, 0, 0);
@@ -6909,6 +6942,7 @@ async function joinGroup(id) {
     var g = allGroups.find(function(x) { return x.id === id; });
     if (!g || !currentUser || !sb) return;
     if (isMemberOf(g)) { showNotif('You already joined this group.', 'info'); return; }
+    if (enrollmentClosed(g)) { showNotif('This class has already started and is no longer taking new students.', 'info'); return; }
     var res = await sb.from('group_members').insert({ group_id: g.id, user_id: currentUser.id });
     if (res.error) {
         if (/full/i.test(res.error.message)) {
@@ -7216,6 +7250,10 @@ function resetGroupForm() {
     if (note) { note.value = ''; }
     var inst = document.getElementById('class-instructor');
     if (inst) { inst.value = ''; inst.classList.remove('error'); }
+    var _scEl = document.getElementById('session-count'); if (_scEl) { _scEl.value = ''; _scEl.classList.remove('error'); }
+    var _ssEl = document.getElementById('series-start'); if (_ssEl) { _ssEl.value = ''; _ssEl.classList.remove('error'); }
+    setSessions('ongoing');
+    setJoinPolicy('open');
     setPrivacy('public');
     pendingPhotos = [];
     uploadedImage = null;
@@ -7448,6 +7486,67 @@ function renderClassList() {
     container.innerHTML = html;
 }
 
+function setSessions(type){
+    selectedSessions = type;
+    var a = document.getElementById('ses-ongoing'); if (a) { a.classList.toggle('selected', type === 'ongoing'); }
+    var b = document.getElementById('ses-set'); if (b) { b.classList.toggle('selected', type === 'set'); }
+    var cd = document.getElementById('session-count-detail'); if (cd) { cd.style.display = (type === 'set') ? 'block' : 'none'; }
+    updateStartDateVisibility();
+}
+function setJoinPolicy(type){
+    selectedJoinPolicy = type;
+    var a = document.getElementById('jp-open'); if (a) { a.classList.toggle('selected', type === 'open'); }
+    var b = document.getElementById('jp-first'); if (b) { b.classList.toggle('selected', type === 'first'); }
+    updateStartDateVisibility();
+}
+function updateStartDateVisibility(){
+    var need = (selectedSessions === 'set') || (selectedJoinPolicy === 'first');
+    var el = document.getElementById('start-date-detail'); if (el) { el.style.display = need ? 'block' : 'none'; }
+}
+function updateSessionsVisibility(){
+    var show = (createKind === 'class') && (selectedSchedule === 'weekly' || selectedSchedule === 'monthly');
+    var block = document.getElementById('sessions-block'); if (block) { block.style.display = show ? 'block' : 'none'; }
+}
+// The fixed list of session datetimes for a set-number class; null if ongoing.
+function seriesSessions(g){
+    if (!g || !g.session_count || !g.series_start) { return null; }
+    var n = parseInt(g.session_count, 10); if (!n || n < 1) { return null; }
+    var start = new Date(g.series_start + 'T00:00'); if (isNaN(start.getTime())) { return null; }
+    var out = [];
+    if (g.recurring === 'weekly' && g.weekly_day) {
+        var target = dayIndex(g.weekly_day); if (target < 0) { return null; }
+        var d = new Date(start); d.setDate(d.getDate() + ((target - d.getDay() + 7) % 7));
+        for (var k = 0; k < n; k++) { var o = new Date(d); applyTime(o, g.weekly_time); out.push(o); d.setDate(d.getDate() + 7); }
+        return out;
+    }
+    if (g.recurring === 'monthly' && g.monthly_day && g.monthly_week) {
+        var got = 0, i = 0;
+        while (got < n && i < n + 24) {
+            var mo = nthWeekdayOfMonth(start.getFullYear(), start.getMonth() + i, g.monthly_week, g.monthly_day);
+            if (mo) { applyTime(mo, g.monthly_time); if (got > 0 || mo >= start) { out.push(mo); got++; } }
+            i++;
+        }
+        return out.length ? out : null;
+    }
+    return null;
+}
+// The very first session, used to decide if enrolment has closed.
+function firstSession(g){
+    var ss = seriesSessions(g); if (ss && ss.length) { return ss[0]; }
+    if (g && g.series_start) {
+        var start = new Date(g.series_start + 'T00:00'); if (isNaN(start.getTime())) { return null; }
+        if (g.recurring === 'weekly' && g.weekly_day) { var t = dayIndex(g.weekly_day); if (t < 0) { return null; } var d = new Date(start); d.setDate(d.getDate() + ((t - d.getDay() + 7) % 7)); applyTime(d, g.weekly_time); return d; }
+        if (g.recurring === 'monthly' && g.monthly_day && g.monthly_week) { for (var i = 0; i < 13; i++) { var mo = nthWeekdayOfMonth(start.getFullYear(), start.getMonth() + i, g.monthly_week, g.monthly_day); if (mo) { applyTime(mo, g.monthly_time); if (mo >= start) { return mo; } } } return null; }
+    }
+    if (g && g.meeting_datetime) { var o = new Date(g.meeting_datetime); return isNaN(o.getTime()) ? null : o; }
+    return null;
+}
+function enrollmentClosed(g){
+    if (!g || !g.closes_after_first) { return false; }
+    var f = firstSession(g); if (!f) { return false; }
+    return new Date().getTime() > f.getTime();
+}
+
 function setSchedule(type) {
     selectedSchedule = type;
     document.querySelectorAll('#sch-once, #sch-weekly, #sch-monthly').forEach(function(b) {
@@ -7456,6 +7555,7 @@ function setSchedule(type) {
     document.querySelectorAll('#schedule-once, #schedule-weekly, #schedule-monthly').forEach(function(el) {
         el.style.display = el.id === 'schedule-' + type ? 'block' : 'none';
     });
+    if (typeof updateSessionsVisibility === 'function') { updateSessionsVisibility(); }
 }
 
 function setPrivacy(type) {
@@ -7988,6 +8088,17 @@ async function handleCreateGroup() {
             document.getElementById('venue-check-box').classList.remove('bad');
             document.getElementById('class-venue-error').classList.remove('show');
         }
+        if (selectedSchedule === 'weekly' || selectedSchedule === 'monthly') {
+            if (selectedSessions === 'set') {
+                var _sc = parseInt(document.getElementById('session-count').value, 10);
+                if (!_sc || _sc < 1) { document.getElementById('session-count').classList.add('error'); document.getElementById('session-count-error').classList.add('show'); isValid = false; }
+                else { document.getElementById('session-count').classList.remove('error'); document.getElementById('session-count-error').classList.remove('show'); }
+            }
+            if (selectedSessions === 'set' || selectedJoinPolicy === 'first') {
+                if (!document.getElementById('series-start').value) { document.getElementById('series-start').classList.add('error'); document.getElementById('series-start-error').classList.add('show'); isValid = false; }
+                else { document.getElementById('series-start').classList.remove('error'); document.getElementById('series-start-error').classList.remove('show'); }
+            }
+        }
     } else {
         price = 0;
         costNote = document.getElementById('group-cost-note').value.trim() || null;
@@ -8032,6 +8143,9 @@ async function handleCreateGroup() {
         monthly_week: document.getElementById('group-monthly-week').value || null,
         monthly_day: document.getElementById('group-monthly-day').value || null,
         monthly_time: document.getElementById('group-monthly-time').value || null,
+        session_count: (createKind === 'class' && (selectedSchedule === 'weekly' || selectedSchedule === 'monthly') && selectedSessions === 'set') ? (parseInt(document.getElementById('session-count').value, 10) || null) : null,
+        series_start: (createKind === 'class' && (selectedSchedule === 'weekly' || selectedSchedule === 'monthly') && (selectedSessions === 'set' || selectedJoinPolicy === 'first')) ? (document.getElementById('series-start').value || null) : null,
+        closes_after_first: (createKind === 'class') ? (selectedJoinPolicy === 'first') : false,
         status: 'submitted'
     };
     var res = await sb.from('groups').insert(row).select().single();
@@ -9565,6 +9679,8 @@ function nthWeekdayOfMonth(year, month, which, dayName) {
 
 function nextOccurrence(g) {
     var now = new Date();
+    var _ss = seriesSessions(g);
+    if (_ss) { for (var _i = 0; _i < _ss.length; _i++) { if (_ss[_i] >= now) { return _ss[_i]; } } return null; }
     if (g.recurring === 'weekly' && g.weekly_day) {
         var target = dayIndex(g.weekly_day);
         if (target < 0) return null;
@@ -9593,6 +9709,8 @@ function nextOccurrence(g) {
 
 function occurrencesInRange(g, start, end){
     var out = [];
+    var _ss = seriesSessions(g);
+    if (_ss) { return _ss.filter(function(o){ return o >= start && o <= end; }); }
     if (g.recurring === 'weekly' && g.weekly_day) {
         var target = dayIndex(g.weekly_day);
         if (target < 0) return out;
