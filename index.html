@@ -888,7 +888,9 @@ body{padding-bottom:84px}
 <div class="schedule-options"><button type="button" onclick="setJoinPolicy('open')" class="selected" id="jp-open">Open — join anytime</button><button type="button" onclick="setJoinPolicy('first')" id="jp-first">Closes after first class</button></div>
 <div id="start-date-detail" style="display:none;margin-top:8px;padding:12px;background:#f8faf8;border-radius:12px">
 <label style="font-weight:600;display:block;margin-bottom:6px">First class date</label>
-<input autocomplete="off" type="date" id="series-start">
+<input autocomplete="off" type="hidden" id="series-start">
+<button class="btn" style="background:#2E7BC4" type="button" onclick="openCalendar('series-start')">&#128197; Pick First Class Date</button>
+<div class="picked-line" id="series-start-shown" style="display:none"></div>
 <div class="error-text" id="series-start-error">Please pick the first class date</div>
 </div>
 </div>
@@ -5256,7 +5258,10 @@ function startEditGroup(id) {
     setVal('group-cost-note', g.cost_note);
     setVal('group-price', g.price);
     setVal('session-count', g.session_count || '');
-    setVal('series-start', g.series_start || '');
+    var _ssv = g.series_start || '';
+    setVal('series-start', _ssv);
+    var _ssShown = document.getElementById('series-start-shown');
+    if (_ssShown) { if (_ssv) { _ssShown.textContent = '\u2705 ' + new Date(_ssv + 'T00:00').toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }); _ssShown.style.display = 'block'; } else { _ssShown.style.display = 'none'; _ssShown.textContent = ''; } }
     setSessions(g.session_count ? 'set' : 'ongoing');
     setJoinPolicy(g.closes_after_first ? 'first' : 'open');
     updateSessionsVisibility();
@@ -5359,7 +5364,7 @@ async function saveGroupEdits() {
         row.instructor_bio = document.getElementById('class-bio').value.trim() || null;
         row.host_org = document.getElementById('class-org').value.trim() || null;
         row.session_count = ((selectedSchedule === 'weekly' || selectedSchedule === 'monthly') && selectedSessions === 'set') ? (parseInt(document.getElementById('session-count').value, 10) || null) : null;
-        row.series_start = ((selectedSchedule === 'weekly' || selectedSchedule === 'monthly') && (selectedSessions === 'set' || selectedJoinPolicy === 'first')) ? (document.getElementById('series-start').value || null) : null;
+        row.series_start = ((selectedSchedule === 'weekly' || selectedSchedule === 'monthly') && (selectedSessions === 'set' || selectedJoinPolicy === 'first')) ? ((document.getElementById('series-start').value || '').slice(0, 10) || null) : null;
         row.closes_after_first = (selectedJoinPolicy === 'first');
         row.payment_mode = selectedPayMode;
         row.registration_url = selectedPayMode === 'external'
@@ -7252,6 +7257,7 @@ function resetGroupForm() {
     if (inst) { inst.value = ''; inst.classList.remove('error'); }
     var _scEl = document.getElementById('session-count'); if (_scEl) { _scEl.value = ''; _scEl.classList.remove('error'); }
     var _ssEl = document.getElementById('series-start'); if (_ssEl) { _ssEl.value = ''; _ssEl.classList.remove('error'); }
+    var _ssShownR = document.getElementById('series-start-shown'); if (_ssShownR) { _ssShownR.style.display = 'none'; _ssShownR.textContent = ''; }
     setSessions('ongoing');
     setJoinPolicy('open');
     setPrivacy('public');
@@ -8144,7 +8150,7 @@ async function handleCreateGroup() {
         monthly_day: document.getElementById('group-monthly-day').value || null,
         monthly_time: document.getElementById('group-monthly-time').value || null,
         session_count: (createKind === 'class' && (selectedSchedule === 'weekly' || selectedSchedule === 'monthly') && selectedSessions === 'set') ? (parseInt(document.getElementById('session-count').value, 10) || null) : null,
-        series_start: (createKind === 'class' && (selectedSchedule === 'weekly' || selectedSchedule === 'monthly') && (selectedSessions === 'set' || selectedJoinPolicy === 'first')) ? (document.getElementById('series-start').value || null) : null,
+        series_start: (createKind === 'class' && (selectedSchedule === 'weekly' || selectedSchedule === 'monthly') && (selectedSessions === 'set' || selectedJoinPolicy === 'first')) ? ((document.getElementById('series-start').value || '').slice(0, 10) || null) : null,
         closes_after_first: (createKind === 'class') ? (selectedJoinPolicy === 'first') : false,
         status: 'submitted'
     };
