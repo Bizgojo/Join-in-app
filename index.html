@@ -297,6 +297,22 @@ body{padding-bottom:84px}
 .period-btn,.btn,.map-btn,.toggle-group button,.schedule-options button,.pulse-scroll-btn,.popup-btn,.popup-btn-secondary,.note-acts button,.up-dismiss,.cal-cancel,.area-ask button,.area-offer button,.rail-card{box-shadow:0 2px 5px rgba(0,0,0,.15)}
 .period-btn:active,.btn:active,.pulse-scroll-btn:active{box-shadow:0 1px 2px rgba(0,0,0,.2)}
 </style>
+<style>
+/* two-section group detail */
+.gd2-meetline{font-size:17px;font-weight:800;line-height:1.4;margin:16px 0 4px;color:#1a1a2e}
+.gd2-drop{width:100%;text-align:left;background:#f4f7f4;border:2px solid #e0e7e0;border-radius:14px;padding:14px 16px;font-size:16px;font-weight:700;cursor:pointer;color:#1a1a2e;display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:8px}
+.gd2-droplist{display:none;padding:6px 4px 0}
+.gd2-droplist.gd2-open{display:block}
+.gd2-person{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid #eef2ee;font-size:16px}
+.gd2-person:last-child{border-bottom:none}
+.gd2-mtg-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.gd2-attend{background:#dcf5e6;color:#12833f;padding:6px 14px;border-radius:20px;font-size:14px;font-weight:700;white-space:nowrap}
+.gd2-changebox{margin:16px 0;padding:16px;border-radius:16px;background:#f4f7f4;border:2px solid #e0e7e0;text-align:center}
+.gd2-changebox p{font-size:15px;color:#4a534a;margin-bottom:12px;line-height:1.45;font-weight:600}
+.gd2-changebox button{background:#fff;color:#dc2626;border:2px solid #dc2626;border-radius:26px;padding:13px 24px;font-size:16px;font-weight:800;cursor:pointer}
+.gd2-sorrybox{margin:16px 0;padding:16px;border-radius:16px;background:#f3f5f3;color:#6a736a;font-size:16px;font-weight:700;text-align:center;line-height:1.4}
+.gd2-sorrybox button{display:block;margin:12px auto 0;background:#16a34a;color:#fff;border:none;border-radius:26px;padding:12px 22px;font-size:15px;font-weight:800;cursor:pointer}
+</style>
 </head>
 <body>
 <div id="notif" class="notif"></div>
@@ -1858,6 +1874,11 @@ async function honorAfterAuth() {
     try { target = localStorage.getItem('joinin_after_auth'); } catch (e) { target = null; }
     if (!target) { return; }
     try { localStorage.removeItem('joinin_after_auth'); } catch (e) {}
+    if (target.indexOf('group:') === 0) {
+        var gid = target.slice(6);
+        if (typeof openGroupDetail === 'function') { openGroupDetail(gid); }
+        return;
+    }
     if (target === 'polls') {
         try { await loadCommunityPoll(); } catch (e) {}
         if (typeof openPolls === 'function') { openPolls(); }
@@ -6208,6 +6229,201 @@ function groupAddress(g) {
     return [g.street_address, g.location].filter(Boolean).join(', ');
 }
 
+// ─── GROUP DETAIL (two-section layout, groups only) ───
+// Section 1 is who the group is; Section 2 is the very next meetup.
+function gd2Toggle(id) {
+    var el = document.getElementById(id);
+    if (!el) { return; }
+    var open = el.classList.toggle('gd2-open');
+    var arr = document.getElementById(id + '-arrow');
+    if (arr) { arr.textContent = open ? '\u25B4' : '\u25BE'; }
+}
+
+function renderGroupTwoSection(g, joined, isHost, locked, body) {
+    var when = nextOccursISO(g);
+    var mine = myRsvpStatus(g);
+    var canRsvp = joined || isHost;
+    var recurs = (g.recurring === 'weekly' || g.recurring === 'monthly');
+
+    // ---------- SECTION 1: About the group ----------
+    var html = '<div class="card">';
+    var pics = photosFor(g);
+    if (pics.length > 1) {
+        html += '<div class="gallery" id="detail-gallery" onscroll="galleryScroll(this)">';
+        pics.forEach(function(p) { html += '<img src="' + p.url + '" alt="">'; });
+        html += '</div><div class="gallery-count" id="gallery-count">1 of ' + pics.length + ' \u2014 swipe to see more</div>';
+    } else if (g.cover_image) {
+        html += '<img class="detail-cover" src="' + g.cover_image + '" alt="">';
+    }
+    html += '<h3 style="font-size:22px">' + escapeHTML(g.name) + '</h3>';
+    html += '<div style="margin:8px 0">' + privacyBadge(g) + ' ' + groupCostBadge(g) +
+        (joined ? ' <span class="badge joined">\u2705 Joined</span>' : '') +
+        (isHost ? ' <span class="badge" style="background:#1e2a52;color:#fff">\uD83D\uDC51 Host</span>' : '') + '</div>';
+
+    if (isCanceled(g)) {
+        html += '<div style="background:#fdecea;border:1px solid #f5c6cb;padding:14px;border-radius:12px;margin-top:14px;font-size:15px;color:#8a2620;font-weight:700">\uD83D\uDEAB This group has been canceled.</div>';
+        if (isHost) { html += '<button class="btn-select" onclick="reinstateGroup(\'' + g.id + '\')">\u21A9\uFE0F Reinstate this group</button>'; }
+        html += '</div>';
+        body.innerHTML = html;
+        return;
+    }
+
+    html += '<div class="sec-title">About this group</div>';
+    html += '<p style="font-size:15px;line-height:1.5;color:#333">' + escapeHTML(g.description || 'No description yet.') + '</p>';
+
+    html += '<div class="sec-title">Host</div>';
+    html += '<div class="host-row" style="cursor:pointer" onclick="openUserProfile(\'' +
+        String(g.organizer_id).replace(/'/g, "\\'") + '\')">' + avatarHTML(g.organizer_id, 'md') +
+        '<div><div class="hn">' + escapeHTML(g.organizer_name || 'Unknown') + '</div><div class="hl">Host</div></div></div>';
+
+    // Private group the viewer is not in: stop here with a way to ask in.
+    if (locked) {
+        html += '<div style="background:#fef9e7;border:1px solid #f9e79f;padding:14px;border-radius:12px;margin-top:14px;font-size:15px;color:#7a5c10">\uD83D\uDD12 This is a private group. The meeting time, location and member list are hidden until the host invites you.</div>';
+        html += '<button class="btn-select" onclick="requestInvitation(\'' + g.id + '\')">\u2709\uFE0F Message the Host to Request an Invitation</button>';
+        html += '</div>';
+        body.innerHTML = html;
+        return;
+    }
+
+    // The friendly cadence line (recurring groups only; hidden for one-time).
+    if (recurs) {
+        var mt = groupMeetingText(g);
+        mt = mt.charAt(0).toLowerCase() + mt.slice(1);
+        html += '<div class="gd2-meetline">We meet ' + escapeHTML(mt) + ' \u2014 hope you can JoinIn.</div>';
+    }
+
+    // Members dropdown
+    var memCount = g.members ? g.members.length : 0;
+    var memLabel = memCount + ' member' + (memCount === 1 ? '' : 's') + (joined ? ', including you' : '');
+    html += '<button class="gd2-drop" onclick="gd2Toggle(\'gd2-members\')">\uD83D\uDC65 ' + memLabel +
+        ' <span class="gd2-arrow" id="gd2-members-arrow">\u25BE</span></button>';
+    html += '<div class="gd2-droplist" id="gd2-members">';
+    if (memCount && canSeePeople(g)) {
+        var goingIds = goingTo(g).map(function(r) { return r.user_id; });
+        for (var i = 0; i < g.members.length; i++) {
+            var uid = g.members[i];
+            var coming = goingIds.indexOf(uid) > -1;
+            html += '<div class="gd2-person">' + avatarHTML(uid, 'sm') + '<span class="nm">' + memberName(uid) +
+                (uid === g.organizer_id ? ' <span style="color:#8a948a">\u00b7 Host</span>' : '') +
+                (coming ? ' <span style="color:#2ecc71;font-weight:700">\u2713</span>' : '') + '</span></div>';
+        }
+    } else if (memCount) {
+        html += '<p style="color:#666;font-size:15px;padding:6px 4px">' + memCount + ' ' +
+            (memCount === 1 ? 'person is' : 'people are') + ' in this group. Join to see who they are.</p>';
+    } else {
+        html += '<p style="color:#888;font-size:14px;padding:6px 4px">No members yet \u2014 be the first to join!</p>';
+    }
+    html += '</div>';
+    html += '</div>';
+
+    // ---------- SECTION 2: Next meetup ----------
+    html += '<div class="card">';
+    html += '<div class="gd2-mtg-head"><div class="sec-title" style="margin:0">Next meeting</div>';
+    if (canRsvp && mine === 'going') {
+        html += '<span class="gd2-attend">\u2705 You\u2019re scheduled to attend</span>';
+    }
+    html += '</div>';
+
+    html += '<div class="info-line">\uD83D\uDDD3\uFE0F ' + (when ? whenLong(when) : escapeHTML(groupMeetingText(g))) + '</div>';
+    if (g.venue_name) {
+        html += '<div class="info-line venue-name">\uD83D\uDCCD ' + escapeHTML(g.venue_name) + '</div>';
+        html += '<div class="info-line" style="margin-top:-6px;padding-left:22px">' +
+            escapeHTML(groupAddress(g) || 'Location to be announced') + '</div>';
+    } else {
+        html += '<div class="info-line">\uD83D\uDCCD ' + (groupAddress(g) || 'Location to be announced') + '</div>';
+    }
+    if (groupAddress(g)) {
+        html += '<button class="map-btn" onclick="openDirections(\'' + groupAddress(g).replace(/'/g, "\\'") + '\')">\uD83E\uDDED Directions from Where I Am</button>';
+    }
+    if (g.is_paid) {
+        html += '<div class="info-line">\uD83D\uDCB3 $' + g.price + ' per member \u2014 paid directly to the host</div>';
+    }
+
+    // RSVP controls (members & host, only when a next date exists)
+    if (when && canRsvp) {
+        if (mine === 'going') {
+            html += '<div class="gd2-changebox"><p>If your plans have changed and you can\u2019t make it, click here.</p>' +
+                '<button onclick="setRsvp(\'' + g.id + '\', false)">\u2716 Can\u2019t Make It</button></div>';
+        } else if (mine === 'not_going') {
+            html += '<div class="gd2-sorrybox">Sorry you can\u2019t make it \u2014 maybe next time.' +
+                '<button onclick="setRsvp(\'' + g.id + '\', true)">\u2705 I\u2019m coming</button></div>';
+        } else {
+            html += '<div class="rsvp-row">' +
+                '<button class="rsvp-btn" onclick="setRsvp(\'' + g.id + '\', true)">\u2705 I\u2019m coming</button>' +
+                '<button class="rsvp-btn" onclick="setRsvp(\'' + g.id + '\', false)">\u2716 Can\u2019t make it</button></div>';
+        }
+    }
+
+    // Seats
+    if (g.max_members) {
+        var left = spotsLeft(g);
+        html += '<div class="info-line" style="color:' + (left === 0 ? '#e74c3c' : '#a3371b') + ';font-weight:700">' +
+            (left === 0 ? '\uD83E\uDE91 Full \u2014 all ' + g.max_members + ' seats taken'
+                : '\uD83E\uDE91 ' + (g.member_count || memCount) + ' of ' + g.max_members + ' seats filled \u00b7 ' + left + ' left') +
+            '</div>';
+    }
+
+    // Who is coming dropdown
+    if (when) {
+        var going = goingTo(g);
+        html += '<button class="gd2-drop" onclick="gd2Toggle(\'gd2-coming\')">See who is coming ' + shortDate(when) +
+            ' (' + going.length + ') <span class="gd2-arrow" id="gd2-coming-arrow">\u25BE</span></button>';
+        html += '<div class="gd2-droplist" id="gd2-coming">';
+        if (going.length && canSeePeople(g)) {
+            for (var j = 0; j < going.length; j++) {
+                var ruid = going[j].user_id;
+                html += '<div class="gd2-person">' + avatarHTML(ruid, 'sm') + '<span class="nm">' + memberName(ruid) +
+                    ' <span style="color:#2ecc71;font-weight:700">\u2713</span></span></div>';
+            }
+        } else if (going.length) {
+            html += '<p style="color:#666;font-size:15px;padding:6px 4px">' + going.length + ' ' +
+                (going.length === 1 ? 'person is' : 'people are') + ' coming. Join to see who.</p>';
+        } else {
+            html += '<p style="color:#888;font-size:14px;padding:6px 4px">Nobody is signed up yet \u2014 be the first!</p>';
+        }
+        html += '</div>';
+    }
+    html += '</div>';
+
+    // ---------- ACTIONS ----------
+    html += '<div class="card"><div style="margin-top:0">';
+    if (isHost) {
+        html += '<button class="btn-invite" onclick="startEditGroup(\'' + g.id + '\')">\u270F\uFE0F Edit group</button>';
+        if (canInvite(g)) {
+            if (isFull(g)) { html += '<button class="btn-invite" disabled style="opacity:.5;cursor:not-allowed;background:#c7cdd4">\uD83D\uDEAB Group full</button>'; }
+            else { html += '<button class="btn-invite" onclick="inviteToGroup(\'' + g.id + '\')">\uD83D\uDCE3 Invite a friend</button>'; }
+        }
+        html += '<button class="btn-outline" onclick="messageHost(\'' + g.id + '\')">\uD83D\uDCAC Message members</button>';
+        html += '<button class="btn-leave" onclick="cancelThisGroup(\'' + g.id + '\')">\uD83D\uDEAB Cancel this group</button>';
+    } else if (joined) {
+        if (canInvite(g)) {
+            if (isFull(g)) { html += '<button class="btn-invite" disabled style="opacity:.5;cursor:not-allowed;background:#c7cdd4">\uD83D\uDEAB Group full</button>'; }
+            else { html += '<button class="btn-invite" onclick="inviteToGroup(\'' + g.id + '\')">\uD83D\uDCE3 Invite a friend</button>'; }
+        }
+        html += '<button class="btn-outline" onclick="messageHostGate(\'' + g.id + '\')">\uD83D\uDCAC Message the Host</button>';
+        html += '<button class="btn-leave" onclick="leaveGroup(\'' + g.id + '\')">Leave group</button>';
+    } else {
+        if (isFull(g)) {
+            if (onWaitlist(g)) {
+                html += '<div style="background:#fdf1eb;border:1px solid #f2dccf;padding:14px;border-radius:12px;font-size:15px;color:#a3371b;margin-bottom:8px">\uD83D\uDD14 You\u2019re on the waiting list. We\u2019ll notify you here if a spot opens.</div>';
+                html += '<button class="btn-leave" onclick="leaveWaitlist(\'' + g.id + '\')">Take Me Off the List</button>';
+            } else {
+                html += '<div style="background:#fdecea;border:1px solid #f5c6cb;padding:14px;border-radius:12px;font-size:15px;color:#8a2620;margin-bottom:8px">\uD83D\uDEAB This group is full \u2014 all ' + g.max_members + ' spots are taken.</div>';
+                html += '<button class="btn-select" onclick="joinWaitlist(\'' + g.id + '\')">\uD83D\uDD14 Notify Me If a Spot Opens</button>';
+            }
+        } else if (when) {
+            html += '<button class="btn-select" onclick="joinAndComing(\'' + g.id + '\')">\u2705 Join &amp; I\u2019m coming</button>';
+            html += '<div class="info-line" style="color:#8a948a;font-size:13px">One tap joins the group and marks you coming.</div>';
+        } else {
+            html += '<button class="btn-select" onclick="signMeUp(\'' + g.id + '\')">\u270B Join this group' + (g.is_paid ? ' \u2014 $' + g.price : '') + '</button>';
+        }
+        html += '<button class="btn-outline" onclick="messageHostGate(\'' + g.id + '\')">\uD83D\uDCAC Message the Host</button>';
+    }
+    html += '</div></div>';
+
+    body.innerHTML = html;
+}
+
 function renderGroupDetail() {
     var body = document.getElementById('group-detail-body');
     if (!body) return;
@@ -6217,6 +6433,8 @@ function renderGroupDetail() {
     var isHost = currentUser && g.organizer_id === currentUser.id;
     var locked = visibilityOf(g) === 'hidden' && !joined && !isHost;
     document.getElementById('group-detail-back').innerHTML = '<span class="chev">‹</span> Back'
+
+    if (g.kind !== 'event' && !isClass(g)) { renderGroupTwoSection(g, joined, isHost, locked, body); return; }
 
     var html = '<div class="card">';
     var pics = photosFor(g);
@@ -6379,7 +6597,7 @@ function rsvpSection(g, joined) {
 async function joinAndComing(id) {
     var g = allGroups.find(function(x) { return x.id === id; });
     if (!g) { return; }
-    if (!requireAccount('join this group and RSVP')) { return; }
+    if (!requireAccount('join this group and RSVP', 'group:' + id)) { return; }
     if (isFull(g)) { showNotif('This group is full.', 'error'); return; }
     await joinGroup(id);
     var g2 = allGroups.find(function(x) { return x.id === id; });
@@ -6588,7 +6806,7 @@ async function markCloudRead(id) {
 // hitting a failure further in.
 function isSignedIn() { return !!(currentUser && sb); }
 
-function askToRegister(what) {
+function askToRegister(what, returnTo) {
     document.getElementById('popup-icon').textContent = '\u{1F44B}';
     document.getElementById('popup-title').textContent = "We'd love to have you";
     document.getElementById('popup-text').innerHTML =
@@ -6598,6 +6816,7 @@ function askToRegister(what) {
     btn.textContent = 'Create My Free Account';
     btn.onclick = function() {
         closePopup();
+        if (returnTo) { try { localStorage.setItem('joinin_after_auth', returnTo); } catch (e) {} }
         showPage('login');
         setAuthMode('signup');
     };
@@ -6612,7 +6831,7 @@ function askToRegister(what) {
 async function signMeUp(id) {
     var g = allGroups.find(function(x) { return x.id === id; });
     if (!g) return;
-    if (!isSignedIn()) { askToRegister('sign up for "' + (g.name || 'this group') + '"'); return; }
+    if (!isSignedIn()) { askToRegister('sign up for "' + (g.name || 'this group') + '"', 'group:' + id); return; }
     if (isMemberOf(g)) {
         showPopup('\u2705', 'You are already signed up',
             'You are on the list for <strong>' + escapeHTML(g.name) + '</strong>.<br><br>' +
@@ -6624,7 +6843,7 @@ async function signMeUp(id) {
 
 function messageHostGate(id) {
     var g = allGroups.find(function(x) { return x.id === id; });
-    if (!isSignedIn()) { askToRegister('send messages through Asheville Pulse'); return; }
+    if (!isSignedIn()) { askToRegister('send messages through Asheville Pulse', 'group:' + id); return; }
     messageHostWrite(id);
 }
 
