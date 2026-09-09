@@ -852,7 +852,7 @@ body{padding-bottom:84px}
 
 <!-- 1. Category -->
 <div style="margin:8px 0"><label style="font-weight:600;display:block;margin-bottom:6px" id="cat-label">1. What kind of group is it? *</label>
-<div class="form-group"><select id="group-category" class="required-field"><option value="">Select Category *</option></select><div class="error-text" id="group-category-error">Please select a category</div></div></div>
+<div class="form-group"><select id="group-category" class="required-field"><option value="">Select Category *</option></select><div class="error-text" id="group-category-error">Please select a category</div></div><div class="form-group" id="class-subject-wrap" style="display:none"><input autocomplete="off" type="text" id="class-subject" placeholder="What are you teaching? (e.g. Beginner Pottery) *"><div class="error-text" id="class-subject-error">Please say what you are teaching</div></div></div>
 
 <!-- 1b. Sponsor, classes only -->
 <div id="sponsor-block" style="margin:14px 0 8px 0;display:none">
@@ -908,7 +908,7 @@ body{padding-bottom:84px}
 </div>
 
 <div id="class-cost-box" style="display:none">
-<input autocomplete="off" type="number" id="group-price" placeholder="Price per student ($) *" min="1" step="0.01">
+<input autocomplete="off" type="text" inputmode="decimal" id="group-price" placeholder="Price per student ($) *">
 <div class="error-text" id="group-price-error">Please enter a price</div>
 <label style="font-weight:600;display:block;margin:12px 0 6px">How do students pay? *</label>
 <div class="toggle-group">
@@ -5225,6 +5225,7 @@ function startEditGroup(id) {
     loadPendingFromGroup(g.id);
 
     setVal('group-category', g.category);
+    setVal('class-subject', g.category);
     setVal('group-name', g.name);
     setVal('group-desc', g.description);
     setVal('group-venue-name', g.venue_name);
@@ -5309,7 +5310,7 @@ async function saveGroupEdits() {
     var row = {
         name: name,
         description: description,
-        category: document.getElementById('group-category').value,
+        category: catFieldValue(),
         venue_name: document.getElementById('group-venue-name').value.trim() || null,
         street_address: document.getElementById('group-street').value.trim() || null,
         location: document.getElementById('group-location').value || g.location,
@@ -5418,6 +5419,11 @@ function applyCreateKind() {
 
     var nameField = document.getElementById('group-name');
     if (nameField) { nameField.placeholder = isCls ? 'Class Name *' : 'Group Name *'; }
+    var _catSel = document.getElementById('group-category');
+    var _catFG = _catSel ? _catSel.closest('.form-group') : null;
+    if (_catFG) { _catFG.style.display = isCls ? 'none' : 'block'; }
+    var _subjWrap = document.getElementById('class-subject-wrap');
+    if (_subjWrap) { _subjWrap.style.display = isCls ? 'block' : 'none'; }
 
     var gBox = document.getElementById('group-cost-box');
     var cBox = document.getElementById('class-cost-box');
@@ -7903,13 +7909,15 @@ function generateAIImage() {
     img.src = url;
 }
 
+function catFieldValue(){ if (createKind === 'class') { var t = document.getElementById('class-subject'); return t ? t.value.trim() : ''; } var sel = document.getElementById('group-category'); return sel ? sel.value : ''; }
+
 async function handleCreateGroup() {
     if (editingGroupId) { return saveGroupEdits(); }
     var btn = document.getElementById('submit-group-btn');
     if (btn.classList.contains('submitted')) { return showNotif('Already submitted!', 'info'); }
     var name = document.getElementById('group-name').value.trim();
     var description = document.getElementById('group-desc').value.trim();
-    var category = document.getElementById('group-category').value;
+    var category = catFieldValue();
     var street = document.getElementById('group-street').value.trim();
     var location = document.getElementById('group-location').value.trim();
     var isValid = true;
@@ -7922,8 +7930,9 @@ async function handleCreateGroup() {
     else { document.getElementById('group-venue-name').classList.remove('error'); document.getElementById('group-venue-name-error').classList.remove('show'); }
     if (!street) { document.getElementById('group-street').classList.add('error'); document.getElementById('group-street-error').classList.add('show'); isValid = false; }
     else { document.getElementById('group-street').classList.remove('error'); document.getElementById('group-street-error').classList.remove('show'); }
-    if (!category || category === '') { document.getElementById('group-category').classList.add('error'); document.getElementById('group-category-error').classList.add('show'); isValid = false; }
-    else { document.getElementById('group-category').classList.remove('error'); document.getElementById('group-category-error').classList.remove('show'); }
+    var _catId = (createKind === 'class') ? 'class-subject' : 'group-category';
+    if (!category || category === '') { document.getElementById(_catId).classList.add('error'); document.getElementById(_catId + '-error').classList.add('show'); isValid = false; }
+    else { document.getElementById(_catId).classList.remove('error'); document.getElementById(_catId + '-error').classList.remove('show'); }
     if (!location) { document.getElementById('group-location').classList.add('error'); document.getElementById('group-location-error').classList.add('show'); isValid = false; }
     else { document.getElementById('group-location').classList.remove('error'); document.getElementById('group-location-error').classList.remove('show'); }
     var price = 0;
