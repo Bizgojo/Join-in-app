@@ -2806,8 +2806,8 @@ function renderCommunityPoll() {
             if (voted) { html += '<div style="font-size:13px;font-weight:700;color:#a3371b;margin-top:6px">\u2705 Thanks for voting!</div>'; }
             else { html += '<div style="font-size:13px;color:#888;margin-top:6px">This poll is closed.</div>'; }
             html += '<div style="border-top:1px solid #eef1ee;margin-top:14px;padding-top:12px">' +
-                '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px"><div style="font-size:13px;font-weight:700;color:#1B4B8F">\ud83d\udcac Discuss this poll</div><button onclick="openTopicRules()" style="flex:0 0 auto;background:#eef2f7;color:#1B4B8F;border:1px solid #d9e4f2;border-radius:14px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer">\ud83d\udccb Rules</button></div>' +
-                '<div class="pulse-comments" id="pulse-comments-' + poll.id + '" style="display:block"></div></div>';
+                '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px"><div onclick="togglePulseComments(\'' + poll.id + '\')" style="font-size:13px;font-weight:700;color:#1B4B8F;cursor:pointer">\ud83d\udcac Discuss this poll</div><button onclick="openTopicRules()" style="flex:0 0 auto;background:#eef2f7;color:#1B4B8F;border:1px solid #d9e4f2;border-radius:14px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer">\ud83d\udccb Rules</button></div>' +
+                '<div class="pulse-comments" id="pulse-comments-' + poll.id + '" style="display:none"></div></div>';
         } else {
             html += pollVotingFormHtml(poll, opts);
         }
@@ -2816,10 +2816,8 @@ function renderCommunityPoll() {
     card.innerHTML = html;
     if (active) {
         var p = active;
-        if (communityPollMyVote[p.id] || pollIsClosed(p)) {
-            var cel = document.getElementById('pulse-comments-' + p.id);
-            if (cel) { loadCommentsInto(p.id, cel); }
-        }
+        // Comments load on demand when the user taps "Discuss this poll".
+        void p;
     }
 }
 
